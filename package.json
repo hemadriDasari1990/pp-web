@@ -77,7 +77,6 @@
     "material-ui": "^0.20.2",
     "moment": "^2.24.0",
     "notistack": "^0.4.2",
-    "npm": "^6.7.0",
     "offline-plugin": "^4.8.3",
     "react": "^16.8.1",
     "react-autosuggest": "^9.4.3",
