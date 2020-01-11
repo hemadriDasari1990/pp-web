@@ -27,13 +27,7 @@ class About extends Component {
             countries worldwide. The Feedbacklib app offers people to share
             positive, negative and advice to people they are interested.
           </p>
-          <p>
-            Feedbacklib core mobility offering is supplemented by its
-            electric-vehicle arm, Ola Electric; India’s largest fleet management
-            business, Ola Fleet Technologies and Ola Skilling, that aims to
-            enable millions of livelihood opportunities for people across the
-            world.
-          </p>
+
           <p>
             Feedbacklib was founded in Jan 2020 by Rajesh Pemmasani and Hemadri
             Dasari with a mission to build a system for a billion people.

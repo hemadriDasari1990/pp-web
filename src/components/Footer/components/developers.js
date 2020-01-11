@@ -72,9 +72,12 @@ class Developers extends Component {
                           className={classes.inline}
                           color="textPrimary"
                         >
-                          I am currently working as Assistant Vice President at
-                          JP Morgan & Co, Singapore
+                          Assistant Vice President at JP Morgan & Co, Singapore
                         </Typography>
+                        <br />
+                        {
+                          'Rajesh Pemmasani has been Chief Executive Officer of feedbacklib since June 2020. Prior to feedbacklib, He served as an Assistant Vice President at JP Morgan Chase & Co, Singapore, heading two internal group production systems. He’s also worked as Manager at Australia & Newzealand company(A&Z). Rajesh Pemmasani has completed his MCA from Osmania, Hyderabad, India.'
+                        }
                       </React.Fragment>
                     }
                   />
@@ -95,9 +98,12 @@ class Developers extends Component {
                           className={classes.inline}
                           color="textPrimary"
                         >
-                          I am currently working as Solution Architect II at
-                          Ericsson, USA
+                          Solution Architect II at Ericsson, USA
                         </Typography>
+                        <br />
+                        {
+                          'Lokesh Pemmasani has been Chief Technology Officer of feedbacklib since June 2020. Prior to feedbacklib, He served as an Solution Architect at Ericsson, USA, heading two internal group systems. He’s also worked as Solution Architect at Verizon Communications, Hyderabad. Lokesh Pemmasani has completed his B.E, Elections Communications Engineering, India.'
+                        }
                       </React.Fragment>
                     }
                   />
@@ -118,9 +124,12 @@ class Developers extends Component {
                           className={classes.inline}
                           color="textPrimary"
                         >
-                          I am currently working as Full Stack Developer at
-                          Emirates NBD, Dubai
+                          Full Stack Developer at Emirates NBD, Dubai
                         </Typography>
+                        <br />
+                        {
+                          'Hemadri Dasari has been head of feedbacklib since June 2020. Prior to feedbacklib, He served as Full Stack Developer at Emirates NBD, Dubai, developed private clou applications for Emirates NBD. He’s also worked as Full Stack Developer at Verizon Communications. Hemadri Dasari has completed his B.E, Computer Science Engineering from Anna University, Chennai, India.'
+                        }
                       </React.Fragment>
                     }
                   />
