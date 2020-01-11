@@ -236,8 +236,9 @@ class Header extends React.Component {
       <div className={classes.root}>
         <AppBar style={{ backgroundColor: '#ffffff' }} position="fixed">
           <Toolbar>
-            <a href="/">
-              <img src={logo} height="60" width="60" />
+            <a href="/" style={{ cursor: 'pointer' }}>
+              {/*<img src={logo} height="60" width="60" />*/}
+              Feedback Lib
             </a>
 
             {user && users && users.size && (

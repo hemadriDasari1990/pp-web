@@ -1,30 +1,30 @@
-import {
-    combineReducers
-} from 'redux-immutable'
-import { user } from './user';
-import {fromJS} from 'immutable'
-import {LOCATION_CHANGE} from 'react-router-redux';
-import { Post } from '../components/Post/reducer';
-import { UserProfile } from '../components/UserProfile/reducer';
-import { Dashboard } from '../components/Dashboard/reducer';
+import { combineReducers } from 'redux-immutable'
+import { user } from './user'
+import { fromJS } from 'immutable'
+import { LOCATION_CHANGE } from 'react-router-redux'
+import { Post } from '../components/Post/reducer'
+import { UserProfile } from '../components/UserProfile/reducer'
+import { Dashboard } from '../components/Dashboard/reducer'
+import { Footer } from '../components/Footer/reducer'
 
 const initialState = fromJS({
-  locationBeforeTransitions: null
+  locationBeforeTransitions: null,
 })
 
 const Routes = (state = initialState, { type, payload } = {}) => {
   if (type === LOCATION_CHANGE) {
-    return state.merge({locationBeforeTransitions: fromJS(payload)});
+    return state.merge({ locationBeforeTransitions: fromJS(payload) })
   }
-  return state;
+  return state
 }
 
 const appReducer = combineReducers({
-	Routes,
-	user,
+  Routes,
+  user,
   Post,
   UserProfile,
-  Dashboard
+  Dashboard,
+  Footer,
 })
 
 const rootReducer = (state, action) => {

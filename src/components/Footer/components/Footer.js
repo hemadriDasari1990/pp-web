@@ -77,6 +77,28 @@ class Footer extends React.Component {
     //     </React.Fragment>}
   }
 
+  handleAbout = () => {
+    this.props.history.push({
+      pathname: '/about',
+    })
+  }
+
+  handleContact = () => {
+    this.props.history.push({
+      pathname: '/contact',
+    })
+  }
+  handleCareers = () => {
+    this.props.history.push({
+      pathname: '/careers',
+    })
+  }
+  handleDevelopers = () => {
+    this.props.history.push({
+      pathname: '/developers',
+    })
+  }
+
   render() {
     const { classes, authenticated } = this.props
     const { value } = this.state
@@ -86,22 +108,34 @@ class Footer extends React.Component {
           <div className="max-width">
             <div className="footer">
               <div className="row-footer border-bottom social">
-                <div class="title">Discover Us</div>
-                <a href="/about" target="_blank">
+                <div className="title">Discover Us</div>
+                <a
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => this.handleAbout()}
+                >
                   About Us
                 </a>
-                <a href="/careers" target="_blank">
+                <a
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => handleCareers()}
+                >
                   Careers
                 </a>
-                <a href="/contact" target="_blank">
+                <a
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => this.handleContact()}
+                >
                   Contact Us
                 </a>
-                <a href="/developers" target="_blank">
+                <a
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => this.handleDevelopers()}
+                >
                   Developers
                 </a>
               </div>
               <div className="row-footer border-bottom social">
-                <div class="title">Social Links</div>
+                <div className="title">Social Links</div>
                 <a href="https://www.facebook.com" target="_blank">
                   <img className={classes.icon} src={fbIcon} />
                 </a>
