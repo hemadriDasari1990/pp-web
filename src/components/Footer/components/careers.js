@@ -25,7 +25,8 @@ class Careers extends Component {
         <div className="container">
           <h2 className="h2-header">Careers</h2>
           <h4 className="margin-bottom">
-            Help us build a more secure and privacy-respecting Internet.
+            Help us build a social platform that helps our society to share
+            feedback.
           </h4>
           <h2 className="margin-bottom">Working Here</h2>
           <p>

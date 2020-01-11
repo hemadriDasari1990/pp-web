@@ -117,7 +117,7 @@ class Footer extends React.Component {
                 </a>
                 <a
                   style={{ cursor: 'pointer' }}
-                  onClick={() => handleCareers()}
+                  onClick={() => this.handleCareers()}
                 >
                   Careers
                 </a>
