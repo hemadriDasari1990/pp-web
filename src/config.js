@@ -10,7 +10,7 @@ const config = {
 switch (global.NODE_ENV) {
   case 'production': {
     const { protocol, hostname, port } = window.location
-    config.apiBaseUrl = `${protocol}//${hostname}${port ? `:${port}` : ''}`
+    config.apiBaseUrl = `https://api.feedbacklib.com`
 
     break
   }
