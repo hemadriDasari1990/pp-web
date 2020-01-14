@@ -1,5 +1,4 @@
 import firebase from 'firebase'
-import registerServiceWorker from './registerServiceWorker'
 
 const config = {
   apiKey: 'AIzaSyCROwIJFiz6TcnlPxHkRaFXecpd9JjdQ_M',
@@ -11,10 +10,8 @@ const config = {
 }
 
 if (!firebase.apps.length) {
-  // registerServiceWorker();
   firebase.initializeApp(config)
   const messaging = firebase.messaging()
-
   messaging.requestPermission()
 }
 
