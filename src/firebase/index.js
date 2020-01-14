@@ -11,8 +11,8 @@ const config = {
 
 if (!firebase.apps.length) {
   firebase.initializeApp(config)
-  const messaging = firebase.messaging()
-  messaging.requestPermission()
+  // const messaging = firebase.messaging()
+  // messaging.requestPermission()
 }
 
 export default firebase
