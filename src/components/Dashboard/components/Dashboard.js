@@ -114,7 +114,7 @@ class DashBoard extends Component {
         ) : (
           <div className="container">
             <div className="row">
-              <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+              <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
                 <List component="nav" aria-label="main mailbox folders">
                   <ListItem button onClick={event => this.handleUser(event)}>
                     <ListItemAvatar>
@@ -163,7 +163,7 @@ class DashBoard extends Component {
                 {isGivenPost && <PostsInfo posts={givenPosts} />}
                 {isReceivedPost && <PostsInfo posts={receivedPosts} />}
               </div>
-              <div className="col-lg-4 col-md-3 col-sm-12 col-xs-12">
+              <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
                 {isGivenPost && givenPosts.length ? (
                   <PostList
                     given={true}
@@ -193,7 +193,7 @@ class DashBoard extends Component {
                   </Typography>
                 ) : null}
               </div>
-              <div className="col-lg-0 col-md-4 col-sm-12 col-xs-12">
+              <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
                 {isReceivedPost && <RecentPosts posts={receivedPosts} />}
                 {isGivenPost && <RecentPosts posts={givenPosts} />}
                 {isReceivedPost && <TopPosts posts={receivedPosts} />}

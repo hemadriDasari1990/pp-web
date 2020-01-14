@@ -63,7 +63,7 @@ class Dashboard extends Component {
       <React.Fragment>
         <div className="container">
           <div className="row">
-            <div className="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+            <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
               <List component="nav" aria-label="main mailbox folders">
                 <ListItem button onClick={event => this.handleApproved(event)}>
                   <ListItemAvatar>
@@ -76,10 +76,10 @@ class Dashboard extends Component {
               </List>
               <PostsInfo posts={posts} />
             </div>
-            <div className="col-lg-4 col-md-3 col-sm-12 col-xs-12">
+            <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
               <PostList posts={posts} user={user} />
             </div>
-            <div className="col-lg-0 col-md-4 col-sm-12 col-xs-12">
+            <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
               <RecentPosts posts={posts} />
               <TopPosts posts={posts} />
             </div>

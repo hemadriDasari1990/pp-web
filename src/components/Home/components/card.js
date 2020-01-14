@@ -34,7 +34,7 @@ class ProfileCard extends React.Component {
           <CardMedia
             component="img"
             alt="Contemplative Reptile"
-            height="270"
+            height="350"
             image={path}
             title="Contemplative Reptile"
           />

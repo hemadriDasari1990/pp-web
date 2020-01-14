@@ -52,7 +52,7 @@ class PostsInfo extends Component {
     const totalCount = approvedCount + rejectedCount + pendingCount
     return (
       <React.Fragment>
-        <Card style={{ width: 250, height: 270 }}>
+        <Card style={{ height: 270 }}>
           <CardHeader title="Posts Information" />
           <Divider />
           <CardContent>

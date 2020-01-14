@@ -30,7 +30,6 @@ const styles = {
   },
   root: {
     marginTop: 0,
-    padding: 50,
     width: '100%',
     textAlign: 'center',
   },
@@ -56,86 +55,78 @@ class Developers extends Component {
             developer intially started devloping this project.
           </p>
           <List className={classes.root}>
-            <div className="row">
-              <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar alt="Rajesh Pemmasani" src={rajesh}></Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="Rajesh Pemmasani"
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          className={classes.inline}
-                          color="textPrimary"
-                        >
-                          Assistant Vice President at JP Morgan & Co, Singapore
-                        </Typography>
-                        <br />
-                        {
-                          'Rajesh Pemmasani has been Chief Executive Officer of feedbacklib since June 2020. Prior to feedbacklib, He served as an Assistant Vice President at JP Morgan Chase & Co, Singapore, heading two internal group production systems. He’s also worked as Manager at Australia & Newzealand company(A&Z). Rajesh Pemmasani has completed his MCA from Osmania, Hyderabad, India.'
-                        }
-                      </React.Fragment>
+            <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <Avatar alt="Rajesh Pemmasani" src={rajesh}></Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary="Rajesh Pemmasani"
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline}
+                      color="textPrimary"
+                    >
+                      Assistant Vice President at JP Morgan & Co, Singapore
+                    </Typography>
+                    <br />
+                    {
+                      'Rajesh Pemmasani has been Chief Executive Officer of feedbacklib since June 2020. Prior to feedbacklib, He served as an Assistant Vice President at JP Morgan Chase & Co, Singapore, heading two internal group production systems. He’s also worked as Manager at Australia & Newzealand company(A&Z). Rajesh Pemmasani has completed his MCA from Osmania, Hyderabad, India.'
                     }
-                  />
-                </ListItem>
-              </div>
-              <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar alt="Lokesh Pemmasani" src={lokesh}></Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="Lokesh Pemmasani"
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          className={classes.inline}
-                          color="textPrimary"
-                        >
-                          Solution Architect II at Ericsson, USA
-                        </Typography>
-                        <br />
-                        {
-                          'Lokesh Pemmasani has been Chief Technology Officer of feedbacklib since June 2020. Prior to feedbacklib, He served as an Solution Architect at Ericsson, USA, heading two internal group systems. He’s also worked as Solution Architect at Verizon Communications, Hyderabad. Lokesh Pemmasani has completed his B.E, Elections Communications Engineering, India.'
-                        }
-                      </React.Fragment>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <Avatar alt="Lokesh Pemmasani" src={lokesh}></Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary="Lokesh Pemmasani"
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline}
+                      color="textPrimary"
+                    >
+                      Solution Architect II at Ericsson, USA
+                    </Typography>
+                    <br />
+                    {
+                      'Lokesh Pemmasani has been Chief Technology Officer of feedbacklib since June 2020. Prior to feedbacklib, He served as an Solution Architect at Ericsson, USA, heading two internal group systems. He’s also worked as Solution Architect at Verizon Communications, Hyderabad. Lokesh Pemmasani has completed his B.E, Elections Communications Engineering, India.'
                     }
-                  />
-                </ListItem>
-              </div>
-              <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar alt="Hemadri Dasari" src={hemadri}></Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary="Hemadri Dasari"
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          className={classes.inline}
-                          color="textPrimary"
-                        >
-                          Full Stack Developer at Emirates NBD, Dubai
-                        </Typography>
-                        <br />
-                        {
-                          'Hemadri Dasari has been head of feedbacklib since June 2020. Prior to feedbacklib, He served as Full Stack Developer at Emirates NBD, Dubai, developed private clou applications for Emirates NBD. He’s also worked as Full Stack Developer at Verizon Communications. Hemadri Dasari has completed his B.E, Computer Science Engineering from Anna University, Chennai, India.'
-                        }
-                      </React.Fragment>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <ListItem alignItems="flex-start">
+              <ListItemAvatar>
+                <Avatar alt="Hemadri Dasari" src={hemadri}></Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary="Hemadri Dasari"
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline}
+                      color="textPrimary"
+                    >
+                      Full Stack Developer at Emirates NBD, Dubai
+                    </Typography>
+                    <br />
+                    {
+                      'Hemadri Dasari has been head of feedbacklib since June 2020. Prior to feedbacklib, He served as Full Stack Developer at Emirates NBD, Dubai, developed private clou applications for Emirates NBD. He’s also worked as Full Stack Developer at Verizon Communications. Hemadri Dasari has completed his B.E, Computer Science Engineering from Anna University, Chennai, India.'
                     }
-                  />
-                </ListItem>
-              </div>
-            </div>
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
           </List>
         </div>
       </React.Fragment>

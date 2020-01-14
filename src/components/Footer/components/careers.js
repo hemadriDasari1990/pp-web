@@ -30,7 +30,7 @@ class Careers extends Component {
           </h4>
           <h2 className="margin-bottom">Working Here</h2>
           <p>
-            Billions of people rely on Weesteem to post information about
+            Billions of people rely on Feedback Lib to post information about
             friends, colleagues, family members etc. Living up to such great
             responsibility starts with hiring excellent people and providing
             them with an environment in which they can do their best work.
@@ -47,7 +47,7 @@ class Careers extends Component {
             new additions to your family.
           </p>
           <h2 className="margin-bottom">Open Positions</h2>
-          <p className="margin-bottom">No job openings found</p>
+          <p className="margin-bottom text-center">No job openings found</p>
 
           <ListComponent />
         </div>

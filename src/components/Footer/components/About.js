@@ -33,7 +33,7 @@ class About extends Component {
             Dasari with a mission to build a system for a billion people.
           </p>
           <h2 className="h2-header">The founders</h2>
-          <div className="row align-card">
+          <div className="row">
             <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
               <ProfileCard
                 path={Rajesh}
@@ -46,7 +46,7 @@ class About extends Component {
                 button={true}
                 buttonName="Facebook"
                 buttonOneName="Linekdin"
-                content="I am working as AVP at JP Morgan & Co, Singapore"
+                content="AVP at JP Morgan & Co, Singapore"
               />
             </div>
             <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -61,7 +61,7 @@ class About extends Component {
                 button={true}
                 buttonName="Facebook"
                 buttonOneName="Linekdin"
-                content="I am working as Solution Architect II at Ericsson, USA"
+                content="Solution Architect II at Ericsson, USA"
               />
             </div>
             <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -76,7 +76,7 @@ class About extends Component {
                 button={true}
                 buttonName="Facebook"
                 buttonOneName="Linekdin"
-                content="I am working as Full Stack Developer at Emirates NBD, Dubai"
+                content="Full Stack Developer at Emirates NBD, Dubai"
               />
             </div>
           </div>

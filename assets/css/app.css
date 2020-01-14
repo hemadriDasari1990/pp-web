@@ -21,7 +21,7 @@ body {
   min-height: 1000px;
 }
 
-.content{
+.content {
   font-size: 1.8rem;
   text-align: center;
   /*margin-top: 25%;*/
@@ -138,7 +138,6 @@ p.blue {
 }
 
 .align-card {
-  padding: 72px 24px;
   box-sizing: border-box;
   max-width: 90%;
   margin: 0px auto;
@@ -170,8 +169,9 @@ footer.footer-v2 .row-footer.lists {
     padding-top: 30px;
 }
 footer.footer-v2 .row-footer {
-    padding-left: 256px;
-    position: relative;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  position: relative;
 }
 
 footer.footer-v2 .row-footer.social {
@@ -199,7 +199,7 @@ footer.footer-v2 .row-footer .title {
 }
 
 footer.footer-v2 .row-footer.social a {
-    margin-right: 60px;
+    margin-right: 25px;
     font-size: 14px;
     color: #ff9800;
 }
@@ -228,6 +228,7 @@ footer.footer-v2 .row-footer.tc-links .copyrights {
     font-size: 12px;
     color: rgba(255, 255, 255, 0.8);
     font-weight: 300;
+    margin-right: 15px;
 }
 
 .border-bottom {
@@ -255,4 +256,47 @@ footer.footer-v2 .row-footer.tc-links .copyrights {
 
 .margin-bottom {
   margin-bottom: 30px;
+}
+
+.square {
+  display: flex;
+  justify-content: center;
+}
+.logo {
+    width: 35px;
+    height: 35px;
+    background: #616b8f;
+}
+
+div>a, div>a:hover {
+  text-decoration: underline;
+  color: #ff9800;
+  font-family: "Apercu",Avenir,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,"Calibri","Roboto",Arial,sans-serif;
+  font-weight: bold;
+}
+
+ .logo {
+  margin-top:5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+} 
+
+.logo-color {
+  font-weight: bold;
+  color: #616b8f;
+  font-size: 27px;
+  font-family: "Apercu",Avenir,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,"Calibri","Roboto",Arial,sans-serif;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-top: 100px;
+    margin-left: auto;
 }

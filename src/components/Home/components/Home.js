@@ -69,8 +69,10 @@ class Home extends Component {
         ))}
 
         </div> */}
-        <div className="home-background margin-bottom"></div>
-        <div className="container ">
+        <div className="home-background margin-bottom">
+          <div className=""></div>
+        </div>
+        <div className="container">
           <h2 className="h2-header">Our Core Features</h2>
           <p>
             We built this system to help people to share feedback about people
@@ -78,7 +80,7 @@ class Home extends Component {
             positive, negative and advice from your colleagues, friends,
             relatives etc
           </p>
-          <div className="row align-card">
+          <div className="row">
             <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
               <ProfileCard
                 path={positive}

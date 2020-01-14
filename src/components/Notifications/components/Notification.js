@@ -125,14 +125,11 @@ class Notifications extends Component {
         <div className="container">
           <div className="row">
             {!postsLoading && posts && posts.length ? (
-              <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12">
+              <div className="col-lg-5 col-md-5 col-sm-12 col-xs-12">
                 <PostsInfo posts={posts} />
               </div>
             ) : null}
-            <div
-              style={{ marginRight: 29, marginLeft: -30 }}
-              className="col-lg-4 col-md-4 col-sm-12 col-xs-12"
-            >
+            <div className="col-lg-6 col-md-7 col-sm-12 col-xs-12">
               {!postsLoading && posts && posts.length
                 ? posts.map(post => (
                     <Card key={post._id}>

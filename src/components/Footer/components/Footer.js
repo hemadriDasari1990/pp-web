@@ -107,53 +107,63 @@ class Footer extends React.Component {
         <footer className="footer-v2">
           <div className="max-width">
             <div className="footer">
-              <div className="row-footer border-bottom social">
-                <div className="title">Discover Us</div>
-                <a
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => this.handleAbout()}
-                >
-                  About Us
-                </a>
-                <a
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => this.handleCareers()}
-                >
-                  Careers
-                </a>
-                <a
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => this.handleContact()}
-                >
-                  Contact Us
-                </a>
-                <a
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => this.handleDevelopers()}
-                >
-                  Developers
-                </a>
+              <div className="row row-footer border-bottom social">
+                <div className="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                  Discover Us
+                </div>
+                <div style={{ marginTop: 10 }}>
+                  <a
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => this.handleAbout()}
+                  >
+                    About Us
+                  </a>
+                  <a
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => this.handleCareers()}
+                  >
+                    Careers
+                  </a>
+                  <a
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => this.handleContact()}
+                  >
+                    Contact Us
+                  </a>
+                  <a
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => this.handleDevelopers()}
+                  >
+                    Developers
+                  </a>
+                </div>
               </div>
-              <div className="row-footer border-bottom social">
-                <div className="title">Social Links</div>
-                <a href="https://www.facebook.com" target="_blank">
-                  <img className={classes.icon} src={fbIcon} />
-                </a>
-                <a href="https://www.instagram.com" target="_blank">
-                  <img className={classes.icon} src={twitterIcon} />
-                </a>
-                <a href="https://www.twitter.com/" target="_blank">
-                  <img className={classes.icon} src={instagramIcon} />
-                </a>
-                <a href="https://www.youtube.com" target="_blank">
-                  <img className={classes.icon} src={youtubeIcon} />
-                </a>
+              <div className="row row-footer border-bottom social">
+                <div className="col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                  Social Links
+                </div>
+                <div style={{ marginLeft: 20, marginTop: 10 }}>
+                  <a href="https://www.facebook.com" target="_blank">
+                    <img className={classes.icon} src={fbIcon} />
+                  </a>
+
+                  <a href="https://www.instagram.com" target="_blank">
+                    <img className={classes.icon} src={twitterIcon} />
+                  </a>
+
+                  <a href="https://www.twitter.com/" target="_blank">
+                    <img className={classes.icon} src={instagramIcon} />
+                  </a>
+
+                  <a href="https://www.youtube.com" target="_blank">
+                    <img className={classes.icon} src={youtubeIcon} />
+                  </a>
+                </div>
               </div>
             </div>
             <div className="row-footer tc-links clearfix">
               <div className="copyrights">
-                Copyright © 2020 Feedback Lib Corporation Pvt. Ltd. All rights
-                reserved.
+                Copyright © 2020 Feedback Lib Pvt. Ltd. All rights reserved.
               </div>
             </div>
           </div>

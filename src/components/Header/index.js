@@ -175,30 +175,15 @@ class Header extends React.Component {
         open={this.state.isMobileMenuOpen}
         onClose={this.handleMobileMenuClose}
       >
-        <MenuItem></MenuItem>
-        <MenuItem onClick={() => this.openPostForm()}>
-          <AddIcon color="secondary" /> Create Post
-        </MenuItem>
+        <MenuItem onClick={() => this.openPostForm()}>Create Post</MenuItem>
         <MenuItem onClick={() => this.showNotifications()}>
-          <Badge
-            showZero
-            badgeContent={
-              this.state.notifications ? this.state.notifications : 0
-            }
-          >
-            <NotificationsIcon color="secondary" />
-          </Badge>
           Notifications
         </MenuItem>
         <MenuItem onClick={() => this.openPreferencesForm()}>
-          <Adjust color="secondary" />
           Preferences
         </MenuItem>
 
-        <MenuItem onClick={() => this.handleLogout()}>
-          <PowerOff color="secondary" />
-          Logout
-        </MenuItem>
+        <MenuItem onClick={() => this.handleLogout()}>Logout</MenuItem>
       </Menu>
     )
   }
@@ -236,10 +221,14 @@ class Header extends React.Component {
       <div className={classes.root}>
         <AppBar style={{ backgroundColor: '#ffffff' }} position="fixed">
           <Toolbar>
-            <a href="/" style={{ cursor: 'pointer' }}>
-              {/*<img src={logo} height="60" width="60" />*/}
-              Feedback Lib
-            </a>
+            <div className="row">
+              <div className="logo-color">Feedback</div>
+              <div className="square">
+                <a href="/" style={{ cursor: 'pointer' }}>
+                  <div className="logo">lib</div>
+                </a>
+              </div>
+            </div>
 
             {user && users && users.size && (
               <div className={classes.search}>
@@ -318,10 +307,10 @@ class Header extends React.Component {
               </div>
             ) : (
               <div className="row">
-                <div className="col-lg-5 col-md-2 col-sm-4 col-xs-6">
+                <div style={{ marginRight: 10 }}>
                   <Google />
                 </div>
-                <div className="col-lg-5 col-md-2 col-sm-4 col-xs-6">
+                <div style={{ marginRight: 10 }}>
                   <Facebook />
                 </div>
               </div>
