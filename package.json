@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "This is peoples post application",
   "scripts": {
-    "start": "webpack-dev-server --open --config webpack/webpack.config.dev.js",
+    "start": "webpack-dev-server --open --config webpack/webpack.config.prod.js",
     "build-prod": "rm -rf dist && webpack --config webpack/webpack.config.prod.js  && cp -a assets/ dist/",
     "build-dev": "rm -rf dist && webpack --config webpack/webpack.config.dev.js  && cp -a assets/ dist/",
     "prod": "serve ./dist -s",
@@ -32,7 +32,7 @@
   "bugs": {
     "url": "https://github.com/hemadriDasari1990/pp-web/issues"
   },
-  "homepage": "https://github.com/hemadriDasari1990/pp-web#readme",
+  "homepage": ".",
   "devDependencies": {
     "@babel/core": "^7.1.0",
     "@babel/plugin-proposal-class-properties": "^7.3.0",
