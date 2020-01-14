@@ -30,26 +30,26 @@ module.exports = {
         use: 'babel-loader',
       },
       {
-          test: /\.css$/,
-          loader: "style-loader!css-loader"
+        test: /\.css$/,
+        loader: 'style-loader!css-loader',
       },
       {
-          test: /\.(png|jpg|jpeg|gif|woff|woff2|svg)$/,
-          loader: 'url-loader?limit=100000'
+        test: /\.(png|jpg|jpeg|gif|woff|woff2|svg)$/,
+        loader: 'url-loader?limit=100000',
       },
       {
-          test: /\.(eot|ttf)$/,
-          loader: "file-loader"  
+        test: /\.(eot|ttf)$/,
+        loader: 'file-loader',
       },
       {
-          test: /\.html$/,
-          exclude: /node_modules/,
-          loader: 'html-loader'
+        test: /\.html$/,
+        exclude: /node_modules/,
+        loader: 'html-loader',
       },
       {
-          test: /\.scss$/,
-          loaders: ["style-loader", "css-loader", "sass-loader"]
-      }
+        test: /\.scss$/,
+        loaders: ['style-loader', 'css-loader', 'sass-loader'],
+      },
     ],
   },
   plugins: [
@@ -65,7 +65,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      title: 'redux-react-starter',
+      title: 'feedback-lib',
       template: 'webpack/template.html',
     }),
     new PreloadWebpackPlugin({

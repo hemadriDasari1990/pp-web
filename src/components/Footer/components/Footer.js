@@ -142,23 +142,21 @@ class Footer extends React.Component {
                 <div className="col-lg-2 col-md-2 col-sm-2 col-xs-4">
                   Social Links
                 </div>
-                <div style={{ marginLeft: 20, marginTop: 10 }}>
-                  <a href="https://www.facebook.com" target="_blank">
-                    <img className={classes.icon} src={fbIcon} />
-                  </a>
+                <a href="https://www.facebook.com" target="_blank">
+                  <img className={classes.icon} src={fbIcon} />
+                </a>
 
-                  <a href="https://www.instagram.com" target="_blank">
-                    <img className={classes.icon} src={twitterIcon} />
-                  </a>
+                <a href="https://www.instagram.com" target="_blank">
+                  <img className={classes.icon} src={twitterIcon} />
+                </a>
 
-                  <a href="https://www.twitter.com/" target="_blank">
-                    <img className={classes.icon} src={instagramIcon} />
-                  </a>
+                <a href="https://www.twitter.com/" target="_blank">
+                  <img className={classes.icon} src={instagramIcon} />
+                </a>
 
-                  <a href="https://www.youtube.com" target="_blank">
-                    <img className={classes.icon} src={youtubeIcon} />
-                  </a>
-                </div>
+                <a href="https://www.youtube.com" target="_blank">
+                  <img className={classes.icon} src={youtubeIcon} />
+                </a>
               </div>
             </div>
             <div className="row-footer tc-links clearfix">
