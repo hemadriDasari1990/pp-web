@@ -27,11 +27,11 @@ import UserProfileDashboard from './UserProfile/components/Dashboard'
 import Notifications from './Notifications/components/Notification'
 import { history } from '../history'
 import PageNotFound from './PageNotFound/components/index'
-import About from './Footer/Components/About'
-import Contact from './Footer/Components/Contact'
-import Location from './Footer/Components/Location'
-import Developers from './Footer/Components/developers'
-import Careers from './Footer/Components/careers'
+import About from './Footer/components/About'
+import Contact from './Footer/components/Contact'
+import Location from './Footer/components/Location'
+import Developers from './Footer/components/developers'
+import Careers from './Footer/components/careers'
 
 class App extends Component {
   constructor(props) {
