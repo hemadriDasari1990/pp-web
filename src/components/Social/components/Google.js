@@ -28,16 +28,9 @@ class Google extends Component {
     await new firebase.auth()
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
       .then(async (user, error) => {
-        if (error) {
-          this.props.history.push('/')
-        }
         if (!error) {
           const data = await user.user.providerData[0]
           await this.props.getUser(data.uid).then(async u => {
-            if (u && u.data && u.data.user) {
-              await this.props.storeUser(data)
-              this.props.history.push('/dashboard')
-            }
             if (!u || (u && u.data && !u.data.user)) {
               await this.props.createUser({
                 email: data.email,
@@ -47,10 +40,13 @@ class Google extends Component {
                 phoneNumber: data.phoneNumber,
                 providerId: data.providerId,
               })
-              await this.props.storeUser(data)
-              this.props.history.push('/dashboard')
             }
           })
+          this.props.isAuthenticated(true)
+          this.props.storeUser(data)
+          this.props.history.push('/dashboard')
+        } else {
+          this.props.isAuthenticated(false)
         }
       })
   }

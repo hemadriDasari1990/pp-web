@@ -66,6 +66,12 @@ class App extends Component {
     })
   }
 
+  isAuthenticated = flag => {
+    this.setState({
+      authenticated: flag,
+    })
+  }
+
   componentWillUnMount() {
     this.unSubscribe()
   }
@@ -76,7 +82,10 @@ class App extends Component {
       <React.Fragment>
         <MuiThemeProvider theme={theme}>
           <CssBaseline />
-          <Header authenticated={authenticated} />
+          <Header
+            authenticated={authenticated}
+            isAuthenticated={this.isAuthenticated}
+          />
           {/* { !authenticated ? <Loader />: <>
             <Switch>
               <Route path='/' exact component={Home}/>
@@ -121,6 +130,7 @@ class App extends Component {
 function PrivateRoute({ component: Component, authenticated, ...rest }) {
   return (
     <Route
+      exact
       {...rest}
       render={props =>
         authenticated === true ? (

@@ -140,7 +140,7 @@ class Header extends React.Component {
     this.setState({
       isMobileMenuOpen: false,
     })
-    this.props.history.push('/')
+    this.refresh()
   }
 
   showNotifications = () => {
@@ -230,7 +230,7 @@ class Header extends React.Component {
               </div>
             </div>
 
-            {user && users && users.size && (
+            {users && users.size ? (
               <div className={classes.search}>
                 <Search
                   users={users}
@@ -239,7 +239,7 @@ class Header extends React.Component {
                   createPost={this.createPost}
                 />
               </div>
-            )}
+            ) : null}
             <div className={classes.grow} />
             {user && authenticated ? (
               <div className={classes.sectionDesktop}>
@@ -308,10 +308,10 @@ class Header extends React.Component {
             ) : (
               <div className="row">
                 <div style={{ marginRight: 10 }}>
-                  <Google />
+                  <Google isAuthenticated={this.props.isAuthenticated} />
                 </div>
                 <div style={{ marginRight: 10 }}>
-                  <Facebook />
+                  <Facebook isAuthenticated={this.props.isAuthenticated} />
                 </div>
               </div>
             )}
