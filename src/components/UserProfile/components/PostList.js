@@ -100,7 +100,7 @@ class PostList extends Component {
                   title={
                     <Link
                       className="hyperlink"
-                      to={`/profile/${post.postedTo}`}
+                      to={`/profile/${post.postedBy}`}
                     >
                       {post.postedByName}
                     </Link>
