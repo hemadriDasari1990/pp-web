@@ -34,15 +34,22 @@ class Facebook extends Component {
               await this.props.storeUser(data)
               this.props.history.push('/dashboard')
             }
-            if (!u) {
-              await this.props.createUser({
-                email: data.email,
-                userName: data.displayName,
-                photoURL: data.photoURL,
-                uid: data.uid,
-                phoneNumber: data.phoneNumber,
-                providerId: data.providerId,
-              })
+            if (!u || (u && u.data && !u.data.user)) {
+              await this.props
+                .createUser({
+                  email: data.email,
+                  userName: data.displayName,
+                  photoURL: data.photoURL,
+                  uid: data.uid,
+                  phoneNumber: data.phoneNumber,
+                  providerId: data.providerId,
+                })
+                .then(async (res, err) => {
+                  if (!err && res && res.data && !res.data.user) {
+                    await this.props.storeUser(data)
+                    this.props.history.push('/dashboard')
+                  }
+                })
             }
           })
         }
