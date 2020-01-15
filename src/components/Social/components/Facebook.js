@@ -26,13 +26,15 @@ class Facebook extends Component {
       .then(async (user, error) => {
         if (error) {
           this.props.history.push('/')
-        } else {
+        }
+        if (!error) {
           const data = await user.user.providerData[0]
           await this.props.getUser(data.uid).then(async u => {
             if (u && u.data && u.data.user) {
               await this.props.storeUser(data)
               this.props.history.push('/dashboard')
-            } else {
+            }
+            if (!u) {
               await this.props.createUser({
                 email: data.email,
                 userName: data.displayName,
