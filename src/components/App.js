@@ -67,6 +67,9 @@ class App extends Component {
   }
 
   isAuthenticated = flag => {
+    if (flag) {
+      this.props.getUsers()
+    }
     this.setState({
       authenticated: flag,
     })
