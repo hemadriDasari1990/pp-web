@@ -171,6 +171,7 @@ class Contact extends Component {
             </p>
             <div className="col-lg-12">
               <TextField
+                className="w-100"
                 error
                 name="about"
                 id="feedback-about"
@@ -183,6 +184,7 @@ class Contact extends Component {
             </div>
             <div className="col-lg-12">
               <TextField
+                className="w-100"
                 id="comments"
                 name="comment"
                 label="Your Comments"
