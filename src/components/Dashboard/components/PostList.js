@@ -44,6 +44,7 @@ import {
 import { connect } from 'react-redux'
 import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import Loader from '../../Loader/components/Loader'
+import { Link } from 'react-router-dom'
 
 class PostList extends Component {
   constructor(props) {
@@ -168,7 +169,14 @@ class PostList extends Component {
                       </Menu>
                     </>
                   }
-                  title={post.postedByName}
+                  title={
+                    <Link
+                      className="hyperlink"
+                      to={`/profile/${post.postedTo}`}
+                    >
+                      {post.postedByName}
+                    </Link>
+                  }
                   subheader={moment(post.createdAt).fromNow()}
                 />
                 <CardContent style={{ minHeight: '300px !important' }}>

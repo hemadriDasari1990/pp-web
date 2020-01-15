@@ -267,7 +267,7 @@ footer.footer-v2 .row-footer.tc-links .copyrights {
     background: #616b8f;
 }
 
-div>a, div>a:hover {
+div>a, a:hover {
   text-decoration: underline;
   color: #ff9800;
   font-family: "Apercu",Avenir,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,"Calibri","Roboto",Arial,sans-serif;
@@ -302,4 +302,9 @@ div>a, div>a:hover {
 
 .w-100 {
   width: 100%;
+}
+
+.hyperlink {
+  color: #616b8f;
+  font-weight: bold;
 }

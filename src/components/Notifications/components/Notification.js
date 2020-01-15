@@ -48,6 +48,7 @@ import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import Loader from '../../Loader/components/Loader'
 import Chip from '@material-ui/core/Chip'
 import PostsInfo from '../../Dashboard/components/PostsInfo'
+import { Link } from 'react-router-dom'
 
 class Notifications extends Component {
   constructor(props) {
@@ -190,7 +191,14 @@ class Notifications extends Component {
                             )}
                           </>
                         }
-                        title={post.postedByName}
+                        title={
+                          <Link
+                            className="hyperlink"
+                            to={`/profile/${post.postedTo}`}
+                          >
+                            {post.postedByName}
+                          </Link>
+                        }
                         subheader={moment(post.createdAt).fromNow()}
                       />
                       <CardContent>

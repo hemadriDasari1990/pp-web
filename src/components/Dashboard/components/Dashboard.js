@@ -207,9 +207,7 @@ class DashBoard extends Component {
   }
 }
 
-DashBoard.propTypes = {
-  classes: PropTypes.object.isRequired,
-}
+DashBoard.propTypes = {}
 
 const mapStateToProps = state => {
   const posts = state.getIn(['UserProfile', 'posts', 'success'], Map())
