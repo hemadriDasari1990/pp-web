@@ -323,7 +323,7 @@ class Header extends React.Component {
                   onClick={e => this.handleMobileMenuOpen(e)}
                   color="inherit"
                 >
-                  <MenuIcn color="primary" />
+                  <MenuIcon color="primary" />
                 </IconButton>
               </div>
             )}
