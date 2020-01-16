@@ -278,8 +278,8 @@ class Notifications extends Component {
             status="success"
           />
         ) : null}
-        {!posts ||
-          (!posts.length && (
+        {(!postsLoading && !posts) ||
+          (!postsLoading && !posts.length && (
             <div className="home-background">
               <div className="img-text">No posts found</div>
             </div>

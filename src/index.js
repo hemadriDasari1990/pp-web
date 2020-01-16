@@ -2,7 +2,7 @@ import Offline from 'offline-plugin/runtime'
 import React from 'react'
 import { Provider } from 'react-redux'
 import { render } from 'react-dom'
-import { BrowserRouter, browserHistory } from 'react-router-dom'
+import { HashRouter, BrowserRouter, browserHistory } from 'react-router-dom'
 import { store } from './store'
 import '../assets/css/app.css'
 import App from './components/App'
@@ -13,9 +13,9 @@ if (process.env.NODE_ENV === 'production') Offline.install()
 
 export const Root = () => (
   <Provider store={store}>
-    <BrowserRouter history={browserHistory}>
+    <HashRouter history={browserHistory}>
       <App />
-    </BrowserRouter>
+    </HashRouter>
   </Provider>
 )
 
