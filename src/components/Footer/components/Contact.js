@@ -158,6 +158,7 @@ class Contact extends Component {
       feedbacks,
       saveFeedbackSuccess,
       saveFeedbackLoading,
+      feedbacksLoading,
     } = this.props
     return (
       <div className="container">
@@ -322,6 +323,7 @@ class Contact extends Component {
         {!user && <p>*Please login to provide your feedback </p>}
         {saveFeedbackLoading && <Loader />}
         {feedbacks && <FeedbackList feedbacks={feedbacks.feedbacks} />}
+        {feedbacksLoading && <Loader />}
       </div>
     )
   }
@@ -342,12 +344,17 @@ const mapStateToProps = state => {
     Map(),
   )
   const feedbacks = state.getIn(['Footer', 'feedbacks', 'get', 'success'])
+  const feedbacksLoading = state.getIn(
+    ['Footer', 'feedbacks', 'get', 'loading'],
+    false,
+  )
   return {
     saveFeedbackLoading,
     saveFeedbackError,
     saveFeedbackSuccess,
     user,
     feedbacks,
+    feedbacksLoading,
   }
 }
 
