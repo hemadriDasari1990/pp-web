@@ -47,7 +47,10 @@ class Careers extends Component {
             new additions to your family.
           </p>
           <h2 className="margin-bottom">Open Positions</h2>
-          <p className="margin-bottom text-center">No job openings found</p>
+          <p className="margin-bottom text-center">
+            Sorry! We do not have open positions now. Please come back and check
+            after sometime.
+          </p>
 
           <ListComponent />
         </div>
