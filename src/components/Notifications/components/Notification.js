@@ -61,7 +61,7 @@ class Notifications extends Component {
 
   componentDidMount() {
     if (this.props.user) {
-      this.props.getPostsByUser(this.props.user.uid, false, false)
+      this.props.getPostsByUser(this.props.user.uid, false, true)
     }
   }
 
@@ -76,7 +76,7 @@ class Notifications extends Component {
         this.setState({
           open: false,
         })
-        await this.props.getPostsByUser(this.props.user.uid, false, false)
+        await this.props.getPostsByUser(this.props.user.uid, false, true)
         break
       default:
         break
@@ -102,7 +102,7 @@ class Notifications extends Component {
       default:
         break
     }
-    this.props.getPostsByUser(this.props.user.uid, false, false)
+    this.props.getPostsByUser(this.props.user.uid, false, true)
   }
 
   render() {
