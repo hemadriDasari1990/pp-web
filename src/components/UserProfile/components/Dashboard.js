@@ -48,14 +48,22 @@ class Dashboard extends Component {
                   />
                 </ListItem>
               </List>
-              {user && <PostsInfo user={user} />}
+              {user && (
+                <PostsInfo user={user} iposted={false} ireceived={true} />
+              )}
             </div>
             <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
-              {user && <PostList user={user} />}
+              {user && (
+                <PostList user={user} iposted={false} ireceived={true} />
+              )}
             </div>
             <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-              {user && <RecentPosts user={user} />}
-              {user && <TopPosts user={user} />}
+              {user && (
+                <RecentPosts user={user} iposted={false} ireceived={true} />
+              )}
+              {user && (
+                <TopPosts user={user} iposted={false} ireceived={true} />
+              )}
             </div>
           </div>
         </div>
