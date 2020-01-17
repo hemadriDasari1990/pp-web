@@ -119,7 +119,7 @@ class PostList extends Component {
                         iposted
                           ? post.postedToByName
                           : ireceived
-                          ? post.postedToName
+                          ? post.postedByName
                           : 'Image not Available'
                       }
                       src={
