@@ -126,7 +126,7 @@ class Notifications extends Component {
                 <PostsInfo user={user} iposted={false} ireceived={true} />
               ) : null}
             </div>
-            <div className="col-lg-6 col-md-7 col-sm-12 col-xs-12">
+            <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
               {!postsLoading && posts && posts.length
                 ? posts.map(post => (
                     <Card key={post._id}>
@@ -151,7 +151,7 @@ class Notifications extends Component {
                                       this.updatePost(post, 'approve')
                                     }
                                     tooltipPosition="bottom-left"
-                                    color="primary"
+                                    style={{ color: '#17ab13' }}
                                   >
                                     <VerifiedUserIcon />
                                   </IconButton>
@@ -162,7 +162,7 @@ class Notifications extends Component {
                                       this.updatePost(post, 'reject')
                                     }
                                     tooltipPosition="bottom-left"
-                                    color="secondary"
+                                    style={{ color: '#ff0000' }}
                                   >
                                     <VerifiedUserIcon />
                                   </IconButton>

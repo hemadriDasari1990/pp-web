@@ -98,6 +98,11 @@ class DashBoard extends Component {
                     />
                   </ListItemAvatar>
                   <ListItemText
+                    style={{
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                    }}
                     primary={user ? user.displayName : 'Loading...'}
                   />
                 </ListItem>

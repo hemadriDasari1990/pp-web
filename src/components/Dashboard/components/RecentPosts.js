@@ -71,77 +71,79 @@ class RecentPosts extends Component {
       <React.Fragment>
         <Card style={{ width: '100%', maxWidth: '100%' }}>
           <CardHeader title="Most Recent Posts"></CardHeader>
-          <Divider />
           <CardContent>
             <List>
-              {!postsLoading && posts.slice(0, 5).length ? (
-                posts.slice(0, 5).map(post => (
-                  <ListItem key={post._id} alignItems="flex-start">
-                    <ListItemAvatar>
-                      <Avatar
-                        alt={
-                          iposted
-                            ? post.postedToByName
-                            : ireceived
-                            ? post.postedToName
-                            : 'Image not Available'
-                        }
-                        src={
-                          iposted
-                            ? post.postedToPhotoURL
-                            : ireceived
-                            ? post.postedByPhotoURL
-                            : ''
-                        }
-                      />
-                    </ListItemAvatar>
-                    <Tooltip title={post.positive} placement="right-end">
-                      <ListItemText
-                        primary={post.postedByName}
-                        secondary={
-                          <React.Fragment>
-                            <Typography
-                              component="span"
-                              variant="body2"
-                              color="textPrimary"
-                            >
-                              {post.positive.length > 40
-                                ? post.positive.substring(0, 40) + '...'
-                                : post.positive}
-                            </Typography>
-                          </React.Fragment>
-                        }
-                      />
-                    </Tooltip>
-                    <Tooltip
-                      title={
-                        post.rejected
-                          ? 'Rejected'
-                          : post.approved
-                          ? 'Approved'
-                          : 'Pending'
-                      }
-                      aria-label="approved"
-                    >
-                      <IconButton
-                        style={{
-                          color: post.rejected
-                            ? '#ff0000'
+              {!postsLoading && posts.slice(0, 5).length
+                ? posts.slice(0, 5).map(post => (
+                    <ListItem key={post._id} alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          alt={
+                            iposted
+                              ? post.postedToByName
+                              : ireceived
+                              ? post.postedToName
+                              : 'Image not Available'
+                          }
+                          src={
+                            iposted
+                              ? post.postedToPhotoURL
+                              : ireceived
+                              ? post.postedByPhotoURL
+                              : ''
+                          }
+                        />
+                      </ListItemAvatar>
+                      <Tooltip title={post.positive} placement="right-end">
+                        <ListItemText
+                          primary={post.postedByName}
+                          secondary={
+                            <React.Fragment>
+                              <Typography
+                                component="span"
+                                variant="body2"
+                                color="textPrimary"
+                              >
+                                {post.positive.length > 40
+                                  ? post.positive.substring(0, 40) + '...'
+                                  : post.positive}
+                              </Typography>
+                            </React.Fragment>
+                          }
+                        />
+                      </Tooltip>
+                      <Tooltip
+                        title={
+                          post.rejected
+                            ? 'Rejected'
                             : post.approved
-                            ? '#17ab13'
-                            : '',
-                        }}
+                            ? 'Approved'
+                            : 'Pending'
+                        }
+                        aria-label="approved"
                       >
-                        <BookmarkIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </ListItem>
-                ))
-              ) : (
+                        <IconButton
+                          style={{
+                            color: post.rejected
+                              ? '#ff0000'
+                              : post.approved
+                              ? '#17ab13'
+                              : '',
+                          }}
+                        >
+                          <BookmarkIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </ListItem>
+                  ))
+                : null}
+
+              {!postsLoading && !posts.length && (
                 <Typography variant="h4" className="text-center">
                   You haven't got posts yet
                 </Typography>
               )}
+
               {postsLoading && !posts.length && <Loader />}
             </List>
           </CardContent>

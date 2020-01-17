@@ -91,64 +91,66 @@ class PostsInfo extends Component {
         <Card style={{ width: '100%', maxWidth: '100%' }}>
           <CardHeader title="Posts Summary" />
           <CardContent>
-            {postsSummary && (
-              <List>
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <VerifiedUserIcon style={{ color: '#17ab13' }} />
-                  </ListItemAvatar>
-                  <ListItemText primary="Approved" />
-                  <ListItemSecondaryAction>
-                    <Badge
-                      showZero
-                      badgeContent={formateNumber(postsSummary.approved)}
-                    ></Badge>
-                  </ListItemSecondaryAction>
-                </ListItem>
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <VerifiedUserIcon style={{ color: '#ff0000' }} />
-                  </ListItemAvatar>
-                  <ListItemText primary="Rejected" />
-                  <ListItemSecondaryAction>
-                    <Badge
-                      showZero
-                      badgeContent={formateNumber(postsSummary.rejected)}
-                    ></Badge>
-                  </ListItemSecondaryAction>
-                </ListItem>
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <VerifiedUserIcon />
-                  </ListItemAvatar>
-                  <ListItemText primary="Pending" />
-                  <ListItemSecondaryAction>
-                    <Badge
-                      showZero
-                      badgeContent={formateNumber(postsSummary.pending)}
-                    ></Badge>
-                  </ListItemSecondaryAction>
-                </ListItem>
-                <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <DonutLargeIcon color="primary" />
-                  </ListItemAvatar>
-                  <ListItemText primary="Total Posts" />
-                  <ListItemSecondaryAction>
-                    <Badge
-                      showZero
-                      badgeContent={formateNumber(postsSummary.total)}
-                    ></Badge>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              </List>
-            )}
-            {!postsSummary && !postsSummaryLoading && (
-              <Typography variant="h4" className="text-center">
-                No posts found hence post summary is not available
-              </Typography>
-            )}
-            {postsSummaryLoading ? <Loader /> : null}
+            <List>
+              {postsSummary && (
+                <>
+                  <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                      <VerifiedUserIcon style={{ color: '#17ab13' }} />
+                    </ListItemAvatar>
+                    <ListItemText primary="Approved" />
+                    <ListItemSecondaryAction>
+                      <Badge
+                        showZero
+                        badgeContent={formateNumber(postsSummary.approved)}
+                      ></Badge>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                  <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                      <VerifiedUserIcon style={{ color: '#ff0000' }} />
+                    </ListItemAvatar>
+                    <ListItemText primary="Rejected" />
+                    <ListItemSecondaryAction>
+                      <Badge
+                        showZero
+                        badgeContent={formateNumber(postsSummary.rejected)}
+                      ></Badge>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                  <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                      <VerifiedUserIcon />
+                    </ListItemAvatar>
+                    <ListItemText primary="Pending" />
+                    <ListItemSecondaryAction>
+                      <Badge
+                        showZero
+                        badgeContent={formateNumber(postsSummary.pending)}
+                      ></Badge>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                  <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                      <DonutLargeIcon color="primary" />
+                    </ListItemAvatar>
+                    <ListItemText primary="Total Posts" />
+                    <ListItemSecondaryAction>
+                      <Badge
+                        showZero
+                        badgeContent={formateNumber(postsSummary.total)}
+                      ></Badge>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </>
+              )}
+              {!postsSummaryLoading && !postsSummary && (
+                <Typography variant="h4" className="text-center">
+                  No posts found hence post summary is not available
+                </Typography>
+              )}
+              {postsSummaryLoading ? <Loader /> : null}
+            </List>
           </CardContent>
         </Card>
       </React.Fragment>

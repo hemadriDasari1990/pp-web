@@ -219,9 +219,10 @@ class PostList extends Component {
                 </Card>
               ))
           : null}
-        {!posts.length ? (
-          <Typography variant="h1" className="text-center">
-            No posts found to show
+        {!posts.length ||
+        (posts.length && !posts.filter(p => p.approved).length) ? (
+          <Typography variant="h3" className="text-center">
+            No Approved posts found to show
           </Typography>
         ) : null}
         {postsLoading ? <Loader /> : null}

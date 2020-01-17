@@ -268,11 +268,11 @@ class PostList extends Component {
                   </List>
                 </CardContent>
                 <CardActions>
-                  <span style={{ fontSize: 12, fontWeight: 'bold' }}>
+                  <span style={{ fontSize: 13, color: '#606770' }}>
                     {post.likes > 0 ? formateNumber(post.likes) : 0} Likes
                   </span>
-                  <span style={{ fontSize: 12, fontWeight: 'bold' }}>
-                    {formateNumber(post.disLikes)} Dis Likes
+                  <span style={{ fontSize: 13, color: '#606770' }}>
+                    {formateNumber(post.disLikes)} Dislikes
                   </span>
                   {/* <Badge showZero color="primary" style={{marginRight: 50}} badgeContent={post.likes > 0 ? formateNumber(post.likes): 0} >
 				        <LikeIcon/>

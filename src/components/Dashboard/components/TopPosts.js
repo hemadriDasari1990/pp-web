@@ -71,60 +71,59 @@ class TopPosts extends Component {
       <React.Fragment>
         <Card style={{ width: '100%', maxWidth: '100%' }}>
           <CardHeader title="Popular Posts"></CardHeader>
-          <Divider />
           <CardContent>
             <List>
-              {!postsLoading &&
-              posts.filter(p => p.approved).slice(0, 5).length ? (
-                posts
-                  .filter(p => p.approved)
-                  .slice(0, 5)
-                  .map(post => (
-                    <ListItem key={post._id} alignItems="flex-start">
-                      <ListItemAvatar>
-                        <Avatar
-                          alt={
-                            iposted
-                              ? post.postedToByName
-                              : ireceived
-                              ? post.postedToName
-                              : 'Image not Available'
-                          }
-                          src={
-                            iposted
-                              ? post.postedToPhotoURL
-                              : ireceived
-                              ? post.postedByPhotoURL
-                              : ''
-                          }
-                        />
-                      </ListItemAvatar>
-                      <Tooltip title={post.positive} placement="right-end">
-                        <ListItemText
-                          primary={post.postedByName}
-                          secondary={
-                            <React.Fragment>
-                              <Typography
-                                component="span"
-                                variant="body2"
-                                color="textPrimary"
-                              >
-                                {post.positive.length > 40
-                                  ? post.positive.substring(0, 40) + '...'
-                                  : post.positive}
-                              </Typography>
-                            </React.Fragment>
-                          }
-                        />
-                      </Tooltip>
-                      <Tooltip title="Approved" placement="right-end">
-                        <IconButton style={{ color: '#17ab13' }}>
-                          <BookmarkIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </ListItem>
-                  ))
-              ) : (
+              {!postsLoading && posts.filter(p => p.approved).slice(0, 5).length
+                ? posts
+                    .filter(p => p.approved)
+                    .slice(0, 5)
+                    .map(post => (
+                      <ListItem key={post._id} alignItems="flex-start">
+                        <ListItemAvatar>
+                          <Avatar
+                            alt={
+                              iposted
+                                ? post.postedToByName
+                                : ireceived
+                                ? post.postedToName
+                                : 'Image not Available'
+                            }
+                            src={
+                              iposted
+                                ? post.postedToPhotoURL
+                                : ireceived
+                                ? post.postedByPhotoURL
+                                : ''
+                            }
+                          />
+                        </ListItemAvatar>
+                        <Tooltip title={post.positive} placement="right-end">
+                          <ListItemText
+                            primary={post.postedByName}
+                            secondary={
+                              <React.Fragment>
+                                <Typography
+                                  component="span"
+                                  variant="body2"
+                                  color="textPrimary"
+                                >
+                                  {post.positive.length > 40
+                                    ? post.positive.substring(0, 40) + '...'
+                                    : post.positive}
+                                </Typography>
+                              </React.Fragment>
+                            }
+                          />
+                        </Tooltip>
+                        <Tooltip title="Approved" placement="right-end">
+                          <IconButton style={{ color: '#17ab13' }}>
+                            <BookmarkIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </ListItem>
+                    ))
+                : null}
+              {!postsLoading && !posts.length && (
                 <Typography variant="h4" className="text-center">
                   You haven't got popular posts yet
                 </Typography>
