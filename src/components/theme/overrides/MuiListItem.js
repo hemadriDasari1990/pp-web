@@ -7,7 +7,6 @@ export default {
       backgroundColor: 'red',
     },
     fontFamily: 'inherit',
-    paddingLeft: '0px !important',
   },
   button: {
     // transition: theme.transitions.create('background-color', {

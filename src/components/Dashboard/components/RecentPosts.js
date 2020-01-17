@@ -124,13 +124,13 @@ class RecentPosts extends Component {
                       aria-label="approved"
                     >
                       <IconButton
-                        color={
-                          post.rejected
-                            ? 'secondary'
+                        style={{
+                          color: post.rejected
+                            ? '#ff0000'
                             : post.approved
-                            ? 'primary'
-                            : ''
-                        }
+                            ? '#17ab13'
+                            : '',
+                        }}
                       >
                         <BookmarkIcon />
                       </IconButton>

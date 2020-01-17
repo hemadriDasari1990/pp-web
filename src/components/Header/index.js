@@ -28,6 +28,7 @@ import Adjust from '@material-ui/icons/Adjust'
 import firebase from '../../firebase'
 import Notifications from './components/Notifications'
 import * as dashboardActions from '../Dashboard/actions'
+import libIcon from '../../../assets/lib.svg'
 
 const styles = theme => ({
   avatar: {
@@ -216,12 +217,9 @@ class Header extends React.Component {
         <AppBar style={{ backgroundColor: '#ffffff' }} position="fixed">
           <Toolbar>
             <div className="row">
-              <div className="logo-color">Feedback</div>
-              <div className="square">
-                <a href="/" style={{ cursor: 'pointer' }}>
-                  <div className="logo">lib</div>
-                </a>
-              </div>
+              <a href="/" style={{ cursor: 'pointer' }}>
+                <img src={libIcon} height={50} width={50} />
+              </a>
             </div>
 
             {users && users.size ? (
@@ -318,7 +316,7 @@ class Header extends React.Component {
                   onClick={e => this.handleMobileMenuOpen(e)}
                   color="inherit"
                 >
-                  <MenuIcon color="primary" />
+                  <MenuIcon color="primary" fontSize="large" />
                 </IconButton>
               </div>
             )}

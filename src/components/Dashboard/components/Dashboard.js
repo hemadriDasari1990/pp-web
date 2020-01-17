@@ -33,10 +33,10 @@ import PostsInfo from './PostsInfo'
 import RecentPosts from './RecentPosts'
 import TopPosts from './TopPosts'
 import ListIcon from '@material-ui/icons/List'
-import Portrait from '@material-ui/icons/Portrait'
-import CallReceivedIcon from '@material-ui/icons/CallReceived'
 import formateNumber from '../../../util/formateNumber'
 import Loader from '../../Loader/components/Loader'
+import sendIcon from '../../../../assets/send.svg'
+import receiveIcon from '../../../../assets/receive.svg'
 
 class DashBoard extends Component {
   constructor(props) {
@@ -87,7 +87,7 @@ class DashBoard extends Component {
       <React.Fragment>
         <div className="container">
           <div className="row">
-            <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
+            <div className="col-lg-2 col-md-5 col-sm-12 col-xs-12">
               <List component="nav" aria-label="main mailbox folders">
                 <ListItem button onClick={event => this.handleUser(event)}>
                   <ListItemAvatar>
@@ -103,13 +103,13 @@ class DashBoard extends Component {
                 </ListItem>
                 <ListItem button onClick={() => this.handleIPosted()}>
                   <ListItemAvatar>
-                    <Portrait color="primary" />
+                    <img src={sendIcon} height={23} width={23} />
                   </ListItemAvatar>
                   <ListItemText primary="I Posted" />
                 </ListItem>
                 <ListItem button onClick={() => this.handleIReceived()}>
                   <ListItemAvatar>
-                    <Portrait color="primary" />
+                    <img src={receiveIcon} height={23} width={23} />
                   </ListItemAvatar>
                   <ListItemText primary="I Received" />
                 </ListItem>

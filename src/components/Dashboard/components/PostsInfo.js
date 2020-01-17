@@ -95,7 +95,7 @@ class PostsInfo extends Component {
               <List>
                 <ListItem alignItems="flex-start">
                   <ListItemAvatar>
-                    <VerifiedUserIcon color="primary" />
+                    <VerifiedUserIcon style={{ color: '#17ab13' }} />
                   </ListItemAvatar>
                   <ListItemText primary="Approved" />
                   <ListItemSecondaryAction>
@@ -107,7 +107,7 @@ class PostsInfo extends Component {
                 </ListItem>
                 <ListItem alignItems="flex-start">
                   <ListItemAvatar>
-                    <VerifiedUserIcon color="secondary" />
+                    <VerifiedUserIcon style={{ color: '#ff0000' }} />
                   </ListItemAvatar>
                   <ListItemText primary="Rejected" />
                   <ListItemSecondaryAction>

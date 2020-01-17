@@ -1,13 +1,12 @@
-import palette from '../palette';
+import palette from '../palette'
 
 export default {
   root: {
     color: palette.icon,
     '&:hover': {
-      backgroundColor: '#ffffff'
+      backgroundColor: '#ffffff',
     },
-  	marginBottom: 10,
-  	border: '1px solid #fff',
-    borderRadius: 3
-  }
-};
+    marginBottom: 10,
+    borderRadius: 3,
+  },
+}

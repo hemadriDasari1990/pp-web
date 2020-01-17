@@ -143,13 +143,13 @@ class PostList extends Component {
                         }
                       >
                         <IconButton
-                          color={
-                            post.rejected
-                              ? 'secondary'
+                          style={{
+                            color: post.rejected
+                              ? '#ff0000'
                               : post.approved
-                              ? 'primary'
-                              : ''
-                          }
+                              ? '#17ab13'
+                              : '',
+                          }}
                         >
                           <VerifiedUserIcon />
                         </IconButton>

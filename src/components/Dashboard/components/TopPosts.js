@@ -118,7 +118,7 @@ class TopPosts extends Component {
                         />
                       </Tooltip>
                       <Tooltip title="Approved" placement="right-end">
-                        <IconButton color="primary">
+                        <IconButton style={{ color: '#17ab13' }}>
                           <BookmarkIcon />
                         </IconButton>
                       </Tooltip>
