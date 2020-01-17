@@ -72,9 +72,7 @@ class Facebook extends Component {
   }
 }
 
-Facebook.propTypes = {
-  classes: PropTypes.object.isRequired,
-}
+Facebook.propTypes = {}
 
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'], Map())

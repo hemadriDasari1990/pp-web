@@ -44,11 +44,6 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    this.props.getPostsByUser(this.props.match.params.id).then(res => {
-      this.setState({
-        posts: res.data,
-      })
-    })
     this.props.getUser(this.props.match.params.id).then(res => {
       this.setState({
         user: res.data ? res.data.user : {},
@@ -74,14 +69,14 @@ class Dashboard extends Component {
                   />
                 </ListItem>
               </List>
-              <PostsInfo posts={posts} />
+              {user && <PostsInfo user={user} />}
             </div>
             <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
-              <PostList posts={posts} user={user} />
+              {user && <PostList user={user} />}
             </div>
             <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-              <RecentPosts posts={posts} />
-              <TopPosts posts={posts} />
+              {user && <RecentPosts user={user} />}
+              {user && <TopPosts user={user} />}
             </div>
           </div>
         </div>
@@ -95,15 +90,10 @@ Dashboard.propTypes = {
 }
 
 const mapStateToProps = state => {
-  const posts = state.getIn(['UserProfile', 'posts', 'success'], Map())
-  // const user = state.getIn(['user', 'data']);
-  return {
-    posts,
-  }
+  return {}
 }
 
 const actionsToProps = {
-  getPostsByUser: actions.getPostsByUser,
   getUser: globalActions.getUser,
 }
 

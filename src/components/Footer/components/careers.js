@@ -1,15 +1,5 @@
 import React, { Component } from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  withRouter,
-  Switch,
-} from 'react-router-dom'
-import ProfileCard from '../../Home/components/card'
-import Rajesh from '../../../../assets/rajesh.jpg'
-import Lokesh from '../../../../assets/lokesh.jpg'
-import Hemadri from '../../../../assets/hemadri.jpg'
+import { withRouter } from 'react-router-dom'
 import ListComponent from './list'
 
 class Careers extends Component {

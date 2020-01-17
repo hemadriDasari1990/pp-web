@@ -33,7 +33,7 @@ import PostsInfo from './PostsInfo'
 import RecentPosts from './RecentPosts'
 import TopPosts from './TopPosts'
 import ListIcon from '@material-ui/icons/List'
-import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck'
+import Portrait from '@material-ui/icons/Portrait'
 import CallReceivedIcon from '@material-ui/icons/CallReceived'
 import formateNumber from '../../../util/formateNumber'
 import Loader from '../../Loader/components/Loader'
@@ -42,12 +42,9 @@ class DashBoard extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      showMyPosts: false,
-      user: {},
-      givenPosts: [],
-      receivedPosts: [],
-      isGivenPost: false,
-      isReceivedPost: true,
+      user: null,
+      iposted: false,
+      ireceived: true,
     }
   }
 
@@ -58,19 +55,10 @@ class DashBoard extends Component {
         Array.isArray(user.providerData) &&
         user.providerData.length
       ) {
-        await this.props.getPostsByUser(user.providerData[0].uid).then(data => {
-          this.setState({
-            user: user.providerData[0],
-            receivedPosts: data.data,
-          })
+        this.setState({
+          user: user.providerData[0],
         })
       }
-    })
-  }
-
-  updatePosts = posts => {
-    this.setState({
-      receivedPosts: posts,
     })
   }
 
@@ -78,130 +66,86 @@ class DashBoard extends Component {
     this.props.history.push('/dashboard')
   }
 
-  handleGivenPosts = async event => {
-    await this.props.getPostsPostedByUser(this.state.user.uid).then(data => {
-      this.setState({
-        givenPosts: data.data,
-        isGivenPost: true,
-        isReceivedPost: false,
-      })
+  handleIPosted = () => {
+    this.setState({
+      iposted: true,
+      ireceived: false,
     })
   }
 
-  handleReceivedPosts = async event => {
-    await this.props.getPostsByUser(this.state.user.uid).then(data => {
-      this.setState({
-        receivedPosts: data.data,
-        isGivenPost: false,
-        isReceivedPost: true,
-      })
+  handleIReceived = () => {
+    this.setState({
+      iposted: false,
+      ireceived: true,
     })
   }
 
   render() {
-    const {
-      user,
-      givenPosts,
-      receivedPosts,
-      isReceivedPost,
-      isGivenPost,
-    } = this.state
-    const { postsLoading } = this.props
+    const { user, ireceived, iposted } = this.state
+    const {} = this.props
     return (
       <React.Fragment>
-        {postsLoading ? (
-          <Loader />
-        ) : (
-          <div className="container">
-            <div className="row">
-              <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
-                <List component="nav" aria-label="main mailbox folders">
-                  <ListItem button onClick={event => this.handleUser(event)}>
-                    <ListItemAvatar>
-                      <Avatar size="small" src={user.photoURL} />
-                    </ListItemAvatar>
-                    <ListItemText primary={user.displayName} />
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        color="primary"
-                        edge="end"
-                        aria-label="delete"
-                      >
-                        <MoreHorizIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem
-                    button
-                    onClick={event => this.handleGivenPosts(event)}
-                  >
-                    <ListItemAvatar>
-                      <PlaylistAddCheckIcon color="primary" />
-                    </ListItemAvatar>
-                    <ListItemText primary="Given Posts" />
-                    <ListItemSecondaryAction style={{ marginRight: 20 }}>
-                      {isGivenPost && givenPosts
-                        ? formateNumber(givenPosts.length)
-                        : 0}
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                  <ListItem
-                    button
-                    onClick={event => this.handleReceivedPosts(event)}
-                  >
-                    <ListItemAvatar>
-                      <CallReceivedIcon color="primary" />
-                    </ListItemAvatar>
-                    <ListItemText primary="Received Posts" />
-                    <ListItemSecondaryAction style={{ marginRight: 20 }}>
-                      {isReceivedPost && receivedPosts
-                        ? formateNumber(receivedPosts.length)
-                        : 0}
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </List>
-                {isGivenPost && <PostsInfo posts={givenPosts} />}
-                {isReceivedPost && <PostsInfo posts={receivedPosts} />}
-              </div>
-              <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
-                {isGivenPost && givenPosts.length ? (
-                  <PostList
-                    given={true}
-                    received={false}
-                    updatePosts={this.updatePosts}
-                    postsLoading={postsLoading}
-                    posts={givenPosts}
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
+              <List component="nav" aria-label="main mailbox folders">
+                <ListItem button onClick={event => this.handleUser(event)}>
+                  <ListItemAvatar>
+                    <Avatar
+                      size="small"
+                      src={user ? user.photoURL : ''}
+                      style={{ width: 22, height: 22 }}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={user ? user.displayName : 'Loading...'}
                   />
-                ) : null}
-                {isReceivedPost && receivedPosts.length ? (
-                  <PostList
-                    received={true}
-                    given={false}
-                    updatePosts={this.updatePosts}
-                    postsLoading={postsLoading}
-                    posts={receivedPosts}
-                  />
-                ) : null}
-                {isGivenPost && !givenPosts.length ? (
+                </ListItem>
+                <ListItem button onClick={() => this.handleIPosted()}>
+                  <ListItemAvatar>
+                    <Portrait color="primary" />
+                  </ListItemAvatar>
+                  <ListItemText primary="I Posted" />
+                </ListItem>
+                <ListItem button onClick={() => this.handleIReceived()}>
+                  <ListItemAvatar>
+                    <Portrait color="primary" />
+                  </ListItemAvatar>
+                  <ListItemText primary="I Received" />
+                </ListItem>
+              </List>
+            </div>
+            <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
+              {user && (
+                <PostList user={user} iposted={iposted} ireceived={ireceived} />
+              )}
+              {/*
                   <Typography variant="h4" className="no-records">
                     No posts Found
                   </Typography>
-                ) : null}
-                {isReceivedPost && !receivedPosts.length ? (
-                  <Typography variant="h4" className="no-records">
-                    No posts Found
-                  </Typography>
-                ) : null}
-              </div>
-              <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                {isReceivedPost && <RecentPosts posts={receivedPosts} />}
-                {isGivenPost && <RecentPosts posts={givenPosts} />}
-                {isReceivedPost && <TopPosts posts={receivedPosts} />}
-                {isGivenPost && <TopPosts posts={givenPosts} />}
-              </div>
+                */}
+            </div>
+            <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+              {user && (
+                <PostsInfo
+                  userId={user.uid}
+                  iposted={iposted}
+                  ireceived={ireceived}
+                />
+              )}
+              {user && (
+                <RecentPosts
+                  user={user}
+                  iposted={iposted}
+                  ireceived={ireceived}
+                />
+              )}
+              {user && (
+                <TopPosts user={user} iposted={iposted} ireceived={ireceived} />
+              )}
             </div>
           </div>
-        )}
+        </div>
       </React.Fragment>
     )
   }
@@ -210,17 +154,9 @@ class DashBoard extends Component {
 DashBoard.propTypes = {}
 
 const mapStateToProps = state => {
-  const posts = state.getIn(['UserProfile', 'posts', 'success'], Map())
-  const postsLoading = state.getIn(['UserProfile', 'posts', 'loading'], Map())
-  return {
-    posts,
-    postsLoading,
-  }
+  return {}
 }
 
-const actionsToProps = {
-  getPostsByUser: userProfileActions.getPostsByUser,
-  getPostsPostedByUser: userProfileActions.getPostsPostedByUser,
-}
+const actionsToProps = {}
 
 export default withRouter(connect(mapStateToProps, actionsToProps)(DashBoard))

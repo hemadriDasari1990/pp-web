@@ -52,14 +52,20 @@ class PostList extends Component {
     this.state = {
       open: false,
       anchorEl: undefined,
-      posts: this.props.posts,
     }
   }
 
   componentDidMount() {
-    // this.setState({
-    // 	posts: this.props.posts
-    // });
+    this.props.getPostsByUser(this.props.user.uid, false, true)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.iposted && this.props.iposted != prevProps.iposted) {
+      this.props.getPostsByUser(this.props.user.uid, true, false)
+    }
+    if (this.props.ireceived && this.props.ireceived != prevProps.ireceived) {
+      this.props.getPostsByUser(this.props.user.uid, false, true)
+    }
   }
 
   handleClose = () => {
@@ -70,15 +76,15 @@ class PostList extends Component {
     switch (val) {
       case 'delete':
         await this.props.deletePost(postId)
-        this.setState(
-          {
-            posts: await this.state.posts.filter(post => post._id !== postId),
-            open: false,
-          },
-          () => {
-            this.props.updatePosts(this.state.posts)
-          },
-        )
+        this.setState({
+          open: false,
+        })
+        if (this.props.ireceived) {
+          await this.props.getPostsByUser(this.props.user.uid, false, true)
+        }
+        if (this.props.iposted) {
+          await this.props.getPostsByUser(this.props.user.uid, true, false)
+        }
         break
       default:
         break
@@ -91,15 +97,16 @@ class PostList extends Component {
 
   render() {
     const {
-      classes,
-      postSuccess,
-      postError,
-      postLoading,
+      posts,
+      postsError,
       postsLoading,
-      given,
-      received,
+      deletePostSuccess,
+      deletePostError,
+      deletePostLoading,
+      iposted,
+      ireceived,
     } = this.props
-    const { open, anchorEl, posts } = this.state
+    const { open, anchorEl } = this.state
     return (
       <React.Fragment>
         {!postsLoading && posts.length
@@ -109,12 +116,18 @@ class PostList extends Component {
                   avatar={
                     <Avatar
                       alt={
-                        post.postedByName
-                          ? post.postedByName.substring(1, 1)
+                        iposted
+                          ? post.postedToByName
+                          : ireceived
+                          ? post.postedToName
                           : 'Image not Available'
                       }
                       src={
-                        given ? post.postedToPhotoURL : post.postedByPhotoURL
+                        iposted
+                          ? post.postedToPhotoURL
+                          : ireceived
+                          ? post.postedByPhotoURL
+                          : ''
                       }
                     />
                   }
@@ -172,7 +185,7 @@ class PostList extends Component {
                   title={
                     <Link
                       className="hyperlink"
-                      to={`/profile/${post.postedBy}`}
+                      to={`/profile/${post.postedTo}`}
                     >
                       {post.postedByName}
                     </Link>
@@ -262,16 +275,18 @@ class PostList extends Component {
             ))
           : null}
         {!postsLoading && !posts.length ? (
-          <Typography variant="h1" style={{ textAlign: 'center' }}>
-            No posts found to show
+          <Typography variant="h3" className="text-center">
+            {iposted
+              ? `You haven't posted to others`
+              : `You haven't received posts `}
           </Typography>
         ) : null}
-        {postsLoading && !posts.length ? <Loader /> : null}
-        {postSuccess && postSuccess.size > 0 ? (
+        {postsLoading ? <Loader /> : null}
+        {postsError && postsError.size > 0 ? (
           <CustomizedSnackbars
             open={true}
-            message={postSuccess.get('message')}
-            status={'success'}
+            message={postsError.get('message')}
+            status={'error'}
           />
         ) : null}
       </React.Fragment>
@@ -279,33 +294,38 @@ class PostList extends Component {
   }
 }
 
-PostList.propTypes = {
-  classes: PropTypes.object.isRequired,
-  posts: PropTypes.array,
-}
+PostList.propTypes = {}
 
 const mapStateToProps = state => {
-  const postSuccess = state.getIn(
+  const deletePostSuccess = state.getIn(
     ['Dashboard', 'post', 'delete', 'success'],
     Map(),
   )
-  const postError = state.getIn(
+  const deletePostError = state.getIn(
     ['Dashboard', 'post', 'delete', 'errors'],
     Map(),
   )
-  const postLoading = state.getIn(
+  const deletePostLoading = state.getIn(
     ['Dashboard', 'post', 'delete', 'loading'],
     Map(),
   )
+  const posts = state.getIn(['Dashboard', 'posts', 'success'], Map())
+  const postsLoading = state.getIn(['Dashboard', 'posts', 'loading'], false)
+  const postsError = state.getIn(['Dashboard', 'posts', 'errors'], Map())
   return {
-    postSuccess,
-    postError,
-    postLoading,
+    posts,
+    postsError,
+    postsLoading,
+    deletePostSuccess,
+    deletePostError,
+    deletePostLoading,
   }
 }
 
 const actionsToProps = {
+  getPostsByUser: actions.getPostsByUser,
   deletePost: actions.deletePost,
+  getPostsPostedByUser: actions.getPostsPostedByUser,
 }
 
 export default withRouter(connect(mapStateToProps, actionsToProps)(PostList))

@@ -1,21 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
-import BottomNavigation from '@material-ui/core/BottomNavigation'
-import BottomNavigationAction from '@material-ui/core/BottomNavigationAction'
-import Info from '@material-ui/icons/Info'
-import ContactMail from '@material-ui/icons/ContactMail'
-import LocationOnIcon from '@material-ui/icons/LocationOn'
-import GroupWorkIcon from '@material-ui/icons/GroupWork'
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  withRouter,
-  Switch,
-} from 'react-router-dom'
-import Grid from '@material-ui/core/Grid'
-import Typography from '@material-ui/core/Typography'
+import { withRouter } from 'react-router-dom'
 import fbIcon from '../../../../assets/social/fb.svg'
 import twitterIcon from '../../../../assets/social/twitter.svg'
 import instagramIcon from '../../../../assets/social/instagram.svg'

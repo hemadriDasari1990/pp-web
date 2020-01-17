@@ -1,23 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import withStyles from '@material-ui/core/styles/withStyles'
-// import Country from '../../Countries/components/Country';
-import IconButton from '@material-ui/core/IconButton'
-import Fab from '@material-ui/core/Fab'
-import GridList from '@material-ui/core/GridList'
-import GridListTile from '@material-ui/core/GridListTile'
-import PaperComponent from '../../Paper/components/Paper'
-import CardComponent from '../../Card/components/Card'
-import Loader from '../../Loader/components/Loader'
 import { connect } from 'react-redux'
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  withRouter,
-  Switch,
-} from 'react-router-dom'
-import { Map, List, fromJS } from 'immutable'
+import { withRouter } from 'react-router-dom'
+import { List } from 'immutable'
 import ProfileCard from './card'
 import positive from '../../../../assets/positive.jpg'
 import negative from '../../../../assets/negative.jpg'

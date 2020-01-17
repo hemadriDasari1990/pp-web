@@ -3,30 +3,18 @@ import PropTypes from 'prop-types'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
-import Typography from '@material-ui/core/Typography'
 import Badge from '@material-ui/core/Badge'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
-import { fade } from '@material-ui/core/styles/colorManipulator'
 import { withStyles } from '@material-ui/core/styles'
-import AccountCircle from '@material-ui/icons/AccountCircle'
-import MailIcon from '@material-ui/icons/Mail'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import MenuIcon from '@material-ui/icons/Menu'
 import Tooltip from '@material-ui/core/Tooltip'
 import Google from '../Social/components/Google'
 import Facebook from '../Social/components/Facebook'
-import Linkedin from '../Social/components/Linkedin'
-import Twitter from '../Social/components/Twitter'
 import { connect } from 'react-redux'
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  withRouter,
-  Switch,
-} from 'react-router-dom'
-import { Map, List, fromJS } from 'immutable'
+import { withRouter } from 'react-router-dom'
+import { Map } from 'immutable'
 import Avatar from '@material-ui/core/Avatar'
 import * as actions from '../../actions/index'
 import CustomizedSnackbars from '../Snackbar/components/Snackbar'
@@ -34,16 +22,12 @@ import AddIcon from '@material-ui/icons/Add'
 import Fab from '@material-ui/core/Fab'
 import Post from '../Post/components/Post'
 import Preferences from '../Post/components/Preferences'
-import ResposiveDialog from '../Dialog/components/ResposiveDialog'
 import Search from './components/Search'
-import Logout from '../Logout/components/Logout'
 import PowerOff from '@material-ui/icons/PowerSettingsNew'
 import Adjust from '@material-ui/icons/Adjust'
-import TripOrigin from '@material-ui/icons/TripOrigin'
 import firebase from '../../firebase'
 import Notifications from './components/Notifications'
-import * as userProfileActions from '../UserProfile/actions'
-import logo from '../../../assets/peoples-post1.png'
+import * as dashboardActions from '../Dashboard/actions'
 
 const styles = theme => ({
   avatar: {
@@ -103,20 +87,31 @@ class Header extends React.Component {
   async componentDidMount() {
     if (this.props.authenticated) {
       this.props.getUsers()
+      this.props.user
+        ? await this.props
+            .getPostsByUser(this.props.user.uid)
+            .then(async res => {
+              this.setState({
+                notifications: await res.data.filter(
+                  post => !post.approved && !post.rejected,
+                ).length,
+              })
+            })
+        : null
     }
   }
 
-  async componentWillReceiveProps(nextProps) {
-    this.props.user
-      ? await this.props.getPostsByUser(this.props.user.uid).then(async res => {
-          this.setState({
-            notifications: await res.data.filter(
-              post => !post.approved && !post.rejected,
-            ).length,
-          })
-        })
-      : null
-  }
+  // async componentWillReceiveProps(nextProps) {
+  //   this.props.user
+  //     ? await this.props.getPostsByUser(this.props.user.uid).then(async res => {
+  //         this.setState({
+  //           notifications: await res.data.filter(
+  //             post => !post.approved && !post.rejected,
+  //           ).length,
+  //         })
+  //       })
+  //     : null
+  // }
 
   openPostForm = () => {
     this.setState({
@@ -391,7 +386,7 @@ const mapStateToProps = state => {
 const actionsToProps = {
   getUsers: actions.getUsers,
   userLogout: actions.userLogout,
-  getPostsByUser: userProfileActions.getPostsByUser,
+  getPostsByUser: dashboardActions.getPostsByUser,
 }
 
 export default withRouter(

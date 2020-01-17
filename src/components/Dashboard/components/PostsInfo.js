@@ -29,83 +29,126 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import formateNumber from '../../../util/formateNumber'
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser'
+import {
+  BrowserRouter as Router,
+  Route,
+  Redirect,
+  withRouter,
+  Switch,
+} from 'react-router-dom'
+import { connect } from 'react-redux'
+import * as actions from '../actions'
+import { Map, fromJS } from 'immutable'
+import Loader from '../../Loader/components/Loader'
 
 class PostsInfo extends Component {
+  componentDidMount() {
+    if (!this.props.match.params.id) {
+      this.props.getPostsSummary(
+        this.props.userId,
+        this.props.iposted,
+        this.props.ireceived,
+      )
+    }
+    if (this.props.match.params.id) {
+      this.props.getPostsSummary(this.props.match.params.id, false, false)
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.iposted && this.props.iposted != prevProps.iposted) {
+      this.props.getPostsSummary(this.props.userId, true, false)
+    }
+    if (this.props.ireceived && this.props.ireceived != prevProps.ireceived) {
+      this.props.getPostsSummary(this.props.userId, false, true)
+    }
+  }
   render() {
-    const { classes, posts } = this.props
-    const likes = Math.max.apply(
-      Math,
-      posts.map(o => {
-        return o.likes
-      }),
-    )
-    const disLikes = Math.max.apply(
-      Math,
-      posts.map(o => {
-        return o.disLikes
-      }),
-    )
-    const approvedCount = posts.filter(post => post.approved).length
-    const rejectedCount = posts.filter(post => post.rejected).length
-    const pendingCount = posts.filter(post => !post.rejected && !post.approved)
-      .length
-    const totalCount = approvedCount + rejectedCount + pendingCount
+    const {
+      classes,
+      userId,
+      postsSummary,
+      postsSummaryLoading,
+      postsSummaryError,
+      iposted,
+      ireceived,
+    } = this.props
+
+    // const likes = Math.max.apply(
+    //   Math,
+    //   posts.map(o => {
+    //     return o.likes
+    //   }),
+    // )
+    // const disLikes = Math.max.apply(
+    //   Math,
+    //   posts.map(o => {
+    //     return o.disLikes
+    //   }),
+    // )
     return (
       <React.Fragment>
-        <Card style={{ height: 270 }}>
-          <CardHeader title="Posts Information" />
-          <Divider />
+        <Card style={{ width: '100%', maxWidth: '100%' }}>
+          <CardHeader title="Posts Summary" />
           <CardContent>
-            <List>
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                  <VerifiedUserIcon color="primary" />
-                </ListItemAvatar>
-                <ListItemText primary="Approved" />
-                <ListItemSecondaryAction>
-                  <Badge
-                    showZero
-                    badgeContent={formateNumber(approvedCount)}
-                  ></Badge>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                  <VerifiedUserIcon color="secondary" />
-                </ListItemAvatar>
-                <ListItemText primary="Rejected" />
-                <ListItemSecondaryAction>
-                  <Badge
-                    showZero
-                    badgeContent={formateNumber(rejectedCount)}
-                  ></Badge>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                  <VerifiedUserIcon />
-                </ListItemAvatar>
-                <ListItemText primary="Pending" />
-                <ListItemSecondaryAction>
-                  <Badge
-                    showZero
-                    badgeContent={formateNumber(pendingCount)}
-                  ></Badge>
-                </ListItemSecondaryAction>
-              </ListItem>
-              <ListItem alignItems="flex-start">
-                <ListItemAvatar>
-                  <DonutLargeIcon color="primary" />
-                </ListItemAvatar>
-                <ListItemText primary="Total Posts" />
-                <ListItemSecondaryAction>
-                  <Badge
-                    showZero
-                    badgeContent={formateNumber(totalCount)}
-                  ></Badge>
-                </ListItemSecondaryAction>
-              </ListItem>
-            </List>
+            {postsSummary && (
+              <List>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <VerifiedUserIcon color="primary" />
+                  </ListItemAvatar>
+                  <ListItemText primary="Approved" />
+                  <ListItemSecondaryAction>
+                    <Badge
+                      showZero
+                      badgeContent={formateNumber(postsSummary.approved)}
+                    ></Badge>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <VerifiedUserIcon color="secondary" />
+                  </ListItemAvatar>
+                  <ListItemText primary="Rejected" />
+                  <ListItemSecondaryAction>
+                    <Badge
+                      showZero
+                      badgeContent={formateNumber(postsSummary.rejected)}
+                    ></Badge>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <VerifiedUserIcon />
+                  </ListItemAvatar>
+                  <ListItemText primary="Pending" />
+                  <ListItemSecondaryAction>
+                    <Badge
+                      showZero
+                      badgeContent={formateNumber(postsSummary.pending)}
+                    ></Badge>
+                  </ListItemSecondaryAction>
+                </ListItem>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <DonutLargeIcon color="primary" />
+                  </ListItemAvatar>
+                  <ListItemText primary="Total Posts" />
+                  <ListItemSecondaryAction>
+                    <Badge
+                      showZero
+                      badgeContent={formateNumber(postsSummary.total)}
+                    ></Badge>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              </List>
+            )}
+            {!postsSummary && !postsSummaryLoading && (
+              <Typography variant="h4" className="text-center">
+                No posts found hence post summary is not available
+              </Typography>
+            )}
+            {postsSummaryLoading ? <Loader /> : null}
           </CardContent>
         </Card>
       </React.Fragment>
@@ -115,4 +158,28 @@ class PostsInfo extends Component {
 
 PostsInfo.propTypes = {}
 
-export default PostsInfo
+const mapStateToProps = state => {
+  const postsSummary = state.getIn(
+    ['Dashboard', 'posts', 'summary', 'success'],
+    Map(),
+  )
+  const postsSummaryLoading = state.getIn(
+    ['Dashboard', 'posts', 'summary', 'loading'],
+    false,
+  )
+  const postsSummaryError = state.getIn(
+    ['Dashboard', 'posts', 'summary', 'errors'],
+    Map(),
+  )
+  return {
+    postsSummary: postsSummary.length ? postsSummary[0] : null,
+    postsSummaryLoading,
+    postsSummaryError,
+  }
+}
+
+const actionsToProps = {
+  getPostsSummary: actions.getPostsSummary,
+}
+
+export default withRouter(connect(mapStateToProps, actionsToProps)(PostsInfo))

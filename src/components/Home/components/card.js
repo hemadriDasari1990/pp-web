@@ -1,5 +1,4 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardActions from '@material-ui/core/CardActions'
@@ -42,7 +41,7 @@ class ProfileCard extends React.Component {
             <Typography gutterBottom variant="h5" component="h2">
               {title}
             </Typography>
-            <Typography gutterBottom variant="p" component="p">
+            <Typography gutterBottom variant="subTitle1" component="p">
               {subTitle}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">

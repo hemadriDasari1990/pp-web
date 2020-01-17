@@ -1,4 +1,3 @@
-import { Map, fromJS } from 'immutable'
 import * as action from '../../constants/actionTypes'
 import config from '../../config'
 

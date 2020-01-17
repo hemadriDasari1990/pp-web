@@ -61,7 +61,7 @@ class Notifications extends Component {
 
   componentDidMount() {
     if (this.props.user) {
-      this.props.getPostsByUser(this.props.user.uid)
+      this.props.getPostsByUser(this.props.user.uid, false, false)
     }
   }
 
@@ -73,15 +73,10 @@ class Notifications extends Component {
     switch (val) {
       case 'delete':
         await this.props.deletePost(postId)
-        this.setState(
-          {
-            posts: await this.state.posts.filter(post => post._id !== postId),
-            open: false,
-          },
-          () => {
-            this.props.updatePosts(this.state.posts)
-          },
-        )
+        this.setState({
+          open: false,
+        })
+        await this.props.getPostsByUser(this.props.user.uid, false, false)
         break
       default:
         break
@@ -107,7 +102,7 @@ class Notifications extends Component {
       default:
         break
     }
-    this.props.getPostsByUser(this.props.user.uid)
+    this.props.getPostsByUser(this.props.user.uid, false, false)
   }
 
   render() {
@@ -119,17 +114,18 @@ class Notifications extends Component {
       postUpdateSuccess,
       postUpdateError,
       postUpdateLoading,
+      user,
     } = this.props
     const { open, anchorEl } = this.state
     return (
       <React.Fragment>
         <div className="container">
           <div className="row">
-            {!postsLoading && posts && posts.length ? (
-              <div className="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-                <PostsInfo posts={posts} />
-              </div>
-            ) : null}
+            <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
+              {user && (
+                <PostsInfo user={user} iposted={false} ireceived={false} />
+              )}
+            </div>
             <div className="col-lg-6 col-md-7 col-sm-12 col-xs-12">
               {!postsLoading && posts && posts.length
                 ? posts.map(post => (
@@ -271,10 +267,18 @@ class Notifications extends Component {
         </div>
 
         {postsLoading ? <Loader /> : null}
+        {postUpdateLoading ? <Loader /> : null}
         {postUpdateSuccess && postUpdateSuccess.size > 0 ? (
           <CustomizedSnackbars
             open={true}
             message={postUpdateSuccess.get('message')}
+            status="success"
+          />
+        ) : null}
+        {posts && posts.size > 0 ? (
+          <CustomizedSnackbars
+            open={true}
+            message={posts.get('message')}
             status="success"
           />
         ) : null}
@@ -293,9 +297,9 @@ Notifications.propTypes = {}
 
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'])
-  const posts = state.getIn(['UserProfile', 'posts', 'success'], Map())
-  const postsLoading = state.getIn(['UserProfile', 'posts', 'loading'], false)
-  const postsError = state.getIn(['UserProfile', 'posts', 'errors'], Map())
+  const posts = state.getIn(['Dashboard', 'posts', 'success'], Map())
+  const postsLoading = state.getIn(['Dashboard', 'posts', 'loading'], false)
+  const postsError = state.getIn(['Dashboard', 'posts', 'errors'], Map())
   const postUpdateSuccess = state.getIn(
     ['Dashboard', 'post', 'update', 'success'],
     Map(),
@@ -308,10 +312,8 @@ const mapStateToProps = state => {
     ['Dashboard', 'post', 'update', 'loading'],
     false,
   )
-  // const postSuccess = state.getIn(['Dashboard', 'post', 'delete', 'success'], Map());
-  // const postError = state.getIn(['Dashboard', 'post', 'delete', 'errors'], Map());
-  // const postLoading = state.getIn(['Dashboard', 'post', 'delete', 'loading'], Map());
   return {
+    user,
     posts,
     postsError,
     postsLoading,
@@ -323,7 +325,7 @@ const mapStateToProps = state => {
 }
 
 const actionsToProps = {
-  getPostsByUser: userProfileActions.getPostsByUser,
+  getPostsByUser: dashboardActions.getPostsByUser,
   updatePost: dashboardActions.updatePost,
 }
 
