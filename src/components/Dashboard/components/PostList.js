@@ -185,9 +185,19 @@ class PostList extends Component {
                   title={
                     <Link
                       className="hyperlink"
-                      to={`/profile/${post.postedTo}`}
+                      to={
+                        iposted
+                          ? `/profile/${post.postedTo}`
+                          : ireceived
+                          ? `/profile/${post.postedBy}`
+                          : ''
+                      }
                     >
-                      {post.postedByName}
+                      {iposted
+                        ? post.postedToByName
+                        : ireceived
+                        ? post.postedByName
+                        : 'Unknown User'}
                     </Link>
                   }
                   subheader={moment(post.createdAt).fromNow()}
