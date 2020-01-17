@@ -51,7 +51,7 @@ class PostsInfo extends Component {
       )
     }
     if (this.props.match.params.id) {
-      this.props.getPostsSummary(this.props.match.params.id, false, false)
+      this.props.getPostsSummary(this.props.match.params.id, false, true)
     }
   }
 

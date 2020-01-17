@@ -45,7 +45,7 @@ class RecentPosts extends Component {
       this.props.getPostsByUser(this.props.user.uid, false, true)
     }
     if (this.props.match.params.id) {
-      this.props.getPostsByUser(this.props.match.params.id, false, false)
+      this.props.getPostsByUser(this.props.match.params.id, false, true)
     }
   }
 

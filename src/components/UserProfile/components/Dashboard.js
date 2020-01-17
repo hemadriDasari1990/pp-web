@@ -1,37 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import withStyles from '@material-ui/core/styles/withStyles'
 import PostList from './PostList'
-import * as actions from '../actions'
-import { Map, fromJS } from 'immutable'
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  withRouter,
-  Switch,
-} from 'react-router-dom'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import firebase from '../../../firebase'
-import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
-import CardActionArea from '@material-ui/core/CardActionArea'
-import CardActions from '@material-ui/core/CardActions'
-import CardContent from '@material-ui/core/CardContent'
-import CardMedia from '@material-ui/core/CardMedia'
-import Typography from '@material-ui/core/Typography'
 import PostsInfo from '../../Dashboard/components/PostsInfo'
 import RecentPosts from '../../Dashboard/components/RecentPosts'
 import TopPosts from '../../Dashboard/components/TopPosts'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Avatar from '@material-ui/core/Avatar'
-import IconButton from '@material-ui/core/IconButton'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import * as globalActions from '../../../actions/index'
 
 class Dashboard extends Component {

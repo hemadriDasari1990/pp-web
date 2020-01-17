@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Home from './Home/components/Home'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {
   BrowserRouter,
@@ -11,21 +10,15 @@ import {
 } from 'react-router-dom'
 import Dashboard from './Dashboard/components/Dashboard'
 import * as actions from '../actions/index'
-import { Map, List, fromJS } from 'immutable'
 import Header from './Header/index'
 import Footer from './Footer/components/Footer'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import indigo from '@material-ui/core/colors/indigo'
-import pink from '@material-ui/core/colors/pink'
-import red from '@material-ui/core/colors/red'
 import firebase from '../firebase'
-import Loader from './Loader/components/Loader'
 import theme from './theme'
 import UserProfileDashboard from './UserProfile/components/Dashboard'
 // import { askForPermissionToReceiveNotifications } from '../firebase/push-notification';
 import Notifications from './Notifications/components/Notification'
-import { history } from '../history'
 import PageNotFound from './PageNotFound/components/index'
 import About from './Footer/components/About'
 import Contact from './Footer/components/Contact'
@@ -89,15 +82,6 @@ class App extends Component {
             authenticated={authenticated}
             isAuthenticated={this.isAuthenticated}
           />
-          {/* { !authenticated ? <Loader />: <>
-            <Switch>
-              <Route path='/' exact component={Home}/>
-              <PrivateRoute authenticated={this.state.authenticated} path='/dashboard' component={() => (<Dashboard />)} />
-              <PrivateRoute authenticated={this.state.authenticated} path='/profile/:id' component={() => (<UserProfileDashboard />)} />
-              <PrivateRoute authenticated={this.state.authenticated} path='/notifications' component={() => (<Notifications user={user}/>)} />
-            </Switch>
-            </>
-          } */}
           <div className="container-body">
             <Switch>
               <Route path="/" exact component={Home} />

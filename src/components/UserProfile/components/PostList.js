@@ -1,19 +1,11 @@
 import React, { Component } from 'react'
-import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
-import CardActionArea from '@material-ui/core/CardActionArea'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
-import CardMedia from '@material-ui/core/CardMedia'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import IconButton from '@material-ui/core/IconButton'
 import PropTypes from 'prop-types'
-import withStyles from '@material-ui/core/styles/withStyles'
-import Code from '@material-ui/icons/Code'
 import Tooltip from '@material-ui/core/Tooltip'
-import Phone from '@material-ui/icons/Phone'
-import Badge from '@material-ui/core/Badge'
 import Typography from '@material-ui/core/Typography'
 import LikeIcon from '@material-ui/icons/ThumbUp'
 import DisLikeIcon from '@material-ui/icons/ThumbDown'
@@ -22,26 +14,16 @@ import Divider from '@material-ui/core/Divider'
 import moment from 'moment'
 import MoodIcon from '@material-ui/icons/Mood'
 import MoodBadIcon from '@material-ui/icons/MoodBad'
-import PublicIcon from '@material-ui/icons/Public'
 import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import Chip from '@material-ui/core/Chip'
 import * as actions from '../actions'
-import { Map, fromJS } from 'immutable'
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  withRouter,
-  Switch,
-} from 'react-router-dom'
+import { Map } from 'immutable'
+import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
 import { Link } from 'react-router-dom'
 import * as dashboardActions from '../../Dashboard/actions'
 import Loader from '../../Loader/components/Loader'
@@ -56,8 +38,7 @@ class PostList extends Component {
   }
 
   componentDidMount() {
-    console.log('getPostsByUser', this.props.match.params.id)
-    this.props.getPostsByUser(this.props.match.params.id, false, false)
+    this.props.getPostsByUser(this.props.match.params.id, false, true)
   }
 
   handleApproved = event => {}

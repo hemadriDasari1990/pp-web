@@ -1,18 +1,8 @@
 import React, { Component } from 'react'
-import Button from '@material-ui/core/Button'
-import { withStyles } from '@material-ui/core/styles'
-import PropTypes from 'prop-types'
 import * as actions from '../../../actions/index'
-import { Map, List, fromJS } from 'immutable'
+import { Map } from 'immutable'
 import { connect } from 'react-redux'
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  withRouter,
-  Switch,
-} from 'react-router-dom'
-import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
+import { withRouter } from 'react-router-dom'
 import firebase from '../../../firebase'
 import facebook from '../../../../assets/facebook.svg'
 import Tooltip from '@material-ui/core/Tooltip'
