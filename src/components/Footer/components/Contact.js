@@ -124,6 +124,7 @@ class Contact extends Component {
       data.userName = user.displayName
       await this.props.saveFeedback(data).then(async res => {
         await this.props.getFeedbacks()
+        this.handleReset()
       })
     }
   }
