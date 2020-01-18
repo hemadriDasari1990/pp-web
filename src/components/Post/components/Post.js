@@ -142,7 +142,7 @@ class Post extends Component {
                     position: 'absolute',
                   }}
                 >
-                  What's on your friend, {user.displayName}?{' '}
+                  What's on your mind, {user.displayName}?{' '}
                 </p>
               </div>
             )}
