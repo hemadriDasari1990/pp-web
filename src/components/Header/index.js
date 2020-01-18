@@ -75,7 +75,6 @@ class Header extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      showPost: false,
       showPreferences: false,
       showNotification: false,
       notifications: 0,
@@ -113,13 +112,6 @@ class Header extends React.Component {
   //       })
   //     : null
   // }
-
-  openPostForm = () => {
-    this.setState({
-      showPost: !this.state.showPost,
-      isMobileMenuOpen: false,
-    })
-  }
 
   openPreferencesForm = () => {
     this.setState({
@@ -170,7 +162,6 @@ class Header extends React.Component {
         open={this.state.isMobileMenuOpen}
         onClose={this.handleMobileMenuClose}
       >
-        <MenuItem onClick={() => this.openPostForm()}>Create Post</MenuItem>
         <MenuItem onClick={() => this.showNotifications()}>
           Notifications
         </MenuItem>
@@ -205,12 +196,7 @@ class Header extends React.Component {
       createUserSuccess,
       createUserErrors,
     } = this.props
-    const {
-      showPost,
-      showPreferences,
-      showNotification,
-      notifications,
-    } = this.state
+    const { showPreferences, showNotification, notifications } = this.state
     const mobileMenuId = 'primary-search-account-menu-mobile'
     return (
       <div className={classes.root}>
@@ -235,16 +221,6 @@ class Header extends React.Component {
             <div className={classes.grow} />
             {user && authenticated ? (
               <div className={classes.sectionDesktop}>
-                <Tooltip title="Create Post" aria-label="create">
-                  <Fab
-                    size="small"
-                    onClick={() => this.openPostForm()}
-                    aria-label="Add"
-                    className={classes.margin}
-                  >
-                    <AddIcon color="secondary" />
-                  </Fab>
-                </Tooltip>
                 <Tooltip title="Notifications" aria-label="notification">
                   <Fab
                     size="small"
@@ -321,13 +297,6 @@ class Header extends React.Component {
               </div>
             )}
             {showNotification && <Notifications openMenu={showNotification} />}
-            {showPost && (
-              <Post
-                users={users}
-                user={user}
-                openPostForm={this.openPostForm}
-              />
-            )}
             {showPreferences && (
               <Preferences
                 openPreferencesForm={this.openPreferencesForm}

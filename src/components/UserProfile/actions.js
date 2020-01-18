@@ -1,4 +1,4 @@
-import * as action from '../../constants/actionTypes'
+import * as action from './components/Types'
 import config from '../../config'
 
 export const updateLikesRequest = () => {

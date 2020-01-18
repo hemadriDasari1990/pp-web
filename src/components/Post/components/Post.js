@@ -1,10 +1,5 @@
 import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import Search from '../../Header/components/Search'
 import * as actions from '../actions'
 import { withRouter } from 'react-router-dom'
@@ -14,6 +9,14 @@ import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
 import Fab from '@material-ui/core/Fab'
+import Card from '@material-ui/core/Card'
+import CardHeader from '@material-ui/core/CardHeader'
+import CardActionArea from '@material-ui/core/CardActionArea'
+import CardActions from '@material-ui/core/CardActions'
+import CardContent from '@material-ui/core/CardContent'
+import CardMedia from '@material-ui/core/CardMedia'
+import Loader from '../../Loader/components/Loader'
+import Avatar from '@material-ui/core/Avatar'
 
 const styles = theme => ({
   container: {
@@ -33,10 +36,10 @@ class Post extends Component {
       positive: '',
       negative: '',
       advice: '',
-      open: true,
       newPost: {},
       preferences: undefined,
       errorMessage: '',
+      showCreatePost: false,
     }
   }
 
@@ -44,13 +47,6 @@ class Post extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     })
-  }
-
-  handleClose = () => {
-    this.setState({
-      open: !this.state.open,
-    })
-    this.props.openPostForm()
   }
 
   handleSave = async () => {
@@ -66,12 +62,15 @@ class Post extends Component {
       data.advice = advice
       await this.props.createPost(data).then(res => {
         this.setState({
-          open: !this.state.open,
           errorMessage: '',
+          showCreatePost: false,
+          positive: '',
+          negative: '',
+          advice: '',
+          preferences: '',
         })
       })
     }
-    this.props.openPostForm()
   }
 
   createPost = async newPost => {
@@ -88,6 +87,20 @@ class Post extends Component {
     })
   }
 
+  handleCard = () => {
+    this.setState({
+      showCreatePost: true,
+      errorMessage: '',
+    })
+  }
+
+  handleClose = () => {
+    this.setState({
+      showCreatePost: false,
+      errorMessage: '',
+    })
+  }
+
   render() {
     const {
       classes,
@@ -101,132 +114,153 @@ class Post extends Component {
       positive,
       negative,
       advice,
-      open,
       preferences,
       newPost,
       errorMessage,
+      showCreatePost,
     } = this.state
     return (
       <React.Fragment>
-        <Dialog
-          open={open}
-          onClose={() => this.handleClose()}
-          aria-labelledby="responsive-dialog-title"
-        >
-          <DialogTitle id="responsive-dialog-title">
-            Create New Post
-          </DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Write something that matters to whom you are writing to.
-            </DialogContentText>
-            <Search
-              users={users}
-              profile={false}
-              post={true}
-              createPost={this.createPost}
-            />
-            {preferences && (
+        <Card>
+          <CardHeader title="Create New Post" />
+          <CardContent
+            onClick={() => this.handleCard()}
+            style={{ minHeight: '300px !important' }}
+          >
+            {!showCreatePost && !createPostLoading && user && (
+              <div className="row">
+                <Avatar
+                  size="small"
+                  src={user ? user.photoURL : ''}
+                  style={{ marginLeft: 10 }}
+                />
+                <p
+                  style={{
+                    marginLeft: 70,
+                    marginTop: 10,
+                    color: '#90949c',
+                    position: 'absolute',
+                  }}
+                >
+                  What's on your friend, {user.displayName}?{' '}
+                </p>
+              </div>
+            )}
+            {showCreatePost && !createPostLoading && (
               <>
-                <h4>{newPost.postedByName} preferences</h4>
-                <p>Please post your comments as per user preferences</p>
-                <FormControlLabel
-                  control={
-                    preferences.positive == 'yes' ? (
-                      <Checkbox checked={true} />
-                    ) : (
-                      <Checkbox indeterminate />
-                    )
+                <h5>Write something that matters to people.</h5>
+                <Search
+                  users={users}
+                  profile={false}
+                  post={true}
+                  createPost={this.createPost}
+                />
+                {preferences && (
+                  <>
+                    <h4>{newPost.postedByName} preferences</h4>
+                    <p>Please post your comments as per user preferences</p>
+                    <FormControlLabel
+                      control={
+                        preferences.positive == 'yes' ? (
+                          <Checkbox checked={true} />
+                        ) : (
+                          <Checkbox indeterminate />
+                        )
+                      }
+                      label="Positive"
+                    />
+                    <FormControlLabel
+                      control={
+                        preferences.negative == 'yes' ? (
+                          <Checkbox checked={true} />
+                        ) : (
+                          <Checkbox indeterminate />
+                        )
+                      }
+                      label="Negative"
+                    />
+                    <FormControlLabel
+                      control={
+                        preferences.advice == 'yes' ? (
+                          <Checkbox checked={true} />
+                        ) : (
+                          <Checkbox indeterminate />
+                        )
+                      }
+                      label="Advice"
+                    />
+                  </>
+                )}
+                <TextField
+                  required={
+                    preferences && preferences.positive == 'yes' ? true : false
                   }
+                  id="standard-required"
+                  name="positive"
                   label="Positive"
+                  placeholder="Write something positive"
+                  defaultValue=""
+                  value={positive}
+                  onChange={e => this.handleInput(e)}
+                  autoFocus
+                  margin="dense"
+                  fullWidth
                 />
-                <FormControlLabel
-                  control={
-                    preferences.negative == 'yes' ? (
-                      <Checkbox checked={true} />
-                    ) : (
-                      <Checkbox indeterminate />
-                    )
+                <br />
+                <TextField
+                  required={
+                    preferences && preferences.negative == 'yes' ? true : false
                   }
+                  id="standard-required"
+                  name="negative"
                   label="Negative"
+                  placeholder="Write something Negative"
+                  defaultValue=""
+                  value={negative}
+                  onChange={e => this.handleInput(e)}
+                  margin="dense"
+                  fullWidth
                 />
-                <FormControlLabel
-                  control={
-                    preferences.advice == 'yes' ? (
-                      <Checkbox checked={true} />
-                    ) : (
-                      <Checkbox indeterminate />
-                    )
+                <br />
+                <TextField
+                  required={
+                    preferences && preferences.advice == 'yes' ? true : false
                   }
+                  id="standard-required"
+                  name="advice"
                   label="Advice"
+                  defaultValue=""
+                  placeholder="Write something Advice"
+                  value={advice}
+                  onChange={e => this.handleInput(e)}
+                  margin="dense"
+                  fullWidth
                 />
               </>
             )}
-            <TextField
-              required={
-                preferences && preferences.positive == 'yes' ? true : false
-              }
-              id="standard-required"
-              name="positive"
-              label="Positive"
-              placeholder="Write something positive"
-              defaultValue=""
-              value={positive}
-              onChange={e => this.handleInput(e)}
-              autoFocus
-              margin="dense"
-              fullWidth
-            />
-            <br />
-            <TextField
-              required={
-                preferences && preferences.negative == 'yes' ? true : false
-              }
-              id="standard-required"
-              name="negative"
-              label="Negative"
-              placeholder="Write something Negative"
-              defaultValue=""
-              value={negative}
-              onChange={e => this.handleInput(e)}
-              margin="dense"
-              fullWidth
-            />
-            <br />
-            <TextField
-              required={
-                preferences && preferences.advice == 'yes' ? true : false
-              }
-              id="standard-required"
-              name="advice"
-              label="Advice"
-              defaultValue=""
-              placeholder="Write something Advice"
-              value={advice}
-              onChange={e => this.handleInput(e)}
-              margin="dense"
-              fullWidth
-            />
-          </DialogContent>
-          <DialogActions>
-            <Fab
-              variant="extended"
-              color="primary"
-              size="small"
-              onClick={() => this.handleSave()}
-            >
-              Create
-            </Fab>
-            <Fab
-              variant="extended"
-              color="secondary"
-              size="small"
-              onClick={() => this.handleClose()}
-            >
-              Cancel
-            </Fab>
-          </DialogActions>
-        </Dialog>
+            {createPostLoading ? <Loader /> : null}
+          </CardContent>
+          {showCreatePost && (
+            <CardActions>
+              <Fab
+                variant="extended"
+                color="primary"
+                size="small"
+                onClick={() => this.handleSave()}
+              >
+                Create
+              </Fab>
+              <Fab
+                variant="extended"
+                color="secondary"
+                size="small"
+                onClick={() => this.handleClose()}
+              >
+                Cancel
+              </Fab>
+            </CardActions>
+          )}
+        </Card>
         {createPostSuccess && createPostSuccess.size > 0 ? (
           <CustomizedSnackbars
             open={true}
@@ -264,12 +298,14 @@ const mapStateToProps = state => {
     ['Post', 'post', 'create', 'success'],
     Map(),
   )
+  const users = state.getIn(['user', 'all', 'success'], Map())
   const userPreferences = state.getIn(['Post', 'preferences', 'get'])
   return {
     createPostLoading,
     createPostError,
     createPostSuccess,
     user,
+    users,
     userPreferences,
   }
 }

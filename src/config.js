@@ -3,7 +3,7 @@ const config = {
   environment: global.NODE_ENV,
   apiBaseUrl: 'http://' + window.location.href.split('/')[2],
   API_URL: 'https://api.feedbacklib.com/api',
-  CLIENT_ROOT_URL: 'http://localhost:8080',
+  CLIENT_ROOT_URL: 'https://feedbacklib.com:8080',
   URL_PREFIX: 'https://api.feedbacklib.com/api',
 }
 

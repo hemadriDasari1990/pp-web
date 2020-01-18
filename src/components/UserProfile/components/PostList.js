@@ -44,6 +44,7 @@ class PostList extends Component {
   handleApproved = event => {}
 
   updateLike = (userId, postId) => {
+    console.log('check', userId, postId)
     this.props.updateLikes(userId, postId).then(data => {
       this.setState({
         likesCount: data.data.likes,

@@ -45,6 +45,7 @@ import { connect } from 'react-redux'
 import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import Loader from '../../Loader/components/Loader'
 import { Link } from 'react-router-dom'
+import Post from '../../Post/components/Post'
 
 class PostList extends Component {
   constructor(props) {
@@ -109,6 +110,7 @@ class PostList extends Component {
     const { open, anchorEl } = this.state
     return (
       <React.Fragment>
+        <Post />
         {!postsLoading && posts.length
           ? posts.map(post => (
               <Card key={post._id}>
