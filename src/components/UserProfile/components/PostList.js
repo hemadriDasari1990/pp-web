@@ -43,21 +43,11 @@ class PostList extends Component {
 
   handleApproved = event => {}
 
-  updateLike = (userId, postId) => {
-    console.log('check', userId, postId)
-    this.props.updateLikes(userId, postId).then(data => {
+  createOrUpdateReaction = (userId, postId) => {
+    this.props.createOrUpdateReaction(userId, postId).then(data => {
       this.setState({
         likesCount: data.data.likes,
         disLikesCount: data.data.disLikes,
-      })
-    })
-  }
-
-  updateDisLike = (userId, postId) => {
-    this.props.updateDisLikes(userId, postId).then(data => {
-      this.setState({
-        disLikesCount: data.data.disLikes,
-        likesCount: data.data.likes,
       })
     })
   }
@@ -79,19 +69,19 @@ class PostList extends Component {
                     avatar={
                       <Avatar
                         alt={
-                          post.postedByName
-                            ? post.postedByName.substring(1, 1)
+                          post.postedBy.userName
+                            ? post.postedBy.userName.substring(1, 1)
                             : 'Image not Available'
                         }
-                        src={post.postedByPhotoURL}
+                        src={post.postedBy.photoURL}
                       />
                     }
                     title={
                       <Link
                         className="hyperlink"
-                        to={`/profile/${post.postedBy}`}
+                        to={`/profile/${post.postedBy._id}`}
                       >
-                        {post.postedByName}
+                        {post.postedBy.userName}
                       </Link>
                     }
                     subheader={moment(post.createdAt).fromNow()}
@@ -169,23 +159,15 @@ class PostList extends Component {
                       )}{' '}
                       Likes
                     </Typography>
-                    <Typography display="block" gutterBottom>
-                      {formateNumber(
-                        disLikesCount > 0
-                          ? disLikesCount
-                          : post.disLikes
-                          ? post.disLikes
-                          : 0,
-                      )}{' '}
-                      Dislikes
-                    </Typography>
                   </CardActions>
                   <Divider variant="middle" />
                   <CardActions>
                     <Tooltip title="Like">
                       <IconButton
                         aria-label="like"
-                        onClick={() => this.updateLike(user.uid, post._id)}
+                        onClick={() =>
+                          this.createOrUpdateReaction(user.uid, post._id)
+                        }
                       >
                         <LikeIcon
                           color={
@@ -199,15 +181,6 @@ class PostList extends Component {
                       </IconButton>
                     </Tooltip>
                     <span className="span-name">Like</span>
-                    <Tooltip title="Dis Like">
-                      <IconButton
-                        aria-label="disLike"
-                        onClick={() => this.updateDisLike(user.uid, post._id)}
-                      >
-                        <DisLikeIcon />
-                      </IconButton>
-                    </Tooltip>
-                    <span className="span-name">Dis Like</span>
                   </CardActions>
                   {post.likes === 0 && <Divider variant="middle" />}
                   <CardActions>
@@ -248,8 +221,7 @@ const mapStateToProps = state => {
 }
 
 const actionsToProps = {
-  updateLikes: actions.updateLikes,
-  updateDisLikes: actions.updateDisLikes,
+  createOrUpdateReaction: actions.createOrUpdateReaction,
   getPostsByUser: dashboardActions.getPostsByUser,
 }
 

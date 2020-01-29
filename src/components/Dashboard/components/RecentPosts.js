@@ -80,23 +80,23 @@ class RecentPosts extends Component {
                         <Avatar
                           alt={
                             iposted
-                              ? post.postedToByName
+                              ? post.postedTo.userName
                               : ireceived
-                              ? post.postedToName
+                              ? post.postedBy.userName
                               : 'Image not Available'
                           }
                           src={
                             iposted
-                              ? post.postedToPhotoURL
+                              ? post.postedTo.photoURL
                               : ireceived
-                              ? post.postedByPhotoURL
+                              ? post.postedBy.photoURL
                               : ''
                           }
                         />
                       </ListItemAvatar>
                       <Tooltip title={post.positive} placement="right-end">
                         <ListItemText
-                          primary={post.postedByName}
+                          primary={post.postedBy.userName}
                           secondary={
                             <React.Fragment>
                               <Typography

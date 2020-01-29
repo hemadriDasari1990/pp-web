@@ -119,16 +119,16 @@ class PostList extends Component {
                     <Avatar
                       alt={
                         iposted
-                          ? post.postedToByName
+                          ? post.postedTo.userName
                           : ireceived
-                          ? post.postedByName
+                          ? post.postedBy.userName
                           : 'Image not Available'
                       }
                       src={
                         iposted
-                          ? post.postedToPhotoURL
+                          ? post.postedTo.photoURL
                           : ireceived
-                          ? post.postedByPhotoURL
+                          ? post.postedBy.photoURL
                           : ''
                       }
                     />
@@ -189,16 +189,16 @@ class PostList extends Component {
                       className="hyperlink"
                       to={
                         iposted
-                          ? `/profile/${post.postedTo}`
+                          ? `/profile/${post.postedTo._id}`
                           : ireceived
-                          ? `/profile/${post.postedBy}`
+                          ? `/profile/${post.postedBy._id}`
                           : ''
                       }
                     >
                       {iposted
-                        ? post.postedToByName
+                        ? post.postedTo.userName
                         : ireceived
-                        ? post.postedByName
+                        ? post.postedBy.userName
                         : 'Unknown User'}
                     </Link>
                   }

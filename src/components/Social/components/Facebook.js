@@ -21,7 +21,6 @@ class Facebook extends Component {
           const data = await user.user.providerData[0]
           await this.props.getUser(data.uid).then(async u => {
             if (!u || (u && u.data && !u.data.user)) {
-              console.log('u', u)
               await this.props.createUser({
                 email: data.email,
                 userName: data.displayName,
