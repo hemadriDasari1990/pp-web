@@ -23,7 +23,7 @@ class About extends Component {
           </p>
 
           <p>
-            Feedbacklib was founded in Jan 2020 by Rajesh Pemmasani and Hemadri
+            Feedbacklib was founded in 2018 by Rajesh Pemmasani and Hemadri
             Dasari with a mission to build a system for a billion people.
           </p>
           <h2 className="h2-header">The founders</h2>
@@ -32,7 +32,7 @@ class About extends Component {
               <ProfileCard
                 path={Rajesh}
                 title="Rajesh Pemmasani"
-                subTitle="CEO & Co-Founder"
+                subTitle="Co-Founder"
                 fbPath={'https://www.facebook.com/rajesh.pemmasani'}
                 linkedinPath={
                   'https://www.linkedin.com/in/rajesh-pemmasani-56673170/'
@@ -47,7 +47,7 @@ class About extends Component {
               <ProfileCard
                 path={Lokesh}
                 title="Lokesh Pemmasani"
-                subTitle="CTO & Co-Founter"
+                subTitle="Co-Founter"
                 fbPath={'https://www.facebook.com/lokesh.pemmasani'}
                 linkedinPath={
                   'https://www.linkedin.com/in/lokesh-pemmasani-39145a4a/'
@@ -62,7 +62,7 @@ class About extends Component {
               <ProfileCard
                 path={Hemadri}
                 title="Hemadri Dasari"
-                subTitle="Head & Co-Founter"
+                subTitle="Co-Founter"
                 fbPath={'https://www.facebook.com/Hemadri.Dasari.1990'}
                 linkedinPath={
                   'https://www.linkedin.com/in/hemadri-dasari-15051990/'

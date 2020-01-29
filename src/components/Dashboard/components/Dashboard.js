@@ -1,40 +1,16 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import withStyles from '@material-ui/core/styles/withStyles'
-import * as userProfileActions from '../../UserProfile/actions'
-import { Map, fromJS } from 'immutable'
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  withRouter,
-  Switch,
-} from 'react-router-dom'
+import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import firebase from '../../../firebase'
-import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
-import CardActionArea from '@material-ui/core/CardActionArea'
-import CardActions from '@material-ui/core/CardActions'
-import CardContent from '@material-ui/core/CardContent'
-import CardMedia from '@material-ui/core/CardMedia'
-import Typography from '@material-ui/core/Typography'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Avatar from '@material-ui/core/Avatar'
-import IconButton from '@material-ui/core/IconButton'
 import PostList from './PostList'
 import PostsInfo from './PostsInfo'
 import RecentPosts from './RecentPosts'
 import TopPosts from './TopPosts'
-import ListIcon from '@material-ui/icons/List'
-import formateNumber from '../../../util/formateNumber'
-import Loader from '../../Loader/components/Loader'
 import sendIcon from '../../../../assets/send.svg'
 import receiveIcon from '../../../../assets/receive.svg'
 
