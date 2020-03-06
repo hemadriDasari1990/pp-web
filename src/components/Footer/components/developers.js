@@ -51,8 +51,12 @@ class Developers extends Component {
             We started this project as an experienment as we wanted to build
             something that helps people to communicate and understand what
             people are thinking about you. This idea has born between Hemadri
-            Dasari and Rajesh Pemmasani in the year 2018. Hemadri Dasari as a
-            developer intially started devloping this project.
+            Dasari and Rajesh Pemmasani in the year 2018.
+          </p>
+          <p>
+            Hemadri Dasari is a only developer worked on end to end from UI
+            design to DB design. He has coded close to 2 years developing this
+            beautiful platform in his offline time.
           </p>
           <List className={classes.root}>
             <ListItem alignItems="flex-start">
@@ -73,7 +77,7 @@ class Developers extends Component {
                     </Typography>
                     <br />
                     {
-                      'Rajesh Pemmasani has been Chief Executive Officer of writenpost since June 2020. Prior to writenpost, He served as an Assistant Vice President at JP Morgan Chase & Co, Singapore, heading two internal group production systems. He’s also worked as Manager at Australia & Newzealand company(A&Z). Rajesh Pemmasani has completed his MCA from Osmania, Hyderabad, India.'
+                      'Rajesh Pemmasani is a CO-Founter of Writenpost Inc. He is currently working as Assistant Vice President at JP Morgan Chase & Co, Singapore, heading two internal group production systems. He’s also worked as Manager at Australia & Newzealand company(A&Z). Rajesh Pemmasani has completed his MCA from Osmania, Hyderabad, India.'
                     }
                   </React.Fragment>
                 }
@@ -97,7 +101,7 @@ class Developers extends Component {
                     </Typography>
                     <br />
                     {
-                      'Lokesh Pemmasani has been Chief Technology Officer of writenpost since June 2020. Prior to writenpost, He served as an Solution Architect at Ericsson, USA, heading two internal group systems. He’s also worked as Solution Architect at Verizon Communications, Hyderabad. Lokesh Pemmasani has completed his B.E, Elections Communications Engineering, India.'
+                      'Lokesh Pemmasani is a CO-Founder of Writenpost Inc. He is currently working as Solution Architect at Ericsson, USA, heading two internal group systems. He’s also worked as Solution Architect at Verizon Communications, Hyderabad. Lokesh Pemmasani has completed his B.E, Elections Communications Engineering, India.'
                     }
                   </React.Fragment>
                 }
@@ -121,7 +125,7 @@ class Developers extends Component {
                     </Typography>
                     <br />
                     {
-                      'Hemadri Dasari has been head of writenpost since June 2020. Prior to writenpost, He served as Full Stack Developer at Emirates NBD, Dubai, developed private clou applications for Emirates NBD. He’s also worked as Full Stack Developer at Verizon Communications. Hemadri Dasari has completed his B.E, Computer Science Engineering from Anna University, Chennai, India.'
+                      'Hemadri Dasari is a Founder of Writenpost Inc. He is currently working as Full Stack Developer at Emirates NBD, Dubai, developed private cloud applications for Emirates NBD. He’s also worked as Full Stack Developer at Verizon Communications. Hemadri Dasari has completed his B.E, Computer Science Engineering from Anna University, Chennai, India.'
                     }
                   </React.Fragment>
                 }
