@@ -172,7 +172,7 @@ class Preferences extends Component {
                     />
                     <FormControlLabel
                       value="no"
-                      control={<Radio color="secondary" />}
+                      control={<Radio color="primary" />}
                       label="No"
                     />
                   </RadioGroup>
@@ -196,7 +196,7 @@ class Preferences extends Component {
                     />
                     <FormControlLabel
                       value="no"
-                      control={<Radio color="secondary" />}
+                      control={<Radio color="primary" />}
                       label="No"
                     />
                   </RadioGroup>
@@ -220,7 +220,7 @@ class Preferences extends Component {
                     />
                     <FormControlLabel
                       value="no"
-                      control={<Radio color="secondary" />}
+                      control={<Radio color="primary" />}
                       label="No"
                     />
                   </RadioGroup>
