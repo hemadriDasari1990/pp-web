@@ -15,12 +15,11 @@ class Careers extends Component {
         <div className="container">
           <h2 className="h2-header">Careers</h2>
           <h4 className="margin-bottom">
-            Help us build a social platform that helps our society to share
-            feedback.
+            Help us build a social platform that helps our society.
           </h4>
           <h2 className="margin-bottom">Working Here</h2>
           <p>
-            Billions of people rely on Feedback Lib to post information about
+            Billions of people rely on writenpost to post information about
             friends, colleagues, family members etc. Living up to such great
             responsibility starts with hiring excellent people and providing
             them with an environment in which they can do their best work.

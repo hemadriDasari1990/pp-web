@@ -11,6 +11,13 @@ import PropTypes from 'prop-types'
 
 const styles = theme => ({
   card: {},
+  media: {
+    height: 250,
+    width: 250,
+    display: 'block',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+  },
 })
 
 class ProfileCard extends React.Component {
@@ -26,6 +33,7 @@ class ProfileCard extends React.Component {
       button,
       buttonName,
       buttonOneName,
+      type,
     } = this.props
     return (
       <Card className={classes.card}>
@@ -36,6 +44,7 @@ class ProfileCard extends React.Component {
             height="350"
             image={path}
             title="Contemplative Reptile"
+            className={type == 'home' ? classes.media : ''}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
@@ -50,7 +59,7 @@ class ProfileCard extends React.Component {
           </CardContent>
         </CardActionArea>
         {button && (
-          <CardActions>
+          <CardActions style={{ marginTOP: 20 }}>
             <Button size="small" color="primary" target="_blank" href={fbPath}>
               {buttonName}
             </Button>

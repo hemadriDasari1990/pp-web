@@ -4,9 +4,8 @@ import { Provider } from 'react-redux'
 import { render } from 'react-dom'
 import { HashRouter, BrowserRouter, browserHistory } from 'react-router-dom'
 import { store } from './store'
-import '../assets/css/app.css'
+import '../assets/css/app.scss'
 import App from './components/App'
-import firebase from './firebase'
 import * as serviceWorker from './serviceworker'
 
 if (process.env.NODE_ENV === 'production') Offline.install()

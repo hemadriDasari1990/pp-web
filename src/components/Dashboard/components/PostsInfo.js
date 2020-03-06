@@ -20,9 +20,9 @@ import Loader from '../../Loader/components/Loader'
 
 class PostsInfo extends Component {
   componentDidMount() {
-    if (!this.props.match.params.id) {
+    if (!this.props.match.params.id && this.props.user) {
       this.props.getPostsSummary(
-        this.props.userId,
+        this.props.user._id,
         this.props.iposted,
         this.props.ireceived,
       )
@@ -33,11 +33,19 @@ class PostsInfo extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.iposted && this.props.iposted != prevProps.iposted) {
-      this.props.getPostsSummary(this.props.userId, true, false)
+    if (
+      this.props.user &&
+      this.props.iposted &&
+      this.props.iposted != prevProps.iposted
+    ) {
+      this.props.getPostsSummary(this.props.user._id, true, false)
     }
-    if (this.props.ireceived && this.props.ireceived != prevProps.ireceived) {
-      this.props.getPostsSummary(this.props.userId, false, true)
+    if (
+      this.props.user &&
+      this.props.ireceived &&
+      this.props.ireceived != prevProps.ireceived
+    ) {
+      this.props.getPostsSummary(this.props.user._id, false, true)
     }
   }
   render() {

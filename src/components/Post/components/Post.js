@@ -17,6 +17,7 @@ import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import Loader from '../../Loader/components/Loader'
 import Avatar from '@material-ui/core/Avatar'
+import FormGroup from '@material-ui/core/FormGroup'
 
 const styles = theme => ({
   container: {
@@ -33,13 +34,14 @@ class Post extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      positive: '',
-      negative: '',
+      pros: '',
+      cons: '',
       advice: '',
       newPost: {},
       preferences: undefined,
       errorMessage: '',
       showCreatePost: false,
+      isAnonymous: false,
     }
   }
 
@@ -50,22 +52,23 @@ class Post extends Component {
   }
 
   handleSave = async () => {
-    const { positive, negative, advice, preferences } = this.state
-    if (!positive || !negative || !advice) {
+    const { pros, cons, advice, preferences } = this.state
+    if (!pros || !cons || !advice) {
       this.setState({
         errorMessage: 'Please enter your comments as per user preferences',
       })
     } else {
       const data = this.state.newPost
-      data.positive = positive
-      data.negative = negative
+      data.pros = pros
+      data.cons = cons
       data.advice = advice
+      data.isAnonymous = this.state.isAnonymous
       await this.props.createPost(data).then(res => {
         this.setState({
           errorMessage: '',
           showCreatePost: false,
-          positive: '',
-          negative: '',
+          pros: '',
+          cons: '',
           advice: '',
           preferences: '',
         })
@@ -101,6 +104,12 @@ class Post extends Component {
     })
   }
 
+  handleAnnonymous = e => {
+    this.setState({
+      isAnonymous: event.target.checked,
+    })
+  }
+
   render() {
     const {
       classes,
@@ -111,13 +120,14 @@ class Post extends Component {
       users,
     } = this.props
     const {
-      positive,
-      negative,
+      pros,
+      cons,
       advice,
       preferences,
       newPost,
       errorMessage,
       showCreatePost,
+      isAnonymous,
     } = this.state
     return (
       <React.Fragment>
@@ -161,23 +171,23 @@ class Post extends Component {
                     <p>Please post your comments as per user preferences</p>
                     <FormControlLabel
                       control={
-                        preferences.positive == 'yes' ? (
+                        preferences.pros == 'yes' ? (
                           <Checkbox checked={true} />
                         ) : (
                           <Checkbox indeterminate />
                         )
                       }
-                      label="Positive"
+                      label="Pros"
                     />
                     <FormControlLabel
                       control={
-                        preferences.negative == 'yes' ? (
+                        preferences.cons == 'yes' ? (
                           <Checkbox checked={true} />
                         ) : (
                           <Checkbox indeterminate />
                         )
                       }
-                      label="Negative"
+                      label="Cons"
                     />
                     <FormControlLabel
                       control={
@@ -193,14 +203,14 @@ class Post extends Component {
                 )}
                 <TextField
                   required={
-                    preferences && preferences.positive == 'yes' ? true : false
+                    preferences && preferences.pros == 'yes' ? true : false
                   }
                   id="standard-required"
-                  name="positive"
-                  label="Positive"
-                  placeholder="Write something positive"
+                  name="pros"
+                  label="Pros"
+                  placeholder="Write something pros"
                   defaultValue=""
-                  value={positive}
+                  value={pros}
                   onChange={e => this.handleInput(e)}
                   autoFocus
                   margin="dense"
@@ -209,14 +219,14 @@ class Post extends Component {
                 <br />
                 <TextField
                   required={
-                    preferences && preferences.negative == 'yes' ? true : false
+                    preferences && preferences.cons == 'yes' ? true : false
                   }
                   id="standard-required"
-                  name="negative"
-                  label="Negative"
-                  placeholder="Write something Negative"
+                  name="cons"
+                  label="Cons"
+                  placeholder="Write something Cons"
                   defaultValue=""
-                  value={negative}
+                  value={cons}
                   onChange={e => this.handleInput(e)}
                   margin="dense"
                   fullWidth
@@ -236,6 +246,19 @@ class Post extends Component {
                   margin="dense"
                   fullWidth
                 />
+                <FormGroup>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        color="primary"
+                        checked={isAnonymous}
+                        onChange={e => this.handleAnnonymous(e)}
+                        value={false}
+                      />
+                    }
+                    label="Post as Anonymous"
+                  />
+                </FormGroup>
               </>
             )}
             {createPostLoading ? <Loader /> : null}
@@ -252,7 +275,7 @@ class Post extends Component {
               </Fab>
               <Fab
                 variant="extended"
-                color="secondary"
+                color="primary"
                 size="small"
                 onClick={() => this.handleClose()}
               >

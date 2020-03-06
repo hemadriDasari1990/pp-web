@@ -100,7 +100,6 @@ export const getPostsSummaryError = errors => {
 }
 
 export const getPostsSummary = (userId, postedBy, postedTo) => {
-  console.log('check', userId)
   const options = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
@@ -193,5 +192,45 @@ export const getPostsPostedByUser = userId => {
       .then(response => response.json())
       .then(data => dispatch(getPostsPostedByUserSuccess(data)))
       .catch(errors => dispatch(getPostsPostedByUserError(errors)))
+  }
+}
+
+export const getNotificationsCountRequest = () => {
+  return {
+    type: action.GET_NOTIFICATIONS_COUNT_REQUEST,
+    loading: true,
+  }
+}
+
+export const getNotificationsCountSuccess = count => {
+  return {
+    type: action.GET_NOTIFICATIONS_COUNT_SUCCESS,
+    loading: false,
+    data: count,
+  }
+}
+
+export const getNotificationsCountError = errors => {
+  return {
+    type: action.GET_NOTIFICATIONS_COUNT_FAILURE,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const getNotificationsCount = userId => {
+  const options = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  return dispatch => {
+    dispatch(getNotificationsCountRequest())
+    return fetch(
+      config.URL_PREFIX + `/user/${userId}/notifications/count`,
+      options,
+    )
+      .then(response => response.json())
+      .then(data => dispatch(getNotificationsCountSuccess(data)))
+      .catch(errors => dispatch(getNotificationsCountError(errors)))
   }
 }

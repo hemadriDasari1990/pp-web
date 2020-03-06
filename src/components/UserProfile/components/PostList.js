@@ -3,12 +3,9 @@ import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
-import IconButton from '@material-ui/core/IconButton'
 import PropTypes from 'prop-types'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
-import LikeIcon from '@material-ui/icons/ThumbUp'
-import DisLikeIcon from '@material-ui/icons/ThumbDown'
 import Avatar from '@material-ui/core/Avatar'
 import Divider from '@material-ui/core/Divider'
 import moment from 'moment'
@@ -27,6 +24,37 @@ import formateNumber from '../../../util/formateNumber'
 import { Link } from 'react-router-dom'
 import * as dashboardActions from '../../Dashboard/actions'
 import Loader from '../../Loader/components/Loader'
+import like from '../../../../assets/emojis/like.svg'
+import angry from '../../../../assets/emojis/angry.svg'
+import love from '../../../../assets/emojis/love.svg'
+import silly from '../../../../assets/emojis/silly.svg'
+import smiley from '../../../../assets/emojis/smiley.svg'
+import wow from '../../../../assets/emojis/surprise.svg'
+import sad from '../../../../assets/emojis/sad.svg'
+import Button from '@material-ui/core/Button'
+import AvatarGroup from '@material-ui/lab/AvatarGroup'
+import { withStyles } from '@material-ui/core/styles'
+import share from '../../../../assets/emojis/share.svg'
+
+const styles = {
+  smallAvatar: {
+    width: 25,
+    height: 25,
+    borderColor: '#fff',
+  },
+  avatar: {
+    marginTop: 0,
+    width: '100%',
+    textAlign: 'center',
+  },
+  button: {
+    width: '150px !important',
+    height: '35px !important',
+  },
+  rightButton: {
+    marginLeft: 'auto',
+  },
+}
 
 class PostList extends Component {
   constructor(props) {
@@ -34,55 +62,276 @@ class PostList extends Component {
     this.state = {
       likesCount: 0,
       disLikesCount: 0,
+      showEmojis: false,
+      hint: '',
     }
   }
 
-  componentDidMount() {
-    this.props.getPostsByUser(this.props.match.params.id, false, true)
+  async componentDidMount() {
+    await this.props.getPostsByUser(this.props.match.params.id, false, true)
+    this.renderHint()
   }
 
   handleApproved = event => {}
 
-  createOrUpdateReaction = (userId, postId) => {
-    this.props.createOrUpdateReaction(userId, postId).then(data => {
-      this.setState({
-        likesCount: data.data.likes,
-        disLikesCount: data.data.disLikes,
+  createOrUpdateReaction = async (userId, postId, reaction) => {
+    await this.props
+      .createOrUpdateReaction(userId, postId, reaction)
+      .then(async data => {
+        await this.props.getPostsByUser(this.props.match.params.id, false, true)
       })
+  }
+
+  createShare = async (userId, postId) => {
+    await this.props.createShare(userId, postId).then(async data => {
+      await this.props.getPostsByUser(this.props.match.params.id, false, true)
     })
+  }
+
+  toggleShow = flag => {
+    this.setState({
+      showEmojis: flag,
+    })
+  }
+
+  getReaction = type => {
+    let icon = null
+    switch (type.toLowerCase()) {
+      case 'like':
+        icon = like
+        break
+      case 'love':
+        icon = love
+        break
+      case 'sad':
+        icon = sad
+        break
+      case 'wow':
+        icon = wow
+        break
+      case 'silly':
+        icon = silly
+        break
+      case 'smiley':
+        icon = smiley
+        break
+      case 'angry':
+        icon = angry
+        break
+        deafult: break
+    }
+    return icon
+  }
+
+  getReactionIcon = type => {
+    let icon = null
+    switch (type.toLowerCase()) {
+      case 'like':
+        icon = <like />
+        break
+      case 'love':
+        icon = <love />
+        break
+      case 'sad':
+        icon = <sad />
+        break
+      case 'wow':
+        icon = <wow />
+        break
+      case 'silly':
+        icon = <silly />
+        break
+      case 'smiley':
+        icon = <smiley />
+        break
+      case 'angry':
+        icon = <angry />
+        break
+        deafult: break
+    }
+    return icon
+  }
+
+  renderHint = () => {
+    const hintArray = [
+      'Be the first to share this',
+      'Be the first to like',
+      'Be the first to react',
+    ]
+    let index = 0
+    setInterval(() => {
+      this.setState({
+        hint: hintArray[index],
+      })
+      index = (index + 1) % hintArray.length
+    }, 2000)
+  }
+
+  renderColor = type => {
+    let color = '#606770'
+    switch (type.toLowerCase()) {
+      case 'share':
+        color = '#2078f4'
+        break
+      case 'like':
+        color = '#2078f4'
+        break
+      case 'love':
+        color = '#ff6f00'
+        break
+      case 'sad':
+        color = '#ff6f00'
+        break
+      case 'wow':
+        color = '#ff6f00'
+        break
+      case 'silly':
+        color = '#ff6f00'
+        break
+      case 'smiley':
+        color = '#ff6f00'
+        break
+      case 'angry':
+        color = '#ff6f00'
+        break
+        deafult: break
+    }
+    return color
+  }
+
+  renderUserNames = reactions => {
+    if (!Array.isArray(reactions)) {
+      return ''
+    }
+    let names = ''
+    reactions.forEach(r => {
+      names += r.user ? r.user.userName + '\n' : ''
+    })
+    return names
+  }
+
+  renderNames = reactions => {
+    if (!reactions.length || !Array.isArray(reactions)) {
+      return 'No Reactions'
+    }
+    let names = ''
+    if (
+      reactions.filter(
+        r =>
+          r && r.user && r.user._id === this.props.user && this.props.user._id,
+      ).length
+    ) {
+      names += 'You,'
+    }
+    if (
+      reactions.length > 2 &&
+      reactions.filter(
+        r =>
+          r && r.user && r.user._id === this.props.user && this.props.user._id,
+      ).length
+    ) {
+      names += reactions.filter(
+        r =>
+          r && r.user && r.user._id === this.props.user && this.props.user._id,
+      ).length
+        ? 'You and '
+        : reactions[0].user
+        ? reactions[0].user.userName
+        : formateNumber(reactions.slice(2).length) + 'Others'
+    }
+    if (
+      reactions.length > 2 &&
+      !reactions.filter(
+        r =>
+          r && r.user && r.user._id === this.props.user && this.props.user._id,
+      ).length
+    ) {
+      names += reactions[0].user
+        ? reactions[0].user.userName +
+          ' and ' +
+          formateNumber(reactions.slice(1).length) +
+          ' Others'
+        : formateNumber(reactions.length)
+    }
+    if (
+      reactions.length <= 2 &&
+      reactions.filter(
+        r =>
+          r && r.user && r.user._id === this.props.user && this.props.user._id,
+      ).length
+    ) {
+      names += 'You and ' + reactions.length + 'Other'
+    }
+
+    if (
+      reactions.length &&
+      reactions.length <= 2 &&
+      !reactions.filter(
+        r =>
+          r && r.user && r.user._id === this.props.user && this.props.user._id,
+      ).length
+    ) {
+      names += reactions[0].user
+        ? reactions[0].user.userName +
+          ' and ' +
+          formateNumber(reactions.slice(1).length) +
+          ' Other'
+        : formateNumber(reactions.length)
+    }
+    return names
   }
 
   handleMenuItem = (text, postId) => {}
   render() {
-    const { classes, posts, postsError, postsLoading, user } = this.props
-    const { likesCount, disLikesCount, open } = this.state
-    const likeIco = <LikeIcon />
-    const disLikeIco = <DisLikeIcon />
+    const {
+      classes,
+      posts,
+      postsError,
+      postsLoading,
+      searchUser,
+      user,
+    } = this.props
+    const { showEmojis, open, hint } = this.state
     return (
       <React.Fragment>
-        {user && posts.length
+        {searchUser && posts.length
           ? posts
               .filter(p => p.approved)
               .map(post => (
                 <Card key={post._id}>
                   <CardHeader
                     avatar={
-                      <Avatar
-                        alt={
-                          post.postedBy.userName
-                            ? post.postedBy.userName.substring(1, 1)
-                            : 'Image not Available'
-                        }
-                        src={post.postedBy.photoURL}
-                      />
+                      !post.isAnonymous ? (
+                        <Avatar
+                          alt={
+                            post.postedBy.userName
+                              ? post.postedBy.userName.substring(1, 1)
+                              : 'Image not Available'
+                          }
+                          src={!post.isAnonymous ? post.postedBy.photoURL : 'A'}
+                        />
+                      ) : (
+                        <Avatar
+                          style={{
+                            color: '#ffffff',
+                            backgroundColor: '#1976d2',
+                          }}
+                        >
+                          A
+                        </Avatar>
+                      )
                     }
                     title={
-                      <Link
-                        className="hyperlink"
-                        to={`/profile/${post.postedBy._id}`}
-                      >
-                        {post.postedBy.userName}
-                      </Link>
+                      !post.isAnonymous ? (
+                        <Link
+                          className="hyperlink"
+                          to={`/profile/${post.postedBy._id}`}
+                        >
+                          {post.postedBy.userName}
+                        </Link>
+                      ) : (
+                        <b>Annonymous User</b>
+                      )
                     }
                     subheader={moment(post.createdAt).fromNow()}
                   />
@@ -93,7 +342,7 @@ class PostList extends Component {
                           <MoodIcon />
                         </ListItemAvatar>
                         <ListItemText
-                          primary="Positive"
+                          primary="Pros"
                           secondary={
                             <React.Fragment>
                               <Typography
@@ -101,7 +350,7 @@ class PostList extends Component {
                                 variant="body2"
                                 color="textPrimary"
                               >
-                                {post.positive}
+                                {post.pros}
                               </Typography>
                             </React.Fragment>
                           }
@@ -112,7 +361,7 @@ class PostList extends Component {
                           <MoodBadIcon />
                         </ListItemAvatar>
                         <ListItemText
-                          primary="Negative"
+                          primary="Cons"
                           secondary={
                             <React.Fragment>
                               <Typography
@@ -120,7 +369,7 @@ class PostList extends Component {
                                 variant="body2"
                                 color="textPrimary"
                               >
-                                {post.negative}
+                                {post.cons}
                               </Typography>
                             </React.Fragment>
                           }
@@ -146,9 +395,53 @@ class PostList extends Component {
                         />
                       </ListItem>
                     </List>
+
+                    <div style={{ display: 'flex' }}>
+                      <AvatarGroup style={{ marginTop: -5 }}>
+                        {post.reactions.length > 0
+                          ? post.reactions.slice(0, 3).map(react => (
+                              <Tooltip
+                                title={this.renderUserNames(post.reactions)}
+                                placement="bottom"
+                              >
+                                <Avatar
+                                  className={classes.smallAvatar}
+                                  key={react._id}
+                                  alt="Remy Sharp"
+                                  src={this.getReaction(
+                                    react ? react.type : '',
+                                  )}
+                                />
+                              </Tooltip>
+                            ))
+                          : 'No Reactions'}
+                      </AvatarGroup>
+                      <Tooltip
+                        title={this.renderUserNames(post.reactions)}
+                        placement="bottom"
+                      >
+                        <Link to={`/post/${post._id}/reactions`}>
+                          <span style={{ marginTop: 2, color: '#606770' }}>
+                            {this.renderNames(post.reactions)}
+                          </span>
+                        </Link>
+                      </Tooltip>
+                      <div className={classes.rightButton}>
+                        <Link to={`/post/${post._id}/shares`}>
+                          <span style={{ marginTop: 2, color: '#606770' }}>
+                            {post.shares.length
+                              ? formateNumber(post.shares.length)
+                              : 'No'}{' '}
+                            shares
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+
+                    <Divider />
                   </CardContent>
-                  <Divider />
-                  <CardActions style={{ height: 10 }} disableSpacing>
+
+                  {/*<CardActions style={{ height: 10 }} disableSpacing>
                     <Typography display="block" gutterBottom>
                       {formateNumber(
                         post.likes > 0
@@ -159,17 +452,197 @@ class PostList extends Component {
                       )}{' '}
                       Likes
                     </Typography>
-                  </CardActions>
-                  <Divider variant="middle" />
-                  <CardActions>
-                    <Tooltip title="Like">
-                      <IconButton
-                        aria-label="like"
-                        onClick={() =>
-                          this.createOrUpdateReaction(user.uid, post._id)
-                        }
+                      </CardActions>
+                      <Divider variant="middle" />*/}
+
+                  <CardActions disableSpacing>
+                    <Tooltip
+                      title={
+                        post.reactions.filter(r => r.user._id === user._id)
+                          .length
+                          ? post.reactions
+                              .filter(r => r.user._id === user._id)[0]
+                              .type.toLowerCase()
+                          : 'like'
+                      }
+                    >
+                      <div
+                        className="feed"
+                        onMouseEnter={() => this.toggleShow(true)}
+                        onMouseLeave={() => this.toggleShow(false)}
                       >
-                        <LikeIcon
+                        <a className="like-btn">
+                          <Button
+                            style={{
+                              color: this.renderColor(
+                                post.reactions.filter(
+                                  r => r.user._id === user._id,
+                                ).length
+                                  ? post.reactions
+                                      .filter(r => r.user._id === user._id)[0]
+                                      .type.toLowerCase()
+                                  : '#606770',
+                              ),
+                            }}
+                            className={classes.button}
+                            onClick={() =>
+                              this.createOrUpdateReaction(
+                                user._id,
+                                post._id,
+                                post.reactions.filter(
+                                  r => r.user._id === user._id,
+                                ).length
+                                  ? post.reactions
+                                      .filter(r => r.user._id === user._id)[0]
+                                      .type.toLowerCase()
+                                  : 'like',
+                              )
+                            }
+                          >
+                            <Avatar
+                              className={classes.smallAvatar}
+                              src={
+                                post.reactions.filter(
+                                  r => r.user._id === user._id,
+                                ).length
+                                  ? this.getReaction(
+                                      post.reactions.filter(
+                                        r => r.user._id === user._id,
+                                      )[0].type,
+                                    )
+                                  : like
+                              }
+                            />
+                            <span style={{ marginLeft: 7 }}>
+                              {post.reactions.filter(
+                                r => r.user._id === user._id,
+                              ).length
+                                ? post.reactions
+                                    .filter(r => r.user._id === user._id)[0]
+                                    .type.toLowerCase()
+                                : 'Like'}{' '}
+                            </span>
+                          </Button>
+
+                          {/*<Tooltip title={post.reactions.filter(r => r.user._id === user._id).length ? post.reactions.filter(r => r.user._id === user._id)[0].type.toLowerCase(): 'like'}>
+                            <IconButton
+                              aria-label="like"
+                              onClick={() => this.createOrUpdateReaction(user._id, post._id, post.reactions.filter(r => r.user._id === user._id).length ? post.reactions.filter(r => r.user._id === user._id)[0].type.toLowerCase(): 'like')}
+                            >
+                              <LikeIcon 
+                              color={this.renderColor(post.reactions.filter(r => r.user._id === user._id).length ? post.reactions.filter(r => r.user._id === user._id)[0].type.toLowerCase(): '#606770')}
+                              
+                              />
+                            </IconButton>
+                          </Tooltip>
+                          <span className="span-name" style={{marginLeft: 7}}>{post.reactions.filter(r => r.user._id === user._id).length ? post.reactions.filter(r => r.user._id === user._id)[0].type.toLowerCase(): 'Like'}  </span>
+                    */}
+
+                          {showEmojis && (
+                            <div className="reaction-box">
+                              <div
+                                className="reaction-icon"
+                                onClick={() =>
+                                  this.createOrUpdateReaction(
+                                    user._id,
+                                    post._id,
+                                    'like',
+                                  )
+                                }
+                              >
+                                <Tooltip title="Like" placement="top">
+                                  <img src={like} width={43} height={38} />
+                                </Tooltip>
+                              </div>
+                              <div
+                                className="reaction-icon"
+                                onClick={() =>
+                                  this.createOrUpdateReaction(
+                                    user._id,
+                                    post._id,
+                                    'love',
+                                  )
+                                }
+                              >
+                                <Tooltip title="Love" placement="top">
+                                  <img src={love} width={40} height={40} />
+                                </Tooltip>
+                              </div>
+                              <div
+                                className="reaction-icon"
+                                onClick={() =>
+                                  this.createOrUpdateReaction(
+                                    user._id,
+                                    post._id,
+                                    'angry',
+                                  )
+                                }
+                              >
+                                <Tooltip title="Angry" placement="top">
+                                  <img src={angry} width={40} height={40} />
+                                </Tooltip>
+                              </div>
+                              <div
+                                className="reaction-icon"
+                                onClick={() =>
+                                  this.createOrUpdateReaction(
+                                    user._id,
+                                    post._id,
+                                    'silly',
+                                  )
+                                }
+                              >
+                                <Tooltip title="Silly" placement="top">
+                                  <img src={silly} width={40} height={40} />
+                                </Tooltip>
+                              </div>
+                              <div
+                                className="reaction-icon"
+                                onClick={() =>
+                                  this.createOrUpdateReaction(
+                                    user._id,
+                                    post._id,
+                                    'smiley',
+                                  )
+                                }
+                              >
+                                <Tooltip title="Smiley" placement="top">
+                                  <img src={smiley} width={40} height={40} />
+                                </Tooltip>
+                              </div>
+                              <div
+                                className="reaction-icon"
+                                onClick={() =>
+                                  this.createOrUpdateReaction(
+                                    user._id,
+                                    post._id,
+                                    'wow',
+                                  )
+                                }
+                              >
+                                <Tooltip title="Wow" placement="top">
+                                  <img src={wow} width={40} height={40} />
+                                </Tooltip>
+                              </div>
+                              <div
+                                className="reaction-icon"
+                                onClick={() =>
+                                  this.createOrUpdateReaction(
+                                    user._id,
+                                    post._id,
+                                    'sad',
+                                  )
+                                }
+                              >
+                                <Tooltip title="Sad" placement="top">
+                                  <img src={sad} width={40} height={40} />
+                                </Tooltip>
+                              </div>
+                            </div>
+                          )}
+                        </a>
+                      </div>
+                      {/*<LikeIcon
                           color={
                             post.postDetails &&
                             post.postDetails.filter(d => d.userId == user.uid)
@@ -177,19 +650,37 @@ class PostList extends Component {
                               ? 'primary'
                               : ''
                           }
-                        />
-                      </IconButton>
+                        />*/}
                     </Tooltip>
-                    <span className="span-name">Like</span>
+                    {/*<Button style={{float: 'right !important'}} className={classes.button}>
+                      <Avatar className={classes.smallAvatar} src={share} />
+                      <span style={{marginLeft: 7}}>Share</span>
+                    </Button>*/}
+                    <div className={classes.rightButton}>
+                      <Tooltip title="Share">
+                        <Button
+                          style={{
+                            color: this.renderColor(
+                              post.shares.filter(s => s.user._id === user._id)
+                                .length
+                                ? 'share'
+                                : '#606770',
+                            ),
+                          }}
+                          className={classes.button}
+                          onClick={() => this.createShare(user._id, post._id)}
+                        >
+                          <Avatar className={classes.smallAvatar} src={share} />
+                          <span style={{ marginLeft: 3 }}>{'Share'} </span>
+                        </Button>
+                      </Tooltip>
+                    </div>
                   </CardActions>
-                  {post.likes === 0 && <Divider variant="middle" />}
-                  <CardActions>
-                    {post.likes == 0 && (
-                      <Typography paragraph>
-                        Be the first person to like this
-                      </Typography>
-                    )}
-                  </CardActions>
+                  {post.reactions.length == 0 && (
+                    <Typography paragraph className="hint-area">
+                      {hint}
+                    </Typography>
+                  )}
                 </Card>
               ))
           : null}
@@ -210,10 +701,12 @@ PostList.propTypes = {
 }
 
 const mapStateToProps = state => {
+  const user = state.getIn(['user', 'data'])
   const posts = state.getIn(['Dashboard', 'posts', 'success'], Map())
   const postsLoading = state.getIn(['Dashboard', 'posts', 'loading'], false)
   const postsError = state.getIn(['Dashboard', 'posts', 'errors'], Map())
   return {
+    user,
     posts,
     postsError,
     postsLoading,
@@ -223,6 +716,9 @@ const mapStateToProps = state => {
 const actionsToProps = {
   createOrUpdateReaction: actions.createOrUpdateReaction,
   getPostsByUser: dashboardActions.getPostsByUser,
+  createShare: actions.createShare,
 }
 
-export default withRouter(connect(mapStateToProps, actionsToProps)(PostList))
+export default withRouter(
+  connect(mapStateToProps, actionsToProps)(withStyles(styles)(PostList)),
+)

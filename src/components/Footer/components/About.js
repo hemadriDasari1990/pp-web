@@ -17,17 +17,30 @@ class About extends Component {
         <div className="container">
           <h2 className="h2-header">Who we are</h2>
           <p>
-            Feedbacklib is worlds largest social platform, serving 100+
-            countries worldwide. The Feedbacklib app offers people to share
-            positive, negative and advice to people they are interested.
-          </p>
-
-          <p>
-            Feedbacklib was founded in 2018 by Rajesh Pemmasani and Hemadri
-            Dasari with a mission to build a system for a billion people.
+            Writenpost is a social platform build to serve people to share pros,
+            cons and advice to people they are interested. This app was founded
+            in 2018 by <code>Hemadri Dasari</code> &{' '}
+            <code>Rajesh Pemmasani</code> with a mission to build a system for a
+            billion people.
           </p>
           <h2 className="h2-header">The founders</h2>
           <div className="row">
+            <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <ProfileCard
+                path={Hemadri}
+                title="Hemadri Dasari"
+                subTitle="Founder"
+                fbPath={'https://www.facebook.com/Hemadri.Dasari.1990'}
+                linkedinPath={
+                  'https://www.linkedin.com/in/hemadri-dasari-15051990/'
+                }
+                button={true}
+                buttonName="Facebook"
+                buttonOneName="Linekdin"
+                content="Full Stack Developer at Emirates NBD, Dubai"
+                type=""
+              />
+            </div>
             <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
               <ProfileCard
                 path={Rajesh}
@@ -41,13 +54,14 @@ class About extends Component {
                 buttonName="Facebook"
                 buttonOneName="Linekdin"
                 content="AVP at JP Morgan & Co, Singapore"
+                type=""
               />
             </div>
             <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
               <ProfileCard
                 path={Lokesh}
                 title="Lokesh Pemmasani"
-                subTitle="Co-Founter"
+                subTitle="Co-Founder"
                 fbPath={'https://www.facebook.com/lokesh.pemmasani'}
                 linkedinPath={
                   'https://www.linkedin.com/in/lokesh-pemmasani-39145a4a/'
@@ -56,21 +70,7 @@ class About extends Component {
                 buttonName="Facebook"
                 buttonOneName="Linekdin"
                 content="Solution Architect II at Ericsson, USA"
-              />
-            </div>
-            <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-              <ProfileCard
-                path={Hemadri}
-                title="Hemadri Dasari"
-                subTitle="Co-Founter"
-                fbPath={'https://www.facebook.com/Hemadri.Dasari.1990'}
-                linkedinPath={
-                  'https://www.linkedin.com/in/hemadri-dasari-15051990/'
-                }
-                button={true}
-                buttonName="Facebook"
-                buttonOneName="Linekdin"
-                content="Full Stack Developer at Emirates NBD, Dubai"
+                type=""
               />
             </div>
           </div>

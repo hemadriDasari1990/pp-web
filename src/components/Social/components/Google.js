@@ -24,18 +24,25 @@ class Google extends Component {
           const data = await user.user.providerData[0]
           await this.props.getUser(data.uid).then(async u => {
             if (!u || (u && u.data && !u.data.user)) {
-              await this.props.createUser({
-                email: data.email,
-                userName: data.displayName,
-                photoURL: data.photoURL,
-                uid: data.uid,
-                phoneNumber: data.phoneNumber,
-                providerId: data.providerId,
-              })
+              await this.props
+                .createUser({
+                  email: data.email,
+                  userName: data.displayName,
+                  photoURL: data.photoURL,
+                  uid: data.uid,
+                  phoneNumber: data.phoneNumber,
+                  providerId: data.providerId,
+                })
+                .then(user => {
+                  if (user && user.data.user) {
+                    this.props.storeUser(user.data.user)
+                  }
+                })
+            } else {
+              this.props.storeUser(u.data.user)
             }
           })
           this.props.isAuthenticated(true)
-          this.props.storeUser(data)
           this.props.history.push('/dashboard')
         } else {
           this.props.isAuthenticated(false)

@@ -108,19 +108,6 @@ class Search extends React.Component {
 
   handleSuggestionsFetchRequested = ({ value }) => {
     const suggestions = getSuggestions(this.state.users, value)
-    if (suggestions.length && this.props.user && this.props.post) {
-      this.props.createPost({
-        postedBy: this.props.user.uid,
-        postedByName: this.props.user.displayName,
-        postedByPhotoURL: this.props.user.photoURL,
-        postedTo: suggestions[0].uid,
-        postedToPhotoURL: suggestions[0].photoURL,
-        postedToByName: suggestions[0].label,
-      })
-      this.setState({
-        suggestions,
-      })
-    }
   }
 
   handleSuggestionsClearRequested = () => {
@@ -135,7 +122,34 @@ class Search extends React.Component {
       this.props.profile &&
       suggestions.filter(s => s.label == newValue).length
     ) {
-      this.props.history.push(`/profile/${suggestions[0].uid}`)
+      this.props.history.push(
+        `/profile/${suggestions.filter(s => s.label == newValue)[0]._id}`,
+      )
+    }
+    if (
+      suggestions.filter(s =>
+        s.label.toLowerCase().includes(newValue.toLowerCase()),
+      ).length &&
+      this.props.user &&
+      this.props.post
+    ) {
+      this.props.createPost({
+        postedBy: this.props.user._id,
+        postedByName: this.props.user.displayName,
+        postedByPhotoURL: this.props.user.photoURL,
+        postedTo: suggestions.filter(s =>
+          s.label.toLowerCase().includes(newValue.toLowerCase()),
+        )[0]._id,
+        postedToPhotoURL: suggestions.filter(s =>
+          s.label.toLowerCase().includes(newValue.toLowerCase()),
+        )[0].photoURL,
+        postedToByName: suggestions.filter(s =>
+          s.label.toLowerCase().includes(newValue.toLowerCase()),
+        )[0].label,
+      })
+      this.setState({
+        suggestions,
+      })
     }
     this.setState({
       [name]: newValue,

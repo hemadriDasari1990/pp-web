@@ -59,7 +59,7 @@ const styles = theme => ({
   },
   margin: {
     margin: theme.spacing.unit,
-    backgroundColor: '#616b8f',
+    backgroundColor: '#2a7fff',
   },
   search: {
     marginLeft: 40,
@@ -75,41 +75,42 @@ class Header extends React.Component {
     this.state = {
       showPreferences: false,
       showNotification: false,
-      notifications: 0,
       isMobileMenuOpen: false,
       mobileMoreAnchorEl: null,
       isMobileMenuOpen: false,
+      notifications: 0,
     }
   }
 
   async componentDidMount() {
-    if (this.props.authenticated) {
-      this.props.getUsers()
+    if (this.props.user) {
+      await this.props.getUsers()
       this.props.user
         ? await this.props
-            .getPostsByUser(this.props.user.uid)
-            .then(async res => {
+            .getNotificationsCount(this.props.user._id)
+            .then(res => {
               this.setState({
-                notifications: await res.data.filter(
-                  post => !post.approved && !post.rejected,
-                ).length,
+                notifications: res.data.count,
               })
             })
         : null
     }
   }
 
-  // async componentWillReceiveProps(nextProps) {
-  //   this.props.user
-  //     ? await this.props.getPostsByUser(this.props.user.uid).then(async res => {
-  //         this.setState({
-  //           notifications: await res.data.filter(
-  //             post => !post.approved && !post.rejected,
-  //           ).length,
-  //         })
-  //       })
-  //     : null
-  // }
+  async componentWillReceiveProps(nextProps) {
+    if (this.props.user !== nextProps.user) {
+      await this.props.getUsers()
+      this.props.user
+        ? await this.props
+            .getNotificationsCount(this.props.user._id)
+            .then(res => {
+              this.setState({
+                notifications: res.data.count,
+              })
+            })
+        : null
+    }
+  }
 
   openPreferencesForm = () => {
     this.setState({
@@ -206,7 +207,7 @@ class Header extends React.Component {
               </a>
             </div>
 
-            {users && users.size ? (
+            {users && users.size && authenticated ? (
               <div className={classes.search}>
                 <Search
                   users={users}
@@ -244,7 +245,7 @@ class Header extends React.Component {
                     <Adjust color="secondary" />
                   </Fab>
                 </Tooltip>
-                <Tooltip title={user.displayName} aria-label="Add">
+                <Tooltip title={user.userName} aria-label="Add">
                   <Avatar
                     aria-haspopup="true"
                     alt="Avatar not available"
@@ -263,13 +264,6 @@ class Header extends React.Component {
                     <PowerOff color="secondary" />
                   </Fab>
                 </Tooltip>
-                {/*<IconButton
-                  aria-owns={isMenuOpen ? 'material-appbar' : undefined}
-                  aria-haspopup="true"
-                  onClick={this.handleProfileMenuOpen}
-                >
-                  <AccountCircle />
-                </IconButton>*/}
               </div>
             ) : (
               <div className="row">
@@ -338,6 +332,8 @@ const mapStateToProps = state => {
   const createUserSuccess = state.getIn(['user', 'create', 'success'], Map())
   const createUserloading = state.getIn(['user', 'create', 'loading'], false)
   const createUserErrors = state.getIn(['user', 'create', 'errors'], Map())
+  // const notifications = state.getIn(['`Dashboard`', 'notifications', 'çount', 'success'], Map())
+
   return {
     user,
     users,
@@ -345,6 +341,7 @@ const mapStateToProps = state => {
     createUserSuccess,
     createUserloading,
     createUserErrors,
+    // notifications: notifications.size > 0 ? notifications.count : 0
   }
 }
 
@@ -352,6 +349,7 @@ const actionsToProps = {
   getUsers: actions.getUsers,
   userLogout: actions.userLogout,
   getPostsByUser: dashboardActions.getPostsByUser,
+  getNotificationsCount: dashboardActions.getNotificationsCount,
 }
 
 export default withRouter(

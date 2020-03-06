@@ -1,34 +1,34 @@
-import * as action from './components/Types'
+import * as action from '../../constants/actionTypes'
 import config from '../../config'
 
-export const updateLikeInReactionRequest = () => {
+export const createOrUpdateReactionRequest = () => {
   return {
-    type: action.UPDATE_LIKES_REQUEST,
+    type: action.CREATE_OR_UPDATE_REACTION_REQUEST,
     loading: true,
   }
 }
 
-export const createOrUpdateReactionSuccess = postDetails => {
+export const createOrUpdateReactionSuccess = res => {
   return {
-    type: action.UPDATE_LIKES_SUCCESS,
+    type: action.CREATE_OR_UPDATE_REACTION_SUCCESS,
     loading: false,
-    data: postDetails,
+    data: res,
   }
 }
 
 export const createOrUpdateReactionError = errors => {
   return {
-    type: action.UPDATE_LIKES_FAILURE,
+    type: action.CREATE_OR_UPDATE_REACTION_FAILURE,
     loading: false,
     errors: errors,
   }
 }
 
-export const createOrUpdateReaction = (userId, postId) => {
+export const createOrUpdateReaction = (userId, postId, reaction) => {
   const options = {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ userId }),
+    body: JSON.stringify({ user: userId, type: reaction, post: postId }),
   }
   return dispatch => {
     dispatch(createOrUpdateReactionRequest())
@@ -39,40 +39,40 @@ export const createOrUpdateReaction = (userId, postId) => {
   }
 }
 
-// export const updateDisLikesRequest = () => {
-//   return {
-//     type: action.UPDATE_DIS_LIKES_REQUEST,
-//     loading: true,
-//   }
-// }
+export const createShareRequest = () => {
+  return {
+    type: action.CREATE_SHARE_REQUEST,
+    loading: true,
+  }
+}
 
-// export const updateDisLikesSuccess = postDetails => {
-//   return {
-//     type: action.UPDATE_DIS_LIKES_SUCCESS,
-//     loading: false,
-//     data: postDetails,
-//   }
-// }
+export const createShareSuccess = res => {
+  return {
+    type: action.CREATE_SHARE_SUCCESS,
+    loading: false,
+    data: res,
+  }
+}
 
-// export const updateDisLikesError = errors => {
-//   return {
-//     type: action.UPDATE_DIS_LIKES_FAILURE,
-//     loading: false,
-//     errors: errors,
-//   }
-// }
+export const createShareError = errors => {
+  return {
+    type: action.CREATE_SHARE_FAILURE,
+    loading: false,
+    errors: errors,
+  }
+}
 
-// export const updateDisLikes = (userId, postId) => {
-//   const options = {
-//     method: 'PUT',
-//     headers: { 'Content-Type': 'application/json' },
-//     body: JSON.stringify({ userId }),
-//   }
-//   return dispatch => {
-//     dispatch(updateDisLikesRequest())
-//     return fetch(config.URL_PREFIX + `/post/disLikes/${postId}`, options)
-//       .then(response => response.json())
-//       .then(data => dispatch(updateDisLikesSuccess(data)))
-//       .catch(errors => dispatch(updateDisLikesError(errors)))
-//   }
-// }
+export const createShare = (userId, postId) => {
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ user: userId, post: postId }),
+  }
+  return dispatch => {
+    dispatch(createShareRequest())
+    return fetch(config.URL_PREFIX + `/post/share/${postId}`, options)
+      .then(response => response.json())
+      .then(data => dispatch(createShareSuccess(data)))
+      .catch(errors => dispatch(createShareError(errors)))
+  }
+}

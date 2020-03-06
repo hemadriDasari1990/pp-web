@@ -20,7 +20,7 @@ import { connect } from 'react-redux'
 class TopPosts extends Component {
   componentDidMount() {
     if (!this.props.match.params.id) {
-      this.props.getPostsByUser(this.props.user.uid, false, true)
+      this.props.getPostsByUser(this.props.user._id, false, true)
     }
     if (this.props.match.params.id) {
       this.props.getPostsByUser(this.props.match.params.id, false, true)
@@ -29,10 +29,10 @@ class TopPosts extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.iposted && this.props.iposted != prevProps.iposted) {
-      this.props.getPostsByUser(this.props.user.uid, true, false)
+      this.props.getPostsByUser(this.props.user._id, true, false)
     }
     if (this.props.ireceived && this.props.ireceived != prevProps.ireceived) {
-      this.props.getPostsByUser(this.props.user.uid, false, true)
+      this.props.getPostsByUser(this.props.user._id, false, true)
     }
   }
 
@@ -51,61 +51,63 @@ class TopPosts extends Component {
           <CardHeader title="Popular Posts"></CardHeader>
           <CardContent>
             <List>
-              {!postsLoading && posts.filter(p => p.approved).slice(0, 5).length
-                ? posts
-                    .filter(p => p.approved)
-                    .slice(0, 5)
-                    .map(post => (
-                      <ListItem key={post._id} alignItems="flex-start">
-                        <ListItemAvatar>
-                          <Avatar
-                            alt={
-                              iposted
-                                ? post.postedTo.userName
-                                : ireceived
-                                ? post.postedBy.userName
-                                : 'Image not Available'
-                            }
-                            src={
-                              iposted
-                                ? post.postedTo.photoURL
-                                : ireceived
-                                ? post.postedBy.photoURL
-                                : ''
-                            }
-                          />
-                        </ListItemAvatar>
-                        <Tooltip title={post.positive} placement="right-end">
-                          <ListItemText
-                            primary={post.postedBy.userName}
-                            secondary={
-                              <React.Fragment>
-                                <Typography
-                                  component="span"
-                                  variant="body2"
-                                  color="textPrimary"
-                                >
-                                  {post.positive.length > 40
-                                    ? post.positive.substring(0, 40) + '...'
-                                    : post.positive}
-                                </Typography>
-                              </React.Fragment>
-                            }
-                          />
-                        </Tooltip>
-                        <Tooltip title="Approved" placement="right-end">
-                          <IconButton style={{ color: '#17ab13' }}>
-                            <BookmarkIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </ListItem>
-                    ))
-                : null}
-              {!postsLoading && !posts.length && (
+              {!postsLoading &&
+              posts.length &&
+              posts.filter(p => p.approved).slice(0, 5).length ? (
+                posts
+                  .filter(p => p.approved)
+                  .slice(0, 5)
+                  .map(post => (
+                    <ListItem key={post._id} alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          alt={
+                            iposted
+                              ? post.postedTo.userName
+                              : ireceived
+                              ? post.postedBy.userName
+                              : 'Image not Available'
+                          }
+                          src={
+                            iposted
+                              ? post.postedTo.photoURL
+                              : ireceived
+                              ? post.postedBy.photoURL
+                              : ''
+                          }
+                        />
+                      </ListItemAvatar>
+                      <Tooltip title={post.pros} placement="right-end">
+                        <ListItemText
+                          primary={post.postedBy.userName}
+                          secondary={
+                            <React.Fragment>
+                              <Typography
+                                component="span"
+                                variant="body2"
+                                color="textPrimary"
+                              >
+                                {post.pros.length > 40
+                                  ? post.pros.substring(0, 40) + '...'
+                                  : post.pros}
+                              </Typography>
+                            </React.Fragment>
+                          }
+                        />
+                      </Tooltip>
+                      <Tooltip title="Approved" placement="right-end">
+                        <IconButton style={{ color: '#17ab13' }}>
+                          <BookmarkIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </ListItem>
+                  ))
+              ) : (
                 <Typography variant="h4" className="text-center">
                   You haven't got popular posts yet
                 </Typography>
               )}
+
               {postsLoading && !posts.length && <Loader />}
             </List>
           </CardContent>

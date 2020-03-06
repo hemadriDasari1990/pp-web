@@ -54,7 +54,7 @@ class Dashboard extends Component {
             </div>
             <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
               {user && (
-                <PostList user={user} iposted={false} ireceived={true} />
+                <PostList searchUser={user} iposted={false} ireceived={true} />
               )}
             </div>
             <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">

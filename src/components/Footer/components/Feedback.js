@@ -11,7 +11,7 @@ import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import FeedbackList from './FeedbackList'
 import Loader from '../../Loader/components/Loader'
 
-class Contact extends Component {
+class Feedback extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -27,7 +27,9 @@ class Contact extends Component {
   }
 
   componentDidMount() {
-    this.props.getFeedbacks()
+    if (this.props.user) {
+      this.props.getFeedbacks()
+    }
   }
 
   handleComment = e => {
@@ -121,7 +123,7 @@ class Contact extends Component {
       const data = this.state
       data.email = user.email
       data.photoURL = user.photoURL
-      data.userName = user.displayName
+      data.userName = user.userName
       await this.props.saveFeedback(data).then(async res => {
         await this.props.getFeedbacks()
         this.handleReset()
@@ -178,7 +180,7 @@ class Contact extends Component {
                 name="about"
                 id="feedback-about"
                 label="Feedback About"
-                defaultValue="Feedback about Positive"
+                defaultValue="Feedback about Pros"
                 value={about}
                 onChange={this.handleAbout}
                 required
@@ -364,4 +366,4 @@ const actionsToProps = {
   getFeedbacks: actions.getFeedbacks,
 }
 
-export default withRouter(connect(mapStateToProps, actionsToProps)(Contact))
+export default withRouter(connect(mapStateToProps, actionsToProps)(Feedback))

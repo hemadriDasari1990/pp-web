@@ -13,6 +13,8 @@ import RecentPosts from './RecentPosts'
 import TopPosts from './TopPosts'
 import sendIcon from '../../../../assets/send.svg'
 import receiveIcon from '../../../../assets/receive.svg'
+import * as actions from '../../../actions/index'
+import Tooltip from '@material-ui/core/Tooltip'
 
 class DashBoard extends Component {
   constructor(props) {
@@ -31,8 +33,12 @@ class DashBoard extends Component {
         Array.isArray(user.providerData) &&
         user.providerData.length
       ) {
-        this.setState({
-          user: user.providerData[0],
+        await this.props.getUser(user.providerData[0].uid).then(async u => {
+          if (u && u.data && u.data.user) {
+            this.setState({
+              user: u.data.user,
+            })
+          }
         })
       }
     })
@@ -65,34 +71,43 @@ class DashBoard extends Component {
           <div className="row">
             <div className="col-lg-2 col-md-5 col-sm-12 col-xs-12">
               <List component="nav" aria-label="main mailbox folders">
-                <ListItem button onClick={event => this.handleUser(event)}>
-                  <ListItemAvatar>
-                    <Avatar
-                      size="small"
-                      src={user ? user.photoURL : ''}
-                      style={{ width: 22, height: 22 }}
+                <Tooltip
+                  title={user ? user.userName : 'Loading...'}
+                  placement="left"
+                >
+                  <ListItem button onClick={event => this.handleUser(event)}>
+                    <ListItemAvatar>
+                      <Avatar
+                        size="small"
+                        src={user ? user.photoURL : ''}
+                        style={{ width: 22, height: 22 }}
+                      />
+                    </ListItemAvatar>
+                    <ListItemText
+                      style={{
+                        textOverflow: 'ellipsis',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                      }}
+                      primary={
+                        user
+                          ? user.userName.substring(0, 12) + '...'
+                          : 'Loading...'
+                      }
                     />
-                  </ListItemAvatar>
-                  <ListItemText
-                    style={{
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                    }}
-                    primary={user ? user.displayName : 'Loading...'}
-                  />
-                </ListItem>
+                  </ListItem>
+                </Tooltip>
                 <ListItem button onClick={() => this.handleIPosted()}>
                   <ListItemAvatar>
-                    <img src={sendIcon} height={23} width={23} />
+                    <img src={sendIcon} height={30} width={30} />
                   </ListItemAvatar>
-                  <ListItemText primary="I Posted" />
+                  <ListItemText primary="Outgoing" />
                 </ListItem>
                 <ListItem button onClick={() => this.handleIReceived()}>
                   <ListItemAvatar>
-                    <img src={receiveIcon} height={23} width={23} />
+                    <img src={receiveIcon} height={30} width={30} />
                   </ListItemAvatar>
-                  <ListItemText primary="I Received" />
+                  <ListItemText primary="Incoming" />
                 </ListItem>
               </List>
             </div>
@@ -109,7 +124,7 @@ class DashBoard extends Component {
             <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
               {user && (
                 <PostsInfo
-                  userId={user.uid}
+                  user={user}
                   iposted={iposted}
                   ireceived={ireceived}
                 />
@@ -138,6 +153,8 @@ const mapStateToProps = state => {
   return {}
 }
 
-const actionsToProps = {}
+const actionsToProps = {
+  getUser: actions.getUser,
+}
 
 export default withRouter(connect(mapStateToProps, actionsToProps)(DashBoard))

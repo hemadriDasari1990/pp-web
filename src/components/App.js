@@ -21,10 +21,12 @@ import UserProfileDashboard from './UserProfile/components/Dashboard'
 import Notifications from './Notifications/components/Notification'
 import PageNotFound from './PageNotFound/components/index'
 import About from './Footer/components/About'
-import Contact from './Footer/components/Contact'
+import Feedback from './Footer/components/Feedback'
 import Location from './Footer/components/Location'
 import Developers from './Footer/components/developers'
 import Careers from './Footer/components/careers'
+import ReactionsList from './Reactions/components/List'
+import SharesList from './Shares/components/List'
 
 class App extends Component {
   constructor(props) {
@@ -44,7 +46,7 @@ class App extends Component {
               authenticated: true,
               user: u.data.user,
             })
-            await this.props.storeUser(user.providerData[0])
+            await this.props.storeUser(u.data.user)
             await this.props.getUsers()
             this.props.history.push('/dashboard')
           } else {
@@ -86,22 +88,32 @@ class App extends Component {
             <Switch>
               <Route path="/" exact component={Home} />
               <PrivateRoute
-                authenticated={this.state.authenticated}
+                authenticated={authenticated}
                 path="/dashboard"
                 component={() => <Dashboard />}
               />
               <PrivateRoute
-                authenticated={this.state.authenticated}
+                authenticated={authenticated}
                 path="/profile/:id"
                 component={() => <UserProfileDashboard />}
               />
               <PrivateRoute
-                authenticated={this.state.authenticated}
+                authenticated={authenticated}
                 path="/notifications"
                 component={() => <Notifications user={user} />}
               />
+              <PrivateRoute
+                authenticated={authenticated}
+                path="/post/:id/reactions"
+                component={() => <ReactionsList />}
+              />
+              <PrivateRoute
+                authenticated={authenticated}
+                path="/post/:id/shares"
+                component={() => <SharesList />}
+              />
               <Route path="/about" component={About} />
-              <Route path="/contact" component={Contact} />
+              <Route path="/feedback" component={Feedback} />
               <Route path="/location" component={Location} />
               <Route path="/developers" component={Developers} />
               <Route path="/careers" component={Careers} />

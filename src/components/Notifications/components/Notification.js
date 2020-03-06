@@ -61,7 +61,7 @@ class Notifications extends Component {
 
   componentDidMount() {
     if (this.props.user) {
-      this.props.getPostsByUser(this.props.user.uid, false, true)
+      this.props.getPostsByUser(this.props.user._id, false, true)
     }
   }
 
@@ -76,7 +76,7 @@ class Notifications extends Component {
         this.setState({
           open: false,
         })
-        await this.props.getPostsByUser(this.props.user.uid, false, true)
+        await this.props.getPostsByUser(this.props.user._id, false, true)
         break
       default:
         break
@@ -102,7 +102,7 @@ class Notifications extends Component {
       default:
         break
     }
-    this.props.getPostsByUser(this.props.user.uid, false, true)
+    this.props.getPostsByUser(this.props.user._id, false, true)
   }
 
   render() {
@@ -132,14 +132,25 @@ class Notifications extends Component {
                     <Card key={post._id}>
                       <CardHeader
                         avatar={
-                          <Avatar
-                            alt={
-                              post.postedByName
-                                ? post.postedByName.substring(1, 1)
-                                : 'Image not Available'
-                            }
-                            src={post.postedByPhotoURL}
-                          />
+                          !post.isAnonymous ? (
+                            <Avatar
+                              alt={
+                                post.postedBy
+                                  ? post.postedBy.userName.substring(1, 1)
+                                  : 'Image not Available'
+                              }
+                              src={post.postedBy ? post.postedBy.photoURL : ''}
+                            />
+                          ) : (
+                            <Avatar
+                              style={{
+                                color: '#ffffff',
+                                backgroundColor: '#1976d2',
+                              }}
+                            >
+                              A
+                            </Avatar>
+                          )
                         }
                         action={
                           <>
@@ -188,12 +199,16 @@ class Notifications extends Component {
                           </>
                         }
                         title={
-                          <Link
-                            className="hyperlink"
-                            to={`/profile/${post.postedBy}`}
-                          >
-                            {post.postedByName}
-                          </Link>
+                          !post.isAnonymous ? (
+                            <Link
+                              className="hyperlink"
+                              to={`/profile/${post.postedBy._id}`}
+                            >
+                              {post.postedBy.userName}
+                            </Link>
+                          ) : (
+                            <b>Annonymous User</b>
+                          )
                         }
                         subheader={moment(post.createdAt).fromNow()}
                       />
@@ -204,7 +219,7 @@ class Notifications extends Component {
                               <MoodIcon />
                             </ListItemAvatar>
                             <ListItemText
-                              primary="Positive"
+                              primary="Pros"
                               secondary={
                                 <React.Fragment>
                                   <Typography
@@ -212,7 +227,7 @@ class Notifications extends Component {
                                     variant="body2"
                                     color="textPrimary"
                                   >
-                                    {post.positive}
+                                    {post.pros}
                                   </Typography>
                                 </React.Fragment>
                               }
@@ -223,7 +238,7 @@ class Notifications extends Component {
                               <MoodBadIcon />
                             </ListItemAvatar>
                             <ListItemText
-                              primary="Negative"
+                              primary="Cons"
                               secondary={
                                 <React.Fragment>
                                   <Typography
@@ -231,7 +246,7 @@ class Notifications extends Component {
                                     variant="body2"
                                     color="textPrimary"
                                   >
-                                    {post.negative}
+                                    {post.cons}
                                   </Typography>
                                 </React.Fragment>
                               }

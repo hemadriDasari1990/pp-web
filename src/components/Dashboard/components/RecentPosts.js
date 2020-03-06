@@ -21,7 +21,7 @@ import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 class RecentPosts extends Component {
   componentDidMount() {
     if (!this.props.match.params.id) {
-      this.props.getPostsByUser(this.props.user.uid, false, true)
+      this.props.getPostsByUser(this.props.user._id, false, true)
     }
     if (this.props.match.params.id) {
       this.props.getPostsByUser(this.props.match.params.id, false, true)
@@ -30,10 +30,10 @@ class RecentPosts extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.iposted && this.props.iposted != prevProps.iposted) {
-      this.props.getPostsByUser(this.props.user.uid, true, false)
+      this.props.getPostsByUser(this.props.user._id, true, false)
     }
     if (this.props.ireceived && this.props.ireceived != prevProps.ireceived) {
-      this.props.getPostsByUser(this.props.user.uid, false, true)
+      this.props.getPostsByUser(this.props.user._id, false, true)
     }
   }
 
@@ -52,7 +52,7 @@ class RecentPosts extends Component {
           <CardHeader title="Most Recent Posts"></CardHeader>
           <CardContent>
             <List>
-              {!postsLoading && posts.slice(0, 5).length
+              {!postsLoading && posts.length && posts.slice(0, 5).length
                 ? posts.slice(0, 5).map(post => (
                     <ListItem key={post._id} alignItems="flex-start">
                       <ListItemAvatar>
@@ -73,7 +73,7 @@ class RecentPosts extends Component {
                           }
                         />
                       </ListItemAvatar>
-                      <Tooltip title={post.positive} placement="right-end">
+                      <Tooltip title={post.pros} placement="right-end">
                         <ListItemText
                           primary={post.postedBy.userName}
                           secondary={
@@ -83,9 +83,9 @@ class RecentPosts extends Component {
                                 variant="body2"
                                 color="textPrimary"
                               >
-                                {post.positive.length > 40
-                                  ? post.positive.substring(0, 40) + '...'
-                                  : post.positive}
+                                {post.pros.length > 40
+                                  ? post.pros.substring(0, 40) + '...'
+                                  : post.pros}
                               </Typography>
                             </React.Fragment>
                           }

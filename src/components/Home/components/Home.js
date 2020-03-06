@@ -5,9 +5,9 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { List } from 'immutable'
 import ProfileCard from './card'
-import positive from '../../../../assets/positive.jpg'
-import negative from '../../../../assets/negative.jpg'
-import advice from '../../../../assets/advice.jpg'
+import pros from '../../../../assets/pros.svg'
+import cons from '../../../../assets/cons.svg'
+import advice from '../../../../assets/advice.svg'
 
 const styles = theme => ({
   card: {
@@ -33,16 +33,6 @@ class Home extends Component {
   }
   render() {
     const { classes, authenticate } = this.props
-    const colors = [
-      '#E65100',
-      '#E91E63',
-      '#3949AB',
-      '#FFA000',
-      '#8BC34A',
-      '#7E57C2',
-    ]
-    const text = ['P', 'E', '0', 'P', 'L', 'E', 'S', 'P', 'O', 'S', 'T']
-    const content = `Material-UI came about from our love of React and Google's Material Design. We're currently using it on a project at Call-Em-All and plan on adding to it and making it better in the coming months.`
     return (
       <React.Fragment>
         {/*<div className="content">
@@ -63,28 +53,30 @@ class Home extends Component {
           <p>
             We built this system to help people to share feedback about people
             they are interested. This system core features are knowing about
-            positive, negative and advice from your colleagues, friends,
-            relatives etc
+            <code> pros, cons and advice</code> from your colleagues, friends,
+            families, etc
           </p>
           <div className="row">
             <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
               <ProfileCard
-                path={positive}
-                title="Positive"
-                subTitle="Positive about people"
-                content="Think and write positive about people you are interested"
+                path={pros}
+                title="Pros"
+                subTitle="Pros about people"
+                content="Think and write pros about people you are interested"
                 button={true}
-                buttonName="Positive"
+                buttonName="Pros"
+                type="home"
               />
             </div>
             <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
               <ProfileCard
-                path={negative}
-                title="Negative"
-                subTitle="Negative about people"
-                content="Think and write negative about people you are interested"
+                path={cons}
+                title="Cons"
+                subTitle="Cons about people"
+                content="Think and write cons about people you are interested"
                 button={true}
-                buttonName="Negative"
+                buttonName="Cons"
+                type="home"
               />
             </div>
             <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
@@ -95,6 +87,7 @@ class Home extends Component {
                 content="Think and write advice about people you are interested"
                 button={true}
                 buttonName="Advice"
+                type="home"
               />
             </div>
           </div>

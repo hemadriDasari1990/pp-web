@@ -30,8 +30,8 @@ class Preferences extends Component {
       message: '',
       error: false,
       status: '',
-      positive: '',
-      negative: '',
+      pros: '',
+      cons: '',
       advice: '',
       buttonName: 'Save',
       count: 0,
@@ -42,13 +42,13 @@ class Preferences extends Component {
 
   async componentDidMount() {
     const { user } = this.props
-    await this.props.getUserPreferences(user.uid).then(res => {
+    await this.props.getUserPreferences(user._id).then(res => {
       if (res) {
         const data = res.data.pref[0]
         if (data) {
           this.setState({
-            positive: data.positive,
-            negative: data.negative,
+            pros: data.pros,
+            cons: data.cons,
             advice: data.advice,
             buttonName: 'Update',
             count: data.count,
@@ -73,17 +73,9 @@ class Preferences extends Component {
   }
 
   handleSave = () => {
-    const {
-      positive,
-      negative,
-      advice,
-      error,
-      buttonName,
-      id,
-      data,
-    } = this.state
+    const { pros, cons, advice, error, buttonName, id, data } = this.state
     const { user } = this.props
-    if (!positive || !negative || !advice) {
+    if (!pros || !cons || !advice) {
       this.setState({
         message: 'Please choose all preferences',
         status: 'error',
@@ -97,11 +89,7 @@ class Preferences extends Component {
         open: false,
       })
       if (buttonName === 'Update') {
-        if (
-          data.positive == positive &&
-          data.negative == negative &&
-          data.advice == advice
-        ) {
+        if (data.pros == pros && data.cons == cons && data.advice == advice) {
           this.setState({
             message: 'Nothing has changed to perform update',
             status: 'error',
@@ -110,19 +98,19 @@ class Preferences extends Component {
           })
         } else {
           this.props.updateUserPreferences({
-            positive,
-            negative,
+            pros,
+            cons,
             advice,
-            uid: user.uid,
+            user: user._id,
             id: id,
           })
         }
       } else {
         this.props.savePreferences({
-          positive,
-          negative,
+          pros,
+          cons,
           advice,
-          uid: user.uid,
+          user: user._id,
           count: 1,
         })
       }
@@ -141,8 +129,8 @@ class Preferences extends Component {
       updatePreferencesSuccess,
     } = this.props
     const {
-      positive,
-      negative,
+      pros,
+      cons,
       advice,
       open,
       message,
@@ -168,12 +156,12 @@ class Preferences extends Component {
             <List>
               <ListItem>
                 <ListItemIcon></ListItemIcon>
-                <ListItemText primary="Would you like to hear positive?" />
+                <ListItemText primary="Would you like to hear pros?" />
                 <ListItemSecondaryAction>
                   <RadioGroup
-                    aria-label="positive"
-                    name="positive"
-                    value={positive}
+                    aria-label="pros"
+                    name="pros"
+                    value={pros}
                     onChange={this.handleInput}
                     row
                   >
@@ -192,12 +180,12 @@ class Preferences extends Component {
               </ListItem>
               <ListItem>
                 <ListItemIcon></ListItemIcon>
-                <ListItemText primary="Would you like to hear negative?" />
+                <ListItemText primary="Would you like to hear cons?" />
                 <ListItemSecondaryAction>
                   <RadioGroup
-                    aria-label="negative"
-                    name="negative"
-                    value={negative}
+                    aria-label="cons"
+                    name="cons"
+                    value={cons}
                     onChange={this.handleInput}
                     row
                   >
@@ -256,7 +244,7 @@ class Preferences extends Component {
             </Badge>
             <Fab
               variant="extended"
-              color="secondary"
+              color="primary"
               size="small"
               onClick={() => this.handleClose()}
             >
@@ -327,6 +315,9 @@ const mapStateToProps = state => {
     savePreferencesLoading,
     savePreferencesError,
     savePreferencesSuccess,
+    updatePreferencesLoading,
+    updatePreferencesError,
+    updatePreferencesSuccess,
   }
 }
 

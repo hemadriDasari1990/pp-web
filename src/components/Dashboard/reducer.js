@@ -83,6 +83,21 @@ export const Dashboard = (state = Map(), action) => {
         .setIn(['posts', 'self', 'errors'], action.errors)
         .setIn(['posts', 'self', 'loading'], false)
 
+    case actions.GET_NOTIFICATIONS_COUNT_REQUEST:
+      return state
+        .setIn(['notifications', 'count', 'loading'], true)
+        .deleteIn(['notifications', 'count', 'errors'])
+        .deleteIn(['notifications', 'count', 'success'])
+
+    case actions.GET_NOTIFICATIONS_COUNT_SUCCESS:
+      return state
+        .setIn(['notifications', 'count', 'success'], action.data)
+        .setIn(['notifications', 'count', 'loading'], false)
+
+    case actions.GET_NOTIFICATIONS_COUNT_FAILURE:
+      return state
+        .setIn(['notifications', 'count', 'errors'], action.errors)
+        .setIn(['notifications', 'count', 'loading'], false)
     default:
       return state
   }

@@ -28,6 +28,36 @@ import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import Loader from '../../Loader/components/Loader'
 import { Link } from 'react-router-dom'
 import Post from '../../Post/components/Post'
+import like from '../../../../assets/emojis/like.svg'
+import angry from '../../../../assets/emojis/angry.svg'
+import love from '../../../../assets/emojis/love.svg'
+import silly from '../../../../assets/emojis/silly.svg'
+import smiley from '../../../../assets/emojis/smiley.svg'
+import wow from '../../../../assets/emojis/surprise.svg'
+import sad from '../../../../assets/emojis/sad.svg'
+import AvatarGroup from '@material-ui/lab/AvatarGroup'
+import { withStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
+
+const styles = {
+  smallAvatar: {
+    width: 25,
+    height: 25,
+    borderColor: '#fff',
+  },
+  avatar: {
+    marginTop: 0,
+    width: '100%',
+    textAlign: 'center',
+  },
+  button: {
+    width: '150px !important',
+    height: '35px !important',
+  },
+  rightButton: {
+    marginLeft: 'auto',
+  },
+}
 
 class PostList extends Component {
   constructor(props) {
@@ -39,15 +69,15 @@ class PostList extends Component {
   }
 
   componentDidMount() {
-    this.props.getPostsByUser(this.props.user.uid, false, true)
+    this.props.getPostsByUser(this.props.user._id, false, true)
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.props.iposted && this.props.iposted != prevProps.iposted) {
-      this.props.getPostsByUser(this.props.user.uid, true, false)
+      this.props.getPostsByUser(this.props.user._id, true, false)
     }
     if (this.props.ireceived && this.props.ireceived != prevProps.ireceived) {
-      this.props.getPostsByUser(this.props.user.uid, false, true)
+      this.props.getPostsByUser(this.props.user._id, false, true)
     }
   }
 
@@ -63,10 +93,10 @@ class PostList extends Component {
           open: false,
         })
         if (this.props.ireceived) {
-          await this.props.getPostsByUser(this.props.user.uid, false, true)
+          await this.props.getPostsByUser(this.props.user._id, false, true)
         }
         if (this.props.iposted) {
-          await this.props.getPostsByUser(this.props.user.uid, true, false)
+          await this.props.getPostsByUser(this.props.user._id, true, false)
         }
         break
       default:
@@ -76,6 +106,187 @@ class PostList extends Component {
 
   handleButton = event => {
     this.setState({ open: !this.state.open, anchorEl: event.currentTarget })
+  }
+
+  getReaction = type => {
+    let icon = null
+    switch (type.toLowerCase()) {
+      case 'like':
+        icon = like
+        break
+      case 'love':
+        icon = love
+        break
+      case 'sad':
+        icon = sad
+        break
+      case 'wow':
+        icon = wow
+        break
+      case 'silly':
+        icon = silly
+        break
+      case 'smiley':
+        icon = smiley
+        break
+      case 'angry':
+        icon = angry
+        break
+        deafult: break
+    }
+    return icon
+  }
+
+  getReactionIcon = type => {
+    let icon = null
+    switch (type.toLowerCase()) {
+      case 'like':
+        icon = <like />
+        break
+      case 'love':
+        icon = <love />
+        break
+      case 'sad':
+        icon = <sad />
+        break
+      case 'wow':
+        icon = <wow />
+        break
+      case 'silly':
+        icon = <silly />
+        break
+      case 'smiley':
+        icon = <smiley />
+        break
+      case 'angry':
+        icon = <angry />
+        break
+        deafult: break
+    }
+    return icon
+  }
+
+  renderHint = () => {
+    const hintArray = [
+      'Be the first to share this',
+      'Be the first to like',
+      'Be the first to react',
+    ]
+    let index = 0
+    setInterval(() => {
+      this.setState({
+        hint: hintArray[index],
+      })
+      index = (index + 1) % hintArray.length
+    }, 2000)
+  }
+
+  renderColor = type => {
+    let color = '#606770'
+    switch (type.toLowerCase()) {
+      case 'like':
+        color = '#2078f4'
+        break
+      case 'love':
+        color = '#4de0f9'
+        break
+      case 'sad':
+        color = '#4de0f9'
+        break
+      case 'wow':
+        color = '#4de0f9'
+        break
+      case 'silly':
+        color = '#4de0f9'
+        break
+      case 'smiley':
+        color = '#4de0f9'
+        break
+      case 'angry':
+        color = '#4de0f9'
+        break
+        deafult: break
+    }
+    return color
+  }
+
+  renderUserNames = reactions => {
+    if (!Array.isArray(reactions)) {
+      return ''
+    }
+    let names = ''
+    reactions.forEach(r => {
+      names += r.user ? r.user.userName + '\n' : ''
+    })
+    return names
+  }
+
+  renderNames = reactions => {
+    let names = ''
+    if (
+      reactions.filter(
+        r =>
+          r && r.user && r.user._id === this.props.user && this.props.user._id,
+      ).length
+    ) {
+      names += 'You,'
+    }
+    if (
+      reactions.length > 2 &&
+      reactions.filter(
+        r =>
+          r && r.user && r.user._id === this.props.user && this.props.user._id,
+      ).length
+    ) {
+      names += reactions.filter(
+        r =>
+          r && r.user && r.user._id === this.props.user && this.props.user._id,
+      ).length
+        ? 'You and '
+        : reactions[0].user
+        ? reactions[0].user.userName
+        : formateNumber(reactions.slice(2).length) + 'Others'
+    }
+    if (
+      reactions.length > 2 &&
+      !reactions.filter(
+        r =>
+          r && r.user && r.user._id === this.props.user && this.props.user._id,
+      ).length
+    ) {
+      names += reactions[0].user
+        ? reactions[0].user.userName +
+          ' and ' +
+          formateNumber(reactions.slice(1).length) +
+          ' Others'
+        : formateNumber(reactions.length)
+    }
+    if (
+      reactions.length <= 2 &&
+      reactions.filter(
+        r =>
+          r && r.user && r.user._id === this.props.user && this.props.user._id,
+      ).length
+    ) {
+      names += 'You and ' + formateNumber(reactions.length) + 'Other'
+    }
+
+    if (
+      reactions.length &&
+      reactions.length <= 2 &&
+      !reactions.filter(
+        r =>
+          r && r.user && r.user._id === this.props.user && this.props.user._id,
+      ).length
+    ) {
+      names += reactions[0].user
+        ? reactions[0].user.userName +
+          ' and ' +
+          formateNumber(reactions.slice(1).length) +
+          ' Other'
+        : formateNumber(reactions.length)
+    }
+    return names
   }
 
   render() {
@@ -88,6 +299,7 @@ class PostList extends Component {
       deletePostLoading,
       iposted,
       ireceived,
+      classes,
     } = this.props
     const { open, anchorEl } = this.state
     return (
@@ -98,22 +310,30 @@ class PostList extends Component {
               <Card key={post._id}>
                 <CardHeader
                   avatar={
-                    <Avatar
-                      alt={
-                        iposted
-                          ? post.postedTo.userName
-                          : ireceived
-                          ? post.postedBy.userName
-                          : 'Image not Available'
-                      }
-                      src={
-                        iposted
-                          ? post.postedTo.photoURL
-                          : ireceived
-                          ? post.postedBy.photoURL
-                          : ''
-                      }
-                    />
+                    !post.isAnonymous ? (
+                      <Avatar
+                        alt={
+                          iposted
+                            ? post.postedTo.userName
+                            : ireceived
+                            ? post.postedBy.userName
+                            : 'Image not Available'
+                        }
+                        src={
+                          iposted
+                            ? post.postedTo.photoURL
+                            : ireceived
+                            ? post.postedBy.photoURL
+                            : 'A'
+                        }
+                      />
+                    ) : (
+                      <Avatar
+                        style={{ color: '#ffffff', backgroundColor: '#1976d2' }}
+                      >
+                        A
+                      </Avatar>
+                    )
                   }
                   action={
                     <>
@@ -167,22 +387,26 @@ class PostList extends Component {
                     </>
                   }
                   title={
-                    <Link
-                      className="hyperlink"
-                      to={
-                        iposted
-                          ? `/profile/${post.postedTo._id}`
+                    !post.isAnonymous ? (
+                      <Link
+                        className="hyperlink"
+                        to={
+                          iposted
+                            ? `/profile/${post.postedTo._id}`
+                            : ireceived
+                            ? `/profile/${post.postedBy._id}`
+                            : ''
+                        }
+                      >
+                        {iposted
+                          ? post.postedTo.userName
                           : ireceived
-                          ? `/profile/${post.postedBy._id}`
-                          : ''
-                      }
-                    >
-                      {iposted
-                        ? post.postedTo.userName
-                        : ireceived
-                        ? post.postedBy.userName
-                        : 'Unknown User'}
-                    </Link>
+                          ? post.postedBy.userName
+                          : ''}
+                      </Link>
+                    ) : (
+                      <b>Annonymous User</b>
+                    )
                   }
                   subheader={moment(post.createdAt).fromNow()}
                 />
@@ -193,7 +417,7 @@ class PostList extends Component {
                         <MoodIcon />
                       </ListItemAvatar>
                       <ListItemText
-                        primary="Positive"
+                        primary="Pros"
                         secondary={
                           <React.Fragment>
                             <Typography
@@ -201,9 +425,7 @@ class PostList extends Component {
                               variant="body2"
                               color="textPrimary"
                             >
-                              {post.positive
-                                ? post.positive
-                                : 'No comments added'}
+                              {post.pros ? post.pros : 'No comments added'}
                             </Typography>
                           </React.Fragment>
                         }
@@ -214,7 +436,7 @@ class PostList extends Component {
                         <MoodBadIcon />
                       </ListItemAvatar>
                       <ListItemText
-                        primary="Negative"
+                        primary="Cons"
                         secondary={
                           <React.Fragment>
                             <Typography
@@ -222,9 +444,7 @@ class PostList extends Component {
                               variant="body2"
                               color="textPrimary"
                             >
-                              {post.negative
-                                ? post.negative
-                                : 'No comments added'}
+                              {post.cons ? post.cons : 'No comments added'}
                             </Typography>
                           </React.Fragment>
                         }
@@ -250,21 +470,46 @@ class PostList extends Component {
                       />
                     </ListItem>
                   </List>
+                  <div style={{ display: 'flex' }}>
+                    <AvatarGroup>
+                      {post.reactions.length > 0
+                        ? post.reactions.slice(0, 3).map(react => (
+                            <Tooltip
+                              title={this.renderUserNames(post.reactions)}
+                              placement="bottom"
+                            >
+                              <Avatar
+                                className={classes.smallAvatar}
+                                key={react._id}
+                                alt="Remy Sharp"
+                                src={this.getReaction(react ? react.type : '')}
+                              />
+                            </Tooltip>
+                          ))
+                        : 'No Reactions'}
+                    </AvatarGroup>
+                    <Tooltip
+                      title={this.renderUserNames(post.reactions)}
+                      placement="bottom"
+                    >
+                      <Link to={`/post/${post._id}/reactions`}>
+                        <span style={{ marginTop: 2, color: '#606770' }}>
+                          {this.renderNames(post.reactions)}
+                        </span>
+                      </Link>
+                    </Tooltip>
+                    <div className={classes.rightButton}>
+                      <Link to={`/post/${post._id}/shares`}>
+                        <span style={{ marginTop: 2, color: '#606770' }}>
+                          {post.shares.length
+                            ? formateNumber(post.shares.length)
+                            : 'No'}{' '}
+                          shares
+                        </span>
+                      </Link>
+                    </div>
+                  </div>
                 </CardContent>
-                <CardActions>
-                  <span style={{ fontSize: 13, color: '#606770' }}>
-                    {post.likes > 0 ? formateNumber(post.likes) : 0} Likes
-                  </span>
-                  <span style={{ fontSize: 13, color: '#606770' }}>
-                    {formateNumber(post.disLikes)} Dislikes
-                  </span>
-                  {/* <Badge showZero color="primary" style={{marginRight: 50}} badgeContent={post.likes > 0 ? formateNumber(post.likes): 0} >
-				        <LikeIcon/>
-				      </Badge>
-				      <Badge showZero badgeContent={formateNumber(post.disLikes)}>
-				        <DisLikeIcon />
-				      </Badge> */}
-                </CardActions>
               </Card>
             ))
           : null}
@@ -288,7 +533,9 @@ class PostList extends Component {
   }
 }
 
-PostList.propTypes = {}
+PostList.propTypes = {
+  classes: PropTypes.object.isRequired,
+}
 
 const mapStateToProps = state => {
   const deletePostSuccess = state.getIn(
@@ -322,4 +569,6 @@ const actionsToProps = {
   getPostsPostedByUser: actions.getPostsPostedByUser,
 }
 
-export default withRouter(connect(mapStateToProps, actionsToProps)(PostList))
+export default withRouter(
+  connect(mapStateToProps, actionsToProps)(withStyles(styles)(PostList)),
+)

@@ -22,6 +22,9 @@ const styles = theme => ({
   inline: {
     display: 'inline',
   },
+  avatar: {
+    backgroundColor: '#2a7fff !important',
+  },
 })
 
 class ListComponent extends Component {
@@ -33,7 +36,7 @@ class ListComponent extends Component {
           <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
-                <Avatar>
+                <Avatar className={classes.avatar}>
                   <PublicIcon color="secondary" />
                 </Avatar>
               </ListItemAvatar>
@@ -58,7 +61,7 @@ class ListComponent extends Component {
           <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
-                <Avatar alt="Remy Sharp">
+                <Avatar className={classes.avatar}>
                   <FaceIcon color="secondary" />
                 </Avatar>
               </ListItemAvatar>
@@ -83,7 +86,7 @@ class ListComponent extends Component {
           <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
-                <Avatar alt="Remy Sharp">
+                <Avatar className={classes.avatar}>
                   <GPSOffIcon color="secondary" />
                 </Avatar>
               </ListItemAvatar>
@@ -110,7 +113,7 @@ class ListComponent extends Component {
           <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
-                <Avatar>
+                <Avatar className={classes.avatar}>
                   <GroupWorkIcon color="secondary" />
                 </Avatar>
               </ListItemAvatar>
@@ -137,7 +140,7 @@ class ListComponent extends Component {
           <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
-                <Avatar alt="Remy Sharp">
+                <Avatar className={classes.avatar}>
                   <SwapCallsIcon color="secondary" />
                 </Avatar>
               </ListItemAvatar>
@@ -163,7 +166,7 @@ class ListComponent extends Component {
           <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
             <ListItem alignItems="flex-start">
               <ListItemAvatar>
-                <Avatar alt="Remy Sharp">
+                <Avatar className={classes.avatar}>
                   <CodeIcon color="secondary" />
                 </Avatar>
               </ListItemAvatar>

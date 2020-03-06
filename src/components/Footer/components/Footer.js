@@ -74,6 +74,12 @@ class Footer extends React.Component {
       pathname: '/contact',
     })
   }
+
+  handleFeedback = () => {
+    this.props.history.push({
+      pathname: '/feedback',
+    })
+  }
   handleCareers = () => {
     this.props.history.push({
       pathname: '/careers',
@@ -97,7 +103,7 @@ class Footer extends React.Component {
                 <div className="col-lg-2 col-md-2 col-sm-2 col-xs-4">
                   Discover Us
                 </div>
-                <div style={{ marginLeft: 20, marginTop: 10 }}>
+                <div style={{ marginLeft: 20 }}>
                   <a
                     style={{ cursor: 'pointer' }}
                     onClick={() => this.handleAbout()}
@@ -110,11 +116,17 @@ class Footer extends React.Component {
                   >
                     Careers
                   </a>
-                  <a
+                  {/*<a
                     style={{ cursor: 'pointer' }}
                     onClick={() => this.handleContact()}
                   >
                     Contact
+                  </a>*/}
+                  <a
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => this.handleFeedback()}
+                  >
+                    Feedback
                   </a>
                   <a
                     style={{ cursor: 'pointer' }}
@@ -128,7 +140,7 @@ class Footer extends React.Component {
                 <div className="col-lg-2 col-md-2 col-sm-2 col-xs-4">
                   Social Links
                 </div>
-                <div style={{ marginLeft: 20, marginTop: 10 }}>
+                <div style={{ marginLeft: 20 }}>
                   <a href="https://www.facebook.com" target="_blank">
                     <img className={classes.icon} src={fbIcon} />
                   </a>
@@ -149,7 +161,7 @@ class Footer extends React.Component {
             </div>
             <div className="row-footer tc-links clearfix">
               <div className="copyrights">
-                Copyright © 2020 Feedback Lib Pvt. Ltd. All rights reserved.
+                Copyright © 2020 Writenpost Inc. All rights reserved.
               </div>
             </div>
           </div>
