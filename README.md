@@ -1,2 +1,2 @@
 # pp-web
-This is peoples post UI application
+This is write and post UI application
