@@ -234,7 +234,7 @@ class Feedback extends Component {
                     checked={bad}
                     onChange={this.handleExperience}
                     value="false"
-                    color="secondary"
+                    color="primary"
                     name="bad"
                   />
                 }
@@ -246,7 +246,7 @@ class Feedback extends Component {
                     checked={vbad}
                     onChange={this.handleExperience}
                     value="false"
-                    color="secondary"
+                    color="primary"
                     name="vbad"
                   />
                 }
@@ -275,7 +275,7 @@ class Feedback extends Component {
                     checked={no}
                     onChange={this.handleInterest}
                     value="false"
-                    color="secondary"
+                    color="primary"
                     name="no"
                   />
                 }
@@ -293,7 +293,7 @@ class Feedback extends Component {
               </Fab>
               <Fab
                 variant="extended"
-                color="secondary"
+                color="primary"
                 size="small"
                 onClick={() => this.handleReset()}
               >

@@ -172,9 +172,9 @@ class Post extends Component {
                     <FormControlLabel
                       control={
                         preferences.pros == 'yes' ? (
-                          <Checkbox checked={true} />
+                          <Checkbox color="primary" checked={true} />
                         ) : (
-                          <Checkbox indeterminate />
+                          <Checkbox color="primary" indeterminate />
                         )
                       }
                       label="Pros"
@@ -182,9 +182,9 @@ class Post extends Component {
                     <FormControlLabel
                       control={
                         preferences.cons == 'yes' ? (
-                          <Checkbox checked={true} />
+                          <Checkbox color="primary" checked={true} />
                         ) : (
-                          <Checkbox indeterminate />
+                          <Checkbox color="primary" indeterminate />
                         )
                       }
                       label="Cons"
@@ -192,9 +192,9 @@ class Post extends Component {
                     <FormControlLabel
                       control={
                         preferences.advice == 'yes' ? (
-                          <Checkbox checked={true} />
+                          <Checkbox color="primary" checked={true} />
                         ) : (
-                          <Checkbox indeterminate />
+                          <Checkbox color="primary" indeterminate />
                         )
                       }
                       label="Advice"
