@@ -1,9 +1,14 @@
 const { resolve } = require('path')
-const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const OfflinePlugin = require('offline-plugin')
-const PreloadWebpackPlugin = require('preload-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const CompressionPlugin = require('compression-webpack-plugin')
+const TerserJSPlugin = require('terser-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const BrotliPlugin = require('brotli-webpack-plugin')
+const PurgecssPlugin = require('purgecss-webpack-plugin')
+const glob = require('glob')
 
 module.exports = (env, argv) => {
   return {
@@ -55,6 +60,35 @@ module.exports = (env, argv) => {
       ],
     },
     plugins: [
+      // CleanWebpackPlugin will do some clean up/remove folder before build
+      // In this case, this plugin will remove 'dist' and 'build' folder before re-build again
+      new CleanWebpackPlugin(),
+      // PurgecssPlugin will remove unused CSS
+      new PurgecssPlugin({
+        paths: glob.sync(path.resolve(__dirname, '../src/**/*'), {
+          nodir: true,
+        }),
+      }),
+      // This plugin will extract all css to one file
+      new MiniCssExtractPlugin({
+        filename: '[name].[chunkhash:8].bundle.css',
+        chunkFilename: '[name].[chunkhash:8].chunk.css',
+      }),
+      // The plugin will generate an HTML5 file for you that includes all your webpack bundles in the body using script tags
+      new HtmlWebpackPlugin({
+        hash: true,
+        filename: 'index.html',
+        title: 'writenpost',
+        template: 'webpack/template.html',
+        inject: false,
+      }),
+      // ComppresionPlugin will Prepare compressed versions of assets to serve them with Content-Encoding.
+      // In this case we use gzip
+      // But, you can also use the newest algorithm like brotli, and it's supperior than gzip
+      new CompressionPlugin({
+        algorithm: 'gzip',
+      }),
+      new BrotliPlugin(),
       // new webpack.optimize.ModuleConcatenationPlugin(),
       // new webpack.DefinePlugin({
       //   'process.env': {
@@ -82,30 +116,20 @@ module.exports = (env, argv) => {
       // }),
     ],
     optimization: {
-      minimize: true,
-      runtimeChunk: 'single', // enable "runtime" chunk
+      minimizer: [new TerserJSPlugin(), new OptimizeCSSAssetsPlugin()],
       splitChunks: {
         cacheGroups: {
-          vendor: {
+          commons: {
             test: /[\\/]node_modules[\\/]/,
-            name: 'vendor',
+            name: 'vendors',
             chunks: 'all',
           },
         },
+        chunks: 'all',
       },
-      minimizer: [
-        // we specify a custom UglifyJsPlugin here to get source maps in production
-        new UglifyJsPlugin({
-          cache: true,
-          parallel: true,
-          uglifyOptions: {
-            compress: false,
-            ecma: 6,
-            mangle: true,
-          },
-          sourceMap: true,
-        }),
-      ],
+      runtimeChunk: {
+        name: 'runtime',
+      },
     },
   }
 }
