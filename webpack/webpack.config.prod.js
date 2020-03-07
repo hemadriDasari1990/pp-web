@@ -54,36 +54,7 @@ module.exports = (env, argv) => {
         },
       ],
     },
-    plugins: [
-      new webpack.optimize.ModuleConcatenationPlugin(),
-      new webpack.DefinePlugin({
-        'process.env': {
-          NODE_ENV: JSON.stringify('production'),
-        },
-      }),
-      new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
-      new webpack.optimize.CommonsChunkPlugin({
-        names: ['vendor', 'manifest'],
-      }),
-      new HtmlWebpackPlugin({
-        hash: true,
-        filename: 'index.html',
-        title: 'writenpost',
-        template: 'webpack/template.html',
-        inject: false,
-      }),
-      new PreloadWebpackPlugin({
-        rel: 'preload',
-        as: 'script',
-        include: 'all',
-      }),
-      new OfflinePlugin({
-        ServiceWorker: {
-          navigateFallbackURL: '/',
-        },
-        AppCache: false,
-      }),
-    ],
+    plugins: [],
     optimization: {
       minimize: false,
       minimizer:
