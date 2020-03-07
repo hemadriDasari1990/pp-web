@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const OfflinePlugin = require('offline-plugin')
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = (env, argv) => {
   return {
@@ -60,7 +61,6 @@ module.exports = (env, argv) => {
           NODE_ENV: JSON.stringify('production'),
         },
       }),
-      new webpack.optimize.UglifyJsPlugin(), //minify everything
       new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
       new webpack.optimize.CommonsChunkPlugin({
         names: ['vendor', 'manifest'],
@@ -88,7 +88,14 @@ module.exports = (env, argv) => {
       minimize: false,
       minimizer:
         argv.mode === 'production'
-          ? [new webpack.optimize.UglifyJsPlugin()]
+          ? [
+              new UglifyJsPlugin({
+                sourceMap: true,
+                compress: {
+                  warnings: false,
+                },
+              }),
+            ]
           : [],
     },
   }
