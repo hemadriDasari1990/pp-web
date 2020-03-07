@@ -59,13 +59,15 @@ module.exports = {
         NODE_ENV: JSON.stringify('production'),
       },
     }),
-    new webpack.optimize.UglifyJsPlugin(),
+    new webpack.optimize.DedupePlugin(), //dedupe similar code
+    new webpack.optimize.UglifyJsPlugin(), //minify everything
+    new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
     new webpack.optimize.CommonsChunkPlugin({
       names: ['vendor', 'manifest'],
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      title: 'feedback-lib',
+      title: 'writenpost',
       template: 'webpack/template.html',
     }),
     new PreloadWebpackPlugin({
