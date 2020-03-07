@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const OfflinePlugin = require('offline-plugin')
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = (env, argv) => {
   return {
@@ -82,6 +83,19 @@ module.exports = (env, argv) => {
     ],
     optimization: {
       minimize: false,
+      minimizer: [
+        // we specify a custom UglifyJsPlugin here to get source maps in production
+        new UglifyJsPlugin({
+          cache: true,
+          parallel: true,
+          uglifyOptions: {
+            compress: false,
+            ecma: 6,
+            mangle: true,
+          },
+          sourceMap: true,
+        }),
+      ],
     },
   }
 }
