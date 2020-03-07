@@ -83,19 +83,29 @@ module.exports = (env, argv) => {
     ],
     optimization: {
       minimize: true,
-      // minimizer: [
-      //   // we specify a custom UglifyJsPlugin here to get source maps in production
-      //   new UglifyJsPlugin({
-      //     cache: true,
-      //     parallel: true,
-      //     uglifyOptions: {
-      //       compress: false,
-      //       ecma: 6,
-      //       mangle: true,
-      //     },
-      //     sourceMap: true,
-      //   }),
-      // ],
+      runtimeChunk: 'single', // enable "runtime" chunk
+      splitChunks: {
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendor',
+            chunks: 'all',
+          },
+        },
+      },
+      minimizer: [
+        // we specify a custom UglifyJsPlugin here to get source maps in production
+        new UglifyJsPlugin({
+          cache: true,
+          parallel: true,
+          uglifyOptions: {
+            compress: false,
+            ecma: 6,
+            mangle: true,
+          },
+          sourceMap: true,
+        }),
+      ],
     },
   }
 }
