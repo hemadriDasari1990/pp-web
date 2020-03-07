@@ -52,6 +52,40 @@ module.exports = {
       },
     ],
   },
+  stats: {
+    colors: false,
+    hash: true,
+    timings: true,
+    assets: true,
+    chunks: true,
+    chunkModules: true,
+    modules: true,
+    children: true,
+  },
+  optimization: {
+    minimizer: [
+      new UglifyJSPlugin({
+        sourceMap: true,
+        uglifyOptions: {
+          compress: {
+            inline: false,
+          },
+        },
+      }),
+    ],
+    runtimeChunk: false,
+    splitChunks: {
+      cacheGroups: {
+        default: false,
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor_app',
+          chunks: 'all',
+          minChunks: 2,
+        },
+      },
+    },
+  },
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
@@ -59,7 +93,6 @@ module.exports = {
         NODE_ENV: JSON.stringify('production'),
       },
     }),
-    new webpack.optimize.DedupePlugin(), //dedupe similar code
     new webpack.optimize.UglifyJsPlugin(), //minify everything
     new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
     new webpack.optimize.CommonsChunkPlugin({
