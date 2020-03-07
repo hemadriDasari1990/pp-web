@@ -102,11 +102,6 @@ module.exports = (env, argv) => {
             output: {
               comments: false,
             },
-            compress: {
-              warnings: false,
-              drop_debugger: true,
-              drop_console: true,
-            },
           },
           sourceMap: true,
         }),
