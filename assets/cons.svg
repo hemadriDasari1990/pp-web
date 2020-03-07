@@ -1,5 +1,5 @@
 <svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
-
+<defs><style>.cls-1{fill:url(#linear-gradient);}.cls-2{fill:#1282ff;}</style><linearGradient gradientUnits="userSpaceOnUse" id="linear-gradient" x1="16" x2="16" y1="2" y2="30"><stop offset="0.24" stop-color="#cdeaff"/><stop offset="0.34" stop-color="#c2e4ff"/><stop offset="0.5" stop-color="#a5d5ff"/><stop offset="0.72" stop-color="#76bcff"/><stop offset="0.98" stop-color="#369aff"/><stop offset="1" stop-color="#3197ff"/></linearGradient></defs>
  <title/>
  <g>
   <title>background</title>
