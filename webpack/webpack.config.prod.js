@@ -1,8 +1,8 @@
 const { resolve } = require('path')
-// const webpack = require('webpack')
-// const HtmlWebpackPlugin = require('html-webpack-plugin')
-// const OfflinePlugin = require('offline-plugin')
-// const PreloadWebpackPlugin = require('preload-webpack-plugin')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const OfflinePlugin = require('offline-plugin')
+const PreloadWebpackPlugin = require('preload-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = (env, argv) => {
@@ -99,9 +99,9 @@ module.exports = (env, argv) => {
           cache: true,
           parallel: true,
           uglifyOptions: {
-            output: {
-              comments: false,
-            },
+            compress: false,
+            ecma: 6,
+            mangle: true,
           },
           sourceMap: true,
         }),
