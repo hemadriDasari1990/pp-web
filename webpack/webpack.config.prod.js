@@ -54,7 +54,33 @@ module.exports = (env, argv) => {
         },
       ],
     },
-    plugins: [],
+    plugins: [
+      new webpack.optimize.ModuleConcatenationPlugin(),
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: JSON.stringify('production'),
+        },
+      }),
+      new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
+      new HtmlWebpackPlugin({
+        hash: true,
+        filename: 'index.html',
+        title: 'writenpost',
+        template: 'webpack/template.html',
+        inject: false,
+      }),
+      new PreloadWebpackPlugin({
+        rel: 'preload',
+        as: 'script',
+        include: 'all',
+      }),
+      new OfflinePlugin({
+        ServiceWorker: {
+          navigateFallbackURL: '/',
+        },
+        AppCache: false,
+      }),
+    ],
     optimization: {
       minimize: false,
       minimizer: argv.mode === 'production' ? [new UglifyJsPlugin()] : [],
