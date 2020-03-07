@@ -5,6 +5,7 @@ const OfflinePlugin = require('offline-plugin')
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
 
 module.exports = {
+  mode: 'production',
   entry: {
     main: resolve(__dirname, '../src'),
     vendor: [
@@ -52,40 +53,6 @@ module.exports = {
       },
     ],
   },
-  stats: {
-    colors: false,
-    hash: true,
-    timings: true,
-    assets: true,
-    chunks: true,
-    chunkModules: true,
-    modules: true,
-    children: true,
-  },
-  optimization: {
-    minimizer: [
-      new UglifyJSPlugin({
-        sourceMap: true,
-        uglifyOptions: {
-          compress: {
-            inline: false,
-          },
-        },
-      }),
-    ],
-    runtimeChunk: false,
-    splitChunks: {
-      cacheGroups: {
-        default: false,
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendor_app',
-          chunks: 'all',
-          minChunks: 2,
-        },
-      },
-    },
-  },
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
@@ -99,9 +66,11 @@ module.exports = {
       names: ['vendor', 'manifest'],
     }),
     new HtmlWebpackPlugin({
+      hash: true,
       filename: 'index.html',
       title: 'writenpost',
       template: 'webpack/template.html',
+      inject: false,
     }),
     new PreloadWebpackPlugin({
       rel: 'preload',
