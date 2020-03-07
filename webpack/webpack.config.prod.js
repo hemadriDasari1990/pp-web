@@ -83,7 +83,6 @@ module.exports = (env, argv) => {
     ],
     optimization: {
       minimize: false,
-      minimizer: argv.mode === 'production' ? [new UglifyJsPlugin()] : [],
     },
   }
 }
