@@ -1,9 +1,9 @@
 const { resolve } = require('path')
-const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const OfflinePlugin = require('offline-plugin')
-const PreloadWebpackPlugin = require('preload-webpack-plugin')
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+// const webpack = require('webpack')
+// const HtmlWebpackPlugin = require('html-webpack-plugin')
+// const OfflinePlugin = require('offline-plugin')
+// const PreloadWebpackPlugin = require('preload-webpack-plugin')
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = (env, argv) => {
   return {
@@ -83,20 +83,19 @@ module.exports = (env, argv) => {
     ],
     optimization: {
       minimize: true,
-      runtimeChunk: 'single', // enable "runtime" chunk
-      splitChunks: {
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendor',
-            chunks: 'all',
-          },
-        },
-      },
-      minimizer: [
-        // we specify a custom UglifyJsPlugin here to get source maps in production
-        new UglifyJsPlugin(),
-      ],
+      // minimizer: [
+      //   // we specify a custom UglifyJsPlugin here to get source maps in production
+      //   new UglifyJsPlugin({
+      //     cache: true,
+      //     parallel: true,
+      //     uglifyOptions: {
+      //       compress: false,
+      //       ecma: 6,
+      //       mangle: true,
+      //     },
+      //     sourceMap: true,
+      //   }),
+      // ],
     },
   }
 }
