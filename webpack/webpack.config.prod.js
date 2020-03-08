@@ -83,7 +83,7 @@ module.exports = (env, argv) => {
           default: false,
           commons: {
             test: /[\\/]node_modules[\\/]/,
-            name: 'vendor_app',
+            name: 'vendor',
             chunks: 'all',
             minChunks: 2,
           },
@@ -102,6 +102,8 @@ module.exports = (env, argv) => {
         title: 'writenpost',
         template: 'webpack/template.html',
         inject: false,
+        path: path.resolve(__dirname, 'dist'),
+        chunks: ['vendor', 'app'],
       }),
       // new OfflinePlugin({
       //   ServiceWorker: {
