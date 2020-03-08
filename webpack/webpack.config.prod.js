@@ -99,10 +99,5 @@ module.exports = {
       title: 'writenpost',
       template: 'webpack/template.html',
     }),
-    new PreloadWebpackPlugin({
-      rel: 'preload',
-      as: 'script',
-      include: 'all',
-    }),
   ],
 }
