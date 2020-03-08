@@ -74,6 +74,7 @@ module.exports = {
     children: true,
   },
   optimization: {
+    runtimeChunk: 'single',
     namedModules: false,
     namedChunks: false,
     nodeEnv: 'production',
@@ -84,10 +85,25 @@ module.exports = {
     concatenateModules: true,
     splitChunks: {
       cacheGroups: {
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
+        reactVendor: {
+          test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+          name: 'reactvendor',
+        },
+        utilityVendor: {
+          test: /[\\/]node_modules[\\/](lodash|moment|moment-timezone)[\\/]/,
+          name: 'utilityVendor',
+        },
+        bootstrapVendor: {
+          test: /[\\/]node_modules[\\/](bootstrap)[\\/]/,
+          name: 'bootstrapVendor',
+        },
+        materialUiVendor: {
+          test: /[\\/]node_modules[\\/](material-ui)[\\/]/,
+          name: 'bootstrapVendor',
+        },
+        vendor: {
+          test: /[\\/]node_modules[\\/](!bootstrap)(!lodash)(!moment)(!moment-timezone)[\\/]/,
           name: 'vendor',
-          chunks: 'all',
         },
       },
       minSize: 30000,
