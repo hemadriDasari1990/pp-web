@@ -95,6 +95,19 @@ module.exports = (env, argv) => {
           NODE_ENV: JSON.stringify('production'),
         },
       }),
+      new HtmlWebpackPlugin({
+        hash: true,
+        filename: 'index.html',
+        title: 'writenpost',
+        template: 'webpack/template.html',
+        inject: false,
+      }),
+      new OfflinePlugin({
+        ServiceWorker: {
+          navigateFallbackURL: '/',
+        },
+        AppCache: false,
+      }),
     ],
     // plugins: [
     //   // new webpack.optimize.ModuleConcatenationPlugin(),
