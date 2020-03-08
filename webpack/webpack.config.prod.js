@@ -103,6 +103,10 @@ module.exports = (env, argv) => {
         title: 'writenpost',
         template: 'webpack/template.html',
         inject: false,
+        minify: {
+          removeComments: true,
+          collapseWhitespace: true,
+        },
       }),
       // new OfflinePlugin({
       //   ServiceWorker: {
