@@ -66,7 +66,17 @@ module.exports = (env, argv) => {
       ],
     },
     optimization: {
-      minimizer: [],
+      minimizer: [
+        new UglifyJsPlugin({
+          sourceMap: true,
+          uglifyOptions: {
+            compress: {
+              inline: false,
+            },
+            mangle: false,
+          },
+        }),
+      ],
       runtimeChunk: false,
       splitChunks: {
         cacheGroups: {
@@ -81,15 +91,6 @@ module.exports = (env, argv) => {
       },
     },
     plugins: [
-      new UglifyJsPlugin({
-        sourceMap: true,
-        uglifyOptions: {
-          compress: {
-            inline: false,
-          },
-          mangle: false,
-        },
-      }),
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify('production'),
