@@ -1,13 +1,13 @@
 const { resolve } = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const OfflinePlugin = require('offline-plugin')
-const PreloadWebpackPlugin = require('preload-webpack-plugin')
+// const OfflinePlugin = require('offline-plugin')
+// const PreloadWebpackPlugin = require('preload-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const imageminGifsicle = require('imagemin-gifsicle')
-const imageminPngquant = require('imagemin-pngquant')
-const imageminSvgo = require('imagemin-svgo')
-const imageminMozjpeg = require('imagemin-mozjpeg')
+// const imageminGifsicle = require('imagemin-gifsicle')
+// const imageminPngquant = require('imagemin-pngquant')
+// const imageminSvgo = require('imagemin-svgo')
+// const imageminMozjpeg = require('imagemin-mozjpeg')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const WebpackMd5Hash = require('webpack-md5-hash')
 const CompressionPlugin = require('compression-webpack-plugin')
@@ -31,6 +31,7 @@ module.exports = {
     path: resolve(__dirname, '../dist'),
     publicPath: '/',
   },
+  mode: 'production',
   module: {
     rules: [
       {
@@ -39,13 +40,8 @@ module.exports = {
         use: 'babel-loader',
       },
       {
-        test: /\.s?css$/,
-        use: [
-          'style-loader',
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'sass-loader',
-        ],
+        test: /\.css$/,
+        loader: 'style-loader!css-loader',
       },
       {
         test: /\.(png|jpg|jpeg|gif|woff|woff2|svg)$/,
