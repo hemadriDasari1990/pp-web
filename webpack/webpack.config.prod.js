@@ -147,6 +147,7 @@ module.exports = {
   //   },
   // },
   plugins: [
+    new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
     new MiniCssExtractPlugin({
       filename: 'style.[contenthash].css',
     }),
