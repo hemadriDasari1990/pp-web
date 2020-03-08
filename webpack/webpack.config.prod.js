@@ -14,6 +14,7 @@ const CompressionPlugin = require('compression-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
+  devtool: '',
   entry: {
     main: resolve(__dirname, '../src'),
     vendor: [
