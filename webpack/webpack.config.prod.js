@@ -1,4 +1,4 @@
-const { resolve } = require('path')
+const { path, resolve } = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const OfflinePlugin = require('offline-plugin')
