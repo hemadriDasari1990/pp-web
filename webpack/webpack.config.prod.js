@@ -103,12 +103,12 @@ module.exports = (env, argv) => {
         template: 'webpack/template.html',
         inject: false,
       }),
-      new OfflinePlugin({
-        ServiceWorker: {
-          navigateFallbackURL: '/',
-        },
-        AppCache: false,
-      }),
+      // new OfflinePlugin({
+      //   ServiceWorker: {
+      //     navigateFallbackURL: '/',
+      //   },
+      //   AppCache: false,
+      // }),
     ],
     // plugins: [
     //   // new webpack.optimize.ModuleConcatenationPlugin(),
