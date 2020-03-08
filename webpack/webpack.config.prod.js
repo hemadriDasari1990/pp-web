@@ -79,17 +79,17 @@ module.exports = (env, argv) => {
         }),
       ],
       runtimeChunk: false,
-      splitChunks: {
-        cacheGroups: {
-          default: false,
-          commons: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendor',
-            chunks: 'all',
-            minChunks: 2,
-          },
-        },
-      },
+      // splitChunks: {
+      //   cacheGroups: {
+      //     default: false,
+      //     commons: {
+      //       test: /[\\/]node_modules[\\/]/,
+      //       name: 'vendor',
+      //       chunks: 'all',
+      //       minChunks: 2,
+      //     },
+      //   },
+      // },
     },
     plugins: [
       new webpack.DefinePlugin({
@@ -103,8 +103,6 @@ module.exports = (env, argv) => {
         title: 'writenpost',
         template: 'webpack/template.html',
         inject: false,
-        path: path.resolve(__dirname, 'dist'),
-        chunks: ['vendor', 'app'],
       }),
       // new OfflinePlugin({
       //   ServiceWorker: {
