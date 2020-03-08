@@ -99,11 +99,10 @@ module.exports = {
       title: 'writenpost',
       template: 'webpack/template.html',
     }),
-    new OfflinePlugin({
-      ServiceWorker: {
-        navigateFallbackURL: '/',
-      },
-      AppCache: false,
+    new PreloadWebpackPlugin({
+      rel: 'preload',
+      as: 'script',
+      include: 'all',
     }),
   ],
 }
