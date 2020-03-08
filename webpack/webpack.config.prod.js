@@ -93,26 +93,22 @@ module.exports = {
         NODE_ENV: JSON.stringify('production'),
       },
     }),
-    // new webpack.optimize.UglifyJsPlugin(), //minify everything
     new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   names: ['vendor', 'manifest'],
-    // }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       title: 'writenpost',
       template: 'webpack/template.html',
     }),
-    // new PreloadWebpackPlugin({
-    //   rel: 'preload',
-    //   as: 'script',
-    //   include: 'all',
-    // }),
-    // new OfflinePlugin({
-    //   ServiceWorker: {
-    //     navigateFallbackURL: '/',
-    //   },
-    //   AppCache: false,
-    // }),
+    new PreloadWebpackPlugin({
+      rel: 'preload',
+      as: 'script',
+      include: 'all',
+    }),
+    new OfflinePlugin({
+      ServiceWorker: {
+        navigateFallbackURL: '/',
+      },
+      AppCache: false,
+    }),
   ],
 }
