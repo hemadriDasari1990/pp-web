@@ -4,6 +4,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const OfflinePlugin = require('offline-plugin')
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const imageminGifsicle = require('imagemin-gifsicle')
+const imageminPngquant = require('imagemin-pngquant')
+const imageminSvgo = require('imagemin-svgo')
+const imageminMozjpeg = require('imagemin-mozjpeg')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const WebpackMd5Hash = require('webpack-md5-hash')
+const CompressionPlugin = require('compression-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
   entry: {
@@ -31,12 +39,42 @@ module.exports = {
         use: 'babel-loader',
       },
       {
-        test: /\.css$/,
-        loader: 'style-loader!css-loader',
+        test: /\.s?css$/,
+        use: [
+          'style-loader',
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
       },
       {
         test: /\.(png|jpg|jpeg|gif|woff|woff2|svg)$/,
-        loader: 'url-loader?limit=100000',
+        loders: [
+          {
+            loader: 'url-loader?limit=100000',
+          },
+          {
+            loader: 'img-loader',
+            options: {
+              plugins: [
+                imageminGifsicle({
+                  interlaced: false,
+                }),
+                imageminMozjpeg({
+                  progressive: true,
+                  arithmetic: false,
+                }),
+                imageminPngquant({
+                  floyd: 0.5,
+                  speed: 2,
+                }),
+                imageminSvgo({
+                  plugins: [{ removeTitle: true }, { convertPathData: false }],
+                }),
+              ],
+            },
+          },
+        ],
       },
       {
         test: /\.(eot|ttf)$/,
@@ -67,6 +105,8 @@ module.exports = {
     minimizer: [
       new UglifyJsPlugin({
         sourceMap: true,
+        cache: true,
+        parallel: true,
         // ecma: 5,
         // warnings: false,
         // ie8: false,
@@ -79,6 +119,7 @@ module.exports = {
           },
         },
       }),
+      new OptimizeCSSAssetsPlugin({}),
     ],
     runtimeChunk: false,
     splitChunks: {
@@ -94,6 +135,9 @@ module.exports = {
     },
   },
   plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'style.[contenthash].css',
+    }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
@@ -106,5 +150,12 @@ module.exports = {
       title: 'writenpost',
       template: 'webpack/template.html',
     }),
+    new CompressionPlugin({
+      algorithm: 'gzip',
+      test: /\.js$|\.css$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
+      threshold: 10240,
+      minRatio: 0.8,
+    }),
+    new WebpackMd5Hash(),
   ],
 }
