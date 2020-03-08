@@ -91,21 +91,21 @@ module.exports = {
     // },
   },
   plugins: [
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production'),
-      },
-    }),
+    // new webpack.DefinePlugin({
+    //   'process.env': {
+    //     NODE_ENV: JSON.stringify('production'),
+    //   },
+    // }),
     new HtmlWebpackPlugin({
       hash: true,
       filename: 'index.html',
       title: 'writenpost',
       template: 'webpack/template.html',
       inject: false,
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-      },
+      // minify: {
+      //   removeComments: true,
+      //   collapseWhitespace: true,
+      // },
     }),
     // new OfflinePlugin({
     //   ServiceWorker: {
