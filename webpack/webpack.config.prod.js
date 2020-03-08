@@ -1,9 +1,9 @@
 const { resolve } = require('path')
-// const webpack = require('webpack')
-// const HtmlWebpackPlugin = require('html-webpack-plugin')
-// const OfflinePlugin = require('offline-plugin')
-// const PreloadWebpackPlugin = require('preload-webpack-plugin')
-// const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const OfflinePlugin = require('offline-plugin')
+const PreloadWebpackPlugin = require('preload-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = (env, argv) => {
   return {
@@ -23,6 +23,17 @@ module.exports = (env, argv) => {
       filename: '[name].[chunkhash].js',
       path: resolve(__dirname, '../dist'),
       publicPath: '/',
+    },
+    mode: 'production',
+    stats: {
+      colors: false,
+      hash: true,
+      timings: true,
+      assets: true,
+      chunks: true,
+      chunkModules: true,
+      modules: true,
+      children: true,
     },
     module: {
       rules: [
@@ -54,48 +65,79 @@ module.exports = (env, argv) => {
         },
       ],
     },
-    plugins: [
-      // new webpack.optimize.ModuleConcatenationPlugin(),
-      // new webpack.DefinePlugin({
-      //   'process.env': {
-      //     NODE_ENV: JSON.stringify('production'),
-      //   },
-      // }),
-      // new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
-      // new HtmlWebpackPlugin({
-      //   hash: true,
-      //   filename: 'index.html',
-      //   title: 'writenpost',
-      //   template: 'webpack/template.html',
-      //   inject: false,
-      // }),
-      // new PreloadWebpackPlugin({
-      //   rel: 'preload',
-      //   as: 'script',
-      //   include: 'all',
-      // }),
-      // new OfflinePlugin({
-      //   ServiceWorker: {
-      //     navigateFallbackURL: '/',
-      //   },
-      //   AppCache: false,
-      // }),
-    ],
     optimization: {
-      minimize: true,
-      // minimizer: [
-      //   // we specify a custom UglifyJsPlugin here to get source maps in production
-      //   new UglifyJsPlugin({
-      //     cache: true,
-      //     parallel: true,
-      //     uglifyOptions: {
-      //       compress: false,
-      //       ecma: 6,
-      //       mangle: true,
-      //     },
-      //     sourceMap: true,
-      //   }),
-      // ],
+      minimizer: [
+        new UglifyJSPlugin({
+          sourceMap: true,
+          uglifyOptions: {
+            compress: {
+              inline: false,
+            },
+          },
+        }),
+      ],
+      runtimeChunk: false,
+      splitChunks: {
+        cacheGroups: {
+          default: false,
+          commons: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendor_app',
+            chunks: 'all',
+            minChunks: 2,
+          },
+        },
+      },
     },
+    plugins: [
+      new webpack.DefinePlugin({
+        'process.env': {
+          NODE_ENV: JSON.stringify('production'),
+        },
+      }),
+    ],
+    // plugins: [
+    //   // new webpack.optimize.ModuleConcatenationPlugin(),
+    //   // new webpack.DefinePlugin({
+    //   //   'process.env': {
+    //   //     NODE_ENV: JSON.stringify('production'),
+    //   //   },
+    //   // }),
+    //   // new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
+    //   // new HtmlWebpackPlugin({
+    //   //   hash: true,
+    //   //   filename: 'index.html',
+    //   //   title: 'writenpost',
+    //   //   template: 'webpack/template.html',
+    //   //   inject: false,
+    //   // }),
+    //   // new PreloadWebpackPlugin({
+    //   //   rel: 'preload',
+    //   //   as: 'script',
+    //   //   include: 'all',
+    //   // }),
+    //   // new OfflinePlugin({
+    //   //   ServiceWorker: {
+    //   //     navigateFallbackURL: '/',
+    //   //   },
+    //   //   AppCache: false,
+    //   // }),
+    // ],
+    // optimization: {
+    //   minimize: true,
+    //   minimizer: [
+    //     // we specify a custom UglifyJsPlugin here to get source maps in production
+    //     new UglifyJsPlugin({
+    //       cache: true,
+    //       parallel: true,
+    //       uglifyOptions: {
+    //         compress: false,
+    //         ecma: 6,
+    //         mangle: true,
+    //       },
+    //       sourceMap: true,
+    //     }),
+    //   ],
+    // },
   }
 }
