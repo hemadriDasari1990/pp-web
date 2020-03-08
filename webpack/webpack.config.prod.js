@@ -49,32 +49,7 @@ module.exports = {
       },
       {
         test: /\.(png|jpg|jpeg|gif|woff|woff2|svg)$/,
-        loders: [
-          {
-            loader: 'url-loader?limit=100000',
-          },
-          {
-            loader: 'img-loader',
-            options: {
-              plugins: [
-                imageminGifsicle({
-                  interlaced: false,
-                }),
-                imageminMozjpeg({
-                  progressive: true,
-                  arithmetic: false,
-                }),
-                imageminPngquant({
-                  floyd: 0.5,
-                  speed: 2,
-                }),
-                imageminSvgo({
-                  plugins: [{ removeTitle: true }, { convertPathData: false }],
-                }),
-              ],
-            },
-          },
-        ],
+        loader: 'url-loader?limit=100000',
       },
       {
         test: /\.(eot|ttf)$/,
