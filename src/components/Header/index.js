@@ -79,6 +79,7 @@ class Header extends React.Component {
       mobileMoreAnchorEl: null,
       isMobileMenuOpen: false,
       notifications: 0,
+      logout: false,
     }
   }
 
@@ -122,6 +123,9 @@ class Header extends React.Component {
   handleLogout = async () => {
     await new firebase.auth().signOut().then(async (user, error) => {
       await this.props.userLogout()
+      this.setState({
+        logout: true,
+      })
     })
     this.setState({
       isMobileMenuOpen: false,
@@ -195,7 +199,12 @@ class Header extends React.Component {
       createUserSuccess,
       createUserErrors,
     } = this.props
-    const { showPreferences, showNotification, notifications } = this.state
+    const {
+      showPreferences,
+      showNotification,
+      notifications,
+      logout,
+    } = this.state
     const mobileMenuId = 'primary-search-account-menu-mobile'
     return (
       <div className={classes.root}>
@@ -207,7 +216,7 @@ class Header extends React.Component {
               </a>
             </div>
 
-            {users && users.size && authenticated ? (
+            {users && users.size && authenticated && !logout ? (
               <div className={classes.search}>
                 <Search
                   users={users}
