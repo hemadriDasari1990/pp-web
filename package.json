@@ -32,7 +32,7 @@
   "bugs": {
     "url": "https://github.com/hemadriDasari1990/pp-web/issues"
   },
-  "homepage": "htttps://www.writenpost.com",
+  "homepage": ".",
   "devDependencies": {
     "@babel/core": "^7.8.7",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
