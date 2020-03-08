@@ -73,38 +73,78 @@ module.exports = {
     children: true,
   },
   optimization: {
-    minimizer: [
-      new UglifyJsPlugin({
-        sourceMap: true,
-        cache: true,
-        parallel: true,
-        // ecma: 5,
-        // warnings: false,
-        // ie8: false,
-        // safari10: false,
-        // dead_code: true,
-        // comments: false,
-        uglifyOptions: {
-          compress: {
-            inline: false,
-          },
-        },
-      }),
-      new OptimizeCSSAssetsPlugin({}),
-    ],
-    runtimeChunk: false,
+    namedModules: false,
+    namedChunks: false,
+    nodeEnv: 'production',
+    flagIncludedChunks: true,
+    occurrenceOrder: true,
+    sideEffects: true,
+    usedExports: true,
+    concatenateModules: true,
     splitChunks: {
       cacheGroups: {
-        default: false,
         commons: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendor_app',
+          name: 'vendor',
           chunks: 'all',
-          minChunks: 2,
         },
       },
+      minSize: 30000,
+      maxAsyncRequests: 5,
+      maxAsyncRequests: 3,
     },
+    noEmitOnErrors: true,
+    minimize: true,
+    minimizer: [
+      // we specify a custom UglifyJsPlugin here to get source maps in production
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        uglifyOptions: {
+          compress: false,
+          ecma: 6,
+          mangle: true,
+        },
+        sourceMap: true,
+      }),
+    ],
+    removeAvailableModules: true,
+    removeEmptyChunks: true,
+    mergeDuplicateChunks: true,
   },
+  // optimization: {
+  //   minimizer: [
+  //     new UglifyJsPlugin({
+  //       sourceMap: true,
+  //       cache: true,
+  //       parallel: true,
+  //       // ecma: 5,
+  //       // warnings: false,
+  //       // ie8: false,
+  //       // safari10: false,
+  //       // dead_code: true,
+  //       // comments: false,
+  //       uglifyOptions: {
+  //         compress: {
+  //           inline: false,
+  //         },
+  //       },
+  //     }),
+  //     new OptimizeCSSAssetsPlugin({}),
+  //   ],
+  //   runtimeChunk: false,
+  //   splitChunks: {
+  //     cacheGroups: {
+  //       default: false,
+  //       commons: {
+  //         test: /[\\/]node_modules[\\/]/,
+  //         name: 'vendor_app',
+  //         chunks: 'all',
+  //         minChunks: 2,
+  //       },
+  //     },
+  //   },
+  // },
   plugins: [
     new MiniCssExtractPlugin({
       filename: 'style.[contenthash].css',
