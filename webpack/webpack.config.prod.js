@@ -64,14 +64,14 @@ module.exports = {
   },
   optimization: {
     minimizer: [
-      new UglifyJSPlugin({
-        sourceMap: true,
-        uglifyOptions: {
-          compress: {
-            inline: false,
-          },
-        },
-      }),
+      // new UglifyJSPlugin({
+      //   sourceMap: true,
+      //   uglifyOptions: {
+      //     compress: {
+      //       inline: false,
+      //     },
+      //   },
+      // }),
     ],
     runtimeChunk: false,
     splitChunks: {
