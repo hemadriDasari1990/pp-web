@@ -67,12 +67,12 @@ module.exports = {
     minimizer: [
       new UglifyJsPlugin({
         sourceMap: true,
-        ecma: 5,
-        warnings: false,
-        ie8: false,
-        safari10: false,
-        dead_code: true,
-        comments: false,
+        // ecma: 5,
+        // warnings: false,
+        // ie8: false,
+        // safari10: false,
+        // dead_code: true,
+        // comments: false,
         uglifyOptions: {
           compress: {
             inline: false,
