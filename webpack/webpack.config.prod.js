@@ -93,7 +93,7 @@ module.exports = {
         NODE_ENV: JSON.stringify('production'),
       },
     }),
-    new webpack.optimize.UglifyJsPlugin(), //minify everything
+    // new webpack.optimize.UglifyJsPlugin(), //minify everything
     new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
     new webpack.optimize.CommonsChunkPlugin({
       names: ['vendor', 'manifest'],
