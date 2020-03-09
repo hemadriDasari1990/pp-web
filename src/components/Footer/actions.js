@@ -18,7 +18,7 @@ export const getFeedbacksSuccess = preferences => {
 
 export const getFeedbacksError = errors => {
   return {
-    type: action.GET_FEEDBACKS_FAILURE,
+    type: action.GET_FEEDBACKS_ERROR,
     loading: false,
     errors: errors,
   }
@@ -55,7 +55,7 @@ export const saveFeedbackSuccess = data => {
 
 export const saveFeedbackError = errors => {
   return {
-    type: action.SAVE_FEEDBACK_FAILURE,
+    type: action.SAVE_FEEDBACK_ERROR,
     loading: false,
     errors: errors,
   }

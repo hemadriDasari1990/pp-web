@@ -421,7 +421,13 @@ class PostList extends Component {
                         placement="bottom"
                       >
                         <Link to={`/post/${post._id}/reactions`}>
-                          <span style={{ marginTop: 2, color: '#606770' }}>
+                          <span
+                            style={{
+                              fontSize: 12,
+                              marginTop: 2,
+                              color: '#606770',
+                            }}
+                          >
                             {this.renderNames(post.reactions)}
                           </span>
                         </Link>

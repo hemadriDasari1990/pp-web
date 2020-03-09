@@ -31,7 +31,7 @@ export const createUserSuccess = user => {
 
 export const createUserError = errors => {
   return {
-    type: action.CREATE_USER_FAILURE,
+    type: action.CREATE_USER_ERROR,
     loading: false,
     errors: errors,
   }
@@ -71,7 +71,7 @@ export const getUserSuccess = user => {
 
 export const getUserError = errors => {
   return {
-    type: action.GET_USER_FAILURE,
+    type: action.GET_USER_ERROR,
     loading: false,
     errors: errors,
   }
@@ -108,7 +108,7 @@ export const getUsersSuccess = user => {
 
 export const getUsersError = errors => {
   return {
-    type: action.GET_USERS_FAILURE,
+    type: action.GET_USERS_ERROR,
     loading: false,
     errors: errors,
   }

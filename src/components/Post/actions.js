@@ -19,7 +19,7 @@ export const savePreferencesSuccess = user => {
 
 export const savePreferencesError = errors => {
   return {
-    type: action.SAVE_USER_PREFERENCES_FAILURE,
+    type: action.SAVE_USER_PREFERENCES_ERROR,
     loading: false,
     errors: errors,
   }
@@ -59,7 +59,7 @@ export const getUserPreferencesSuccess = preferences => {
 
 export const getUserPreferencesError = errors => {
   return {
-    type: action.GET_USER_PREFERENCES_FAILURE,
+    type: action.GET_USER_PREFERENCES_ERROR,
     loading: false,
     errors: errors,
   }
@@ -96,7 +96,7 @@ export const updateUserPreferencesSuccess = res => {
 
 export const updateUserPreferencesError = errors => {
   return {
-    type: action.UPDATE_USER_PREFERENCES_FAILURE,
+    type: action.UPDATE_USER_PREFERENCES_ERROR,
     loading: false,
     errors: errors,
   }
@@ -136,7 +136,7 @@ export const createPostSuccess = data => {
 
 export const createPostError = errors => {
   return {
-    type: action.CREATE_POST_FAILURE,
+    type: action.CREATE_POST_ERROR,
     loading: false,
     errors: errors,
   }
@@ -176,7 +176,7 @@ export const getReactionsSuccess = reactions => {
 
 export const getReactionsError = errors => {
   return {
-    type: action.GET_REACTIONS_FAILURE,
+    type: action.GET_REACTIONS_ERROR,
     loading: false,
     errors: errors,
   }
@@ -213,7 +213,7 @@ export const getSharesSuccess = shares => {
 
 export const getSharesError = errors => {
   return {
-    type: action.GET_SHARES_FAILURE,
+    type: action.GET_SHARES_ERROR,
     loading: false,
     errors: errors,
   }

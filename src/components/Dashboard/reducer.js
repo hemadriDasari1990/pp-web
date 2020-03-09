@@ -14,7 +14,7 @@ export const Dashboard = (state = Map(), action) => {
         .setIn(['posts', 'success'], action.data)
         .setIn(['posts', 'loading'], false)
 
-    case actions.GET_POSTS_BY_USER_POSTS_FAILURE:
+    case actions.GET_POSTS_BY_USER_ERROR:
       return state
         .setIn(['posts', 'errors'], action.errors)
         .setIn(['posts', 'loading'], false)

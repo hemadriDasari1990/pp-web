@@ -18,7 +18,7 @@ export const deletePostSuccess = data => {
 
 export const deletePostError = errors => {
   return {
-    type: action.DELETE_POST_FAILURE,
+    type: action.DELETE_POST_ERROR,
     loading: false,
     errors: errors,
   }
@@ -55,7 +55,7 @@ export const updatePostSuccess = data => {
 
 export const updatePostError = errors => {
   return {
-    type: action.UPDATE_POST_FAILURE,
+    type: action.UPDATE_POST_ERROR,
     loading: false,
     errors: errors,
   }
@@ -134,7 +134,7 @@ export const getPostsByUserSuccess = posts => {
 
 export const getPostsByUserError = errors => {
   return {
-    type: action.GET_POSTS_BY_USER_FAILURE,
+    type: action.GET_POSTS_BY_USER_ERROR,
     loading: false,
     errors: errors,
   }
