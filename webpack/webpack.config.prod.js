@@ -152,7 +152,7 @@ module.exports = {
   // },
   plugins: [
     new LodashModuleReplacementPlugin(),
-    webpack.optimize.ModuleConcatenationPlugin(),
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new MiniCssExtractPlugin({
       filename: 'style.[contenthash].css',
     }),
