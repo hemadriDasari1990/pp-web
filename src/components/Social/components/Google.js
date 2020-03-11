@@ -45,9 +45,9 @@ class Google extends Component {
           this.props.isAuthenticated(true)
           this.props.history.push('/dashboard')
         } else {
-          this.props.isAuthenticated(false)
+          this.props.isAuthenticated(true)
+          this.props.history.push('/dashboard')
         }
-        this.props.history.push('/dashboard')
       })
   }
 
