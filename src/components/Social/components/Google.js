@@ -39,7 +39,6 @@ class Google extends Component {
                   }
                 })
             } else {
-              alert('yes working', u)
               this.props.storeUser(u.data.user)
             }
           })
