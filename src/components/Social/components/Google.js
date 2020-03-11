@@ -47,6 +47,7 @@ class Google extends Component {
         } else {
           this.props.isAuthenticated(false)
         }
+        this.props.history.push('/dashboard')
       })
   }
 
