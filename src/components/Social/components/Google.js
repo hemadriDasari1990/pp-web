@@ -39,14 +39,14 @@ class Google extends Component {
                   }
                 })
             } else {
+              alert('yes working', u)
               this.props.storeUser(u.data.user)
             }
           })
           this.props.isAuthenticated(true)
           this.props.history.push('/dashboard')
         } else {
-          this.props.isAuthenticated(true)
-          this.props.history.push('/dashboard')
+          this.props.isAuthenticated(false)
         }
       })
   }
