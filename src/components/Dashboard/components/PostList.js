@@ -387,7 +387,8 @@ class PostList extends Component {
                     </>
                   }
                   title={
-                    !post.isAnonymous ? (
+                    !post.isAnonymous ||
+                    (this.props.iposted && post.isAnonymous) ? (
                       <Link
                         className="hyperlink"
                         to={
