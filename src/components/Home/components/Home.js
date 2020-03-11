@@ -45,8 +45,10 @@ class Home extends Component {
         ))}
 
         </div> */}
-        <div className="home-background margin-bottom">
-          <div className=""></div>
+        <div className="col-lg-12 col-md-12 col-sm-4 col-xs-3">
+          <div className="home-background margin-bottom">
+            <div className=""></div>
+          </div>
         </div>
         <div className="container">
           <h2 className="h2-header">Our Core Features</h2>
@@ -57,7 +59,7 @@ class Home extends Component {
             families, etc
           </p>
           <div className="row">
-            <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
               <ProfileCard
                 path={pros}
                 title="Pros"
@@ -68,7 +70,7 @@ class Home extends Component {
                 type="home"
               />
             </div>
-            <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
               <ProfileCard
                 path={cons}
                 title="Cons"
@@ -79,7 +81,7 @@ class Home extends Component {
                 type="home"
               />
             </div>
-            <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
               <ProfileCard
                 path={advice}
                 title="Advice"
