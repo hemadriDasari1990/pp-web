@@ -1,7 +1,7 @@
 export default {
   badge: {
     color: '#ffffff',
-    backgroundColor: '#ff5722',
+    backgroundColor: '#2a7fff',
     fontFamily: 'inherit',
   },
 }

@@ -1,6 +1,6 @@
 {
-  "name": "redux-react-starter",
-  "short_name": "React",
+  "name": "writenpost",
+  "short_name": "writenpost",
   "lang": "fr",
   "start_url": "/",
   "display": "standalone",
@@ -8,9 +8,9 @@
   "background_color": "#FFFFFF",
   "icons": [
     {
-      "src": "peoples-post1.png",
+      "src": "lib.svg",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/svg+xml"
     }
   ]
 }

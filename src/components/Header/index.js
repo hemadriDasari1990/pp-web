@@ -73,7 +73,6 @@ class Header extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      showPreferences: false,
       showNotification: false,
       isMobileMenuOpen: false,
       mobileMoreAnchorEl: null,
@@ -115,9 +114,9 @@ class Header extends React.Component {
 
   openPreferencesForm = () => {
     this.setState({
-      showPreferences: !this.state.showPreferences,
       isMobileMenuOpen: false,
     })
+    this.props.history.push(`${this.props.user.uid}/preferences`)
   }
 
   handleLogout = async () => {
@@ -199,12 +198,7 @@ class Header extends React.Component {
       createUserSuccess,
       createUserErrors,
     } = this.props
-    const {
-      showPreferences,
-      showNotification,
-      notifications,
-      logout,
-    } = this.state
+    const { showNotification, notifications, logout } = this.state
     const mobileMenuId = 'primary-search-account-menu-mobile'
     return (
       <div className={classes.root}>
@@ -298,12 +292,6 @@ class Header extends React.Component {
               </div>
             )}
             {showNotification && <Notifications openMenu={showNotification} />}
-            {showPreferences && (
-              <Preferences
-                openPreferencesForm={this.openPreferencesForm}
-                user={user}
-              />
-            )}
             {createUserSuccess &&
               createUserSuccess.size > 0 &&
               createUserSuccess.get('message') && (

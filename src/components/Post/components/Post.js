@@ -218,9 +218,6 @@ class Post extends Component {
                 />
                 <br />
                 <TextField
-                  required={
-                    preferences && preferences.cons == 'yes' ? true : false
-                  }
                   id="standard-required"
                   name="cons"
                   label="Cons"
@@ -233,9 +230,6 @@ class Post extends Component {
                 />
                 <br />
                 <TextField
-                  required={
-                    preferences && preferences.advice == 'yes' ? true : false
-                  }
                   id="standard-required"
                   name="advice"
                   label="Advice"
