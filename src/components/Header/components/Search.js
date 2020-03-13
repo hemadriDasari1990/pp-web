@@ -73,6 +73,16 @@ function getSuggestions(users, value) {
         }
         return keep
       })
+
+  // if (inputLength === 0) {
+  //   return [];
+  // }
+
+  // return users.filter(user => {
+  //     return user.label.split(' ').some(term => {
+  //         return term.toLowerCase().slice(0, inputLength) === inputValue;
+  //     })
+  // });
 }
 
 function getSuggestionValue(suggestion) {

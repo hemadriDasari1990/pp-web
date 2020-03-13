@@ -165,14 +165,19 @@ class Feedback extends Component {
     } = this.props
     return (
       <div className="container">
-        {user && (
+        <h1>Feedback</h1>
+        <p>
+          This page is designed for end users to help us improve the system by
+          sharing their user experience. In order to submit any form user has to
+          first login to the page using one of the social logins provided.{' '}
+        </p>
+        <p>
+          Users feedback is valuable for Us and we're always thankfull to them
+          :)
+        </p>
+        {user && feedbacks && (
           <>
-            <h2 className="h2-header">Feedback Form</h2>
-            <p>
-              Your feedback is valuable for us. Please share your feedback by
-              submitting below form, it will help us improve the system user
-              friendly.
-            </p>
+            <h2 className="h2-header">Form</h2>
             <div className="col-lg-12">
               <TextField
                 className="w-100"
@@ -314,16 +319,17 @@ class Feedback extends Component {
                 status="error"
               />
             ) : null}
-            <div className="col-lg-12"></div>
+            <div className="col-lg-12">
+              <h2>Feedbacks We Received</h2>
+              <p className="margin-bottom">
+                We are really thankful to below people who are helping us to
+                improve the system.
+              </p>
+            </div>
           </>
         )}
-        <h2>Feedbacks We Received</h2>
 
-        <p className="margin-bottom">
-          We are really thankful to below people who are helping us to improve
-          the system.
-        </p>
-        {!user && <p>*Please login to provide your feedback </p>}
+        {!user && <h4>*Please login to share your feedback </h4>}
         {saveFeedbackLoading && <Loader />}
         {feedbacks && <FeedbackList feedbacks={feedbacks.feedbacks} />}
         {feedbacksLoading && <Loader />}

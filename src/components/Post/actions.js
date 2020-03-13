@@ -110,7 +110,7 @@ export const updateUserPreferences = data => {
   }
   return dispatch => {
     dispatch(updateUserPreferencesRequest())
-    return fetch(config.URL_PREFIX + `/user/preferences/${data.uid}`, options)
+    return fetch(config.URL_PREFIX + `/user/preferences/${data.user}`, options)
       .then(response => response.json())
       .then(data => dispatch(updateUserPreferencesSuccess(data)))
       .catch(errors => {

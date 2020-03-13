@@ -1,6 +1,6 @@
 body {   
-    /* font-family: "Apercu",Avenir,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,"Calibri","Roboto",Arial,sans-serif; */
-    font-family: Helvetica, Arial, sans-serif;
+    font-family: "Apercu","Helvetica Neue",Helvetica,"Calibri","Roboto",Arial,sans-serif;
+    // font-family: Helvetica, Arial, sans-serif;
     color: #000;
     -webkit-text-size-adjust: 100%;
     -webkit-font-smoothing: antialiased;
@@ -76,6 +76,21 @@ body {
   background-color: #f54949 !important;
   border: none !important;
   height: 30px;
+}
+
+h1 {
+  font-size: 3.125rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: inherit;
+  color: #2a7fff;
+  display: block;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: bold;
 }
 
 h1.headline {
@@ -407,9 +422,9 @@ p {
 }
 
 code {
-  background-color: #dbdcdc;
-  font-size: 87.5%;
-  color: #0056b3;
+  background-color: #f8f9fa;
+  font-size: 87.5% !important;
+  color: #2a7fff !important;
   word-break: break-word;
   border-radius: 5px;
   padding: 2px;

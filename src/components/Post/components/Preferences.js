@@ -1,10 +1,4 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import Dialog from '@material-ui/core/Dialog'
-import DialogActions from '@material-ui/core/DialogActions'
-import DialogContent from '@material-ui/core/DialogContent'
-import DialogContentText from '@material-ui/core/DialogContentText'
-import DialogTitle from '@material-ui/core/DialogTitle'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -16,11 +10,13 @@ import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import Badge from '@material-ui/core/Badge'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Fab from '@material-ui/core/Fab'
 import Typography from '@material-ui/core/Typography'
+import Grid from '@material-ui/core/Grid'
+import PropTypes from 'prop-types'
+import Loader from '../../Loader/components/Loader'
 
 class Preferences extends Component {
   constructor(props) {
@@ -66,13 +62,10 @@ class Preferences extends Component {
   }
 
   handleClose = () => {
-    this.setState({
-      open: !this.state.open,
-    })
-    this.props.openPreferencesForm()
+    this.props.history.push('/dashboard')
   }
 
-  handleSave = () => {
+  handleSave = async () => {
     const { pros, cons, advice, error, buttonName, id, data } = this.state
     const { user } = this.props
     if (!pros || !cons || !advice) {
@@ -97,25 +90,30 @@ class Preferences extends Component {
             open: true,
           })
         } else {
-          this.props.updateUserPreferences({
+          await this.props.updateUserPreferences({
             pros,
             cons,
             advice,
             user: user._id,
             id: id,
           })
+          setTimeout(() => {
+            this.props.history.push('/dashboard')
+          }, 1000)
         }
       } else {
-        this.props.savePreferences({
+        await this.props.savePreferences({
           pros,
           cons,
           advice,
           user: user._id,
           count: 1,
         })
+        setTimeout(() => {
+          this.props.history.push('/dashboard')
+        }, 1000)
       }
     }
-    this.props.openPreferencesForm()
   }
 
   render() {
@@ -141,98 +139,115 @@ class Preferences extends Component {
     } = this.state
     return (
       <React.Fragment>
-        <Dialog
-          open={open}
-          onClose={() => this.handleClose()}
-          aria-labelledby="responsive-dialog-title"
-        >
-          <DialogTitle id="responsive-dialog-title">Preferences</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Save your preferences so that people will think twice before
-              posting something for you.
-            </DialogContentText>
-            <br />
+        <div className="container">
+          <h1>Preferences</h1>
+          <h5>
+            Save your preferences so that people will think twice before they
+            write to you.
+          </h5>
+          <p>
+            Preferences are important for your profile because, when they want
+            to write you they will look at your preferences and write you as per
+            preferences. This will help people know your interests
+          </p>
+          {!savePreferencesLoading || !updatePreferencesLoading ? (
             <List>
               <ListItem>
-                <ListItemIcon></ListItemIcon>
-                <ListItemText primary="Would you like to hear pros?" />
-                <ListItemSecondaryAction>
-                  <RadioGroup
-                    aria-label="pros"
-                    name="pros"
-                    value={pros}
-                    onChange={this.handleInput}
-                    row
-                  >
-                    <FormControlLabel
-                      value="yes"
-                      control={<Radio color="primary" />}
-                      label="Yes"
-                    />
-                    <FormControlLabel
-                      value="no"
-                      control={<Radio color="primary" />}
-                      label="No"
-                    />
-                  </RadioGroup>
-                </ListItemSecondaryAction>
+                <Grid container direction="row" spacing={1}>
+                  <Grid item xs={6}>
+                    <ListItemText primary="Pros" />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <ListItemSecondaryAction>
+                      <RadioGroup
+                        aria-label="pros"
+                        name="pros"
+                        value={pros}
+                        onChange={this.handleInput}
+                        row
+                      >
+                        <FormControlLabel
+                          value="yes"
+                          control={<Radio color="primary" />}
+                          label="Interested"
+                        />
+                        <FormControlLabel
+                          value="no"
+                          control={<Radio color="primary" />}
+                          label="Not Interested"
+                        />
+                      </RadioGroup>
+                    </ListItemSecondaryAction>
+                  </Grid>
+                </Grid>
               </ListItem>
               <ListItem>
-                <ListItemIcon></ListItemIcon>
-                <ListItemText primary="Would you like to hear cons?" />
-                <ListItemSecondaryAction>
-                  <RadioGroup
-                    aria-label="cons"
-                    name="cons"
-                    value={cons}
-                    onChange={this.handleInput}
-                    row
-                  >
-                    <FormControlLabel
-                      value="yes"
-                      control={<Radio color="primary" />}
-                      label="Yes"
-                    />
-                    <FormControlLabel
-                      value="no"
-                      control={<Radio color="primary" />}
-                      label="No"
-                    />
-                  </RadioGroup>
-                </ListItemSecondaryAction>
+                <Grid container direction="row" spacing={1}>
+                  <Grid item xs={6}>
+                    <ListItemText primary="Cons" />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <ListItemSecondaryAction>
+                      <RadioGroup
+                        aria-label="cons"
+                        name="cons"
+                        value={cons}
+                        onChange={this.handleInput}
+                        row
+                      >
+                        <FormControlLabel
+                          value="yes"
+                          control={<Radio color="primary" />}
+                          label="Interested"
+                        />
+                        <FormControlLabel
+                          value="no"
+                          control={<Radio color="primary" />}
+                          label="Not Interested"
+                        />
+                      </RadioGroup>
+                    </ListItemSecondaryAction>
+                  </Grid>
+                </Grid>
               </ListItem>
               <ListItem>
-                <ListItemIcon></ListItemIcon>
-                <ListItemText primary="Would you like to hear advice?" />
-                <ListItemSecondaryAction>
-                  <RadioGroup
-                    aria-label="advice"
-                    name="advice"
-                    value={advice}
-                    onChange={this.handleInput}
-                    row
-                  >
-                    <FormControlLabel
-                      value="yes"
-                      control={<Radio color="primary" />}
-                      label="Yes"
-                    />
-                    <FormControlLabel
-                      value="no"
-                      control={<Radio color="primary" />}
-                      label="No"
-                    />
-                  </RadioGroup>
-                </ListItemSecondaryAction>
+                <Grid container direction="row" spacing={1}>
+                  <Grid item xs={6}>
+                    <ListItemText primary="Advice" />
+                  </Grid>
+                  <Grid item xs={6}>
+                    <ListItemSecondaryAction>
+                      <RadioGroup
+                        aria-label="advice"
+                        name="advice"
+                        value={advice}
+                        onChange={this.handleInput}
+                        row
+                      >
+                        <FormControlLabel
+                          value="yes"
+                          control={<Radio color="primary" />}
+                          label="Interested"
+                        />
+                        <FormControlLabel
+                          value="no"
+                          control={<Radio color="primary" />}
+                          label="Not Interested"
+                        />
+                      </RadioGroup>
+                    </ListItemSecondaryAction>
+                  </Grid>
+                </Grid>
               </ListItem>
             </List>
-            <Badge color="secondary" badgeContent={count}>
-              <Typography>Times you updated your preferences </Typography>
-            </Badge>
-          </DialogContent>
-          <DialogActions>
-            <Badge badgeContent={count}>
+          ) : (
+            <Loader />
+          )}
+          <Badge color="primary" badgeContent={count}>
+            <Typography>Times you updated your preferences </Typography>
+          </Badge>
+          <div style={{ float: 'right' }}>
+            <Badge style={{ marginRight: 30 }} badgeContent={count}>
               <Fab
                 variant="extended"
                 color="primary"
@@ -250,26 +265,22 @@ class Preferences extends Component {
             >
               Cancel
             </Fab>
-          </DialogActions>
-        </Dialog>
-        {!savePreferencesLoading &&
-        savePreferencesSuccess &&
-        savePreferencesSuccess.size > 0 ? (
+          </div>
+        </div>
+        {!savePreferencesLoading && savePreferencesSuccess ? (
           <CustomizedSnackbars
             open={true}
-            message={savePreferencesSuccess.get('message')}
+            message="Preferences are updated successfully"
             status="success"
           />
         ) : null}
         {error && (
           <CustomizedSnackbars open={open} message={message} status={status} />
         )}
-        {!updatePreferencesLoading &&
-        updatePreferencesSuccess &&
-        updatePreferencesSuccess.size > 0 ? (
+        {!updatePreferencesLoading && updatePreferencesSuccess ? (
           <CustomizedSnackbars
             open={true}
-            message={updatePreferencesSuccess.get('message')}
+            message="Preferences are updated successfully"
             status="success"
           />
         ) : null}

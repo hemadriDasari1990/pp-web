@@ -27,6 +27,7 @@ import Developers from './Footer/components/developers'
 import Careers from './Footer/components/careers'
 import ReactionsList from './Reactions/components/List'
 import SharesList from './Shares/components/List'
+import Preferences from './Post/components/Preferences'
 
 class App extends Component {
   constructor(props) {
@@ -111,6 +112,11 @@ class App extends Component {
                 authenticated={authenticated}
                 path="/post/:id/shares"
                 component={() => <SharesList />}
+              />
+              <PrivateRoute
+                authenticated={authenticated}
+                path="/:id/preferences"
+                component={() => <Preferences />}
               />
               <Route path="/about" component={About} />
               <Route path="/feedback" component={Feedback} />
