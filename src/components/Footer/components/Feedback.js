@@ -293,6 +293,7 @@ class Feedback extends Component {
                 color="primary"
                 size="small"
                 onClick={() => this.handleSubmit()}
+                className="mr-10"
               >
                 Submit
               </Fab>

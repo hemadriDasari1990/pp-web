@@ -14,9 +14,7 @@ class Careers extends Component {
       <React.Fragment>
         <div className="container">
           <h2 className="h2-header">Careers</h2>
-          <h4 className="margin-bottom">
-            Help us build a social platform that helps our society.
-          </h4>
+          <p>Help us build a social platform that helps our society.</p>
           <h2 className="margin-bottom">Working Here</h2>
           <p>
             Billions of people rely on writenpost to post information about
