@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const OfflinePlugin = require('offline-plugin')
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
-// const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -17,7 +17,7 @@ module.exports = {
       'redux-thunk',
       'emotion',
       'moment',
-      'material-ui',
+      'material-ui'
     ],
   },
   output: {
@@ -51,32 +51,19 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader'],
-        // use: ExtractTextPlugin.extract({
-        //   fallback: 'style-loader',
-        //   use: [
-        //     {
-        //       loader: 'css-loader',
-        //       options: {
-        //         sourceMap: true,
-        //       },
-        //     },
-        //     {
-        //       loader: 'sass-loader',
-        //       options: {
-        //         sourceMap: true,
-        //       },
-        //     },
-        //   ],
-        // }),
+        exclude: /node_modules/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: [require.resolve('css-loader'), require.resolve('sass-loader')],
+        })
       },
     ],
   },
   plugins: [
-    // new ExtractTextPlugin('app.css'),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new ExtractTextPlugin('app.css'),
+    // new webpack.NoEmitOnErrorsPlugin(),
+    // new webpack.optimize.OccurrenceOrderPlugin(),
+    // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
@@ -90,12 +77,12 @@ module.exports = {
         pure_getters: true,
         unsafe: true,
         unsafe_comps: true,
-        screw_ie8: true,
+        screw_ie8: true
       },
       output: {
         comments: false,
       },
-      exclude: [/\.min\.js$/gi], // skip pre-minified libs
+      exclude: [/\.min\.js$/gi] // skip pre-minified libs
     }), //minify everything
     new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
     new webpack.optimize.CommonsChunkPlugin({
