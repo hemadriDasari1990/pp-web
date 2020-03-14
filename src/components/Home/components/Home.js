@@ -68,6 +68,7 @@ class Home extends Component {
                 button={true}
                 buttonName="Pros"
                 type="home"
+                routePath="/pros"
               />
             </div>
             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
@@ -79,6 +80,7 @@ class Home extends Component {
                 button={true}
                 buttonName="Cons"
                 type="home"
+                routePath="/cons"
               />
             </div>
             <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
@@ -90,6 +92,7 @@ class Home extends Component {
                 button={true}
                 buttonName="Advice"
                 type="home"
+                routePath="/advice"
               />
             </div>
           </div>

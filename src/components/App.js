@@ -28,6 +28,9 @@ import Careers from './Footer/components/careers'
 import ReactionsList from './Reactions/components/List'
 import SharesList from './Shares/components/List'
 import Preferences from './Post/components/Preferences'
+import Pros from './Home/components/Pros'
+import Cons from './Home/components/Cons'
+import Advice from './Home/components/Advice'
 
 class App extends Component {
   constructor(props) {
@@ -123,6 +126,9 @@ class App extends Component {
               <Route path="/location" component={Location} />
               <Route path="/developers" component={Developers} />
               <Route path="/careers" component={Careers} />
+              <Route path="/pros" component={Pros} />
+              <Route path="/cons" component={Cons} />
+              <Route path="/advice" component={Advice} />
             </Switch>
           </div>
           <Footer authenticated={authenticated} />
