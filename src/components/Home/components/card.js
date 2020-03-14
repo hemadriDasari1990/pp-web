@@ -8,6 +8,8 @@ import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 const styles = theme => ({
   card: {},
@@ -21,6 +23,10 @@ const styles = theme => ({
 })
 
 class ProfileCard extends React.Component {
+
+  handleButton = path => {
+    this.props.history.push(path);
+  }
   render() {
     const {
       classes,
@@ -34,6 +40,7 @@ class ProfileCard extends React.Component {
       buttonName,
       buttonOneName,
       type,
+      routePath
     } = this.props
     return (
       <Card className={classes.card}>
@@ -60,17 +67,26 @@ class ProfileCard extends React.Component {
         </CardActionArea>
         {button && (
           <CardActions style={{ marginTOP: 20 }}>
-            <Button size="small" color="primary" target="_blank" href={fbPath}>
+            {fbPath && !routePath && <Button size="small" color="primary" target="_blank" href={fbPath}>
               {buttonName}
-            </Button>
-            <Button
+            </Button>}
+            { linkedinPath && !routePath && <Button
               size="small"
               color="primary"
               target="_blank"
               href={linkedinPath}
             >
               {buttonOneName}
-            </Button>
+            </Button>}
+
+            { routePath && <Button
+              size="small"
+              color="primary"
+              target="_blank"
+              onClick={() => this.handleButton(routePath)}
+            >
+              {buttonName}
+            </Button>}
           </CardActions>
         )}
       </Card>
@@ -78,8 +94,10 @@ class ProfileCard extends React.Component {
   }
 }
 
-Card.propTypes = {
+ProfileCard.propTypes = {
   classes: PropTypes.object.isRequired,
 }
 
-export default withStyles(styles)(ProfileCard)
+export default withRouter(
+  connect(null, null)(withStyles(styles)(ProfileCard)),
+)
