@@ -73,12 +73,10 @@ module.exports = {
     ],
   },
   plugins: [
-    // new ExtractTextPlugin('../dist/assets/css/app.css', {
-    //   allChunks: true,
-    // }),
+    new ExtractTextPlugin('app.css'),
     // new webpack.NoEmitOnErrorsPlugin(),
     // new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     // new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
