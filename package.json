@@ -4,13 +4,14 @@
   "description": "This is write and post application",
   "scripts": {
     "start": "webpack-dev-server --open --config webpack/webpack.config.dev.js",
-    "build-prod": "rm -rf dist && webpack --config webpack/webpack.config.prod.js  && cp -a assets/ dist/",
+    "build-prod": "rm -rf dist && webpack -p --config webpack/webpack.config.prod.js  && cp -a assets/ dist/",
     "build-dev": "rm -rf dist && webpack --config webpack/webpack.config.dev.js  && cp -a assets/ dist/",
     "prod": "serve ./dist -s",
     "lint": "eslint src",
     "ngrok": "ngrok http -region eu 8080",
     "test": "jest",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "report": "npm run build-prod --withReport true"
   },
   "lint-staged": {
     "*.js": [
@@ -46,6 +47,7 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
+    "extract-text-webpack-plugin": "^3.0.2",
     "html-webpack-plugin": "^2.29.0",
     "husky": "^0.14.3",
     "jest": "^21.1.0",
@@ -55,6 +57,7 @@
     "react-test-renderer": "^16.0.0",
     "serve": "^6.0.2",
     "webpack": "^3.1.0",
+    "webpack-bundle-analyzer": "^3.6.1",
     "webpack-dev-server": "^2.5.1"
   },
   "dependencies": {
@@ -75,7 +78,7 @@
     "html-loader": "^0.5.5",
     "immutable": "^4.0.0-rc.12",
     "install": "^0.12.2",
-    "lodash": "^4.17.4",
+    "lodash.deburr": "^4.1.0",
     "material-ui": "^0.20.2",
     "moment": "^2.24.0",
     "node-sass": "^4.13.1",
