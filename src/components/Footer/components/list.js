@@ -75,7 +75,7 @@ class ListComponent extends Component {
                       className={classes.inline}
                       color="textPrimary"
                     >
-                      Weesteem is not a "that's just the way it is" kind of
+                      Writenpost is not a "that's just the way it is" kind of
                       place.
                     </Typography>
                   </React.Fragment>

@@ -141,10 +141,10 @@ class Preferences extends Component {
       <React.Fragment>
         <div className="container">
           <h1>Preferences</h1>
-          <h5>
+          <p>
             Save your preferences so that people will think twice before they
-            write to you.
-          </h5>
+            write you.
+          </p>
           <p>
             Preferences are important for your profile because, when they want
             to write you they will look at your preferences and write you as per

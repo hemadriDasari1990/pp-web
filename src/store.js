@@ -1,7 +1,6 @@
 import { createStore, compose, applyMiddleware } from 'redux'
 import { Map } from 'immutable'
 import thunk from 'redux-thunk'
-import throttle from 'lodash/throttle'
 import rootReducer from './reducers'
 // import { loginWithToken } from './actions'
 // import { saveState, loadState } from './helpers'

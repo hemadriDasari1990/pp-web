@@ -19,7 +19,6 @@ import Avatar from '@material-ui/core/Avatar'
 import * as actions from '../../actions/index'
 import CustomizedSnackbars from '../Snackbar/components/Snackbar'
 import Fab from '@material-ui/core/Fab'
-import Preferences from '../Post/components/Preferences'
 import Search from './components/Search'
 import PowerOff from '@material-ui/icons/PowerSettingsNew'
 import Adjust from '@material-ui/icons/Adjust'
@@ -27,6 +26,7 @@ import firebase from '../../firebase'
 import Notifications from './components/Notifications'
 import * as dashboardActions from '../Dashboard/actions'
 import libIcon from '../../../assets/lib.svg'
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 
 const styles = theme => ({
   avatar: {
@@ -76,7 +76,6 @@ class Header extends React.Component {
       showNotification: false,
       isMobileMenuOpen: false,
       mobileMoreAnchorEl: null,
-      isMobileMenuOpen: false,
       notifications: 0,
       logout: false,
     }
@@ -152,33 +151,46 @@ class Header extends React.Component {
 
   createPost = newPost => {}
 
+  handleListKeyDown = event => {
+    if (event.key === 'Tab') {
+      event.preventDefault()
+      this.setState({
+        isMobileMenuOpen: false,
+      })
+    }
+  }
+
   renderMobileMenu = () => {
     const mobileMenuId = 'primary-search-account-menu-mobile'
     return (
-      <Menu
-        anchorEl={this.state.mobileMoreAnchorEl}
-        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        id={mobileMenuId}
-        keepMounted
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        open={this.state.isMobileMenuOpen}
-        onClose={this.handleMobileMenuClose}
-      >
-        <MenuItem onClick={() => this.showNotifications()}>
-          Notifications
-        </MenuItem>
-        <MenuItem onClick={() => this.openPreferencesForm()}>
-          Preferences
-        </MenuItem>
+      <ClickAwayListener onClickAway={this.handleMobileMenuClose}>
+        <Menu
+          anchorEl={this.state.mobileMoreAnchorEl}
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          id={mobileMenuId}
+          keepMounted
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          open={this.state.isMobileMenuOpen}
+          onClose={this.handleMobileMenuClose}
+          onKeyDown={this.handleListKeyDown}
+        >
+          <MenuItem onClick={() => this.showNotifications()}>
+            Notifications
+          </MenuItem>
+          <MenuItem onClick={() => this.openPreferencesForm()}>
+            Preferences
+          </MenuItem>
 
-        <MenuItem onClick={() => this.handleLogout()}>Logout</MenuItem>
-      </Menu>
+          <MenuItem onClick={() => this.handleLogout()}>Logout</MenuItem>
+        </Menu>
+      </ClickAwayListener>
     )
   }
 
   handleMobileMenuClose = () => {
     this.setState({
       mobileMoreAnchorEl: null,
+      isMobileMenuOpen: false,
     })
   }
 
@@ -205,9 +217,11 @@ class Header extends React.Component {
         <AppBar style={{ backgroundColor: '#ffffff' }} position="fixed">
           <Toolbar>
             <div className="row">
-              <a href="/" style={{ cursor: 'pointer' }}>
-                <img src={libIcon} height={50} width={50} />
-              </a>
+              <Tooltip title="The Writenpost" aria-label="writenpost">
+                <a href="/" style={{ cursor: 'pointer' }}>
+                  <img src={libIcon} height={50} width={50} />
+                </a>
+              </Tooltip>
             </div>
 
             {users && users.size && authenticated && !logout ? (
@@ -310,9 +324,9 @@ class Header extends React.Component {
                   status={'error'}
                 />
               )}
+            {this.renderMobileMenu()}
           </Toolbar>
         </AppBar>
-        {this.renderMobileMenu()}
       </div>
     )
   }
