@@ -52,33 +52,33 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        // loaders: ['style-loader', 'css-loader', 'sass-loader'],
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: true,
-              },
-            },
-            {
-              loader: 'sass-loader',
-              options: {
-                sourceMap: true,
-              },
-            },
-          ],
-        }),
+        loaders: ['style-loader', 'css-loader', 'sass-loader'],
+        // use: ExtractTextPlugin.extract({
+        //   fallback: 'style-loader',
+        //   use: [
+        //     {
+        //       loader: 'css-loader',
+        //       options: {
+        //         sourceMap: true,
+        //       },
+        //     },
+        //     {
+        //       loader: 'sass-loader',
+        //       options: {
+        //         sourceMap: true,
+        //       },
+        //     },
+        //   ],
+        // }),
       },
     ],
   },
   plugins: [
-    new ExtractTextPlugin('../dist/assets/css/app.css', {
-      allChunks: true,
-    }),
+    // new ExtractTextPlugin('../dist/assets/css/app.css', {
+    //   allChunks: true,
+    // }),
     // new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.OccurrenceOrderPlugin(),
+    // new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     // new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
