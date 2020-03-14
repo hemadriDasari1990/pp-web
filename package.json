@@ -10,7 +10,7 @@
     "lint": "eslint src",
     "ngrok": "ngrok http -region eu 8080",
     "test": "jest",
-    "precommit": "lint-staged",
+    "precommit": "lint-staged"
   },
   "lint-staged": {
     "*.js": [
