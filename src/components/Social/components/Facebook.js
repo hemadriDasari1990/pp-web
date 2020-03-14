@@ -10,7 +10,8 @@ import Avatar from '@material-ui/core/Avatar'
 import Fab from '@material-ui/core/Fab'
 
 class Facebook extends Component {
-  auth = async () => {
+  auth = async (e) => {
+    e.preventDefault();
     await new firebase.auth()
       .signInWithPopup(new firebase.auth.FacebookAuthProvider())
       .then(async (user, error) => {
@@ -52,7 +53,7 @@ class Facebook extends Component {
     return (
       <>
         <Tooltip title="Login With Facebook" aria-label="Add">
-          <Fab size="small" onClick={() => this.auth()} aria-label="Login">
+          <Fab size="small" onClick={e => this.auth(e)} aria-label="Login">
             <Avatar
               aria-haspopup="true"
               alt="Avatar not available"
