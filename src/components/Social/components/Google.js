@@ -16,7 +16,8 @@ const styles = theme => ({
 })
 
 class Google extends Component {
-  auth = async () => {
+  auth = async (e) => {
+    e.preventDefault();
     await new firebase.auth()
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
       .then(async (user, error) => {
@@ -55,7 +56,7 @@ class Google extends Component {
     return (
       <>
         <Tooltip title="Login With Google" aria-label="Add">
-          <Fab size="small" onClick={() => this.auth()} aria-label="Login">
+          <Fab size="small" onClick={e => this.auth(e)} aria-label="Login">
             <Avatar
               aria-haspopup="true"
               alt="Avatar not available"
