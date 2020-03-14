@@ -1,12 +1,12 @@
 import firebase from 'firebase'
 
 const config = {
-  apiKey: 'AIzaSyCROwIJFiz6TcnlPxHkRaFXecpd9JjdQ_M',
-  authDomain: 'netext-4031.firebaseapp.com',
-  databaseURL: 'https://netext-4031.firebaseio.com',
-  projectId: 'netext-4031',
-  storageBucket: 'netext-4031.appspot.com',
-  messagingSenderId: '588015131238',
+  apiKey: 'AIzaSyDvL5ptWdr_K7k3sWHavyyKfgZqxEgvUO0',
+  authDomain: 'writenpost-hemadri.firebaseapp.com',
+  databaseURL: 'https://writenpost-hemadri.firebaseio.com',
+  projectId: 'writenpost-hemadri',
+  storageBucket: 'writenpost-hemadri.appspot.com',
+  messagingSenderId: '1070588863075',
 }
 
 if (!firebase.apps.length) {
