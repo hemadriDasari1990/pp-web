@@ -4,7 +4,7 @@
   "description": "This is write and post application",
   "scripts": {
     "start": "webpack-dev-server --open --config webpack/webpack.config.dev.js",
-    "build-prod": "rm -rf dist && webpack -p --config webpack/webpack.config.prod.js  && cp -a assets/ dist/",
+    "build-prod": "rm -rf dist && webpack --config webpack/webpack.config.prod.js  && cp -a assets/ dist/",
     "build-dev": "rm -rf dist && webpack --config webpack/webpack.config.dev.js  && cp -a assets/ dist/",
     "prod": "serve ./dist -s",
     "lint": "eslint src",

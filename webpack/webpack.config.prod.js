@@ -3,7 +3,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const OfflinePlugin = require('offline-plugin')
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+// const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -51,33 +51,33 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        // loaders: ['style-loader', 'css-loader', 'sass-loader'],
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: true,
-              },
-            },
-            {
-              loader: 'sass-loader',
-              options: {
-                sourceMap: true,
-              },
-            },
-          ],
-        }),
+        loaders: ['style-loader', 'css-loader', 'sass-loader'],
+        // use: ExtractTextPlugin.extract({
+        //   fallback: 'style-loader',
+        //   use: [
+        //     {
+        //       loader: 'css-loader',
+        //       options: {
+        //         sourceMap: true,
+        //       },
+        //     },
+        //     {
+        //       loader: 'sass-loader',
+        //       options: {
+        //         sourceMap: true,
+        //       },
+        //     },
+        //   ],
+        // }),
       },
     ],
   },
   plugins: [
-    new ExtractTextPlugin('app.css'),
-    // new webpack.NoEmitOnErrorsPlugin(),
-    // new webpack.optimize.OccurrenceOrderPlugin(),
-    // new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
-    // new webpack.optimize.ModuleConcatenationPlugin(),
+    // new ExtractTextPlugin('app.css'),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: JSON.stringify('production'),
