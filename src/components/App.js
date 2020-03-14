@@ -14,7 +14,7 @@ import Header from './Header/index'
 import Footer from './Footer/components/Footer'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import firebase from '../firebase'
+import firebase from '../firebase/index'
 import theme from './theme'
 import UserProfileDashboard from './UserProfile/components/Dashboard'
 // import { askForPermissionToReceiveNotifications } from '../firebase/push-notification';
