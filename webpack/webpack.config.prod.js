@@ -4,8 +4,6 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const OfflinePlugin = require('offline-plugin')
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin
 const withReport = process.env.npm_config_withReport
 
 module.exports = {
@@ -122,7 +120,6 @@ module.exports = {
       },
       AppCache: false,
     }),
-    withReport ? new BundleAnalyzerPlugin() : '',
   ],
   externals: {
     // require("jquery") is external and available
