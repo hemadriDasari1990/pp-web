@@ -11,7 +11,6 @@
     "ngrok": "ngrok http -region eu 8080",
     "test": "jest",
     "precommit": "lint-staged",
-    "report": "npm run build-prod --withReport true"
   },
   "lint-staged": {
     "*.js": [
@@ -57,7 +56,6 @@
     "react-test-renderer": "^16.0.0",
     "serve": "^6.0.2",
     "webpack": "^3.1.0",
-    "webpack-bundle-analyzer": "^3.6.1",
     "webpack-dev-server": "^2.5.1"
   },
   "dependencies": {
