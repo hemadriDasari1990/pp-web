@@ -12,7 +12,6 @@ class Careers extends Component {
     const { classes } = this.props
     return (
       <React.Fragment>
-        <div className="container">
           <h2 className="h2-header">Careers</h2>
           <p>Help us build a social platform that helps our society.</p>
           <h2 className="margin-bottom">Working Here</h2>
@@ -40,7 +39,6 @@ class Careers extends Component {
           </p>
 
           <ListComponent />
-        </div>
       </React.Fragment>
     )
   }

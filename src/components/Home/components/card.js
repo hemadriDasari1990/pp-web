@@ -79,7 +79,7 @@ class ProfileCard extends React.Component {
               <Button
                 className={classes.button}
                 size="small"
-                color="secondary"
+                color="primary"
                 target="_blank"
                 href={fbPath}
               >

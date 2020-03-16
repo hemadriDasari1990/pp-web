@@ -45,7 +45,6 @@ class Developers extends Component {
     const { classes } = this.props
     return (
       <React.Fragment>
-        <div className="container">
           <h2 className="h2-header">We are small team of developers</h2>
           <p>
             We started this project as an experienment as we wanted to build
@@ -132,7 +131,6 @@ class Developers extends Component {
               />
             </ListItem>
           </List>
-        </div>
       </React.Fragment>
     )
   }
