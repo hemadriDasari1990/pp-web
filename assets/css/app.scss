@@ -18,7 +18,7 @@ body {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  margin-top:69px;
+  margin-top:30px;
   min-height: 1000px;
 }
 
@@ -432,6 +432,28 @@ code {
 
 .mr-10 {
   margin-right: 10px !important;
+}
+
+.actions-text {
+  margin-top: 2px;
+  margin-left: 2px;
+  color: inherit;
+  display: block;
+  line-height: 16px;
+  max-height: 16px;
+  overflow: hidden;
+  font-weight: 500;
+  color: #1165e5;
+}
+
+.actions-align {
+  display: flex;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.v-align-middle {
+  vertical-align: middle!important;
 }
 
 
