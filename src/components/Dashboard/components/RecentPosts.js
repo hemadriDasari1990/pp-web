@@ -47,7 +47,6 @@ class RecentPosts extends Component {
       ireceived,
       user,
     } = this.props
-    console.log('user', user)
     return (
       <React.Fragment>
         <Card style={{ width: '100%', maxWidth: '100%' }}>
@@ -80,7 +79,7 @@ class RecentPosts extends Component {
                           primary={
                             user && user._id === post.postedBy._id
                               ? 'You'
-                              : post.postedBy.userName
+                              : post.postedBy.userName 
                           }
                           secondary={
                             <React.Fragment>

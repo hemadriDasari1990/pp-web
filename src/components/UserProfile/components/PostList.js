@@ -323,14 +323,21 @@ class PostList extends Component {
                     }
                     title={
                       !post.isAnonymous ? (
-                        <Link
-                          className="hyperlink"
-                          to={`/profile/${post.postedBy._id}`}
-                        >
-                          {user && user._id === post.postedBy._id
-                            ? 'You'
-                            : post.postedBy.userName}
-                        </Link>
+                        <>
+                          <Link
+                            className="hyperlink"
+                            to={`/profile/${post.postedBy._id}`}
+                          >
+                            {user && user._id === post.postedBy._id
+                              ? 'You'
+                              : post.postedBy.userName}
+                          </Link>
+                          {post.postedBy.likes.length
+                            ? ' ' +
+                              formateNumber(post.postedBy.likes.length) +
+                              ' Likes'
+                            : ''}
+                        </>
                       ) : (
                         <b>Annonymous User</b>
                       )
