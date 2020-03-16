@@ -12,6 +12,13 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemText from '@material-ui/core/ListItemText'
 import Avatar from '@material-ui/core/Avatar'
 import * as globalActions from '../../../actions/index'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import userLike from '../../../../assets/user-like.svg'
+import userLiked from '../../../../assets/user-liked.svg'
+import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
+import * as actions from '../actions'
+import { Map } from 'immutable'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -19,33 +26,77 @@ class Dashboard extends Component {
     this.state = {
       posts: [],
       user: {},
+      userLikeFlag: false,
     }
   }
 
-  componentDidMount() {
-    this.props.getUser(this.props.match.params.id).then(res => {
+  async componentDidMount() {
+    await this.props.getUser(this.props.match.params.id).then(res => {
       this.setState({
         user: res.data ? res.data.user : {},
       })
     })
+    await this.getUserLike()
+  }
+
+  handleLike = async () => {
+    this.props.user
+      ? await this.props
+          .createOrUpdateUserLike({
+            user: this.props.match.params.id,
+            likedBy: this.props.user._id,
+            like: true,
+          })
+          .then(res => {
+            this.getUserLike()
+          })
+      : null
+  }
+
+  getUserLike = () => {
+    this.props
+      .getUserLike(this.props.user._id, this.props.match.params.id)
+      .then(res => {
+        res.data
+          ? this.setState({
+              userLikeFlag: true,
+            })
+          : null
+      })
+      .catch(err => {
+        this.setState({
+          userLikeFlag: false,
+        })
+      })
   }
 
   render() {
     const { classes } = this.props
-    const { posts, user } = this.state
+    const { posts, user, userLikeFlag } = this.state
     return (
       <React.Fragment>
         <div className="container">
           <div className="row">
             <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
               <List component="nav" aria-label="main mailbox folders">
-                <ListItem button onClick={event => this.handleApproved(event)}>
+                <ListItem button>
                   <ListItemAvatar>
                     <Avatar src={user ? user.photoURL : ''} />
                   </ListItemAvatar>
                   <ListItemText
                     primary={user ? user.userName : 'Name loading...'}
                   />
+                  <ListItemSecondaryAction>
+                    <Tooltip title={userLikeFlag ? 'Liked' : 'LiKE'}>
+                      <IconButton
+                        edge="end"
+                        aria-label="like"
+                        onClick={() => this.handleLike()}
+                      >
+                        <Avatar src={userLikeFlag ? userLiked : userLike} />
+                      </IconButton>
+                    </Tooltip>
+                  </ListItemSecondaryAction>
                 </ListItem>
               </List>
               {user && (
@@ -77,11 +128,16 @@ Dashboard.propTypes = {
 }
 
 const mapStateToProps = state => {
-  return {}
+  const user = state.getIn(['user', 'data'])
+  return {
+    user,
+  }
 }
 
 const actionsToProps = {
   getUser: globalActions.getUser,
+  createOrUpdateUserLike: actions.createOrUpdateUserLike,
+  getUserLike: actions.getUserLike,
 }
 
 export default withRouter(connect(mapStateToProps, actionsToProps)(Dashboard))

@@ -53,8 +53,8 @@ class Home extends Component {
         <div className="container">
           <h2 className="h2-header">Our Core Features</h2>
           <p>
-            We built this system to help people to share feedback about people
-            they are interested. This system core features are knowing about
+            We built this system to help people in sharing feedback about each
+            other if they are interested. The core features are knowing
             <code> pros, cons and advice</code> from your colleagues, friends,
             families, etc
           </p>

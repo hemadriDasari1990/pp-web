@@ -41,8 +41,8 @@ import PropTypes from 'prop-types'
 
 const styles = {
   smallAvatar: {
-    width: 25,
-    height: 25,
+    width: 20,
+    height: 20,
     borderColor: '#fff',
   },
   avatar: {
@@ -471,7 +471,7 @@ class PostList extends Component {
                       />
                     </ListItem>
                   </List>
-                  <div style={{ display: 'flex' }}>
+                  <div className="actions-align">
                     <AvatarGroup>
                       {post.reactions.length > 0
                         ? post.reactions.slice(0, 3).map(react => (
@@ -493,15 +493,19 @@ class PostList extends Component {
                       title={this.renderUserNames(post.reactions)}
                       placement="bottom"
                     >
-                      <Link to={`/post/${post._id}/reactions`}>
-                        <span style={{ marginTop: 2, color: '#606770' }}>
-                          {this.renderNames(post.reactions)}
-                        </span>
+                      <Link
+                        to={`/post/${post._id}/reactions`}
+                        className="actions-text"
+                      >
+                        <span>{formateNumber(post.reactions.length)}</span>
                       </Link>
                     </Tooltip>
                     <div className={classes.rightButton}>
-                      <Link to={`/post/${post._id}/shares`}>
-                        <span style={{ marginTop: 2, color: '#606770' }}>
+                      <Link
+                        to={`/post/${post._id}/shares`}
+                        className="actions-text"
+                      >
+                        <span>
                           {post.shares.length
                             ? formateNumber(post.shares.length)
                             : 'No'}{' '}

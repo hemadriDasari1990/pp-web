@@ -45,7 +45,9 @@ class RecentPosts extends Component {
       postsLoading,
       iposted,
       ireceived,
+      user,
     } = this.props
+    console.log('user', user)
     return (
       <React.Fragment>
         <Card style={{ width: '100%', maxWidth: '100%' }}>
@@ -75,7 +77,11 @@ class RecentPosts extends Component {
                       </ListItemAvatar>
                       <Tooltip title={post.pros} placement="right-end">
                         <ListItemText
-                          primary={post.postedBy.userName}
+                          primary={
+                            user && user._id === post.postedBy._id
+                              ? 'You'
+                              : post.postedBy.userName
+                          }
                           secondary={
                             <React.Fragment>
                               <Typography
