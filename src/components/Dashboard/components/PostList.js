@@ -9,9 +9,9 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import Avatar from '@material-ui/core/Avatar'
 import moment from 'moment'
-import MoodIcon from '@material-ui/icons/Mood'
-import MoodBadIcon from '@material-ui/icons/MoodBad'
-import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied'
+// import MoodIcon from '@material-ui/icons/Mood'
+// import MoodBadIcon from '@material-ui/icons/MoodBad'
+// import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -38,6 +38,9 @@ import sad from '../../../../assets/emojis/sad.svg'
 import AvatarGroup from '@material-ui/lab/AvatarGroup'
 import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
+import advice from '../../../../assets/advice.svg'
+import pros from '../../../../assets/pros.svg'
+import cons from '../../../../assets/cons.svg'
 
 const styles = {
   smallAvatar: {
@@ -409,11 +412,11 @@ class PostList extends Component {
                         {ireceived && post.postedBy.likes.length
                           ? ' ' +
                             formateNumber(post.postedBy.likes.length) +
-                            ' Likes'
+                            ' Liked'
                           : iposted && post.postedTo.likes.length
                           ? ' ' +
                             formateNumber(post.postedTo.likes.length) +
-                            ' Likes'
+                            ' Liked'
                           : ''}
                       </>
                     ) : (
@@ -426,7 +429,7 @@ class PostList extends Component {
                   <List>
                     <ListItem alignItems="flex-start">
                       <ListItemAvatar>
-                        <MoodIcon />
+                        <Avatar src={pros} className="avatar" />
                       </ListItemAvatar>
                       <ListItemText
                         primary="Pros"
@@ -445,7 +448,7 @@ class PostList extends Component {
                     </ListItem>
                     <ListItem alignItems="flex-start">
                       <ListItemAvatar>
-                        <MoodBadIcon />
+                        <Avatar src={cons} className="avatar" />
                       </ListItemAvatar>
                       <ListItemText
                         primary="Cons"
@@ -464,7 +467,7 @@ class PostList extends Component {
                     </ListItem>
                     <ListItem alignItems="flex-start">
                       <ListItemAvatar>
-                        <SentimentSatisfiedIcon />
+                        <Avatar src={advice} className="avatar" />
                       </ListItemAvatar>
                       <ListItemText
                         primary="Advice"

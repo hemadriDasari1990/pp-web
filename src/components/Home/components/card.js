@@ -14,18 +14,26 @@ import { withRouter } from 'react-router-dom'
 const styles = theme => ({
   card: {},
   media: {
-    height: 250,
-    width: 250,
+    margin: '30px 0px 15px 30px',
+    width: 70,
+    height: 70,
     display: 'block',
-    marginLeft: 'auto',
-    marginRight: 'auto',
+  },
+  content: {
+    marginLeft: 20,
+    marginBottom: 15,
+  },
+  actions: {
+    margin: 15,
+  },
+  button: {
+    fontWeight: 600,
   },
 })
 
 class ProfileCard extends React.Component {
-
   handleButton = path => {
-    this.props.history.push(path);
+    this.props.history.push(path)
   }
   render() {
     const {
@@ -40,7 +48,7 @@ class ProfileCard extends React.Component {
       buttonName,
       buttonOneName,
       type,
-      routePath
+      routePath,
     } = this.props
     return (
       <Card className={classes.card}>
@@ -50,12 +58,12 @@ class ProfileCard extends React.Component {
             alt="Contemplative Reptile"
             height="350"
             image={path}
-            title="Contemplative Reptile"
+            title=""
             className={type == 'home' ? classes.media : ''}
           />
-          <CardContent>
+          <CardContent className={classes.content}>
             <Typography gutterBottom variant="h5" component="h2">
-              {title}
+              <h2>{title}</h2>
             </Typography>
             <Typography gutterBottom variant="subTitle1" component="p">
               {subTitle}
@@ -66,27 +74,41 @@ class ProfileCard extends React.Component {
           </CardContent>
         </CardActionArea>
         {button && (
-          <CardActions style={{ marginTOP: 20 }}>
-            {fbPath && !routePath && <Button size="small" color="primary" target="_blank" href={fbPath}>
-              {buttonName}
-            </Button>}
-            { linkedinPath && !routePath && <Button
-              size="small"
-              color="primary"
-              target="_blank"
-              href={linkedinPath}
-            >
-              {buttonOneName}
-            </Button>}
+          <CardActions className={classes.actions}>
+            {fbPath && !routePath && (
+              <Button
+                className={classes.button}
+                size="small"
+                color="secondary"
+                target="_blank"
+                href={fbPath}
+              >
+                {buttonName}
+              </Button>
+            )}
+            {linkedinPath && !routePath && (
+              <Button
+                className={classes.button}
+                size="small"
+                color="primary"
+                target="_blank"
+                href={linkedinPath}
+              >
+                {buttonOneName}
+              </Button>
+            )}
 
-            { routePath && <Button
-              size="small"
-              color="primary"
-              target="_blank"
-              onClick={() => this.handleButton(routePath)}
-            >
-              {buttonName}
-            </Button>}
+            {routePath && (
+              <Button
+                className={classes.button}
+                size="small"
+                color="primary"
+                target="_blank"
+                onClick={() => this.handleButton(routePath)}
+              >
+                {buttonName}
+              </Button>
+            )}
           </CardActions>
         )}
       </Card>
@@ -98,6 +120,4 @@ ProfileCard.propTypes = {
   classes: PropTypes.object.isRequired,
 }
 
-export default withRouter(
-  connect(null, null)(withStyles(styles)(ProfileCard)),
-)
+export default withRouter(connect(null, null)(withStyles(styles)(ProfileCard)))

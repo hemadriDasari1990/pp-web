@@ -1,14 +1,13 @@
-<svg width="32" height="32" xmlns="http://www.w3.org/2000/svg">
-<defs><style>.cls-1{fill:url(#linear-gradient);}.cls-2{fill:#1282ff;}</style><linearGradient gradientUnits="userSpaceOnUse" id="linear-gradient" x1="16" x2="16" y1="2" y2="30"><stop offset="0.24" stop-color="#cdeaff"/><stop offset="0.34" stop-color="#c2e4ff"/><stop offset="0.5" stop-color="#a5d5ff"/><stop offset="0.72" stop-color="#76bcff"/><stop offset="0.98" stop-color="#369aff"/><stop offset="1" stop-color="#3197ff"/></linearGradient></defs>
+<svg width="151.57" height="151.57" xmlns="http://www.w3.org/2000/svg">
  <title/>
+
  <g>
   <title>background</title>
-  <rect fill="none" id="canvas_background" height="34" width="34" y="-1" x="-1"/>
+  <rect fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
  </g>
  <g>
   <title>Layer 1</title>
-  <circle fill="#aad4ff" id="svg_1" r="14" cy="16" cx="16" class="cls-1"/>
-  <path fill="#1282ff" id="svg_2" d="m15.999999,1a15,15 0 1 0 15,15a15,15 0 0 0 -15,-15zm0,28.33a13.33,13.33 0 1 1 13.33,-13.33a13.35,13.35 0 0 1 -13.33,13.33z" class="cls-2"/>
-  <rect stroke="null" id="svg_8" height="2.063226" width="11.780356" y="14.17887" x="10.109823" stroke-opacity="null" stroke-width="null" fill="#007bff"/>
+  <circle id="svg_1" fill="#2a7fff" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="7px" r="72.28" cy="75.78" cx="75.78"/>
+  <line id="svg_2" fill="none" stroke="#f2f2f2" stroke-linecap="round" stroke-linejoin="round" stroke-width="7px" y2="75.83" y1="75.83" x2="118.14" x1="33.43"/>
  </g>
 </svg>

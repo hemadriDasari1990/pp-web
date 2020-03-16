@@ -88,49 +88,51 @@ class App extends Component {
             authenticated={authenticated}
             isAuthenticated={this.isAuthenticated}
           />
-          <div className="container-body">
-            <Switch>
-              <Route path="/" exact component={Home} />
-              <PrivateRoute
-                authenticated={authenticated}
-                path="/dashboard"
-                component={() => <Dashboard />}
-              />
-              <PrivateRoute
-                authenticated={authenticated}
-                path="/profile/:id"
-                component={() => <UserProfileDashboard />}
-              />
-              <PrivateRoute
-                authenticated={authenticated}
-                path="/notifications"
-                component={() => <Notifications user={user} />}
-              />
-              <PrivateRoute
-                authenticated={authenticated}
-                path="/post/:id/reactions"
-                component={() => <ReactionsList />}
-              />
-              <PrivateRoute
-                authenticated={authenticated}
-                path="/post/:id/shares"
-                component={() => <SharesList />}
-              />
-              <PrivateRoute
-                authenticated={authenticated}
-                path="/:id/preferences"
-                component={() => <Preferences />}
-              />
-              <Route path="/about" component={About} />
-              <Route path="/feedback" component={Feedback} />
-              <Route path="/location" component={Location} />
-              <Route path="/developers" component={Developers} />
-              <Route path="/careers" component={Careers} />
-              <Route path="/pros" component={Pros} />
-              <Route path="/cons" component={Cons} />
-              <Route path="/advice" component={Advice} />
-            </Switch>
-          </div>
+          <section className="home-background">
+            <div className="auto-container">
+              <Switch>
+                <Route path="/" exact component={Home} />
+                <PrivateRoute
+                  authenticated={authenticated}
+                  path="/dashboard"
+                  component={() => <Dashboard />}
+                />
+                <PrivateRoute
+                  authenticated={authenticated}
+                  path="/profile/:id"
+                  component={() => <UserProfileDashboard />}
+                />
+                <PrivateRoute
+                  authenticated={authenticated}
+                  path="/notifications"
+                  component={() => <Notifications user={user} />}
+                />
+                <PrivateRoute
+                  authenticated={authenticated}
+                  path="/post/:id/reactions"
+                  component={() => <ReactionsList />}
+                />
+                <PrivateRoute
+                  authenticated={authenticated}
+                  path="/post/:id/shares"
+                  component={() => <SharesList />}
+                />
+                <PrivateRoute
+                  authenticated={authenticated}
+                  path="/:id/preferences"
+                  component={() => <Preferences />}
+                />
+                <Route path="/about" component={About} />
+                <Route path="/feedback" component={Feedback} />
+                <Route path="/location" component={Location} />
+                <Route path="/developers" component={Developers} />
+                <Route path="/careers" component={Careers} />
+                <Route path="/pros" component={Pros} />
+                <Route path="/cons" component={Cons} />
+                <Route path="/advice" component={Advice} />
+              </Switch>
+            </div>
+          </section>
           <Footer authenticated={authenticated} />
         </MuiThemeProvider>
       </React.Fragment>
