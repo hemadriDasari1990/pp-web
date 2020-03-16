@@ -8,6 +8,7 @@ import ProfileCard from './card'
 import pros from '../../../../assets/pros.svg'
 import cons from '../../../../assets/cons.svg'
 import advice from '../../../../assets/advice.svg'
+import home from '../../../../assets/home.png'
 
 const styles = theme => ({
   card: {
@@ -35,22 +36,31 @@ class Home extends Component {
     const { classes, authenticate } = this.props
     return (
       <React.Fragment>
-        {/*<div className="content">
-        {text.map((text, index) => (
-          <Fab size="small" key={'Key-'+index} aria-label="Delete" style={{
-            backgroundColor: colors[Math.floor(Math.random()*colors.length)], margin: 30, color: '#fff'
-          }}>
-            {text[Math.floor(Math.random()*text.length)]}
-          </Fab>
-        ))}
-
-        </div> */}
-        <div className="col-lg-12 col-md-12 col-sm-4 col-xs-3">
-          <div className="home-background margin-bottom">
-            <div className=""></div>
+        <div className="row clearfix">
+          <div className="image-column col-lg-7 col-md-12 col-sm-12">
+            <div className="inner-column">
+              <div className="image">
+                <img src={home} />
+              </div>
+            </div>
+          </div>
+          <div className="content-column col-lg-5 col-md-12 col-sm-12">
+            <div className="inner-column">
+              <h2>Writenpost - The social platform</h2>
+              <p>Welcome to your social community.</p>
+              <p>
+                Join your friends, colleagues, classmates, family members etc on
+                Writenpost.
+              </p>
+              <p>
+                Writenpost began in co-founder{' '}
+                <code>Hemadri Dasari & Rajesh Pemmasani</code> in 2018 and was
+                officially launched on Jan 5, 2020.
+              </p>
+            </div>
           </div>
         </div>
-        <div className="container">
+        <div>
           <h2 className="h2-header">Our Core Features</h2>
           <p>
             We built this system to help people in sharing feedback about each

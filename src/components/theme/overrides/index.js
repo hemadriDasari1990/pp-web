@@ -16,6 +16,7 @@ import MuiDivider from './MuiDivider'
 import MenuItem from './MenuItem'
 import MuiListItemText from './MuiListItemText'
 import MuiTooltip from './MuiTooltip'
+import MuiFab from './MuiFab'
 
 export default {
   MuiButton,
@@ -36,4 +37,5 @@ export default {
   MenuItem,
   MuiListItemText,
   MuiTooltip,
+  MuiFab,
 }

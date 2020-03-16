@@ -39,9 +39,9 @@ class Dashboard extends Component {
     await this.getUserLike()
   }
 
-  handleLike = async (like) => {
+  handleLike = like => {
     this.props.user
-      ? await this.props
+      ? this.props
           .createOrUpdateUserLike({
             user: this.props.match.params.id,
             likedBy: this.props.user._id,
@@ -62,8 +62,8 @@ class Dashboard extends Component {
               userLikeFlag: true,
             })
           : this.setState({
-            userLikeFlag: false,
-          })
+              userLikeFlag: false,
+            })
       })
       .catch(err => {
         this.setState({
@@ -93,7 +93,7 @@ class Dashboard extends Component {
                       <IconButton
                         edge="end"
                         aria-label="like"
-                        onClick={() => this.handleLike(userLikeFlag ? false: true)}
+                        onClick={() => this.handleLike(!userLikeFlag)}
                       >
                         <Avatar src={userLikeFlag ? userLiked : userLike} />
                       </IconButton>

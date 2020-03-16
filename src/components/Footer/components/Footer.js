@@ -99,6 +99,7 @@ class Footer extends React.Component {
         <footer className="footer-v2">
           <div className="max-width">
             <div className="footer">
+              <div className="footer-contact"></div>
               <div className="row row-footer border-bottom social">
                 <div className="col-lg-2 col-md-2 col-sm-2 col-xs-4">
                   Discover Us
