@@ -139,7 +139,6 @@ class Preferences extends Component {
     } = this.state
     return (
       <React.Fragment>
-        <div className="container">
           <h1>Preferences</h1>
           <p>
             Save your preferences so that people will think twice before they
@@ -266,7 +265,6 @@ class Preferences extends Component {
               Cancel
             </Fab>
           </div>
-        </div>
         {!savePreferencesLoading && savePreferencesSuccess ? (
           <CustomizedSnackbars
             open={true}

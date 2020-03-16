@@ -14,7 +14,6 @@ class About extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="container">
           <h2 className="h2-header">Who we are</h2>
           <p>
             Writenpost is a social platform build to serve people to share pros,
@@ -74,7 +73,6 @@ class About extends Component {
               />
             </div>
           </div>
-        </div>
       </React.Fragment>
     )
   }

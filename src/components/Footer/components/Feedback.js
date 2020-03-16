@@ -164,7 +164,7 @@ class Feedback extends Component {
       feedbacksLoading,
     } = this.props
     return (
-      <div className="container">
+      <React.Fragment>
         <h1>Feedback</h1>
         <p>
           This page is designed for end users to help us improve the system by
@@ -334,7 +334,7 @@ class Feedback extends Component {
         {saveFeedbackLoading && <Loader />}
         {feedbacks && <FeedbackList feedbacks={feedbacks.feedbacks} />}
         {feedbacksLoading && <Loader />}
-      </div>
+      </React.Fragment>
     )
   }
 }

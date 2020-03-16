@@ -77,7 +77,6 @@ class Dashboard extends Component {
     const { posts, user, userLikeFlag } = this.state
     return (
       <React.Fragment>
-        <div className="container">
           <div className="row">
             <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
               <List component="nav" aria-label="main mailbox folders">
@@ -119,7 +118,6 @@ class Dashboard extends Component {
               )}
             </div>
           </div>
-        </div>
       </React.Fragment>
     )
   }

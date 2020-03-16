@@ -119,7 +119,6 @@ class Notifications extends Component {
     const { open, anchorEl } = this.state
     return (
       <React.Fragment>
-        <div className="container">
           <div className="row">
             <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
               {user && !postsLoading && posts && posts.length ? (
@@ -279,7 +278,6 @@ class Notifications extends Component {
                 : null}
             </div>
           </div>
-        </div>
 
         {postsLoading ? <Loader /> : null}
         {postUpdateLoading ? <Loader /> : null}
