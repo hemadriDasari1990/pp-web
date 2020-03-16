@@ -57,11 +57,13 @@ class Dashboard extends Component {
     this.props
       .getUserLike(this.props.user._id, this.props.match.params.id)
       .then(res => {
-        res.data
+        res && res.data
           ? this.setState({
               userLikeFlag: true,
             })
-          : null
+          : this.setState({
+            userLikeFlag: false,
+          })
       })
       .catch(err => {
         this.setState({
