@@ -10,13 +10,16 @@ import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import Fab from '@material-ui/core/Fab'
+import Avatar from '@material-ui/core/Avatar'
+import arrowIcon from '../../../../assets/arrow.svg'
 
 const styles = theme => ({
   card: {},
   media: {
-    margin: '30px 0px 15px 30px',
-    width: 70,
-    height: 70,
+    margin: '10px 0px 0px 30px',
+    width: 55,
+    height: 55,
     display: 'block',
   },
   content: {
@@ -28,6 +31,15 @@ const styles = theme => ({
   },
   button: {
     fontWeight: 600,
+  },
+  small: {
+    width: 30,
+    height: 30,
+    marginRight: 5,
+    marginLeft: 20,
+  },
+  fab: {
+    marginLeft: '30%',
   },
 })
 
@@ -55,10 +67,10 @@ class ProfileCard extends React.Component {
         <CardActionArea>
           <CardMedia
             component="img"
-            alt="Contemplative Reptile"
-            height="350"
+            alt={title}
+            height="250"
             image={path}
-            title=""
+            title={title}
             className={type == 'home' ? classes.media : ''}
           />
           <CardContent className={classes.content}>
@@ -76,38 +88,44 @@ class ProfileCard extends React.Component {
         {button && (
           <CardActions className={classes.actions}>
             {fbPath && !routePath && (
-              <Button
-                className={classes.button}
-                size="small"
-                color="primary"
+              <Fab
                 target="_blank"
                 href={fbPath}
-              >
-                {buttonName}
-              </Button>
-            )}
-            {linkedinPath && !routePath && (
-              <Button
-                className={classes.button}
                 size="small"
                 color="primary"
+                aria-label="add"
+                variant="extended"
+              >
+                {buttonName}{' '}
+                <Avatar src={arrowIcon} className={classes.small} />
+              </Fab>
+            )}
+            {linkedinPath && !routePath && (
+              <Fab
                 target="_blank"
                 href={linkedinPath}
+                size="small"
+                color="primary"
+                aria-label="add"
+                variant="extended"
               >
-                {buttonOneName}
-              </Button>
+                {buttonOneName}{' '}
+                <Avatar src={arrowIcon} className={classes.small} />
+              </Fab>
             )}
 
             {routePath && (
-              <Button
-                className={classes.button}
+              <Fab
+                className={classes.fab}
+                onClick={() => this.handleButton(routePath)}
                 size="small"
                 color="primary"
-                target="_blank"
-                onClick={() => this.handleButton(routePath)}
+                aria-label="add"
+                variant="extended"
               >
-                {buttonName}
-              </Button>
+                {buttonName}{' '}
+                <Avatar src={arrowIcon} className={classes.small} />
+              </Fab>
             )}
           </CardActions>
         )}

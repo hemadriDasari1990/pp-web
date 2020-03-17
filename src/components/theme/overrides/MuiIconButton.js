@@ -2,7 +2,9 @@ import palette from '../palette'
 
 export default {
   root: {
-    color: palette.icon,
-    '&:hover': {},
+    color: '#2a7fff',
+    '&:hover': {
+      backgroundColor: 'none !important',
+    },
   },
 }

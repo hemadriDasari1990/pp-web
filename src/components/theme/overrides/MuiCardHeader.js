@@ -5,11 +5,11 @@ export default {
     color: palette.icon,
     '&:hover': {},
     padding: 8,
-    backgroundColor: '#e9ebee',
+    backgroundColor: '#f4f4f7ad',
   },
   title: {
     fontFamily: 'inherit',
-    color: palette.text.primary,
+    color: '#2a7fff',
   },
   subheader: {
     fontFamily: 'inherit',

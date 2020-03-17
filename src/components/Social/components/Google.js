@@ -6,18 +6,28 @@ import { Map, List } from 'immutable'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import firebase from '../../../firebase'
-import google from '../../../../assets/google.svg'
+import google from '../../../../assets/social/google.svg'
 import Tooltip from '@material-ui/core/Tooltip'
 import Avatar from '@material-ui/core/Avatar'
 import Fab from '@material-ui/core/Fab'
 
 const styles = theme => ({
   avatar: {},
+  small: {
+    width: 30,
+    height: 30,
+    marginRight: 15,
+  },
+  fab: {
+    width: '300px !important',
+    color: '#ffffff !important',
+    margin: '15px 0 15px 20px',
+  },
 })
 
 class Google extends Component {
-  auth = async (e) => {
-    e.preventDefault();
+  auth = async e => {
+    e.preventDefault()
     await new firebase.auth()
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
       .then(async (user, error) => {
@@ -43,10 +53,10 @@ class Google extends Component {
               this.props.storeUser(u.data.user)
             }
           })
-          this.props.isAuthenticated(true)
+          // this.props.isAuthenticated(true)
           this.props.history.push('/dashboard')
         } else {
-          this.props.isAuthenticated(false)
+          // this.props.isAuthenticated(false)
         }
       })
   }
@@ -56,17 +66,18 @@ class Google extends Component {
     return (
       <>
         <Tooltip title="Login With Google" aria-label="Add">
-          <Fab size="small" onClick={e => this.auth(e)} aria-label="Login">
-            <Avatar
-              aria-haspopup="true"
-              alt="Avatar not available"
-              src={google}
-            />
+          <Fab
+            className={classes.fab}
+            onClick={e => this.auth(e)}
+            size="medium"
+            color="primary"
+            aria-label="add"
+            variant="extended"
+          >
+            <Avatar src={google} className={classes.small} />
+            Sign In with Google
           </Fab>
         </Tooltip>
-        {/*<Button onClick={() => this.auth()} variant="contained" size="small">
-		            Google
-		        </Button>*/}
       </>
     )
   }

@@ -31,6 +31,7 @@ import Preferences from './Post/components/Preferences'
 import Pros from './Home/components/Pros'
 import Cons from './Home/components/Cons'
 import Advice from './Home/components/Advice'
+import Signin from './Signin/components/Signin'
 
 class App extends Component {
   constructor(props) {
@@ -130,6 +131,7 @@ class App extends Component {
                 <Route path="/pros" component={Pros} />
                 <Route path="/cons" component={Cons} />
                 <Route path="/advice" component={Advice} />
+                <Route path="/signin" component={Signin} />
               </Switch>
             </div>
           </section>

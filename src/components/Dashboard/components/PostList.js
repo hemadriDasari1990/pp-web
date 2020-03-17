@@ -9,15 +9,11 @@ import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import Avatar from '@material-ui/core/Avatar'
 import moment from 'moment'
-// import MoodIcon from '@material-ui/icons/Mood'
-// import MoodBadIcon from '@material-ui/icons/MoodBad'
-// import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import formateNumber from '../../../util/formateNumber'
-import VerifiedUserIcon from '@material-ui/icons/VerifiedUser'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import * as actions from '../actions'
@@ -349,17 +345,16 @@ class PostList extends Component {
                             : 'Pending'
                         }
                       >
-                        <IconButton
+                        <span
+                          className="post-flag"
                           style={{
-                            color: post.rejected
-                              ? '#ff0000'
-                              : post.approved
-                              ? '#17ab13'
-                              : '',
+                            backgroundColor: post.approved
+                              ? '#35c9208f'
+                              : post.rejected
+                              ? '#e91e63'
+                              : '#3f51b5',
                           }}
-                        >
-                          <VerifiedUserIcon />
-                        </IconButton>
+                        ></span>
                       </Tooltip>
                       <Tooltip title="Update">
                         <IconButton

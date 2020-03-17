@@ -4,14 +4,30 @@ import { Map } from 'immutable'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import firebase from '../../../firebase'
-import facebook from '../../../../assets/facebook.svg'
+import facebook from '../../../../assets/social/facebook.svg'
 import Tooltip from '@material-ui/core/Tooltip'
 import Avatar from '@material-ui/core/Avatar'
 import Fab from '@material-ui/core/Fab'
+import { withStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
+
+const styles = theme => ({
+  avatar: {},
+  small: {
+    width: 30,
+    height: 30,
+    marginRight: 15,
+  },
+  fab: {
+    width: '300px !important',
+    color: '#ffffff !important',
+    margin: '15px 0 15px 20px',
+  },
+})
 
 class Facebook extends Component {
-  auth = async (e) => {
-    e.preventDefault();
+  auth = async e => {
+    e.preventDefault()
     await new firebase.auth()
       .signInWithPopup(new firebase.auth.FacebookAuthProvider())
       .then(async (user, error) => {
@@ -40,25 +56,29 @@ class Facebook extends Component {
               this.props.storeUser(u.data.user)
             }
           })
-          this.props.isAuthenticated(true)
+          // this.props.isAuthenticated(true)
           this.props.history.push('/dashboard')
         } else {
-          this.props.isAuthenticated(false)
+          // this.props.isAuthenticated(false)
         }
       })
   }
 
   render() {
-    const {} = this.props
+    const { classes } = this.props
     return (
       <>
         <Tooltip title="Login With Facebook" aria-label="Add">
-          <Fab size="small" onClick={e => this.auth(e)} aria-label="Login">
-            <Avatar
-              aria-haspopup="true"
-              alt="Avatar not available"
-              src={facebook}
-            />
+          <Fab
+            className={classes.fab}
+            onClick={e => this.auth(e)}
+            size="medium"
+            color="primary"
+            aria-label="add"
+            variant="extended"
+          >
+            <Avatar src={facebook} className={classes.small} />
+            Sign In with Facebook
           </Fab>
         </Tooltip>
         {/*<Button onClick={() => this.auth()} variant="contained" size="small">
@@ -69,7 +89,9 @@ class Facebook extends Component {
   }
 }
 
-Facebook.propTypes = {}
+Facebook.propTypes = {
+  classes: PropTypes.object.isRequired,
+}
 
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'], Map())
@@ -84,4 +106,6 @@ const actionsToProps = {
   getUser: actions.getUser,
 }
 
-export default withRouter(connect(mapStateToProps, actionsToProps)(Facebook))
+export default withRouter(
+  connect(mapStateToProps, actionsToProps)(withStyles(styles)(Facebook)),
+)
