@@ -10,8 +10,6 @@ import { withStyles } from '@material-ui/core/styles'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import MenuIcon from '@material-ui/icons/Menu'
 import Tooltip from '@material-ui/core/Tooltip'
-import Google from '../Social/components/Google'
-import Facebook from '../Social/components/Facebook'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Map } from 'immutable'
@@ -27,6 +25,7 @@ import Notifications from './components/Notifications'
 import * as dashboardActions from '../Dashboard/actions'
 import libIcon from '../../../assets/lib.svg'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
+import arrowIcon from '../../../assets/arrow.svg'
 
 const styles = theme => ({
   avatar: {
@@ -54,9 +53,6 @@ const styles = theme => ({
       display: 'none',
     },
   },
-  button: {
-    marginRight: 5,
-  },
   margin: {
     margin: theme.spacing.unit,
     backgroundColor: '#2a7fff',
@@ -66,6 +62,12 @@ const styles = theme => ({
   },
   badge: {
     color: '#fff',
+  },
+  small: {
+    width: 30,
+    height: 30,
+    marginRight: 5,
+    marginLeft: 20,
   },
 })
 
@@ -201,6 +203,10 @@ class Header extends React.Component {
     })
   }
 
+  handleSignin = () => {
+    this.props.history.push('/signin')
+  }
+
   render() {
     const {
       classes,
@@ -214,7 +220,7 @@ class Header extends React.Component {
     const mobileMenuId = 'primary-search-account-menu-mobile'
     return (
       <div className={classes.root}>
-        <AppBar style={{ backgroundColor: '#ffffff' }} position="fixed">
+        <AppBar position="fixed">
           <Toolbar>
             <div className="row">
               <Tooltip title="The Writenpost" aria-label="writenpost">
@@ -283,14 +289,15 @@ class Header extends React.Component {
                 </Tooltip>
               </div>
             ) : (
-              <div className="row">
-                <div style={{ marginRight: 10 }}>
-                  <Google isAuthenticated={this.props.isAuthenticated} />
-                </div>
-                <div style={{ marginRight: 10 }}>
-                  <Facebook isAuthenticated={this.props.isAuthenticated} />
-                </div>
-              </div>
+              <Fab
+                onClick={() => this.handleSignin()}
+                size="small"
+                color="primary"
+                aria-label="add"
+                variant="extended"
+              >
+                Sign In <Avatar src={arrowIcon} className={classes.small} />
+              </Fab>
             )}
             {user && authenticated && (
               <div className={classes.sectionMobile}>

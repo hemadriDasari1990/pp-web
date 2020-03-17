@@ -17,6 +17,8 @@ import MenuItem from './MenuItem'
 import MuiListItemText from './MuiListItemText'
 import MuiTooltip from './MuiTooltip'
 import MuiFab from './MuiFab'
+import MuiAppBar from './MuiAppBar'
+import MuiAvatar from './MuiAvatar'
 
 export default {
   MuiButton,
@@ -38,4 +40,6 @@ export default {
   MuiListItemText,
   MuiTooltip,
   MuiFab,
+  MuiAppBar,
+  MuiAvatar,
 }

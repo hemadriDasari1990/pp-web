@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Button from '@material-ui/core/Button'
 import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import * as actions from '../../../actions/index'
@@ -7,10 +6,22 @@ import { Map } from 'immutable'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import firebase from '../../../firebase'
+import twitter from '../../../../assets/social/twitter.svg'
+import Tooltip from '@material-ui/core/Tooltip'
+import Avatar from '@material-ui/core/Avatar'
+import Fab from '@material-ui/core/Fab'
 
 const styles = theme => ({
-  button: {
-    marginRight: 5,
+  avatar: {},
+  small: {
+    width: 30,
+    height: 30,
+    marginRight: 15,
+  },
+  fab: {
+    width: '300px !important',
+    color: '#ffffff !important',
+    margin: '15px 0 15px 20px',
   },
 })
 
@@ -39,15 +50,19 @@ class Twitter extends Component {
     const { classes } = this.props
     return (
       <React.Fragment>
-        <Button
-          className={classes.button}
-          onClick={() => this.auth()}
-          variant="contained"
-          size="small"
-          color="primary"
-        >
-          Login With Twitter
-        </Button>
+        <Tooltip title="Login With Twitter" aria-label="Add">
+          <Fab
+            className={classes.fab}
+            onClick={e => this.auth(e)}
+            size="medium"
+            color="primary"
+            aria-label="add"
+            variant="extended"
+          >
+            <Avatar src={twitter} className={classes.small} />
+            Sign In with Twitter
+          </Fab>
+        </Tooltip>
       </React.Fragment>
     )
   }

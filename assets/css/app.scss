@@ -523,5 +523,25 @@ width: 25px !important;
 height: 25px !important;
 }
 
+.text-center {
+  text-align: center;
+}
+
+.title {
+  text-transform: lowercase;
+}
+
+.title::first-letter {
+  text-transform: uppercase;
+}
+
+.post-flag {
+    padding-top: 19px;
+    padding-right: 12px;
+    padding-left: 12px;
+    border-radius: 7px;
+    box-shadow: 0 14px 28px rgba(145, 148, 170, 0.25), 0 10px 10px rgba(79, 99, 158, 0.22);
+}
+
 
 

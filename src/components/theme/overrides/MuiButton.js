@@ -11,6 +11,7 @@ export default {
   root: {
     boxShadow: 'none',
     textTransform: 'none',
+    fontWeight: 500,
     fontSize: 16,
     lineHeight: 1.5,
     color: '#4de0f9',
