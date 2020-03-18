@@ -35,9 +35,9 @@ class Signin extends Component {
           <div className="image-column col-lg-7 col-md-12 col-sm-12">
             <div className="inner-column">
               <h1 className="text-center">Social Login</h1>
-              <h3 className="text-center">
+              <h4 className="text-center">
                 Make a login using with social network accounts
-              </h3>
+              </h4>
               <br />
             </div>
           </div>

@@ -119,165 +119,171 @@ class Notifications extends Component {
     const { open, anchorEl } = this.state
     return (
       <React.Fragment>
-          <div className="row">
-            <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
-              {user && !postsLoading && posts && posts.length ? (
-                <PostsInfo user={user} iposted={false} ireceived={true} />
-              ) : null}
-            </div>
-            <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
-              {!postsLoading && posts && posts.length
-                ? posts.map(post => (
-                    <Card key={post._id}>
-                      <CardHeader
-                        avatar={
-                          !post.isAnonymous ? (
-                            <Avatar
-                              alt={
-                                post.postedBy
-                                  ? post.postedBy.userName.substring(1, 1)
-                                  : 'Image not Available'
-                              }
-                              src={post.postedBy ? post.postedBy.photoURL : ''}
-                            />
-                          ) : (
-                            <Avatar
-                              style={{
-                                color: '#ffffff',
-                                backgroundColor: '#1976d2',
-                              }}
-                            >
-                              A
-                            </Avatar>
-                          )
-                        }
-                        action={
-                          <>
-                            {!post.approved && !post.rejected && (
-                              <>
-                                <Tooltip title="Approve">
-                                  <IconButton
-                                    onClick={() =>
-                                      this.updatePost(post, 'approve')
-                                    }
-                                    tooltipPosition="bottom-left"
-                                    style={{ color: '#17ab13' }}
-                                  >
-                                    <VerifiedUserIcon />
-                                  </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Reject">
-                                  <IconButton
-                                    onClick={() =>
-                                      this.updatePost(post, 'reject')
-                                    }
-                                    tooltipPosition="bottom-left"
-                                    style={{ color: '#ff0000' }}
-                                  >
-                                    <VerifiedUserIcon />
-                                  </IconButton>
-                                </Tooltip>
-                              </>
-                            )}
-                            {post.approved && (
-                              <Chip
-                                variant="outlined"
-                                size="small"
-                                label="Approved"
-                                className="approve-text"
-                              />
-                            )}
-                            {post.rejected && (
-                              <Chip
-                                variant="outlined"
-                                size="small"
-                                label="Rejected"
-                                className="reject-text"
-                              />
-                            )}
-                          </>
-                        }
-                        title={
-                          !post.isAnonymous ? (
-                            <Link
-                              className="hyperlink"
-                              to={`/profile/${post.postedBy._id}`}
-                            >
-                              {post.postedBy.userName}
-                            </Link>
-                          ) : (
-                            <b>Annonymous User</b>
-                          )
-                        }
-                        subheader={moment(post.createdAt).fromNow()}
-                      />
-                      <CardContent>
-                        <List>
-                          <ListItem alignItems="flex-start">
-                            <ListItemAvatar>
-                              <MoodIcon />
-                            </ListItemAvatar>
-                            <ListItemText
-                              primary="Pros"
-                              secondary={
-                                <React.Fragment>
-                                  <Typography
-                                    component="p"
-                                    variant="body2"
-                                    color="textPrimary"
-                                  >
-                                    {post.pros}
-                                  </Typography>
-                                </React.Fragment>
-                              }
-                            />
-                          </ListItem>
-                          <ListItem alignItems="flex-start">
-                            <ListItemAvatar>
-                              <MoodBadIcon />
-                            </ListItemAvatar>
-                            <ListItemText
-                              primary="Cons"
-                              secondary={
-                                <React.Fragment>
-                                  <Typography
-                                    component="p"
-                                    variant="body2"
-                                    color="textPrimary"
-                                  >
-                                    {post.cons}
-                                  </Typography>
-                                </React.Fragment>
-                              }
-                            />
-                          </ListItem>
-                          <ListItem alignItems="flex-start">
-                            <ListItemAvatar>
-                              <SentimentSatisfiedIcon />
-                            </ListItemAvatar>
-                            <ListItemText
-                              primary="Advice"
-                              secondary={
-                                <React.Fragment>
-                                  <Typography
-                                    component="p"
-                                    variant="body2"
-                                    color="textPrimary"
-                                  >
-                                    {post.advice}
-                                  </Typography>
-                                </React.Fragment>
-                              }
-                            />
-                          </ListItem>
-                        </List>
-                      </CardContent>
-                      <Divider />
-                    </Card>
-                  ))
-                : null}
-            </div>
+        <div className="row">
+          <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
+            {user && !postsLoading && posts && posts.length ? (
+              <PostsInfo user={user} iposted={false} ireceived={true} />
+            ) : null}
           </div>
+          <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
+            {!postsLoading && posts && posts.length
+              ? posts.map(post => (
+                  <Card key={post._id}>
+                    <CardHeader
+                      avatar={
+                        !post.isAnonymous ? (
+                          <Avatar
+                            alt={
+                              post.postedBy
+                                ? post.postedBy.userName.substring(1, 1)
+                                : 'Image not Available'
+                            }
+                            src={post.postedBy ? post.postedBy.photoURL : ''}
+                          />
+                        ) : (
+                          <Avatar
+                            style={{
+                              color: '#ffffff',
+                              backgroundColor: '#1976d2',
+                            }}
+                          >
+                            A
+                          </Avatar>
+                        )
+                      }
+                      action={
+                        <>
+                          {!post.approved && !post.rejected ? (
+                            <>
+                              <Tooltip title="Accepted">
+                                <IconButton
+                                  onClick={() =>
+                                    this.updatePost(post, 'approve')
+                                  }
+                                  tooltipPosition="bottom-left"
+                                  style={{ color: '#17ab13' }}
+                                >
+                                  <VerifiedUserIcon />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip title="Reject">
+                                <IconButton
+                                  onClick={() =>
+                                    this.updatePost(post, 'reject')
+                                  }
+                                  tooltipPosition="bottom-left"
+                                  style={{ color: '#ff0000' }}
+                                >
+                                  <VerifiedUserIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </>
+                          ) : (
+                            <Tooltip
+                              title={
+                                post.rejected
+                                  ? 'Rejected'
+                                  : post.approved
+                                  ? 'Accepted'
+                                  : 'Pending'
+                              }
+                            >
+                              <span
+                                className="post-flag"
+                                style={{
+                                  backgroundColor: post.approved
+                                    ? '#35c9208f'
+                                    : post.rejected
+                                    ? '#e91e63'
+                                    : '#3f51b5',
+                                  marginLeft: -50,
+                                }}
+                              ></span>
+                            </Tooltip>
+                          )}
+                        </>
+                      }
+                      title={
+                        !post.isAnonymous ? (
+                          <Link
+                            className="hyperlink"
+                            to={`/profile/${post.postedBy._id}`}
+                          >
+                            {post.postedBy.userName}
+                          </Link>
+                        ) : (
+                          <b>Annonymous User</b>
+                        )
+                      }
+                      subheader={moment(post.createdAt).fromNow()}
+                    />
+                    <CardContent>
+                      <List>
+                        <ListItem alignItems="flex-start">
+                          <ListItemAvatar>
+                            <MoodIcon />
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary="Pros"
+                            secondary={
+                              <React.Fragment>
+                                <Typography
+                                  component="p"
+                                  variant="body2"
+                                  color="textPrimary"
+                                >
+                                  {post.pros}
+                                </Typography>
+                              </React.Fragment>
+                            }
+                          />
+                        </ListItem>
+                        <ListItem alignItems="flex-start">
+                          <ListItemAvatar>
+                            <MoodBadIcon />
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary="Cons"
+                            secondary={
+                              <React.Fragment>
+                                <Typography
+                                  component="p"
+                                  variant="body2"
+                                  color="textPrimary"
+                                >
+                                  {post.cons}
+                                </Typography>
+                              </React.Fragment>
+                            }
+                          />
+                        </ListItem>
+                        <ListItem alignItems="flex-start">
+                          <ListItemAvatar>
+                            <SentimentSatisfiedIcon />
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary="Advice"
+                            secondary={
+                              <React.Fragment>
+                                <Typography
+                                  component="p"
+                                  variant="body2"
+                                  color="textPrimary"
+                                >
+                                  {post.advice}
+                                </Typography>
+                              </React.Fragment>
+                            }
+                          />
+                        </ListItem>
+                      </List>
+                    </CardContent>
+                    <Divider />
+                  </Card>
+                ))
+              : null}
+          </div>
+        </div>
 
         {postsLoading ? <Loader /> : null}
         {postUpdateLoading ? <Loader /> : null}
