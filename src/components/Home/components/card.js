@@ -15,7 +15,9 @@ import Avatar from '@material-ui/core/Avatar'
 import arrowIcon from '../../../../assets/arrow.svg'
 
 const styles = theme => ({
-  card: {},
+  card: {
+    borderRadius: '15px 100px 15px 15px',
+  },
   media: {
     margin: '10px 0px 0px 30px',
     width: 55,
@@ -39,7 +41,7 @@ const styles = theme => ({
     marginLeft: 20,
   },
   fab: {
-    marginLeft: '30%',
+    marginLeft: '60%',
   },
 })
 
