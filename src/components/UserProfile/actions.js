@@ -77,52 +77,52 @@ export const createShare = (userId, postId) => {
   }
 }
 
-export const createOrUpdateUserLikeRequest = () => {
+export const createOrUpdateProfileReactionRequest = () => {
   return {
-    type: action.CREATE_OR_UPDATE_USER_LIKE_REQUEST,
+    type: action.CREATE_OR_UPDATE_PROFILE_REACTION_REQUEST,
     loading: true,
   }
 }
 
-export const createOrUpdateUserLikeSuccess = res => {
+export const createOrUpdateProfileReactionSuccess = res => {
   return {
-    type: action.CREATE_OR_UPDATE_USER_LIKE_SUCCESS,
+    type: action.CREATE_OR_UPDATE_PROFILE_REACTION_SUCCESS,
     loading: false,
     data: res,
   }
 }
 
-export const createOrUpdateUserLikeError = errors => {
+export const createOrUpdateProfileReactionError = errors => {
   return {
-    type: action.CREATE_OR_UPDATE_USER_LIKE_FAILURE,
+    type: action.CREATE_OR_UPDATE_PROFILE_REACTION_FAILURE,
     loading: false,
     errors: errors,
   }
 }
 
-export const createOrUpdateUserLike = data => {
+export const createOrUpdateProfileReaction = data => {
   const options = {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data),
   }
   return dispatch => {
-    dispatch(createOrUpdateUserLikeRequest())
-    return fetch(config.URL_PREFIX + `/post/userLike/insert`, options)
+    dispatch(createOrUpdateProfileReactionRequest())
+    return fetch(config.URL_PREFIX + `/user/profile/reaction`, options)
       .then(response => response.json())
-      .then(data => dispatch(createOrUpdateUserLikeSuccess(data)))
-      .catch(errors => dispatch(createOrUpdateUserLikeError(errors)))
+      .then(data => dispatch(createOrUpdateProfileReactionSuccess(data)))
+      .catch(errors => dispatch(createOrUpdateProfileReactionError(errors)))
   }
 }
 
-export const getUserLikeRequest = () => {
+export const getProfileReactionRequest = () => {
   return {
     type: action.GET_USER_LIKE_REQUEST,
     loading: true,
   }
 }
 
-export const getUserLikeSuccess = res => {
+export const getProfileReactionSuccess = res => {
   return {
     type: action.GET_USER_LIKE_SUCCESS,
     loading: false,
@@ -130,7 +130,7 @@ export const getUserLikeSuccess = res => {
   }
 }
 
-export const getUserLikeError = errors => {
+export const getProfileReactionError = errors => {
   return {
     type: action.GET_USER_LIKE_FAILURE,
     loading: false,
@@ -138,19 +138,19 @@ export const getUserLikeError = errors => {
   }
 }
 
-export const getUserLike = (user, likedBy) => {
+export const getProfileReaction = (user, likedBy) => {
   const options = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   }
   return dispatch => {
-    dispatch(getUserLikeRequest())
+    dispatch(getProfileReactionRequest())
     return fetch(
-      config.URL_PREFIX + `/post/userlike/get/${user}/${likedBy}`,
+      config.URL_PREFIX + `/user/profile/get/${user}/${likedBy}`,
       options,
     )
       .then(response => response.json())
-      .then(data => dispatch(getUserLikeSuccess(data)))
-      .catch(errors => dispatch(getUserLikeError(errors)))
+      .then(data => dispatch(getProfileReactionSuccess(data)))
+      .catch(errors => dispatch(getProfileReactionError(errors)))
   }
 }

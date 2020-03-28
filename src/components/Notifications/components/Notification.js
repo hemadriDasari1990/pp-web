@@ -34,7 +34,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import * as actions from '../actions'
 import * as userProfileActions from '../../UserProfile/actions'
-import * as dashboardActions from '../../Dashboard/actions'
+import * as dashboardActions from '../../Timeline/actions'
 import { Map, fromJS } from 'immutable'
 import {
   BrowserRouter as Router,
@@ -47,8 +47,35 @@ import { connect } from 'react-redux'
 import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import Loader from '../../Loader/components/Loader'
 import Chip from '@material-ui/core/Chip'
-import PostsInfo from '../../Dashboard/components/PostsInfo'
+import PostsInfo from '../../Timeline/components/PostsInfo'
 import { Link } from 'react-router-dom'
+import AvatarGroup from '@material-ui/lab/AvatarGroup'
+import advice from '../../../../assets/advice.svg'
+import pros from '../../../../assets/pros.svg'
+import cons from '../../../../assets/cons.svg'
+import getReaction from '../../../util/getReaction'
+import renderUserNames from '../../../util/renderUserNames'
+import textingImage from '../../../../assets/notifications/texting.svg'
+
+const styles = {
+  smallAvatar: {
+    width: 20,
+    height: 20,
+    borderColor: '#fff',
+  },
+  avatar: {
+    marginTop: 0,
+    width: '100%',
+    textAlign: 'center',
+  },
+  button: {
+    width: '150px !important',
+    height: '35px !important',
+  },
+  rightButton: {
+    marginLeft: 'auto',
+  },
+}
 
 class Notifications extends Component {
   constructor(props) {
@@ -61,7 +88,7 @@ class Notifications extends Component {
 
   componentDidMount() {
     if (this.props.user) {
-      this.props.getPostsByUser(this.props.user._id, false, true)
+      this.props.getIncomingPosts(this.props.user._id)
     }
   }
 
@@ -76,7 +103,7 @@ class Notifications extends Component {
         this.setState({
           open: false,
         })
-        await this.props.getPostsByUser(this.props.user._id, false, true)
+        await this.props.getIncomingPosts(this.props.user._id)
         break
       default:
         break
@@ -102,15 +129,15 @@ class Notifications extends Component {
       default:
         break
     }
-    this.props.getPostsByUser(this.props.user._id, false, true)
+    this.props.getIncomingPosts(this.props.user._id)
   }
 
   render() {
     const {
       classes,
-      posts,
-      postsError,
-      postsLoading,
+      incomingPosts,
+      incomingPostsError,
+      incomingPostsLoading,
       postUpdateSuccess,
       postUpdateError,
       postUpdateLoading,
@@ -121,13 +148,16 @@ class Notifications extends Component {
       <React.Fragment>
         <div className="row">
           <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
-            {user && !postsLoading && posts && posts.length ? (
+            {user &&
+            !incomingPostsLoading &&
+            incomingPosts &&
+            incomingPosts.length ? (
               <PostsInfo user={user} iposted={false} ireceived={true} />
             ) : null}
           </div>
           <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
-            {!postsLoading && posts && posts.length
-              ? posts.map(post => (
+            {!incomingPostsLoading && incomingPosts && incomingPosts.length
+              ? incomingPosts.map(post => (
                   <Card key={post._id}>
                     <CardHeader
                       avatar={
@@ -217,11 +247,11 @@ class Notifications extends Component {
                       }
                       subheader={moment(post.createdAt).fromNow()}
                     />
-                    <CardContent>
+                    <CardContent style={{ minHeight: '300px !important' }}>
                       <List>
                         <ListItem alignItems="flex-start">
                           <ListItemAvatar>
-                            <MoodIcon />
+                            <Avatar src={pros} className="avatar" />
                           </ListItemAvatar>
                           <ListItemText
                             primary="Pros"
@@ -240,7 +270,7 @@ class Notifications extends Component {
                         </ListItem>
                         <ListItem alignItems="flex-start">
                           <ListItemAvatar>
-                            <MoodBadIcon />
+                            <Avatar src={cons} className="avatar" />
                           </ListItemAvatar>
                           <ListItemText
                             primary="Cons"
@@ -259,7 +289,7 @@ class Notifications extends Component {
                         </ListItem>
                         <ListItem alignItems="flex-start">
                           <ListItemAvatar>
-                            <SentimentSatisfiedIcon />
+                            <Avatar src={advice} className="avatar" />
                           </ListItemAvatar>
                           <ListItemText
                             primary="Advice"
@@ -277,15 +307,57 @@ class Notifications extends Component {
                           />
                         </ListItem>
                       </List>
+                      <div className="actions-align">
+                        <AvatarGroup>
+                          {post.reactions.length > 0
+                            ? post.reactions.slice(0, 3).map(react => (
+                                <Tooltip
+                                  title={renderUserNames(post.reactions)}
+                                  placement="bottom"
+                                >
+                                  <Avatar
+                                    className={classes.smallAvatar}
+                                    key={react._id}
+                                    alt="Image Not Available"
+                                    src={getReaction(react ? react.type : '')}
+                                  />
+                                </Tooltip>
+                              ))
+                            : 'No Reactions'}
+                        </AvatarGroup>
+                        <Tooltip
+                          title={renderUserNames(post.reactions)}
+                          placement="bottom"
+                        >
+                          <Link
+                            to={`/post/${post._id}/reactions`}
+                            className="actions-text"
+                          >
+                            <span>{formateNumber(post.reactions.length)}</span>
+                          </Link>
+                        </Tooltip>
+                        <div className={classes.rightButton}>
+                          <Link
+                            to={`/post/${post._id}/shares`}
+                            className="actions-text"
+                          >
+                            <span>
+                              {post.shares.length
+                                ? formateNumber(post.shares.length)
+                                : 'No'}{' '}
+                              shares
+                            </span>
+                          </Link>
+                        </div>
+                      </div>
                     </CardContent>
-                    <Divider />
                   </Card>
                 ))
               : null}
           </div>
         </div>
 
-        {postsLoading ? <Loader /> : null}
+        {incomingPostsLoading ? <Loader /> : null}
         {postUpdateLoading ? <Loader /> : null}
         {postUpdateSuccess && postUpdateSuccess.size > 0 ? (
           <CustomizedSnackbars
@@ -294,17 +366,18 @@ class Notifications extends Component {
             status="success"
           />
         ) : null}
-        {posts && posts.size > 0 ? (
+        {incomingPosts && incomingPosts.size > 0 ? (
           <CustomizedSnackbars
             open={true}
             message={posts.get('message')}
             status="success"
           />
         ) : null}
-        {(!postsLoading && !posts) ||
-          (!postsLoading && !posts.length && (
-            <div className="home-background">
-              <div className="img-text">No posts found</div>
+        {(!incomingPostsLoading && !incomingPosts) ||
+          (!incomingPostsLoading && !incomingPosts.length && (
+            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <h2 className="text-center">No notifications found</h2>
+              <img src={textingImage} />
             </div>
           ))}
       </React.Fragment>
@@ -316,26 +389,32 @@ Notifications.propTypes = {}
 
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'])
-  const posts = state.getIn(['Dashboard', 'posts', 'success'], Map())
-  const postsLoading = state.getIn(['Dashboard', 'posts', 'loading'], false)
-  const postsError = state.getIn(['Dashboard', 'posts', 'errors'], Map())
+  const incomingPosts = state.getIn(['Timeline', 'incoming', 'success'], Map())
+  const incomingPostsLoading = state.getIn(
+    ['Timeline', 'incoming', 'loading'],
+    false,
+  )
+  const incomingPostsError = state.getIn(
+    ['Timeline', 'incoming', 'errors'],
+    Map(),
+  )
   const postUpdateSuccess = state.getIn(
-    ['Dashboard', 'post', 'update', 'success'],
+    ['Timeline', 'post', 'update', 'success'],
     Map(),
   )
   const postUpdateError = state.getIn(
-    ['Dashboard', 'post', 'update', 'errors'],
+    ['Timeline', 'post', 'update', 'errors'],
     Map(),
   )
   const postUpdateLoading = state.getIn(
-    ['Dashboard', 'post', 'update', 'loading'],
+    ['Timeline', 'post', 'update', 'loading'],
     false,
   )
   return {
     user,
-    posts,
-    postsError,
-    postsLoading,
+    incomingPosts,
+    incomingPostsError,
+    incomingPostsLoading,
     user,
     postUpdateSuccess,
     postUpdateError,
@@ -344,10 +423,10 @@ const mapStateToProps = state => {
 }
 
 const actionsToProps = {
-  getPostsByUser: dashboardActions.getPostsByUser,
+  getIncomingPosts: dashboardActions.getIncomingPosts,
   updatePost: dashboardActions.updatePost,
 }
 
 export default withRouter(
-  connect(mapStateToProps, actionsToProps)(Notifications),
+  connect(mapStateToProps, actionsToProps)(withStyles(styles)(Notifications)),
 )

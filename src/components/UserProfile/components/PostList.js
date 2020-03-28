@@ -22,7 +22,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
 import { Link } from 'react-router-dom'
-import * as dashboardActions from '../../Dashboard/actions'
+import * as dashboardActions from '../../Timeline/actions'
 import Loader from '../../Loader/components/Loader'
 import like from '../../../../assets/emojis/like.svg'
 import angry from '../../../../assets/emojis/angry.svg'
@@ -68,7 +68,7 @@ class PostList extends Component {
   }
 
   async componentDidMount() {
-    await this.props.getPostsByUser(this.props.match.params.id, false, true)
+    await this.props.getIncomingPosts(this.props.match.params.id)
     this.renderHint()
   }
 
@@ -78,13 +78,13 @@ class PostList extends Component {
     await this.props
       .createOrUpdateReaction(userId, postId, reaction)
       .then(async data => {
-        await this.props.getPostsByUser(this.props.match.params.id, false, true)
+        await this.props.getIncomingPosts(this.props.match.params.id)
       })
   }
 
   createShare = async (userId, postId) => {
     await this.props.createShare(userId, postId).then(async data => {
-      await this.props.getPostsByUser(this.props.match.params.id, false, true)
+      await this.props.getIncomingPosts(this.props.match.params.id)
     })
   }
 
@@ -285,17 +285,17 @@ class PostList extends Component {
   render() {
     const {
       classes,
-      posts,
-      postsError,
-      postsLoading,
+      incomingPosts,
+      incomingPostsError,
+      incomingPostsLoading,
       searchUser,
       user,
     } = this.props
     const { showEmojis, open, hint } = this.state
     return (
       <React.Fragment>
-        {searchUser && posts.length
-          ? posts
+        {searchUser && incomingPosts.length
+          ? incomingPosts
               .filter(p => p.approved)
               .map(post => (
                 <Card key={post._id}>
@@ -416,7 +416,7 @@ class PostList extends Component {
                                 <Avatar
                                   className={classes.smallAvatar}
                                   key={react._id}
-                                  alt="Remy Sharp"
+                                  alt="Image Not Available"
                                   src={this.getReaction(
                                     react ? react.type : '',
                                   )}
@@ -697,13 +697,14 @@ class PostList extends Component {
                 </Card>
               ))
           : null}
-        {!posts.length ||
-        (posts.length && !posts.filter(p => p.approved).length) ? (
+        {!incomingPosts.length ||
+        (incomingPosts.length &&
+          !incomingPosts.filter(p => p.approved).length) ? (
           <Typography variant="h3" className="text-center">
             No Approved posts found to show
           </Typography>
         ) : null}
-        {postsLoading ? <Loader /> : null}
+        {incomingPostsLoading ? <Loader /> : null}
       </React.Fragment>
     )
   }
@@ -715,20 +716,26 @@ PostList.propTypes = {
 
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'])
-  const posts = state.getIn(['Dashboard', 'posts', 'success'], Map())
-  const postsLoading = state.getIn(['Dashboard', 'posts', 'loading'], false)
-  const postsError = state.getIn(['Dashboard', 'posts', 'errors'], Map())
+  const incomingPosts = state.getIn(['Timeline', 'incoming', 'success'], Map())
+  const incomingPostsLoading = state.getIn(
+    ['Timeline', 'incoming', 'loading'],
+    false,
+  )
+  const incomingPostsError = state.getIn(
+    ['Timeline', 'incoming', 'errors'],
+    Map(),
+  )
   return {
     user,
-    posts,
-    postsError,
-    postsLoading,
+    incomingPosts,
+    incomingPostsError,
+    incomingPostsLoading,
   }
 }
 
 const actionsToProps = {
   createOrUpdateReaction: actions.createOrUpdateReaction,
-  getPostsByUser: dashboardActions.getPostsByUser,
+  getIncomingPosts: dashboardActions.getIncomingPosts,
   createShare: actions.createShare,
 }
 

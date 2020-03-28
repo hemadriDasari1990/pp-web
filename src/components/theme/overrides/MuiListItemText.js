@@ -2,10 +2,14 @@ export default {
   root: {
     flex: '1 1 auto',
     minWidth: 0,
-    marginTop: 4,
-    marginBottom: 4,
     display: 'block',
-    marginLeft: 10,
+    margin: 10,
     paddingLeft: 0,
+    fontFamily: 'inherit',
+  },
+  primary: {
+    color: '#283593',
+    fontSize: '0.8rem',
+    fontWeight: 500,
   },
 }

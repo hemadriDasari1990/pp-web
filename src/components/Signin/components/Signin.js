@@ -11,10 +11,6 @@ import Twitter from '../../Social/components/Twitter'
 
 const styles = theme => ({
   button: {},
-  span: {
-    display: 'block',
-    marginLeft: 150,
-  },
   small: {
     width: 35,
     height: 35,
@@ -44,11 +40,8 @@ class Signin extends Component {
           <div className="content-column col-lg-5 col-md-12 col-sm-12">
             <div className="inner-column">
               <Facebook />
-              <span className={classes.span}>OR</span>
               <Google />
-              <span className={classes.span}>OR</span>
               <Linkedin />
-              <span className={classes.span}>OR</span>
               <Twitter />
             </div>
           </div>

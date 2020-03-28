@@ -58,26 +58,6 @@ font-weight: bold;
 color: '#606770' !important;
 }
 
-.approve-text {
-font-family: inherit;
-margin-top: 10px;
-margin-right: 8px;
-color: #ffffff !important;
-background-color: #49f54b !important;
-border: none !important;
-height: 30px;
-}
-
-.reject-text {
-font-family: inherit;
-margin-top: 10px;
-margin-right: 8px;
-color: #ffffff !important;
-background-color: #f54949 !important;
-border: none !important;
-height: 30px;
-}
-
 h1 {
 font-size: 3.125rem;
 }
@@ -91,6 +71,10 @@ margin-block-end: 0.67em;
 margin-inline-start: 0px;
 margin-inline-end: 0px;
 font-weight: bold;
+}
+
+h6 {
+  color: #283593;
 }
 
 h1.headline {
@@ -167,13 +151,13 @@ margin: 0px;
 overflow: scroll;
 }
 
-.footer-contact {
-  background-image: url(../person-on-phone.png);
-  height: 67px;
-  margin-top: -87px;
-  background-repeat: repeat-y;
-  margin-left: 64%;
-}
+// .footer-contact {
+//   background-image: url(../person-on-phone.png);
+//   height: 67px;
+//   margin-top: -87px;
+//   background-repeat: repeat-y;
+//   margin-left: 64%;
+// }
 
 .home-background .image-column {
 position: relative;
@@ -215,6 +199,7 @@ position: static;
 max-width: 1200px;
 padding: 0px 15px;
 margin: 0 auto;
+background: var(--greyLight-1);
 }
 .align-card {
 box-sizing: border-box;
@@ -225,7 +210,6 @@ margin: 0px auto;
 footer {
 width: 100%;
 float: left;
-background: #fff;
 position: relative;
 z-index: 5;
 }
@@ -318,20 +302,6 @@ margin-top: 40px;
 margin-bottom: 15px;
 }
 
-.img-text {
-color: #4de0f9;
-font-size: 60px;
-font-family: inherit;
-background-color: rgba(254,254,254,0.7);
-border: 1px solid rgba(254,254,254,0.85);
-border-radius: 10px;
-padding: 43px;
-width: 35%;
-max-width: 590px;
-margin-left: 60%;
-height: 200px;
-}
-
 .margin-bottom {
 margin-bottom: 30px;
 }
@@ -383,6 +353,7 @@ width: 100%;
 .hyperlink {
 color: #2a7fff;
 font-weight: bold;
+font-size: 13px;
 }
 
 p {
@@ -484,13 +455,11 @@ margin-bottom: 0px !important;
 }
 
 code {
-background-color: #f8f9fa;
 font-size: 87.5% !important;
 color: #2a7fff !important;
 word-break: break-word;
 border-radius: 5px;
 padding: 2px;
-box-shadow: 0 14px 28px rgba(145, 148, 170, 0.25), 0 10px 10px rgba(79, 99, 158, 0.22);
 margin-left: 5px;
 }
 
@@ -541,8 +510,130 @@ height: 25px !important;
     padding-top: 19px;
     padding-right: 12px;
     padding-left: 12px;
+    padding-bottom: 10px;
     border-radius: 7px;
     box-shadow: 0 14px 28px rgba(145, 148, 170, 0.25), 0 10px 10px rgba(79, 99, 158, 0.22);
+}
+
+.shadow {
+  box-shadow: 0 14px 28px rgba(145, 148, 170, 0.25), 0 10px 10px rgba(79, 99, 158, 0.22);
+}
+
+.mt-5 {
+  margin-top: 5px !important;
+}
+
+.mr-20 {
+  margin-right: 20px;
+}
+
+.list-row {
+  display: flex;
+}
+
+.p-0 {
+  padding: 0px !important;
+}
+
+.align-items-center {
+  margin: 0 auto !important;
+  display: flex !important;
+}
+
+.card-action-avatar {
+  width: 27px !important;
+  height: 27px !important;
+  margin-right: 20px !important;
+  margin-top: 10px !important;
+}
+
+.card-title {
+  background-color: #ffffff !important;
+  margin-left: 20px !important;
+  margin-top: 10px !important;
+}
+
+.profile{
+  margin: 10px 0px 0px 70px !important;
+  display: flex !important;
+  margin-top: -100px;
+  border-radius:100%;
+  margin-top:30px;
+  margin-bottom: 20px !important;
+  width:100px !important;
+  height:100px !important;
+  box-shadow: 0 14px 28px rgba(145, 148, 170, 0.25), 0 10px 10px rgba(79, 99, 158, 0.22);
+}
+
+.actions {
+  margin-left: 15px !important;
+  margin-right: 15px !important;
+}
+
+.followers{
+  color:#666B7D;
+  font-family:10px;
+  margin-top:10px;
+  weight:100;
+  margin-left: 15px;
+}
+
+.title{
+  margin: 10px 0px 10px 15px;
+  color:#333;
+  weight:300;
+  font-size: 20px;
+}
+
+.mb-10 {
+  margin-bottom: 20px !important;
+}
+
+.profile-title {
+  color: #2a7fff;
+  width: 140px;
+  font-weight: 500 !important;
+  margin-top: 17px !important;
+}
+
+.f-r {
+  float: right;
+}
+
+.b-s {
+  box-shadow: unset !important;
+}
+.b-w-arrow {
+  margin-right: 5px !important;
+  margin-left: 20px !important;
+} 
+
+.f-10 {
+  font-size: 10
+}
+
+.pb-0 {
+  padding-bottom: 0px !important;
+}
+
+.summary-c-t {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #283593;
+}
+
+.w-color {
+  color: #ffffff !important;
+  font-weight: 500;
+}
+
+.m-l-18 {
+  margin-left: 18px;
+}
+
+.notifications-background {
+  background: url(../notifications/texting.svg) no-repeat center center;
+  height: 700px;
 }
 
 

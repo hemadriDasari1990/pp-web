@@ -8,7 +8,7 @@ import {
   withRouter,
   Switch,
 } from 'react-router-dom'
-import Dashboard from './Dashboard/components/Dashboard'
+import Timeline from './Timeline/components/Timeline'
 import * as actions from '../actions/index'
 import Header from './Header/index'
 import Footer from './Footer/components/Footer'
@@ -16,7 +16,7 @@ import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import firebase from '../firebase/index'
 import theme from './theme'
-import UserProfileDashboard from './UserProfile/components/Dashboard'
+import UserProfile from './UserProfile/components/Dashboard'
 // import { askForPermissionToReceiveNotifications } from '../firebase/push-notification';
 import Notifications from './Notifications/components/Notification'
 import PageNotFound from './PageNotFound/components/index'
@@ -32,6 +32,11 @@ import Pros from './Home/components/Pros'
 import Cons from './Home/components/Cons'
 import Advice from './Home/components/Advice'
 import Signin from './Signin/components/Signin'
+import DrawerComponent from './Drawer/components/Drawer'
+import Dashboard from './Dashboard/components/Dashboard'
+import Incoming from './Timeline/components/Incoming'
+import Outgoing from './Timeline/components/Outgoing'
+import Users from './Users/components/Users'
 
 class App extends Component {
   constructor(props) {
@@ -42,8 +47,8 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
-    new firebase.auth().onAuthStateChanged(async user => {
+  async componentDidMount() {
+    await new firebase.auth().onAuthStateChanged(async user => {
       if (user) {
         await this.props.getUser(user.providerData[0].uid).then(async u => {
           if (u && u.data && u.data.user) {
@@ -52,7 +57,7 @@ class App extends Component {
               user: u.data.user,
             })
             await this.props.storeUser(u.data.user)
-            await this.props.getUsers()
+            await this.props.getUsers(u.data.user._id, '')
             this.props.history.push('/dashboard')
           } else {
             this.setState({
@@ -62,13 +67,17 @@ class App extends Component {
             this.props.history.push('/')
           }
         })
+      } else {
+        this.setState({
+          authenticated: false,
+        })
       }
     })
   }
 
   isAuthenticated = flag => {
-    if (flag) {
-      this.props.getUsers()
+    if (flag && this.state.user) {
+      this.props.getUsers(this.state.user._id, '')
     }
     this.setState({
       authenticated: flag,
@@ -89,10 +98,18 @@ class App extends Component {
             authenticated={authenticated}
             isAuthenticated={this.isAuthenticated}
           />
+          {/*<section>
+            { authenticated ? <DrawerComponent /> : null }
+          </section>*/}
           <section className="home-background">
             <div className="auto-container">
               <Switch>
                 <Route path="/" exact component={Home} />
+                <PrivateRoute
+                  authenticated={authenticated}
+                  path="/incoming"
+                  component={() => <Timeline />}
+                />
                 <PrivateRoute
                   authenticated={authenticated}
                   path="/dashboard"
@@ -100,8 +117,13 @@ class App extends Component {
                 />
                 <PrivateRoute
                   authenticated={authenticated}
+                  path="/outgoing"
+                  component={() => <Timeline />}
+                />
+                <PrivateRoute
+                  authenticated={authenticated}
                   path="/profile/:id"
-                  component={() => <UserProfileDashboard />}
+                  component={() => <UserProfile />}
                 />
                 <PrivateRoute
                   authenticated={authenticated}
@@ -120,7 +142,12 @@ class App extends Component {
                 />
                 <PrivateRoute
                   authenticated={authenticated}
-                  path="/:id/preferences"
+                  path="/users"
+                  component={() => <Timeline />}
+                />
+                <PrivateRoute
+                  authenticated={authenticated}
+                  path="/preferences"
                   component={() => <Preferences />}
                 />
                 <Route path="/about" component={About} />
@@ -148,7 +175,7 @@ function PrivateRoute({ component: Component, authenticated, ...rest }) {
       exact
       {...rest}
       render={props =>
-        authenticated === true ? (
+        authenticated ? (
           <Component {...props} />
         ) : (
           <Redirect to={{ pathname: '/', state: { from: props.location } }} />

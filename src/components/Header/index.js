@@ -7,25 +7,26 @@ import Badge from '@material-ui/core/Badge'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import { withStyles } from '@material-ui/core/styles'
-import NotificationsIcon from '@material-ui/icons/Notifications'
 import MenuIcon from '@material-ui/icons/Menu'
 import Tooltip from '@material-ui/core/Tooltip'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { Map } from 'immutable'
+import { Map, List } from 'immutable'
 import Avatar from '@material-ui/core/Avatar'
 import * as actions from '../../actions/index'
 import CustomizedSnackbars from '../Snackbar/components/Snackbar'
 import Fab from '@material-ui/core/Fab'
 import Search from './components/Search'
-import PowerOff from '@material-ui/icons/PowerSettingsNew'
-import Adjust from '@material-ui/icons/Adjust'
 import firebase from '../../firebase'
 import Notifications from './components/Notifications'
-import * as dashboardActions from '../Dashboard/actions'
+import * as dashboardActions from '../Timeline/actions'
 import libIcon from '../../../assets/lib.svg'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import arrowIcon from '../../../assets/arrow.svg'
+import preferencesIcon from '../../../assets/preferences.svg'
+import notificationsIcon from '../../../assets/notifications.svg'
+import logoutIcon from '../../../assets/logout.svg'
+import Typography from '@material-ui/core/Typography'
 
 const styles = theme => ({
   avatar: {
@@ -55,19 +56,12 @@ const styles = theme => ({
   },
   margin: {
     margin: theme.spacing.unit,
-    backgroundColor: '#2a7fff',
   },
   search: {
     marginLeft: 40,
   },
   badge: {
     color: '#fff',
-  },
-  small: {
-    width: 30,
-    height: 30,
-    marginRight: 5,
-    marginLeft: 20,
   },
 })
 
@@ -85,7 +79,7 @@ class Header extends React.Component {
 
   async componentDidMount() {
     if (this.props.user) {
-      await this.props.getUsers()
+      await this.props.getUsers(this.props.user._id, '')
       this.props.user
         ? await this.props
             .getNotificationsCount(this.props.user._id)
@@ -99,17 +93,13 @@ class Header extends React.Component {
   }
 
   async componentWillReceiveProps(nextProps) {
-    if (this.props.user !== nextProps.user) {
-      await this.props.getUsers()
-      this.props.user
-        ? await this.props
-            .getNotificationsCount(this.props.user._id)
-            .then(res => {
-              this.setState({
-                notifications: res.data.count,
-              })
-            })
-        : null
+    if (this.props.user !== nextProps.user && this.props.user) {
+      await this.props.getUsers(this.props.user._id, '')
+      await this.props.getNotificationsCount(this.props.user._id).then(res => {
+        this.setState({
+          notifications: res.data.count,
+        })
+      })
     }
   }
 
@@ -117,7 +107,7 @@ class Header extends React.Component {
     this.setState({
       isMobileMenuOpen: false,
     })
-    this.props.history.push(`${this.props.user.uid}/preferences`)
+    this.props.history.push(`/preferences`)
   }
 
   handleLogout = async () => {
@@ -125,10 +115,8 @@ class Header extends React.Component {
       await this.props.userLogout()
       this.setState({
         logout: true,
+        isMobileMenuOpen: false,
       })
-    })
-    this.setState({
-      isMobileMenuOpen: false,
     })
     this.refresh()
   }
@@ -230,61 +218,71 @@ class Header extends React.Component {
               </Tooltip>
             </div>
 
-            {users && users.size && authenticated && !logout ? (
+            {users && users.length && authenticated && !logout ? (
               <div className={classes.search}>
-                <Search
-                  users={users}
-                  profile={true}
-                  post={true}
-                  createPost={this.createPost}
-                />
+                <Search />
               </div>
             ) : null}
             <div className={classes.grow} />
             {user && authenticated ? (
               <div className={classes.sectionDesktop}>
+                <Tooltip title={user.userName} aria-label="Add">
+                  <div className="row">
+                    <Avatar
+                      aria-haspopup="true"
+                      alt={user.userName}
+                      src={user.photoURL}
+                      className={classes.avatar}
+                    />
+                    <Typography variant="span" className="profile-title">
+                      {user.userName.substring(0, 12) + '...'}
+                    </Typography>
+                  </div>
+                </Tooltip>
                 <Tooltip title="Notifications" aria-label="notification">
                   <Fab
                     size="small"
                     onClick={() => this.showNotifications()}
                     aria-label="Add"
                     className={classes.margin}
+                    color="primary"
                   >
                     <Badge
                       showZero
                       badgeContent={notifications ? notifications : 0}
                     >
-                      <NotificationsIcon color="secondary" />
+                      <Avatar
+                        style={{ width: 30, height: 30 }}
+                        src={notificationsIcon}
+                      />
                     </Badge>
                   </Fab>
                 </Tooltip>
                 <Tooltip title="Add Preferences" aria-label="preferences">
                   <Fab
+                    color="inherit"
                     size="small"
                     onClick={() => this.openPreferencesForm()}
                     aria-label="preferences"
                     className={classes.margin}
+                    color="primary"
                   >
-                    <Adjust color="secondary" />
+                    <Avatar src={preferencesIcon} />
                   </Fab>
                 </Tooltip>
-                <Tooltip title={user.userName} aria-label="Add">
-                  <Avatar
-                    aria-haspopup="true"
-                    alt="Avatar not available"
-                    src={user.photoURL}
-                    className={classes.avatar}
-                    onClick={this.handleProfileMenuOpen}
-                  />
-                </Tooltip>
+
                 <Tooltip title="Logout" aria-label="logout">
                   <Fab
                     size="small"
                     onClick={() => this.handleLogout()}
                     aria-label="logout"
                     className={classes.margin}
+                    color="primary"
                   >
-                    <PowerOff color="secondary" />
+                    <Avatar
+                      style={{ width: 25, height: 25 }}
+                      src={logoutIcon}
+                    />
                   </Fab>
                 </Tooltip>
               </div>
@@ -296,7 +294,7 @@ class Header extends React.Component {
                 aria-label="add"
                 variant="extended"
               >
-                Sign In <Avatar src={arrowIcon} className={classes.small} />
+                Sign In <Avatar src={arrowIcon} className="b-s b-w-arrow" />
               </Fab>
             )}
             {user && authenticated && (
@@ -345,12 +343,12 @@ Header.propTypes = {
 
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'])
-  const users = state.getIn(['user', 'all', 'success'], Map())
+  const users = state.getIn(['user', 'all', 'success'], List())
   const usersLoading = state.getIn(['user', 'all', 'loading'], false)
   const createUserSuccess = state.getIn(['user', 'create', 'success'], Map())
   const createUserloading = state.getIn(['user', 'create', 'loading'], false)
   const createUserErrors = state.getIn(['user', 'create', 'errors'], Map())
-  // const notifications = state.getIn(['`Dashboard`', 'notifications', 'çount', 'success'], Map())
+  // const notifications = state.getIn(['`Timeline`', 'notifications', 'çount', 'success'], Map())
 
   return {
     user,
@@ -366,7 +364,7 @@ const mapStateToProps = state => {
 const actionsToProps = {
   getUsers: actions.getUsers,
   userLogout: actions.userLogout,
-  getPostsByUser: dashboardActions.getPostsByUser,
+  getIncomingPosts: dashboardActions.getIncomingPosts,
   getNotificationsCount: dashboardActions.getNotificationsCount,
 }
 

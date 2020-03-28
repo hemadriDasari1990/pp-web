@@ -16,32 +16,29 @@ import * as actions from '../actions'
 import { Map, fromJS } from 'immutable'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
+import formateNumber from '../../../util/formateNumber'
 
 class TopPosts extends Component {
   componentDidMount() {
     if (!this.props.match.params.id) {
-      this.props.getPostsByUser(this.props.user._id, false, true)
+      this.props.getIncomingPosts(this.props.user._id)
     }
     if (this.props.match.params.id) {
-      this.props.getPostsByUser(this.props.match.params.id, false, true)
+      this.props.getIncomingPosts(this.props.match.params.id)
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.iposted && this.props.iposted != prevProps.iposted) {
-      this.props.getPostsByUser(this.props.user._id, true, false)
-    }
-    if (this.props.ireceived && this.props.ireceived != prevProps.ireceived) {
-      this.props.getPostsByUser(this.props.user._id, false, true)
-    }
+    //this.props.getIncomingPosts(this.props.user._id)
   }
 
   render() {
     const {
       classes,
-      posts,
-      postsError,
-      postsLoading,
+      incomingPosts,
+      incomingPostsError,
+      incomingPostsLoading,
       iposted,
       ireceived,
       user,
@@ -52,38 +49,42 @@ class TopPosts extends Component {
           <CardHeader title="Popular Posts"></CardHeader>
           <CardContent>
             <List>
-              {!postsLoading &&
-              posts.length &&
-              posts.filter(p => p.approved).slice(0, 5).length ? (
-                posts
+              {!incomingPostsLoading &&
+              incomingPosts.length &&
+              incomingPosts.filter(p => p.approved).slice(0, 5).length ? (
+                incomingPosts
                   .filter(p => p.approved)
                   .slice(0, 5)
                   .map(post => (
                     <ListItem key={post._id} alignItems="flex-start">
                       <ListItemAvatar>
                         <Avatar
-                          alt={
-                            iposted
-                              ? post.postedTo.userName
-                              : ireceived
-                              ? post.postedBy.userName
-                              : 'Image not Available'
-                          }
-                          src={
-                            iposted
-                              ? post.postedTo.photoURL
-                              : ireceived
-                              ? post.postedBy.photoURL
-                              : ''
-                          }
+                          alt={post.postedBy.userName}
+                          src={post.postedBy.photoURL}
                         />
                       </ListItemAvatar>
                       <Tooltip title={post.pros} placement="right-end">
                         <ListItemText
                           primary={
-                            user && user._id === post.postedBy._id
-                              ? 'You'
-                              : post.postedBy.userName
+                            !post.isAnonymous || post.isAnonymous ? (
+                              <>
+                                <Link
+                                  className="hyperlink"
+                                  to={`/profile/${post.postedBy._id}`}
+                                >
+                                  {user && user._id === post.postedBy._id
+                                    ? 'You'
+                                    : post.postedBy.userName}
+                                </Link>
+                                {post.postedBy.likes.length
+                                  ? ' ' +
+                                    formateNumber(post.postedTo.likes.length) +
+                                    ' Liked'
+                                  : ''}
+                              </>
+                            ) : (
+                              <b>Annonymous User</b>
+                            )
                           }
                           secondary={
                             <React.Fragment>
@@ -113,7 +114,7 @@ class TopPosts extends Component {
                 </Typography>
               )}
 
-              {postsLoading && !posts.length && <Loader />}
+              {incomingPostsLoading && !incomingPosts.length && <Loader />}
             </List>
           </CardContent>
         </Card>
@@ -125,18 +126,24 @@ class TopPosts extends Component {
 TopPosts.propTypes = {}
 
 const mapStateToProps = state => {
-  const posts = state.getIn(['Dashboard', 'posts', 'success'], Map())
-  const postsLoading = state.getIn(['Dashboard', 'posts', 'loading'], false)
-  const postsError = state.getIn(['Dashboard', 'posts', 'errors'], Map())
+  const incomingPosts = state.getIn(['Timeline', 'incoming', 'success'], Map())
+  const incomingPostsLoading = state.getIn(
+    ['Timeline', 'incoming', 'loading'],
+    false,
+  )
+  const incomingPostsError = state.getIn(
+    ['Timeline', 'incoming', 'errors'],
+    Map(),
+  )
   return {
-    posts,
-    postsError,
-    postsLoading,
+    incomingPosts,
+    incomingPostsError,
+    incomingPostsLoading,
   }
 }
 
 const actionsToProps = {
-  getPostsByUser: actions.getPostsByUser,
+  getIncomingPosts: actions.getIncomingPosts,
 }
 
 export default withRouter(connect(mapStateToProps, actionsToProps)(TopPosts))

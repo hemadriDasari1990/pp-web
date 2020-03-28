@@ -19,17 +19,6 @@ import Loader from '../../Loader/components/Loader'
 import Avatar from '@material-ui/core/Avatar'
 import FormGroup from '@material-ui/core/FormGroup'
 
-const styles = theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-  },
-})
-
 class Post extends Component {
   constructor(props) {
     super(props)

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import loader from '../../../../assets/loader/loader.svg'
+import Avatar from '@material-ui/core/Avatar'
 
 const styles = theme => ({
   progress: {
@@ -42,9 +44,18 @@ class Loader extends Component {
     const { completed, showLoader } = this.state
     return (
       <div className="content">
-        {showLoader && (
+        {/*showLoader && (
           <CircularProgress disableShrink className={classes.progress} />
-        )}
+        )*/}
+
+        {showLoader ? (
+          <img
+            src={loader}
+            width={30}
+            height={30}
+            className={classes.progress}
+          />
+        ) : null}
       </div>
     )
   }

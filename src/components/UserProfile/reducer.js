@@ -34,18 +34,18 @@ export const UserProfile = (state = Map(), action) => {
         .setIn(['share', 'create', 'errors'], action.errors)
         .setIn(['share', 'create', 'loading'], false)
 
-    case actions.CREATE_OR_UPDATE_USER_LIKE_REQUEST:
+    case actions.CREATE_OR_UPDATE_PROFILE_REACTION_REQUEST:
       return state
         .setIn(['userlike', 'create', 'loading'], true)
         .deleteIn(['userlike', 'create', 'errors'])
         .deleteIn(['userlike', 'create', 'success'])
 
-    case actions.CREATE_OR_UPDATE_USER_LIKE_SUCCESS:
+    case actions.CREATE_OR_UPDATE_PROFILE_REACTION_SUCCESS:
       return state
         .setIn(['userlike', 'create', 'success'], action.data)
         .setIn(['userlike', 'create', 'loading'], false)
 
-    case actions.CREATE_OR_UPDATE_USER_LIKE_FAILURE:
+    case actions.CREATE_OR_UPDATE_PROFILE_REACTION_FAILURE:
       return state
         .setIn(['userlike', 'create', 'errors'], action.errors)
         .setIn(['userlike', 'create', 'loading'], false)

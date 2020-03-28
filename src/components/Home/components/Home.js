@@ -29,7 +29,7 @@ class Home extends Component {
 
   componentDidMount() {
     if (this.props.user && this.props.user.size) {
-      this.props.history.push('/dashboard')
+      this.props.history.push(`/dashboard`)
     }
   }
   render() {
@@ -69,7 +69,7 @@ class Home extends Component {
             families, etc
           </p>
           <div className="row">
-            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+            <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12">
               <ProfileCard
                 path={pros}
                 title="Pros"
@@ -81,7 +81,7 @@ class Home extends Component {
                 routePath="/pros"
               />
             </div>
-            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+            <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12">
               <ProfileCard
                 path={cons}
                 title="Cons"
@@ -93,7 +93,7 @@ class Home extends Component {
                 routePath="/cons"
               />
             </div>
-            <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+            <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12">
               <ProfileCard
                 path={advice}
                 title="Advice"
