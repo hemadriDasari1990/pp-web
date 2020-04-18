@@ -19,6 +19,7 @@ import Tooltip from '@material-ui/core/Tooltip'
 import * as actions from '../actions'
 import { Map } from 'immutable'
 import Profile from './Profile'
+import Reactions from './Reactions'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -45,28 +46,8 @@ class Dashboard extends Component {
       <React.Fragment>
         <div className="row">
           <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
-            {/*<List aria-label="main mailbox folders">
-              <ListItem button>
-                <ListItemAvatar>
-                  <Avatar src={user ? user.photoURL : ''} />
-                </ListItemAvatar>
-                <ListItemText
-                  primary={user ? user.userName : 'Name loading...'}
-                />
-                <ListItemSecondaryAction>
-                  <Tooltip title={userLikeFlag ? 'Liked' : 'LiKE'}>
-                    <IconButton
-                      edge="end"
-                      aria-label="like"
-                      onClick={() => this.handleLike(!userLikeFlag)}
-                    >
-                      <Avatar src={userLikeFlag ? userLiked : userLike} />
-                    </IconButton>
-                  </Tooltip>
-                </ListItemSecondaryAction>
-              </ListItem>
-    </List>*/}
             {user && loggedInUser && <Profile profileUser={user} />}
+            <Reactions />
           </div>
           <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
             {user && <PostList searchUser={user} />}

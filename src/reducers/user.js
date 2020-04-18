@@ -45,14 +45,10 @@ export const user = (state = Map(), action) => {
         .deleteIn(['success'])
 
     case actions.GET_USER_SUCCESS:
-      return state
-        .setIn(['success'], fromJS(action.data))
-        .setIn(['loading'], false)
+      return state.setIn(['success'], action.data).setIn(['loading'], false)
 
     case actions.GET_USER_ERROR:
-      return state
-        .setIn(['errors'], fromJS(action.errors))
-        .setIn(['loading'], false)
+      return state.setIn(['errors'], action.errors).setIn(['loading'], false)
 
     default:
       return state

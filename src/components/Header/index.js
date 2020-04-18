@@ -57,9 +57,6 @@ const styles = theme => ({
   margin: {
     margin: theme.spacing.unit,
   },
-  search: {
-    marginLeft: 40,
-  },
   badge: {
     color: '#fff',
   },
@@ -219,8 +216,8 @@ class Header extends React.Component {
             </div>
 
             {users && users.length && authenticated && !logout ? (
-              <div className={classes.search}>
-                <Search />
+              <div className="col-lg-4 m-l-18">
+                <Search type="header" />
               </div>
             ) : null}
             <div className={classes.grow} />

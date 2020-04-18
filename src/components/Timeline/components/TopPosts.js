@@ -76,11 +76,11 @@ class TopPosts extends Component {
                                     ? 'You'
                                     : post.postedBy.userName}
                                 </Link>
-                                {post.postedBy.likes.length
+                                {/* {post.postedBy.likes.length
                                   ? ' ' +
                                     formateNumber(post.postedTo.likes.length) +
                                     ' Liked'
-                                  : ''}
+                                  : ''} */}
                               </>
                             ) : (
                               <b>Annonymous User</b>

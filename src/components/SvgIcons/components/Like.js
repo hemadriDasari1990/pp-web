@@ -4,7 +4,6 @@ import SvgIcon from '@material-ui/core/SvgIcon'
 const LikeIcon = props => (
   <SvgIcon viewBox="0 0 512 512" {...props}>
     <g>
-      <title>background</title>
       <rect
         fill="none"
         id="canvas_background"

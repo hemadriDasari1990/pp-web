@@ -17,4 +17,7 @@ export default {
     fontFamily: 'inherit',
     color: palette.text.primary,
   },
+  action: {
+    margin: '0px !important',
+  },
 }

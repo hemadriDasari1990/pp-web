@@ -62,7 +62,6 @@ class Outgoing extends Component {
   }
 
   componentDidMount() {
-    console.log('test called')
     this.props.getOutgoingPosts(this.props.user._id)
   }
 

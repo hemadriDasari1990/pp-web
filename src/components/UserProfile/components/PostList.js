@@ -332,11 +332,11 @@ class PostList extends Component {
                               ? 'You'
                               : post.postedBy.userName}
                           </Link>
-                          {post.postedBy.likes.length
+                          {/* {post.postedBy.likes.length
                             ? ' ' +
                               formateNumber(post.postedBy.likes.length) +
                               ' Likes'
-                            : ''}
+                            : ''} */}
                         </>
                       ) : (
                         <b>Annonymous User</b>
@@ -405,7 +405,7 @@ class PostList extends Component {
                       </ListItem>
                     </List>
 
-                    <div className="actions-align">
+                    <div className="actions-align mb-10">
                       <AvatarGroup>
                         {post.reactions.length > 0
                           ? post.reactions.slice(0, 3).map(react => (
@@ -445,12 +445,11 @@ class PostList extends Component {
                             {post.shares.length
                               ? formateNumber(post.shares.length)
                               : 'No'}{' '}
-                            shares
+                            Shares
                           </span>
                         </Link>
                       </div>
                     </div>
-
                     <Divider />
                   </CardContent>
 

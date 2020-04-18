@@ -73,7 +73,6 @@ class Search extends React.Component {
             />
           </ListItemAvatar>
           <Typography variant="inherit">{user.userName}</Typography>
-          {/*<span className="name">{matches}</span>*/}
         </ListItem>
       </List>
     )
@@ -88,7 +87,7 @@ class Search extends React.Component {
           backgroundColor: '#ffffff',
           borderRadius: 25,
           height: 40,
-          width: 270,
+          // width: 270,
           boxShadow: '0 14px 28px rgba(145, 148, 170, 0.25)',
         }}
       >
@@ -111,7 +110,12 @@ class Search extends React.Component {
 
   handleSelected = (event, option) => {
     event.persist()
-    option ? this.props.history.push(`/profile/${option._id}`) : null
+    if (this.props.type === 'header') {
+      option ? this.props.history.push(`/profile/${option._id}`) : null
+    }
+    if (this.props.type === 'post') {
+      this.props.getSelectedUser(option)
+    }
   }
 
   handleOnInputChange = (event, searchText) => {

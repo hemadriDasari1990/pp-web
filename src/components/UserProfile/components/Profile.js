@@ -19,6 +19,10 @@ import Tooltip from '@material-ui/core/Tooltip'
 import * as profileActions from '../../UserProfile/actions'
 import LoveIcon from '../../SvgIcons/components/Love'
 import LikeIcon from '../../SvgIcons/components/Like'
+import Button from '@material-ui/core/Button'
+import FollowIcon from '../../SvgIcons/components/Follow'
+import FollowingIcon from '../../SvgIcons/components/Following'
+import * as globalActions from '../../../actions/index'
 
 class Profile extends Component {
   constructor(props) {
@@ -46,6 +50,7 @@ class Profile extends Component {
         this.props.profileUser._id,
         this.props.user._id,
       )
+      await this.props.getUser(this.props.match.params.id)
     })
   }
 
@@ -105,6 +110,18 @@ class Profile extends Component {
             <br />
             <div className="text-center">
               <span>Create usable interface and designs @GraphicSpark</span>
+            </div>
+            <br />
+            <div className="text-center">
+              <Tooltip title="Following">
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  startIcon={<FollowingIcon />}
+                >
+                  Following
+                </Button>
+              </Tooltip>
             </div>
             <br />
           </CardContent>
@@ -184,6 +201,7 @@ const mapStateToProps = state => {
 const actionsToProps = {
   createOrUpdateProfileReaction: profileActions.createOrUpdateProfileReaction,
   getProfileReaction: profileActions.getProfileReaction,
+  getUser: globalActions.getUser,
 }
 
 export default withRouter(connect(mapStateToProps, actionsToProps)(Profile))
