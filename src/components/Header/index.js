@@ -92,8 +92,8 @@ class Header extends React.Component {
     }
   }
 
-  async componentWillReceiveProps(nextProps) {
-    if (this.props.user !== nextProps.user && this.props.user) {
+  async componentDidUpdate(prevProps, prevState) {
+    if (this.props.user !== prevProps.user && this.props.user) {
       await this.props.getUsers(this.props.user._id, '')
       await this.props.getNotificationsCount(this.props.user._id).then(res => {
         this.setState({
@@ -329,6 +329,13 @@ class Header extends React.Component {
                   status={'error'}
                 />
               )}
+            {logout && (
+              <CustomizedSnackbars
+                open={true}
+                message={'Logged out succesfully'}
+                status={'success'}
+              />
+            )}
             {this.renderMobileMenu()}
           </Toolbar>
         </AppBar>

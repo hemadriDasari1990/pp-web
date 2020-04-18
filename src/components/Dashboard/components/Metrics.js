@@ -8,7 +8,6 @@ import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Map, fromJS } from 'immutable'
 import Loader from '../../Loader/components/Loader'
-import loved from '../../../../assets/loved.svg'
 import Avatar from '@material-ui/core/Avatar'
 import Fab from '@material-ui/core/Fab'
 
@@ -18,52 +17,44 @@ class Metrics extends Component {
     this.state = {}
   }
   render() {
-    const { classes, user, title, path, name } = this.props
+    const { classes, user, title, icon, name } = this.props
     return (
-      <React.Fragment>
-        <Card style={{ width: '100%', maxWidth: '100%' }}>
-          <CardContent className="pb-10">
-            <div className="row">
-              <div className="col-lg-6 col-md-10 col-sm-6 col-xs-6">
-                <span className="summary-c-t">{title}</span>
-                <h2>
-                  {user && user.likesCount
-                    ? formateNumber(user.likesCount)
-                    : '1.6M'}
-                </h2>
-              </div>
-              <div
-                className="col-lg-5 col-md-2 col-sm-3 col-xs-3"
+      <Card>
+        <CardContent className="container metrics-card-padding">
+          <div className="row">
+            <div className="col align-self-start metrics-card-title">
+              <span className="summary-c-t">{title}</span>
+              <h2>
+                {user && user.likesCount
+                  ? formateNumber(user.likesCount)
+                  : '1.6M'}
+              </h2>
+            </div>
+            <div
+              className="col align-self-end text-center"
+              style={{
+                backgroundColor: '#2a7fff',
+                borderRadius: 20,
+                height: 100,
+              }}
+            >
+              <Fab
+                color="inherit"
+                size="small"
+                aria-label="likes"
+                color="primary"
                 style={{
-                  backgroundColor: '#2a7fff',
-                  borderRadius: 10,
-                  marginTop: -12,
-                  marginBottom: -20,
-                  marginLeft: 19,
+                  margin: '20% 35% 5% 35%',
+                  backgroundColor: '#fff',
                 }}
               >
-                <Fab
-                  color="inherit"
-                  size="small"
-                  aria-label="likes"
-                  color="primary"
-                  style={{
-                    margin: '30% 30% 10% 25%',
-                    backgroundColor: '#ffffff',
-                  }}
-                >
-                  <Avatar
-                    className="b-s"
-                    src={path}
-                    style={{ height: 30, width: 30 }}
-                  />
-                </Fab>
-                <span className="w-color f-10 text-center">{name}</span>
-              </div>
+                {icon}
+              </Fab>
+              <span className="w-color p-10">{name}</span>
             </div>
-          </CardContent>
-        </Card>
-      </React.Fragment>
+          </div>
+        </CardContent>
+      </Card>
     )
   }
 }

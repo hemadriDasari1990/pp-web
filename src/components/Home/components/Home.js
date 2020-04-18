@@ -8,7 +8,7 @@ import ProfileCard from './card'
 import pros from '../../../../assets/pros.svg'
 import cons from '../../../../assets/cons.svg'
 import advice from '../../../../assets/advice.svg'
-import home from '../../../../assets/home.png'
+import home from '../../../../assets/people.svg'
 
 const styles = theme => ({
   card: {
@@ -37,16 +37,9 @@ class Home extends Component {
     return (
       <React.Fragment>
         <div className="row clearfix">
-          <div className="image-column col-lg-7 col-md-12 col-sm-12">
-            <div className="inner-column">
-              <div className="image">
-                <img src={home} />
-              </div>
-            </div>
-          </div>
           <div className="content-column col-lg-5 col-md-12 col-sm-12">
             <div className="inner-column">
-              <h2>Writenpost - The social platform</h2>
+              <h2>Writenpost - The Social Platform</h2>
               <p>Welcome to your social community.</p>
               <p>
                 Join your friends, colleagues, classmates, family members etc on
@@ -57,6 +50,13 @@ class Home extends Component {
                 <code>Hemadri Dasari & Rajesh Pemmasani</code> in 2018 and was
                 officially launched on Jan 5, 2020.
               </p>
+            </div>
+          </div>
+          <div className="image-column col-lg-7 col-md-12 col-sm-12">
+            <div className="inner-column">
+              <div className="image">
+                <img src={home} />
+              </div>
             </div>
           </div>
         </div>

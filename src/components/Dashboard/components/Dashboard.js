@@ -11,9 +11,9 @@ import { withStyles } from '@material-ui/core/styles'
 import Fab from '@material-ui/core/Fab'
 import Avatar from '@material-ui/core/Avatar'
 import Metrics from './Metrics'
-import userLiked from '../../../../assets/user-liked.svg'
-import loved from '../../../../assets/loved.svg'
-import preferencesIcon from '../../../../assets/preferences1.svg'
+import LoveIcon from '../../SvgIcons/components/Love'
+import LikeIcon from '../../SvgIcons/components/Like'
+import PreferencesIcon from '../../SvgIcons/components/Preferences'
 
 const styles = theme => ({})
 
@@ -46,7 +46,7 @@ class DashBoard extends Component {
               color="primary"
               aria-label="add"
               variant="extended"
-              className="align-items-center"
+              className="align-items-center mb-10"
             >
               View Timeline <Avatar src={arrowIcon} className="b-s b-w-arrow" />
             </Fab>
@@ -60,22 +60,33 @@ class DashBoard extends Component {
         </div>
         <div className="row">
           <div className="col-lg-3 col-md-2 col-sm-12 col-xs-12"></div>
-          <div className="col-lg-3 col-md-3 col-sm col-xs-3">
+          <div className="col-lg-3 col-md-3 col-sm col-xs-12">
             <Metrics
-              path={userLiked}
+              icon={
+                <LikeIcon style={{ width: 35, height: 35 }} color="#2a7fff" />
+              }
               title="People Like You"
               name="Profile Like"
             />
           </div>
-          <div className="col-lg-3 col-md-3 col-sm col-xs-3">
-            <Metrics path={loved} title="People Love You" name="Profile Love" />
+          <div className="col-lg-3 col-md-3 col-sm col-xs-12">
+            <Metrics
+              icon={<LoveIcon className="icon-display" color="#2a7fff" />}
+              title="People Love You"
+              name="Profile Love"
+            />
           </div>
         </div>
         <div className="row">
           <div className="col-lg-3 col-md-2 col-sm-12 col-xs-12"></div>
-          <div className="col-lg-3 col-md-3 col-sm col-xs-3">
+          <div className="col-lg-3 col-md-3 col-sm col-xs-12">
             <Metrics
-              path={preferencesIcon}
+              icon={
+                <PreferencesIcon
+                  style={{ width: 40, height: 40 }}
+                  color="#2a7fff"
+                />
+              }
               title="Times Updated"
               name="Preferences"
             />

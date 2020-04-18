@@ -133,16 +133,9 @@ class Post extends Component {
                   src={user ? user.photoURL : ''}
                   style={{ marginLeft: 10 }}
                 />
-                <p
-                  style={{
-                    marginLeft: 70,
-                    marginTop: 10,
-                    color: '#90949c',
-                    position: 'absolute',
-                  }}
-                >
-                  What's on your mind, {user.displayName}?{' '}
-                </p>
+                <span className="g-color mt-10 m-l-18">
+                  What's on your mind, {user.userName}?{' '}
+                </span>
               </div>
             )}
             {showCreatePost && !createPostLoading && (

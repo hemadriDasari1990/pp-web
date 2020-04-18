@@ -48,7 +48,7 @@ export default {
     link: colors.blue[600],
   },
   background: {
-    default: '#e9ebee',
+    default: '#fff',
     paper: white,
   },
   icon: colors.white,

@@ -8,7 +8,6 @@ export default {
   // body1: {
   //   fontSize: 13
   // },
-  useNextVariants: true,
   h1: {
     color: palette.text.primary,
     fontWeight: 500,
@@ -69,7 +68,7 @@ export default {
   },
   body1: {
     color: palette.text.primary,
-    fontSize: '10px',
+    fontSize: 13,
     letterSpacing: '-0.05px',
     lineHeight: '21px',
   },
@@ -78,7 +77,7 @@ export default {
     fontSize: '12px',
     letterSpacing: '-0.04px',
     lineHeight: '18px',
-    marginTop: 10,
+    // marginTop: 10,
   },
   button: {
     color: palette.text.primary,

@@ -22,6 +22,20 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import * as mainActions from '../../../actions/index'
 import PropTypes from 'prop-types'
 import { debounce } from 'underscore'
+import Autocomplete from '@material-ui/lab/Autocomplete'
+import Typography from '@material-ui/core/Typography'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import MenuList from '@material-ui/core/MenuList'
+import { withStyles } from '@material-ui/core/styles'
+
+const styles = theme => ({
+  listItem: {
+    height: 30,
+  },
+  list: {
+    // overflowY: 'scroll'
+  },
+})
 
 class Search extends React.Component {
   constructor(props) {
@@ -29,84 +43,43 @@ class Search extends React.Component {
 
     this.state = {
       value: '',
-      suggestions: [],
-      selections: [],
       isLoading: false,
     }
-
-    this.cache = {
-      suggestions: this.state.suggestions,
-    }
-
-    this.lastRequestId = null
-    this.loadSuggestions = debounce(this.loadSuggestions, 1000)
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    // this.fetchUsers('');
+  }
 
-  renderSuggestion = (suggestion, { query, isHighlighted }) => {
-    const regexp = new RegExp(`^(.*?)(${query})(.*)$`, 'i')
-    let matches = this.getSuggestionValue(suggestion).match(regexp)
-    if (!matches || matches.length < 3) return null
-    if (matches) {
-      matches.shift()
-      matches[0] = <b>{matches[0]}</b>
-      matches[2] = <b>{matches[2]}</b>
-    } else {
-      matches = suggestion.name
+  renderProfiles = (user, { selected }) => {
+    const { classes } = this.props
+    const { isLoading } = this.state
+    if (isLoading) {
+      return <CircularProgress color="inherit" size={20} />
     }
     return (
-      <MenuList>
-        <MenuItem>
+      <List className={classes.list} dense={true} disablePadding={true}>
+        <ListItem
+          className={classes.listItem}
+          disableGutters={true}
+          dense={true}
+          autoFocus={true}
+        >
           <ListItemAvatar>
             <Avatar
               aria-haspopup="true"
-              alt="Avatar not available"
-              src={suggestion.photoURL}
+              alt={user.userName}
+              src={user.photoURL}
             />
           </ListItemAvatar>
-          <Typography variant="inherit">{suggestion.userName}</Typography>
-          <span className="name">{matches}</span>
-        </MenuItem>
-      </MenuList>
+          <Typography variant="inherit">{user.userName}</Typography>
+          {/*<span className="name">{matches}</span>*/}
+        </ListItem>
+      </List>
     )
   }
 
-  getRegexAnywhere = val => {
-    return new RegExp(`${val}`, 'i')
-  }
-
-  getMatchingUser = (value, data) => {
-    const escapedValue = this.escapeRegexCharacters(value.trim())
-    if (escapedValue === '') {
-      return []
-    }
-    const regex = this.getRegexAnywhere(escapedValue)
-    return data.filter(user => regex.test(user.name))
-  }
-
-  sortMatches(matchesArr, query) {
-    return matchesArr
-      .sort((a, b) => {
-        const matches1 = _.startsWith(a.name, query)
-        const matches2 = _.startsWith(b.name, query)
-        if (!matches1 && matches2) return true
-        else if (matches1 && !matches2) return false
-        return a.name < b.name ? -1 : +(a.name > b.name)
-      })
-      .slice(0, 4)
-  }
-
-  escapeRegexCharacters(str) {
-    return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  }
-
-  getSuggestionValue(suggestion) {
-    return suggestion.name
-  }
-
-  renderInputComponent = inputProps => {
-    const { classes, inputRef = () => {}, ref, ...other } = inputProps
+  renderInputComponent = params => {
     return (
       <div
         style={{
@@ -115,6 +88,7 @@ class Search extends React.Component {
           backgroundColor: '#ffffff',
           borderRadius: 25,
           height: 40,
+          width: 270,
           boxShadow: '0 14px 28px rgba(145, 148, 170, 0.25)',
         }}
       >
@@ -125,134 +99,89 @@ class Search extends React.Component {
         >
           <SearchIcon />
         </IconButton>
-        <InputBase
+        <TextField
+          fullWidth
+          {...params}
+          InputProps={{ ...params.InputProps, disableUnderline: true }}
           placeholder="Search people by name"
-          InputProps={{
-            inputRef: node => {
-              ref(node)
-              inputRef(node)
-            },
-          }}
-          {...other}
         />
       </div>
     )
   }
 
-  loadSuggestions = value => {
+  handleSelected = (event, option) => {
+    event.persist()
+    option ? this.props.history.push(`/profile/${option._id}`) : null
+  }
+
+  handleOnInputChange = (event, searchText) => {
+    if (!searchText) {
+      this.setState({ value: searchText, isLoading: false })
+    } else {
+      this.setState({ value: searchText, isLoading: false }, () => {
+        // this.fetchUsers(searchText);
+      })
+    }
+  }
+
+  /**
+   * Updates the state of the autocomplete data with the remote data obtained via AJAX.
+   *
+   * @param {String} searchText content of the input that will filter the autocomplete data.
+   * @return {Nothing} The state is updated but no value is returned
+   */
+  fetchUsers = searchText => {
     if (!this.props.user) {
       return null
     }
-    this.props
-      .getUsers(this.props.user._id, value)
-      .then(res => {
-        console.log('value', res.data)
-        this.setState({
-          isLoading: false,
-          suggestions: res.data,
-        })
-      })
-      .catch(err => {
-        this.setState({
-          isLoading: false,
-        })
-      })
-
-    // //Cancel the previous request
-    // if (this.lastRequestId !== null) {
-    // 	this.lastRequestId = null;
-    // }
-
-    // // if (this.cache.suggestions.length)
-    // // 	this.setState({
-    // // 		isLoading: true,
-    // // 		suggestions: sortMatches(getMatchingUser(value, this.cache.suggestions), value)
-    // // 	})
-    // // else {
-    // // 	this.setState({
-    // // 		isLoading: true,
-    // // 		suggestions: []
-    // // 	});
-    // // }
-
-    // this.lastRequestId = await this.props.getUsers(this.props.user._id, value)
-    // 	.then(res => {
-
-    //     this.cache.suggestions = [...this.cache.suggestions, ...res.data]
-    //     console.log("res", this.cache.suggestions, this.sortMatches(this.getMatchingUser(value, this.cache.suggestions), value))
-    // 		this.cache.suggestions = _.uniqBy(this.cache.suggestions, (s) => s.userName)
-    // 		this.setState({
-    // 			isLoading: false,
-    // 			suggestions: res.data
+    // this.props
+    //   .getUsers(this.props.user._id, searchText)
+    //   .then(res => {
+    //     this.setState({
+    //       isLoading: false,
+    //       users: res.data,
     //     })
-
-    // 	}).catch(err => {
-    // 		const data = this.cache.suggestions;
-    // 		this.setState({
-    // 			isLoading: false,
-    // 			suggestions: this.sortMatches(this.getMatchingUser(value, data), value)
-    // 		})
-    // 	})
+    //   })
+    //   .catch(err => {
+    //     this.setState({
+    //       isLoading: false,
+    //     })
+    //   })
   }
 
-  onChange = (event, { newValue }) => {
-    event.persist()
-    // event.preventDefault();
-    this.setState({
-      value: newValue,
-    })
-  }
-
-  onSuggestionsFetchRequested = async ({ value }) => {
-    if (value.length > 2) {
-      await this.loadSuggestions(value)
-    }
-  }
-
-  onSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: [],
-    })
-  }
-
-  onSuggestionSelected = (evt, { suggestion }) => {
-    this.setState({
-      value: '',
-      selections: [...this.state.selections, suggestion],
-    })
+  getOptionLabel = option => {
+    return typeof option === 'object' ? option.userName : option
   }
 
   render() {
     const { users } = this.props
-    const { value, suggestions, isLoading } = this.state
-    const autosuggestProps = {
-      renderInputComponent: this.renderInputComponent,
-      suggestions: suggestions,
-      onSuggestionsFetchRequested: this.onSuggestionsFetchRequested,
-      onSuggestionsClearRequested: this.onSuggestionsClearRequested,
-      getSuggestionValue: this.getSuggestionValue,
-      renderSuggestion: this.renderSuggestion,
-      onSuggestionSelected: this.onSuggestionSelected,
-    }
-    const inputProps = {
-      placeholder: 'Search people by name',
-      value,
-      onChange: this.onChange,
-    }
+    const { value, isLoading } = this.state
     return (
       <div>
-        {isLoading ? <span className="loading-spinner"></span> : null}
-        <Autosuggest
-          renderInputComponent={this.renderInputComponent}
-          suggestions={suggestions}
-          onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-          onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-          onSuggestionSelected={this.onSuggestionSelected}
-          getSuggestionValue={this.getSuggestionValue}
-          renderSuggestion={this.renderSuggestion}
-          highlightFirstSuggestion={true}
-          inputProps={inputProps}
-        />
+        {users && (
+          <Autocomplete
+            options={users}
+            getOptionLabel={option => this.getOptionLabel(option)}
+            id="user-search"
+            value={value}
+            loading={isLoading}
+            blurOnSelect
+            loadingText="Loading..."
+            autoHighlight={true}
+            onInputChange={(event, value) =>
+              this.handleOnInputChange(event, value)
+            }
+            onChange={(e, newValue) => this.handleSelected(e, newValue)}
+            renderInput={params => this.renderInputComponent(params)}
+            renderOption={(option, { selected }) =>
+              this.renderProfiles(option, { selected })
+            }
+            noOptionsText="No Profiles Found"
+            getOptionSelected={(option, value) =>
+              option.userName === value.userName
+            }
+          />
+        )}
       </div>
     )
   }
@@ -274,4 +203,6 @@ const mapStateToProps = state => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, actionsToProps)(Search))
+export default withRouter(
+  connect(mapStateToProps, actionsToProps)(withStyles(styles)(Search)),
+)

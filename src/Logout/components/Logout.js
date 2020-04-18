@@ -1,22 +1,22 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import { logout } from '../firebase/auth';
-import * as actions from '../../../actions/index';
+import { logout } from '../firebase/auth'
+import * as actions from '../../../actions/index'
 
 class Logout extends Component {
   constructor() {
     super()
     this.state = {
-      redirect: false
+      redirect: false,
     }
   }
 
-  componentWillMount() {
+  componentDidMount() {
     logout.then((user, error) => {
-      localStorage.removeItem('authUser');
-      this.props.userLogout();
-      this.setState({ redirect: true });
-    });
+      localStorage.removeItem('authUser')
+      this.props.userLogout()
+      this.setState({ redirect: true })
+    })
   }
 
   render() {
@@ -25,7 +25,14 @@ class Logout extends Component {
     }
 
     return (
-      <div style={{ textAlign: "center", position: "absolute", top: "25%", left: "50%" }}>
+      <div
+        style={{
+          textAlign: 'center',
+          position: 'absolute',
+          top: '25%',
+          left: '50%',
+        }}
+      >
         <h3>Logging Out</h3>
       </div>
     )
@@ -33,14 +40,11 @@ class Logout extends Component {
 }
 
 const mapStateToProps = state => {
-
-  return {
-
-  };
+  return {}
 }
 
 const actionsToProps = {
-  userLogout: actions.userLogout
+  userLogout: actions.userLogout,
 }
 
-export default withRouter(connect(mapStateToProps, actionsToProps)(Logout));
+export default withRouter(connect(mapStateToProps, actionsToProps)(Logout))

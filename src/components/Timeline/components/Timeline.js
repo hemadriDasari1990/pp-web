@@ -64,7 +64,7 @@ class Timeline extends Component {
             <DrawerComponent />
           </Grid>
           {user && this.props.location.pathname == '/users' && (
-            <Grid item xs={12} sm={3}>
+            <Grid item lg={4} xs={12} sm={3}>
               <Search />
               <br />
               <Users />

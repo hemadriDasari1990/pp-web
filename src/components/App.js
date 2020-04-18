@@ -37,6 +37,9 @@ import Dashboard from './Dashboard/components/Dashboard'
 import Incoming from './Timeline/components/Incoming'
 import Outgoing from './Timeline/components/Outgoing'
 import Users from './Users/components/Users'
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import arrowIcon from '../../assets/arrow.svg'
 
 class App extends Component {
   constructor(props) {
@@ -86,6 +89,10 @@ class App extends Component {
 
   componentWillUnMount() {
     this.unSubscribe()
+  }
+
+  handleSignin = () => {
+    this.props.history.push('/signin')
   }
 
   render() {
@@ -162,6 +169,30 @@ class App extends Component {
               </Switch>
             </div>
           </section>
+          {!authenticated && (
+            <section className="primary-bg-color w-full relative">
+              <div className="w-max-1200 w-full m-auto relative p-v-80 p-h-20 fl-justify-around fl-items-center fl-wrap">
+                <div className="row">
+                  <div className="col-lg-8 col-md-2 col-sm-2 col-xs-4">
+                    <h2 className="w-color">Ready to get started?</h2>
+                    <h4 className="w-color">
+                      Login with social account and start sharing openions.
+                    </h4>
+                  </div>
+                  <div className="col-lg-4 col-md-2 col-sm-2 col-xs-4">
+                    <Button
+                      onClick={() => this.handleSignin()}
+                      size="large"
+                      color="primary"
+                      className="mt-25"
+                    >
+                      login With Social Account
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
           <Footer authenticated={authenticated} />
         </MuiThemeProvider>
       </React.Fragment>

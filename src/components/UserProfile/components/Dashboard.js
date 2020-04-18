@@ -14,18 +14,18 @@ import Avatar from '@material-ui/core/Avatar'
 import * as globalActions from '../../../actions/index'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import userLike from '../../../../assets/user-like.svg'
-import userLiked from '../../../../assets/user-liked.svg'
 import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import * as actions from '../actions'
 import { Map } from 'immutable'
+import Profile from './Profile'
 
 class Dashboard extends Component {
   constructor(props) {
     super(props)
     this.state = {
       posts: [],
-      user: {},
+      user: undefined,
       userLikeFlag: false,
     }
   }
@@ -36,50 +36,16 @@ class Dashboard extends Component {
         user: res.data ? res.data.user : {},
       })
     })
-    await this.getProfileReaction()
-  }
-
-  handleLike = like => {
-    this.props.user
-      ? this.props
-          .createOrUpdateProfileReaction({
-            user: this.props.match.params.id,
-            likedBy: this.props.user._id,
-            like: like,
-          })
-          .then(res => {
-            this.getProfileReaction()
-          })
-      : null
-  }
-
-  getProfileReaction = () => {
-    this.props
-      .getProfileReaction(this.props.user._id, this.props.match.params.id)
-      .then(res => {
-        res && res.data
-          ? this.setState({
-              userLikeFlag: true,
-            })
-          : this.setState({
-              userLikeFlag: false,
-            })
-      })
-      .catch(err => {
-        this.setState({
-          userLikeFlag: false,
-        })
-      })
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, loggedInUser } = this.props
     const { posts, user, userLikeFlag } = this.state
     return (
       <React.Fragment>
         <div className="row">
           <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
-            <List component="nav" aria-label="main mailbox folders">
+            {/*<List aria-label="main mailbox folders">
               <ListItem button>
                 <ListItemAvatar>
                   <Avatar src={user ? user.photoURL : ''} />
@@ -99,13 +65,14 @@ class Dashboard extends Component {
                   </Tooltip>
                 </ListItemSecondaryAction>
               </ListItem>
-            </List>
-            {user && <PostsInfo user={user} />}
+    </List>*/}
+            {user && loggedInUser && <Profile profileUser={user} />}
           </div>
           <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
             {user && <PostList searchUser={user} />}
           </div>
           <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+            {user && <PostsInfo user={user} />}
             {user && <RecentPosts user={user} />}
             {user && <TopPosts user={user} />}
           </div>
@@ -120,16 +87,14 @@ Dashboard.propTypes = {
 }
 
 const mapStateToProps = state => {
-  const user = state.getIn(['user', 'data'])
+  const loggedInUser = state.getIn(['user', 'data'])
   return {
-    user,
+    loggedInUser,
   }
 }
 
 const actionsToProps = {
   getUser: globalActions.getUser,
-  createOrUpdateProfileReaction: actions.createOrUpdateProfileReaction,
-  getProfileReaction: actions.getProfileReaction,
 }
 
 export default withRouter(connect(mapStateToProps, actionsToProps)(Dashboard))

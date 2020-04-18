@@ -46,8 +46,8 @@ class DrawerComponent extends Component {
     const {} = this.state
     return (
       <>
-        <List>
-          <Grid item xs={4} sm={4}>
+        <List className="row">
+          <Grid item lg={12} xs={4} sm={4}>
             <ListItem button key={1} onClick={this.handleIncoming}>
               <ListItemIcon>
                 <Avatar className={classes.avatar} src={incomingIcon} />
@@ -55,7 +55,7 @@ class DrawerComponent extends Component {
               <ListItemText>Incoming</ListItemText>
             </ListItem>
           </Grid>
-          <Grid item xs={4} sm={4}>
+          <Grid item lg={12} xs={4} sm={4}>
             <ListItem button key={2} onClick={this.handleOutgoing}>
               <ListItemIcon>
                 <Avatar className={classes.avatar} src={outgoingIcon} />
@@ -63,7 +63,7 @@ class DrawerComponent extends Component {
               <ListItemText>Outgoing</ListItemText>
             </ListItem>
           </Grid>
-          <Grid item xs={4} sm={4}>
+          <Grid item lg={12} xs={4} sm={4}>
             <ListItem button key={3} onClick={this.handleUsers}>
               <ListItemIcon>
                 <Avatar className={classes.avatar} src={usersIcon} />

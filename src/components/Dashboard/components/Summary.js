@@ -59,20 +59,18 @@ class Summary extends Component {
               />
             }
           />
-          <CardContent className="p-0 m-l-18">
+          <CardContent className="p-0">
             {loading ? <Loader /> : null}
             {!loading ? (
               <>
-                <List className="list-row p-0">
+                <List className="list-row p-0 ml-40">
                   <ListItem alignItems="flex-start" className="p-0">
                     <ListItemText
                       primary="Accepted"
                       secondary={
-                        <React.Fragment>
-                          <Typography component="span" variant="subtitle1">
-                            {summary ? formateNumber(summary.approved) : 0}
-                          </Typography>
-                        </React.Fragment>
+                        <Typography component="span" variant="subtitle1">
+                          {summary ? formateNumber(summary.approved) : 0}
+                        </Typography>
                       }
                     />
                   </ListItem>
@@ -80,25 +78,21 @@ class Summary extends Component {
                     <ListItemText
                       primary="Rejected"
                       secondary={
-                        <React.Fragment>
-                          <Typography component="span" variant="subtitle1">
-                            {summary ? formateNumber(summary.rejected) : 0}
-                          </Typography>
-                        </React.Fragment>
+                        <Typography component="span" variant="subtitle1">
+                          {summary ? formateNumber(summary.rejected) : 0}
+                        </Typography>
                       }
                     />
                   </ListItem>
                 </List>
-                <List className="list-row p-0">
+                <List className="list-row p-0 ml-40">
                   <ListItem alignItems="flex-start" className="p-0">
                     <ListItemText
                       primary="Pending"
                       secondary={
-                        <React.Fragment>
-                          <Typography component="span" variant="subtitle1">
-                            {summary ? formateNumber(summary.pending) : 0}
-                          </Typography>
-                        </React.Fragment>
+                        <Typography component="span" variant="subtitle1">
+                          {summary ? formateNumber(summary.pending) : 0}
+                        </Typography>
                       }
                     />
                   </ListItem>
@@ -106,11 +100,9 @@ class Summary extends Component {
                     <ListItemText
                       primary="Total posts"
                       secondary={
-                        <React.Fragment>
-                          <Typography component="span" variant="subtitle1">
-                            {summary ? formateNumber(summary.total) : 0}
-                          </Typography>
-                        </React.Fragment>
+                        <Typography component="span" variant="subtitle1">
+                          {summary ? formateNumber(summary.total) : 0}
+                        </Typography>
                       }
                     />
                   </ListItem>

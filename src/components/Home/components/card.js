@@ -21,7 +21,7 @@ const styles = theme => ({
   media: {
     margin: '30px 0px 0px 30px',
     width: 55,
-    height: 20,
+    height: 55,
     display: 'block',
   },
   content: {
@@ -42,6 +42,9 @@ const styles = theme => ({
   },
   fab: {
     marginLeft: '40%',
+  },
+  profile: {
+    height: 400,
   },
 })
 
@@ -70,16 +73,15 @@ class ProfileCard extends React.Component {
           <CardMedia
             component="img"
             alt={title}
-            height="250"
             image={path}
             title={title}
-            className={type == 'home' ? classes.media : ''}
+            className={type == 'home' ? classes.media : classes.profile}
           />
           <CardContent className={classes.content}>
             <Typography gutterBottom variant="h5" component="h2">
               <h2>{title}</h2>
             </Typography>
-            <Typography gutterBottom variant="subTitle1" component="p">
+            <Typography gutterBottom variant="h5" component="h4">
               {subTitle}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
