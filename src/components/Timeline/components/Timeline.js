@@ -54,7 +54,7 @@ class Timeline extends Component {
             <DrawerComponent />
           </Grid>
           {user && this.props.location.pathname == '/users' && (
-            <Grid item lg={4} xs={12} sm={3}>
+            <Grid item lg={11} xs={12} sm={3}>
               <Search />
               <br />
               <Users />
@@ -79,42 +79,6 @@ class Timeline extends Component {
             </Grid>
           )}
         </Grid>
-        {/* {user && this.props.location.pathname == '/users' && (<div className="row text-center">
-          <div style={{marginLeft: '33%', marginBottom: 10}} className="col-lg-4 col-md-3 col-sm-12 col-xs-12">
-            <Search />
-          </div>
-        </div>)} */}
-        {/* <div className="row">
-            <div className="col-lg-1 col-md-3 col-sm-12 col-xs-12">
-              <DrawerComponent />
-            </div>
-            {user && this.props.location.pathname == '/users' && (
-              <Users />
-            )}
-
-            { this.props.location.pathname !== '/users' && (<div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
-              <Post />
-              {user && this.props.location.pathname == '/incoming' && (
-                <Incoming user={user} />
-              )}
-              {user && this.props.location.pathname == '/outgoing' && (
-                <Outgoing user={user} />
-              )}
-            </div>)}
-            { this.props.location.pathname !== '/users' && (<div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-              {user && (
-                <PostsInfo user={user} />
-              )}
-              {user && (
-                <RecentPosts
-                  user={user}
-                />
-              )}
-              {user && (
-                <TopPosts user={user} />
-              )}
-            </div>)}
-          </div> */}
       </React.Fragment>
     )
   }

@@ -37,22 +37,24 @@ class Preferences extends Component {
 
   async componentDidMount() {
     const { user } = this.props
-    await this.props.getUserPreferences(user._id).then(res => {
-      if (res) {
-        const data = res.data.pref
-        if (data) {
-          this.setState({
-            pros: data.pros,
-            cons: data.cons,
-            advice: data.advice,
-            buttonName: 'Update',
-            count: data.count,
-            id: data._id,
-            data,
-          })
-        }
-      }
-    })
+    user
+      ? await this.props.getUserPreferences(user._id).then(res => {
+          if (res) {
+            const data = res.data.pref
+            if (data) {
+              this.setState({
+                pros: data.pros,
+                cons: data.cons,
+                advice: data.advice,
+                buttonName: 'Update',
+                count: data.count,
+                id: data._id,
+                data,
+              })
+            }
+          }
+        })
+      : null
   }
   handleInput = event => {
     this.setState({
