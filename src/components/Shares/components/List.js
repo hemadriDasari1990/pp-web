@@ -20,10 +20,9 @@ import { Link } from 'react-router-dom'
 
 const styles = {
   smallAvatar: {
+    top: '150%',
     width: 22,
     height: 22,
-    top: '180%',
-    right: 9,
   },
   customBadge: {
     backgroundColor: 'unset !important',

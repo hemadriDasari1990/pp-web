@@ -9,10 +9,15 @@ export default {
   },
   title: {
     fontFamily: 'inherit',
+    fontSize: 15,
     color: '#2a7fff',
+    fontWeight: 500,
   },
   subheader: {
     fontFamily: 'inherit',
     color: palette.text.primary,
+  },
+  action: {
+    margin: '0px !important',
   },
 }

@@ -11,7 +11,6 @@ export default {
     borderColor: 'transparent',
     borderLeftWidth: 0,
     borderRightWidth: 0,
-    boxShadow:
-      '0 14px 28px rgba(145, 148, 170, 0.25), 0 10px 10px rgba(79, 99, 158, 0.22)',
+    boxShadow: '0 14px 28px #2a7fff12, 0 10px 10px #2a7fff0d',
   },
 }

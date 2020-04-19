@@ -9,9 +9,6 @@ import Typography from '@material-ui/core/Typography'
 import Avatar from '@material-ui/core/Avatar'
 import Divider from '@material-ui/core/Divider'
 import moment from 'moment'
-import MoodIcon from '@material-ui/icons/Mood'
-import MoodBadIcon from '@material-ui/icons/MoodBad'
-import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -22,7 +19,7 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
 import { Link } from 'react-router-dom'
-import * as dashboardActions from '../../Dashboard/actions'
+import * as dashboardActions from '../../Timeline/actions'
 import Loader from '../../Loader/components/Loader'
 import like from '../../../../assets/emojis/like.svg'
 import angry from '../../../../assets/emojis/angry.svg'
@@ -35,6 +32,9 @@ import Button from '@material-ui/core/Button'
 import AvatarGroup from '@material-ui/lab/AvatarGroup'
 import { withStyles } from '@material-ui/core/styles'
 import share from '../../../../assets/emojis/share.svg'
+import advice from '../../../../assets/advice.svg'
+import pros from '../../../../assets/pros.svg'
+import cons from '../../../../assets/cons.svg'
 
 const styles = {
   smallAvatar: {
@@ -68,7 +68,7 @@ class PostList extends Component {
   }
 
   async componentDidMount() {
-    await this.props.getPostsByUser(this.props.match.params.id, false, true)
+    await this.props.getIncomingPosts(this.props.match.params.id)
     this.renderHint()
   }
 
@@ -78,13 +78,13 @@ class PostList extends Component {
     await this.props
       .createOrUpdateReaction(userId, postId, reaction)
       .then(async data => {
-        await this.props.getPostsByUser(this.props.match.params.id, false, true)
+        await this.props.getIncomingPosts(this.props.match.params.id)
       })
   }
 
   createShare = async (userId, postId) => {
     await this.props.createShare(userId, postId).then(async data => {
-      await this.props.getPostsByUser(this.props.match.params.id, false, true)
+      await this.props.getIncomingPosts(this.props.match.params.id)
     })
   }
 
@@ -285,17 +285,17 @@ class PostList extends Component {
   render() {
     const {
       classes,
-      posts,
-      postsError,
-      postsLoading,
+      incomingPosts,
+      incomingPostsError,
+      incomingPostsLoading,
       searchUser,
       user,
     } = this.props
     const { showEmojis, open, hint } = this.state
     return (
       <React.Fragment>
-        {searchUser && posts.length
-          ? posts
+        {searchUser && incomingPosts.length
+          ? incomingPosts
               .filter(p => p.approved)
               .map(post => (
                 <Card key={post._id}>
@@ -332,11 +332,11 @@ class PostList extends Component {
                               ? 'You'
                               : post.postedBy.userName}
                           </Link>
-                          {post.postedBy.likes.length
+                          {/* {post.postedBy.likes.length
                             ? ' ' +
                               formateNumber(post.postedBy.likes.length) +
                               ' Likes'
-                            : ''}
+                            : ''} */}
                         </>
                       ) : (
                         <b>Annonymous User</b>
@@ -348,7 +348,7 @@ class PostList extends Component {
                     <List>
                       <ListItem alignItems="flex-start">
                         <ListItemAvatar>
-                          <MoodIcon />
+                          <Avatar src={pros} className="avatar" />
                         </ListItemAvatar>
                         <ListItemText
                           primary="Pros"
@@ -367,7 +367,7 @@ class PostList extends Component {
                       </ListItem>
                       <ListItem alignItems="flex-start">
                         <ListItemAvatar>
-                          <MoodBadIcon />
+                          <Avatar src={cons} className="avatar" />
                         </ListItemAvatar>
                         <ListItemText
                           primary="Cons"
@@ -386,7 +386,7 @@ class PostList extends Component {
                       </ListItem>
                       <ListItem alignItems="flex-start">
                         <ListItemAvatar>
-                          <SentimentSatisfiedIcon />
+                          <Avatar src={advice} className="avatar" />
                         </ListItemAvatar>
                         <ListItemText
                           primary="Advice"
@@ -405,7 +405,7 @@ class PostList extends Component {
                       </ListItem>
                     </List>
 
-                    <div className="actions-align">
+                    <div className="actions-align mb-10">
                       <AvatarGroup>
                         {post.reactions.length > 0
                           ? post.reactions.slice(0, 3).map(react => (
@@ -416,7 +416,7 @@ class PostList extends Component {
                                 <Avatar
                                   className={classes.smallAvatar}
                                   key={react._id}
-                                  alt="Remy Sharp"
+                                  alt="Image Not Available"
                                   src={this.getReaction(
                                     react ? react.type : '',
                                   )}
@@ -445,12 +445,11 @@ class PostList extends Component {
                             {post.shares.length
                               ? formateNumber(post.shares.length)
                               : 'No'}{' '}
-                            shares
+                            Shares
                           </span>
                         </Link>
                       </div>
                     </div>
-
                     <Divider />
                   </CardContent>
 
@@ -697,13 +696,14 @@ class PostList extends Component {
                 </Card>
               ))
           : null}
-        {!posts.length ||
-        (posts.length && !posts.filter(p => p.approved).length) ? (
+        {!incomingPosts.length ||
+        (incomingPosts.length &&
+          !incomingPosts.filter(p => p.approved).length) ? (
           <Typography variant="h3" className="text-center">
             No Approved posts found to show
           </Typography>
         ) : null}
-        {postsLoading ? <Loader /> : null}
+        {incomingPostsLoading ? <Loader /> : null}
       </React.Fragment>
     )
   }
@@ -715,20 +715,26 @@ PostList.propTypes = {
 
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'])
-  const posts = state.getIn(['Dashboard', 'posts', 'success'], Map())
-  const postsLoading = state.getIn(['Dashboard', 'posts', 'loading'], false)
-  const postsError = state.getIn(['Dashboard', 'posts', 'errors'], Map())
+  const incomingPosts = state.getIn(['Timeline', 'incoming', 'success'], Map())
+  const incomingPostsLoading = state.getIn(
+    ['Timeline', 'incoming', 'loading'],
+    false,
+  )
+  const incomingPostsError = state.getIn(
+    ['Timeline', 'incoming', 'errors'],
+    Map(),
+  )
   return {
     user,
-    posts,
-    postsError,
-    postsLoading,
+    incomingPosts,
+    incomingPostsError,
+    incomingPostsLoading,
   }
 }
 
 const actionsToProps = {
   createOrUpdateReaction: actions.createOrUpdateReaction,
-  getPostsByUser: dashboardActions.getPostsByUser,
+  getIncomingPosts: dashboardActions.getIncomingPosts,
   createShare: actions.createShare,
 }
 

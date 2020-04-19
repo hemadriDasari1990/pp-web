@@ -16,7 +16,7 @@ const styles = theme => ({
   fab: {
     width: '300px !important',
     color: '#ffffff !important',
-    margin: '15px 0 15px 20px',
+    margin: '15px 0 30px 20px',
   },
 })
 

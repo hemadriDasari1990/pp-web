@@ -15,9 +15,9 @@ if (process.env.NODE_ENV === 'production') Offline.install()
 
 export const Root = () => (
   <Provider store={store}>
-    <HashRouter history={createBrowserHistory}>
+    <BrowserRouter history={createBrowserHistory}>
       <App />
-    </HashRouter>
+    </BrowserRouter>
   </Provider>
 )
 

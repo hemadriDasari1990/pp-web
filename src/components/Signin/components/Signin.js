@@ -8,13 +8,10 @@ import Google from '../../Social/components/Google'
 import Facebook from '../../Social/components/Facebook'
 import Linkedin from '../../Social/components/Linkedin'
 import Twitter from '../../Social/components/Twitter'
+import Social from '../../../../assets/social.svg'
 
 const styles = theme => ({
   button: {},
-  span: {
-    display: 'block',
-    marginLeft: 150,
-  },
   small: {
     width: 35,
     height: 35,
@@ -33,22 +30,21 @@ class Signin extends Component {
       <React.Fragment>
         <div className="row clearfix">
           <div className="image-column col-lg-7 col-md-12 col-sm-12">
-            <div className="inner-column">
-              <h1 className="text-center">Social Login</h1>
-              <h4 className="text-center">
-                Make a login using with social network accounts
-              </h4>
-              <br />
+            <div className="p-h-20 fl-justify-around fl-items-center nner-column">
+              <div className="image">
+                <img src={Social} />
+              </div>
             </div>
           </div>
           <div className="content-column col-lg-5 col-md-12 col-sm-12">
-            <div className="inner-column">
+            <div className="p-h-20 fl-justify-around fl-items-center inner-column">
+              <h1 className="m-l-18">Social Logins</h1>
+              <h6 className="m-l-18">
+                Make a login using social network accounts
+              </h6>
               <Facebook />
-              <span className={classes.span}>OR</span>
               <Google />
-              <span className={classes.span}>OR</span>
               <Linkedin />
-              <span className={classes.span}>OR</span>
               <Twitter />
             </div>
           </div>

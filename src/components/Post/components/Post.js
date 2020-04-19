@@ -19,17 +19,6 @@ import Loader from '../../Loader/components/Loader'
 import Avatar from '@material-ui/core/Avatar'
 import FormGroup from '@material-ui/core/FormGroup'
 
-const styles = theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-  },
-})
-
 class Post extends Component {
   constructor(props) {
     super(props)
@@ -37,7 +26,7 @@ class Post extends Component {
       pros: '',
       cons: '',
       advice: '',
-      newPost: {},
+      selectedUser: undefined,
       preferences: undefined,
       errorMessage: '',
       showCreatePost: false,
@@ -52,13 +41,16 @@ class Post extends Component {
   }
 
   handleSave = async () => {
-    const { pros, cons, advice, preferences } = this.state
-    if (!pros || !cons || !advice) {
+    const { pros, cons, advice, preferences, selectedUser } = this.state
+    const { user } = this.props
+    if (!pros || !cons || !advice || !selectedUser) {
       this.setState({
         errorMessage: 'Please enter your comments as per user preferences',
       })
     } else {
-      const data = this.state.newPost
+      const data = {}
+      data.postedTo = selectedUser._id
+      data.postedBy = user._id
       data.pros = pros
       data.cons = cons
       data.advice = advice
@@ -76,17 +68,18 @@ class Post extends Component {
     }
   }
 
-  createPost = async newPost => {
-    if (!newPost) {
+  getSelectedUser = async user => {
+    console.log('got the user', user)
+    if (!user) {
       return
     }
-    await this.props.getUserPreferences(newPost.postedTo).then(res => {
+    await this.props.getUserPreferences(user._id).then(res => {
       this.setState({
-        preferences: res.data.pref[0],
+        preferences: res.data.pref,
       })
     })
     this.setState({
-      newPost,
+      selectedUser: user,
     })
   }
 
@@ -124,7 +117,7 @@ class Post extends Component {
       cons,
       advice,
       preferences,
-      newPost,
+      selectedUser,
       errorMessage,
       showCreatePost,
       isAnonymous,
@@ -144,30 +137,21 @@ class Post extends Component {
                   src={user ? user.photoURL : ''}
                   style={{ marginLeft: 10 }}
                 />
-                <p
-                  style={{
-                    marginLeft: 70,
-                    marginTop: 10,
-                    color: '#90949c',
-                    position: 'absolute',
-                  }}
-                >
-                  What's on your mind, {user.displayName}?{' '}
-                </p>
+                <span className="g-color mt-10 m-l-18">
+                  What's on your mind, {user.userName}?{' '}
+                </span>
               </div>
             )}
             {showCreatePost && !createPostLoading && (
               <>
                 <h5>Write something that matters to people.</h5>
-                <Search
-                  users={users}
-                  profile={false}
-                  post={true}
-                  createPost={this.createPost}
-                />
-                {preferences && (
+                <div className="col-lg-12">
+                  <Search type="post" getSelectedUser={this.getSelectedUser} />
+                </div>
+                <br />
+                {selectedUser && preferences && (
                   <>
-                    <h4>{newPost.postedByName} preferences</h4>
+                    <h4>{selectedUser.userName} preferences</h4>
                     <p>Please post your comments as per user preferences</p>
                     <FormControlLabel
                       control={
@@ -200,6 +184,12 @@ class Post extends Component {
                       label="Advice"
                     />
                   </>
+                )}
+                {selectedUser && !preferences && (
+                  <h6>
+                    {selectedUser.userName} don't have preferences updated.
+                    Please feel free to provide your openions
+                  </h6>
                 )}
                 <TextField
                   required={

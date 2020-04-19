@@ -102,7 +102,7 @@ export const getUsersSuccess = user => {
   return {
     type: action.GET_USERS_SUCCESS,
     loading: false,
-    data: user,
+    data: user.users,
   }
 }
 
@@ -114,14 +114,14 @@ export const getUsersError = errors => {
   }
 }
 
-export const getUsers = () => {
+export const getUsers = (userId, text) => {
   const options = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   }
   return dispatch => {
     dispatch(getUsersRequest())
-    return fetch(config.URL_PREFIX + `/user/`, options)
+    return fetch(config.URL_PREFIX + `/user/${userId}?text=${text}`, options)
       .then(response => response.json())
       .then(data => dispatch(getUsersSuccess(data)))
       .catch(errors => dispatch(getUsersError(errors)))

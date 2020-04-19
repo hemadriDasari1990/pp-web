@@ -23,6 +23,8 @@ class Feedback extends Component {
       vbad: false,
       yes: false,
       no: false,
+      average: false,
+      annonymous: false,
     }
   }
 
@@ -52,6 +54,7 @@ class Feedback extends Component {
           vgood: false,
           bad: false,
           vbad: false,
+          average: false,
         })
         break
       case 'vgood':
@@ -60,6 +63,16 @@ class Feedback extends Component {
           vgood: e.target.value,
           bad: false,
           vbad: false,
+          average: false,
+        })
+        break
+      case 'average':
+        this.setState({
+          good: false,
+          vgood: false,
+          bad: false,
+          vbad: false,
+          average: e.target.value,
         })
         break
       case 'bad':
@@ -68,6 +81,7 @@ class Feedback extends Component {
           vgood: false,
           bad: e.target.value,
           vbad: false,
+          average: false,
         })
         break
       case 'vbad':
@@ -76,6 +90,7 @@ class Feedback extends Component {
           vgood: false,
           bad: false,
           vbad: e.target.value,
+          average: false,
         })
         break
       default:
@@ -141,6 +156,14 @@ class Feedback extends Component {
       vbad: false,
       yes: false,
       no: false,
+      average: false,
+      annonymous: false,
+    })
+  }
+
+  handleAnnonymous = e => {
+    this.setState({
+      annonymous: e.target.value,
     })
   }
 
@@ -154,7 +177,9 @@ class Feedback extends Component {
       vbad,
       yes,
       no,
+      average,
       errorMessage,
+      annonymous,
     } = this.state
     const {
       user,
@@ -236,6 +261,18 @@ class Feedback extends Component {
               <FormControlLabel
                 control={
                   <Checkbox
+                    checked={average}
+                    onChange={this.handleExperience}
+                    value="false"
+                    color="primary"
+                    name="average"
+                  />
+                }
+                label="Average"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
                     checked={bad}
                     onChange={this.handleExperience}
                     value="false"
@@ -285,6 +322,20 @@ class Feedback extends Component {
                   />
                 }
                 label="No"
+              />
+            </div>
+            <div className="col-lg-12">
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={annonymous}
+                    onChange={this.handleAnnonymous}
+                    value="false"
+                    color="primary"
+                    name="annonymous"
+                  />
+                }
+                label="Post As Annonymous"
               />
             </div>
             <div className="col-lg-6 margin-bottom">

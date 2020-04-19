@@ -68,16 +68,11 @@ class PostList extends Component {
   }
 
   componentDidMount() {
-    this.props.getPostsByUser(this.props.user._id, false, true)
+    this.props.getIncomingPosts(this.props.user._id)
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.props.iposted && this.props.iposted != prevProps.iposted) {
-      this.props.getPostsByUser(this.props.user._id, true, false)
-    }
-    if (this.props.ireceived && this.props.ireceived != prevProps.ireceived) {
-      this.props.getPostsByUser(this.props.user._id, false, true)
-    }
+    // this.props.getIncomingPosts(this.props.user._id)
   }
 
   handleClose = () => {
@@ -91,12 +86,7 @@ class PostList extends Component {
         this.setState({
           open: false,
         })
-        if (this.props.ireceived) {
-          await this.props.getPostsByUser(this.props.user._id, false, true)
-        }
-        if (this.props.iposted) {
-          await this.props.getPostsByUser(this.props.user._id, true, false)
-        }
+        await this.props.getIncomingPosts(this.props.user._id)
         break
       default:
         break
@@ -290,9 +280,9 @@ class PostList extends Component {
 
   render() {
     const {
-      posts,
-      postsError,
-      postsLoading,
+      incomingPosts,
+      incomingPostsError,
+      incomingPostsLoading,
       deletePostSuccess,
       deletePostError,
       deletePostLoading,
@@ -304,8 +294,8 @@ class PostList extends Component {
     return (
       <React.Fragment>
         <Post />
-        {!postsLoading && posts.length
-          ? posts.map(post => (
+        {!incomingPostsLoading && incomingPosts.length
+          ? incomingPosts.map(post => (
               <Card key={post._id}>
                 <CardHeader
                   avatar={
@@ -341,19 +331,18 @@ class PostList extends Component {
                           post.rejected
                             ? 'Rejected'
                             : post.approved
-                            ? 'Approved'
+                            ? 'Accepted'
                             : 'Pending'
                         }
                       >
                         <span
-                          className="post-flag"
-                          style={{
-                            backgroundColor: post.approved
-                              ? '#35c9208f'
+                          className={
+                            post.approved
+                              ? 'status approved'
                               : post.rejected
-                              ? '#e91e63'
-                              : '#3f51b5',
-                          }}
+                              ? 'status rejected'
+                              : 'status pending'
+                          }
                         ></span>
                       </Tooltip>
                       <Tooltip title="Update">
@@ -385,8 +374,7 @@ class PostList extends Component {
                     </>
                   }
                   title={
-                    !post.isAnonymous ||
-                    (this.props.iposted && post.isAnonymous) ? (
+                    !post.isAnonymous || post.isAnonymous ? (
                       <>
                         <Link
                           className="hyperlink"
@@ -480,7 +468,7 @@ class PostList extends Component {
                       />
                     </ListItem>
                   </List>
-                  <div className="actions-align">
+                  <div className="actions-align mb-10">
                     <AvatarGroup>
                       {post.reactions.length > 0
                         ? post.reactions.slice(0, 3).map(react => (
@@ -491,7 +479,7 @@ class PostList extends Component {
                               <Avatar
                                 className={classes.smallAvatar}
                                 key={react._id}
-                                alt="Remy Sharp"
+                                alt="Image Not Available"
                                 src={this.getReaction(react ? react.type : '')}
                               />
                             </Tooltip>
@@ -518,7 +506,7 @@ class PostList extends Component {
                           {post.shares.length
                             ? formateNumber(post.shares.length)
                             : 'No'}{' '}
-                          shares
+                          Shares
                         </span>
                       </Link>
                     </div>
@@ -527,18 +515,18 @@ class PostList extends Component {
               </Card>
             ))
           : null}
-        {!postsLoading && !posts.length ? (
+        {!incomingPostsLoading && !incomingPosts.length ? (
           <Typography variant="h3" className="text-center">
             {iposted
               ? `You haven't posted to others`
               : `You haven't received posts `}
           </Typography>
         ) : null}
-        {postsLoading ? <Loader /> : null}
-        {postsError && postsError.size > 0 ? (
+        {incomingPostsLoading ? <Loader /> : null}
+        {incomingPostsError && incomingPostsError.size > 0 ? (
           <CustomizedSnackbars
             open={true}
-            message={postsError.get('message')}
+            message={incomingPostsError.get('message')}
             status={'error'}
           />
         ) : null}
@@ -553,24 +541,30 @@ PostList.propTypes = {
 
 const mapStateToProps = state => {
   const deletePostSuccess = state.getIn(
-    ['Dashboard', 'post', 'delete', 'success'],
+    ['Timeline', 'post', 'delete', 'success'],
     Map(),
   )
   const deletePostError = state.getIn(
-    ['Dashboard', 'post', 'delete', 'errors'],
+    ['Timeline', 'post', 'delete', 'errors'],
     Map(),
   )
   const deletePostLoading = state.getIn(
-    ['Dashboard', 'post', 'delete', 'loading'],
+    ['Timeline', 'post', 'delete', 'loading'],
     Map(),
   )
-  const posts = state.getIn(['Dashboard', 'posts', 'success'], Map())
-  const postsLoading = state.getIn(['Dashboard', 'posts', 'loading'], false)
-  const postsError = state.getIn(['Dashboard', 'posts', 'errors'], Map())
+  const incomingPosts = state.getIn(['Timeline', 'incoming', 'success'], Map())
+  const incomingPostsLoading = state.getIn(
+    ['Timeline', 'incoming', 'loading'],
+    false,
+  )
+  const incomingPostsError = state.getIn(
+    ['Timeline', 'incoming', 'errors'],
+    Map(),
+  )
   return {
-    posts,
-    postsError,
-    postsLoading,
+    incomingPosts,
+    incomingPostsError,
+    incomingPostsLoading,
     deletePostSuccess,
     deletePostError,
     deletePostLoading,
@@ -578,9 +572,9 @@ const mapStateToProps = state => {
 }
 
 const actionsToProps = {
-  getPostsByUser: actions.getPostsByUser,
+  getIncomingPosts: actions.getIncomingPosts,
   deletePost: actions.deletePost,
-  getPostsPostedByUser: actions.getPostsPostedByUser,
+  getOutgoingPosts: actions.getOutgoingPosts,
 }
 
 export default withRouter(

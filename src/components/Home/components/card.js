@@ -19,7 +19,7 @@ const styles = theme => ({
     borderRadius: '15px 100px 15px 15px',
   },
   media: {
-    margin: '10px 0px 0px 30px',
+    margin: '30px 0px 0px 30px',
     width: 55,
     height: 55,
     display: 'block',
@@ -41,7 +41,10 @@ const styles = theme => ({
     marginLeft: 20,
   },
   fab: {
-    marginLeft: '60%',
+    marginLeft: '40%',
+  },
+  profile: {
+    height: 400,
   },
 })
 
@@ -70,16 +73,15 @@ class ProfileCard extends React.Component {
           <CardMedia
             component="img"
             alt={title}
-            height="250"
             image={path}
             title={title}
-            className={type == 'home' ? classes.media : ''}
+            className={type == 'home' ? classes.media : classes.profile}
           />
           <CardContent className={classes.content}>
             <Typography gutterBottom variant="h5" component="h2">
               <h2>{title}</h2>
             </Typography>
-            <Typography gutterBottom variant="subTitle1" component="p">
+            <Typography gutterBottom variant="h5" component="h4">
               {subTitle}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
@@ -99,7 +101,7 @@ class ProfileCard extends React.Component {
                 variant="extended"
               >
                 {buttonName}{' '}
-                <Avatar src={arrowIcon} className={classes.small} />
+                <Avatar src={arrowIcon} className="b-s b-w-arrow" />
               </Fab>
             )}
             {linkedinPath && !routePath && (
@@ -112,7 +114,7 @@ class ProfileCard extends React.Component {
                 variant="extended"
               >
                 {buttonOneName}{' '}
-                <Avatar src={arrowIcon} className={classes.small} />
+                <Avatar src={arrowIcon} className="b-s b-w-arrow" />
               </Fab>
             )}
 
@@ -126,7 +128,7 @@ class ProfileCard extends React.Component {
                 variant="extended"
               >
                 {buttonName}{' '}
-                <Avatar src={arrowIcon} className={classes.small} />
+                <Avatar src={arrowIcon} className="b-s b-w-arrow" />
               </Fab>
             )}
           </CardActions>

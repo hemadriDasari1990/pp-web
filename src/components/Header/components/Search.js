@@ -6,209 +6,207 @@ import parse from 'autosuggest-highlight/parse'
 import TextField from '@material-ui/core/TextField'
 import Paper from '@material-ui/core/Paper'
 import MenuItem from '@material-ui/core/MenuItem'
-import { Map, List } from 'immutable'
+import Menu from '@material-ui/core/Menu'
+// import { Map, List } from 'immutable'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import Avatar from '@material-ui/core/Avatar'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
+import InputBase from '@material-ui/core/InputBase'
+import SearchIcon from '@material-ui/icons/Search'
+import IconButton from '@material-ui/core/IconButton'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import * as mainActions from '../../../actions/index'
+import PropTypes from 'prop-types'
+import { debounce } from 'underscore'
+import Autocomplete from '@material-ui/lab/Autocomplete'
+import Typography from '@material-ui/core/Typography'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import MenuList from '@material-ui/core/MenuList'
+import { withStyles } from '@material-ui/core/styles'
 
-function renderInputComponent(inputProps) {
-  const { classes, inputRef = () => {}, ref, ...other } = inputProps
-  return (
-    <TextField
-      fullWidth
-      InputProps={{
-        inputRef: node => {
-          ref(node)
-          inputRef(node)
-        },
-      }}
-      {...other}
-    />
-  )
-}
-
-function renderSuggestion(suggestion, { query, isHighlighted }) {
-  const matches = match(suggestion.label, query)
-  const parts = parse(suggestion.label, matches)
-
-  return (
-    <MenuItem selected={isHighlighted} component="div">
-      <ListItemIcon>
-        <Avatar
-          aria-haspopup="true"
-          alt="Avatar not available"
-          src={suggestion.photoURL}
-        />
-      </ListItemIcon>
-      {parts.map((part, index) =>
-        part.highlight ? (
-          <span key={String(index)} style={{ fontWeight: 500 }}>
-            {part.text}
-          </span>
-        ) : (
-          <strong key={String(index)} style={{ fontWeight: 300 }}>
-            {part.text}
-          </strong>
-        ),
-      )}
-    </MenuItem>
-  )
-}
-
-function getSuggestions(users, value) {
-  const inputValue = deburr(value.trim()).toLowerCase()
-  const inputLength = inputValue.length
-  let count = 0
-
-  return inputLength === 0
-    ? []
-    : users.filter(user => {
-        const keep =
-          count < 5 &&
-          user &&
-          user.label.slice(0, inputLength).toLowerCase() === inputValue
-        if (keep) {
-          count += 1
-        }
-        return keep
-      })
-
-  // if (inputLength === 0) {
-  //   return [];
-  // }
-
-  // return users.filter(user => {
-  //     return user.label.split(' ').some(term => {
-  //         return term.toLowerCase().slice(0, inputLength) === inputValue;
-  //     })
-  // });
-}
-
-function getSuggestionValue(suggestion) {
-  return suggestion.label
-}
+const styles = theme => ({
+  listItem: {
+    height: 30,
+  },
+  list: {
+    // overflowY: 'scroll'
+  },
+})
 
 class Search extends React.Component {
-  state = {
-    single: '',
-    popper: '',
-    suggestions: [],
-    users: [],
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      value: '',
+      isLoading: false,
+    }
   }
 
   componentDidMount() {
-    if (this.props.users && this.props.users.size) {
-      let users = this.props.users.toJS().users.map(user => {
-        if (user.uid !== this.props.user.uid) {
-          return {
-            _id: user['_id'],
-            label: user.userName,
-            photoURL: user.photoURL,
-            uid: user.uid,
-          }
-        }
-      })
-      users = users.filter(user => user != undefined)
-      this.setState({
-        users,
+    // this.fetchUsers('');
+  }
+
+  renderProfiles = (user, { selected }) => {
+    const { classes } = this.props
+    const { isLoading } = this.state
+    if (isLoading) {
+      return <CircularProgress color="inherit" size={20} />
+    }
+    return (
+      <List className={classes.list} dense={true} disablePadding={true}>
+        <ListItem
+          className={classes.listItem}
+          disableGutters={true}
+          dense={true}
+          autoFocus={true}
+        >
+          <ListItemAvatar>
+            <Avatar
+              aria-haspopup="true"
+              alt={user.userName}
+              src={user.photoURL}
+            />
+          </ListItemAvatar>
+          <Typography variant="inherit">{user.userName}</Typography>
+        </ListItem>
+      </List>
+    )
+  }
+
+  renderInputComponent = params => {
+    return (
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          backgroundColor: '#ffffff',
+          borderRadius: 25,
+          height: 40,
+          // width: 270,
+          boxShadow: '0 14px 28px rgba(145, 148, 170, 0.25)',
+        }}
+      >
+        <IconButton
+          style={{ padding: 2, marginLeft: 10 }}
+          type="submit"
+          aria-label="Search people by name"
+        >
+          <SearchIcon />
+        </IconButton>
+        <TextField
+          fullWidth
+          {...params}
+          InputProps={{ ...params.InputProps, disableUnderline: true }}
+          placeholder="Search people by name"
+        />
+      </div>
+    )
+  }
+
+  handleSelected = (event, option) => {
+    event.persist()
+    if (this.props.type === 'header') {
+      option ? this.props.history.push(`/profile/${option._id}`) : null
+    }
+    if (this.props.type === 'post') {
+      this.props.getSelectedUser(option)
+    }
+  }
+
+  handleOnInputChange = (event, searchText) => {
+    if (!searchText) {
+      this.setState({ value: searchText, isLoading: false })
+    } else {
+      this.setState({ value: searchText, isLoading: false }, () => {
+        // this.fetchUsers(searchText);
       })
     }
   }
 
-  handleSuggestionsFetchRequested = ({ value }) => {
-    const suggestions = getSuggestions(this.state.users, value)
+  /**
+   * Updates the state of the autocomplete data with the remote data obtained via AJAX.
+   *
+   * @param {String} searchText content of the input that will filter the autocomplete data.
+   * @return {Nothing} The state is updated but no value is returned
+   */
+  fetchUsers = searchText => {
+    if (!this.props.user) {
+      return null
+    }
+    // this.props
+    //   .getUsers(this.props.user._id, searchText)
+    //   .then(res => {
+    //     this.setState({
+    //       isLoading: false,
+    //       users: res.data,
+    //     })
+    //   })
+    //   .catch(err => {
+    //     this.setState({
+    //       isLoading: false,
+    //     })
+    //   })
   }
 
-  handleSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: [],
-    })
-  }
-
-  handleChange = name => (event, { newValue }) => {
-    const suggestions = getSuggestions(this.state.users, newValue)
-    if (
-      this.props.profile &&
-      suggestions.filter(s => s.label == newValue).length
-    ) {
-      this.props.history.push(
-        `/profile/${suggestions.filter(s => s.label == newValue)[0]._id}`,
-      )
-    }
-    if (
-      suggestions.filter(s =>
-        s.label.toLowerCase().includes(newValue.toLowerCase()),
-      ).length &&
-      this.props.user &&
-      this.props.post
-    ) {
-      this.props.createPost({
-        postedBy: this.props.user._id,
-        postedByName: this.props.user.displayName,
-        postedByPhotoURL: this.props.user.photoURL,
-        postedTo: suggestions.filter(s =>
-          s.label.toLowerCase().includes(newValue.toLowerCase()),
-        )[0]._id,
-        postedToPhotoURL: suggestions.filter(s =>
-          s.label.toLowerCase().includes(newValue.toLowerCase()),
-        )[0].photoURL,
-        postedToByName: suggestions.filter(s =>
-          s.label.toLowerCase().includes(newValue.toLowerCase()),
-        )[0].label,
-      })
-      this.setState({
-        suggestions,
-      })
-    }
-    this.setState({
-      [name]: newValue,
-    })
+  getOptionLabel = option => {
+    return typeof option === 'object' ? option.userName : option
   }
 
   render() {
-    const {} = this.props
-    const { users } = this.state
-    const autosuggestProps = {
-      renderInputComponent,
-      suggestions: this.state.suggestions,
-      onSuggestionsFetchRequested: this.handleSuggestionsFetchRequested,
-      onSuggestionsClearRequested: this.handleSuggestionsClearRequested,
-      getSuggestionValue,
-      renderSuggestion,
-    }
-
+    const { users } = this.props
+    const { value, isLoading } = this.state
     return (
       <div>
-        <Autosuggest
-          {...autosuggestProps}
-          highlightFirstSuggestion={true}
-          inputProps={{
-            label: 'Search People',
-            placeholder: 'Search ',
-            value: this.state.single,
-            onChange: this.handleChange('single'),
-          }}
-          renderSuggestionsContainer={options => (
-            <Paper {...options.containerProps} square>
-              {options.children}
-            </Paper>
-          )}
-        />
+        {users && (
+          <Autocomplete
+            options={users}
+            getOptionLabel={option => this.getOptionLabel(option)}
+            id="user-search"
+            value={value}
+            loading={isLoading}
+            blurOnSelect
+            loadingText="Loading..."
+            autoHighlight={true}
+            onInputChange={(event, value) =>
+              this.handleOnInputChange(event, value)
+            }
+            onChange={(e, newValue) => this.handleSelected(e, newValue)}
+            renderInput={params => this.renderInputComponent(params)}
+            renderOption={(option, { selected }) =>
+              this.renderProfiles(option, { selected })
+            }
+            noOptionsText="No Profiles Found"
+            getOptionSelected={(option, value) =>
+              option.userName === value.userName
+            }
+          />
+        )}
       </div>
     )
   }
 }
 
-Search.propTypes = {}
+Search.propTypes = {
+  classes: PropTypes.object.isRequired,
+}
 
+const actionsToProps = {
+  getUsers: mainActions.getUsers,
+}
 const mapStateToProps = state => {
-  const user = state.getIn(['user', 'data'], List())
-  const users = state.getIn(['user', 'all', 'success'], Map())
+  const user = state.getIn(['user', 'data'])
+  const users = state.getIn(['user', 'all', 'success'])
   return {
     user,
     users,
   }
 }
 
-export default withRouter(connect(mapStateToProps, null)(Search))
+export default withRouter(
+  connect(mapStateToProps, actionsToProps)(withStyles(styles)(Search)),
+)

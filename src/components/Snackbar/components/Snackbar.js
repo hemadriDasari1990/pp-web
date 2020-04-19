@@ -22,10 +22,10 @@ const variantIcon = {
 
 const styles1 = theme => ({
   success: {
-    backgroundColor: green[600],
+    backgroundColor: '#14f105a6',
   },
   error: {
-    backgroundColor: theme.palette.error.dark,
+    backgroundColor: '#f10505a6',
   },
   info: {
     backgroundColor: theme.palette.primary.dark,
@@ -89,6 +89,7 @@ const MySnackbarContentWrapper = withStyles(styles1)(MySnackbarContent)
 const styles2 = theme => ({
   margin: {
     margin: theme.spacing.unit,
+    boxShadow: '0 14px 28px rgba(145, 148, 170, 0.25)',
   },
 })
 
@@ -111,8 +112,8 @@ class CustomizedSnackbars extends React.Component {
       <React.Fragment>
         <Snackbar
           anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
+            vertical: 'bottom',
+            horizontal: 'right',
           }}
           open={this.state.open}
           autoHideDuration={3000}

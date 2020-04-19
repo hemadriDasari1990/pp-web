@@ -6,6 +6,7 @@ import fbIcon from '../../../../assets/social/fb.svg'
 import twitterIcon from '../../../../assets/social/twitter.svg'
 import instagramIcon from '../../../../assets/social/instagram.svg'
 import youtubeIcon from '../../../../assets/social/youtube.svg'
+import Divider from '@material-ui/core/Divider'
 
 const styles = theme => ({
   root: {
@@ -17,6 +18,8 @@ const styles = theme => ({
   },
   icon: {
     height: 30,
+    backgroundColor: '#2a7fff',
+    borderRadius: 16,
   },
 })
 
@@ -96,10 +99,124 @@ class Footer extends React.Component {
     const { value } = this.state
     return (
       <React.Fragment>
-        <footer className="footer-v2">
+        <footer className="p-v-30 w-full">
+          <div className="w-max-1200 w-full m-auto">
+            <div className="row fl fl-justify-between fl-wrap">
+              <div className="m-30 col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                <small>
+                  <strong className="primary-color">About</strong>
+                </small>
+                <ul>
+                  <li className="m-v-10">
+                    <a className="cursor" onClick={() => this.handleAbout()}>
+                      Writenpost, Inc
+                    </a>
+                  </li>
+                  <li className="m-v-10">
+                    <a className="cursor" onClick={() => this.handleCareers()}>
+                      Careers
+                    </a>
+                  </li>
+                  <li className="m-v-10">
+                    <a className="cursor" onClick={() => this.handleFeedback()}>
+                      Feedback
+                    </a>
+                  </li>
+                  <li className="m-v-10">
+                    <a
+                      className="cursor"
+                      onClick={() => this.handleDevelopers()}
+                    >
+                      Developers
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div className="m-30 col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                <small>
+                  <strong className="primary-color">Education & Support</strong>
+                </small>
+                <ul>
+                  <li className="m-v-10">
+                    <a className="cursor" onClick={() => this.handleAbout()}>
+                      Community
+                    </a>
+                  </li>
+                  <li className="m-v-10">
+                    <a className="cursor" onClick={() => this.handleCareers()}>
+                      FAQ
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div className="m-30 col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                <small>
+                  <strong className="primary-color">Help & Support</strong>
+                </small>
+                <ul>
+                  <li className="m-v-10">
+                    <a className="cursor" onClick={() => this.handleAbout()}>
+                      Help & Support
+                    </a>
+                  </li>
+                  <li className="m-v-10">
+                    <a className="cursor" onClick={() => this.handleCareers()}>
+                      Terms Of Service
+                    </a>
+                  </li>
+                  <li className="m-v-10">
+                    <a className="cursor" onClick={() => this.handleFeedback()}>
+                      Privacy Policy
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div className="m-30 col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                <small>
+                  <strong className="primary-color">Follow Us</strong>
+                </small>
+                <ul>
+                  <li className="m-v-10">
+                    <a href="https://www.facebook.com" target="_blank">
+                      <img className={classes.icon} src={fbIcon} /> Facebook
+                    </a>
+                  </li>
+                  <li className="m-v-10">
+                    <a href="https://www.instagram.com" target="_blank">
+                      <img className={classes.icon} src={twitterIcon} /> Twitter
+                    </a>
+                  </li>
+                  <li className="m-v-10">
+                    <a href="https://www.twitter.com/" target="_blank">
+                      <img className={classes.icon} src={instagramIcon} />{' '}
+                      Instagram
+                    </a>
+                  </li>
+                  <li className="m-v-10">
+                    <a href="https://www.youtube.com" target="_blank">
+                      <img className={classes.icon} src={youtubeIcon} /> Youtube
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <Divider color="primary" />
+            <div className="w-max-1200 w-full m-auto relative p-h-20 fl-justify-around fl-items-center fl-wrap">
+              <div className="row">
+                <div className="col-lg-8 col-md-2 col-sm-2 col-xs-4">
+                  <p className="mt-5">© 2020 Writenpost, Inc.</p>
+                  <p>
+                    Writenpost and Writenpost logo are registered trademarks of
+                    Writenpost, Inc.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </footer>
+        {/*<footer className="footer-v2">
           <div className="max-width">
             <div className="footer">
-              <div className="footer-contact"></div>
               <div className="row row-footer border-bottom social">
                 <div className="col-lg-2 col-md-2 col-sm-2 col-xs-4">
                   Discover Us
@@ -117,12 +234,7 @@ class Footer extends React.Component {
                   >
                     Careers
                   </a>
-                  {/*<a
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => this.handleContact()}
-                  >
-                    Contact
-                  </a>*/}
+                  
                   <a
                     style={{ cursor: 'pointer' }}
                     onClick={() => this.handleFeedback()}
@@ -166,7 +278,7 @@ class Footer extends React.Component {
               </div>
             </div>
           </div>
-        </footer>
+    </footer> */}
       </React.Fragment>
     )
   }

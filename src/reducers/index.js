@@ -4,7 +4,7 @@ import { fromJS } from 'immutable'
 import { LOCATION_CHANGE } from 'react-router-redux'
 import { Post } from '../components/Post/reducer'
 import { UserProfile } from '../components/UserProfile/reducer'
-import { Dashboard } from '../components/Dashboard/reducer'
+import { Timeline } from '../components/Timeline/reducer'
 import { Footer } from '../components/Footer/reducer'
 
 const initialState = fromJS({
@@ -23,7 +23,7 @@ const appReducer = combineReducers({
   user,
   Post,
   UserProfile,
-  Dashboard,
+  Timeline,
   Footer,
 })
 
