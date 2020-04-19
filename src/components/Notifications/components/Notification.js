@@ -186,26 +186,31 @@ class Notifications extends Component {
                           {!post.approved && !post.rejected ? (
                             <>
                               <Tooltip title="Accepted">
-                                <IconButton
+                                <Button
                                   onClick={() =>
                                     this.updatePost(post, 'approve')
                                   }
+                                  variant="outlined"
+                                  color="primary"
                                   tooltipPosition="bottom-left"
-                                  style={{ color: '#17ab13' }}
+                                  startIcon={<VerifiedUserIcon />}
                                 >
-                                  <VerifiedUserIcon />
-                                </IconButton>
+                                  Accept
+                                </Button>
                               </Tooltip>
                               <Tooltip title="Reject">
-                                <IconButton
+                                <Button
                                   onClick={() =>
                                     this.updatePost(post, 'reject')
                                   }
+                                  variant="outlined"
+                                  color="primary"
                                   tooltipPosition="bottom-left"
-                                  style={{ color: '#ff0000' }}
+                                  className="ml-7"
+                                  startIcon={<VerifiedUserIcon />}
                                 >
-                                  <VerifiedUserIcon />
-                                </IconButton>
+                                  Reject
+                                </Button>
                               </Tooltip>
                             </>
                           ) : (
@@ -219,15 +224,13 @@ class Notifications extends Component {
                               }
                             >
                               <span
-                                className="post-flag"
-                                style={{
-                                  backgroundColor: post.approved
-                                    ? '#35c9208f'
+                                className={
+                                  post.approved
+                                    ? 'status approved m-t-7 m-r-20'
                                     : post.rejected
-                                    ? '#e91e63'
-                                    : '#3f51b5',
-                                  marginLeft: -50,
-                                }}
+                                    ? 'status rejected m-t-7 m-r-20'
+                                    : 'status pending m-t-7 m-r-20'
+                                }
                               ></span>
                             </Tooltip>
                           )}
@@ -333,7 +336,11 @@ class Notifications extends Component {
                             to={`/post/${post._id}/reactions`}
                             className="actions-text"
                           >
-                            <span>{formateNumber(post.reactions.length)}</span>
+                            <span>
+                              {post.reactions.length
+                                ? formateNumber(post.reactions.length)
+                                : 'No Reactions'}
+                            </span>
                           </Link>
                         </Tooltip>
                         <div className={classes.rightButton}>

@@ -18,6 +18,19 @@ import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import formateNumber from '../../../util/formateNumber'
+import getReaction from '../../../util/getReaction'
+import renderUserNames from '../../../util/renderUserNames'
+import AvatarGroup from '@material-ui/lab/AvatarGroup'
+import { withStyles } from '@material-ui/core/styles'
+import PropTypes from 'prop-types'
+
+const styles = {
+  smallAvatar: {
+    width: 20,
+    height: 20,
+    borderColor: '#fff',
+  },
+}
 
 class TopPosts extends Component {
   componentDidMount() {
@@ -58,15 +71,26 @@ class TopPosts extends Component {
                   .map(post => (
                     <ListItem key={post._id} alignItems="flex-start">
                       <ListItemAvatar>
-                        <Avatar
-                          alt={post.postedBy.userName}
-                          src={post.postedBy.photoURL}
-                        />
+                        {!post.isAnonymous ? (
+                          <Avatar
+                            alt={post.postedBy.userName}
+                            src={post.postedBy.photoURL}
+                          />
+                        ) : (
+                          <Avatar
+                            style={{
+                              color: '#ffffff',
+                              backgroundColor: '#1976d2',
+                            }}
+                          >
+                            A
+                          </Avatar>
+                        )}
                       </ListItemAvatar>
                       <Tooltip title={post.pros} placement="right-end">
                         <ListItemText
                           primary={
-                            !post.isAnonymous || post.isAnonymous ? (
+                            !post.isAnonymous ? (
                               <>
                                 <Link
                                   className="hyperlink"
@@ -76,14 +100,29 @@ class TopPosts extends Component {
                                     ? 'You'
                                     : post.postedBy.userName}
                                 </Link>
-                                {/* {post.postedBy.likes.length
-                                  ? ' ' +
-                                    formateNumber(post.postedTo.likes.length) +
-                                    ' Liked'
-                                  : ''} */}
+                                <span
+                                  className={
+                                    post.approved
+                                      ? 'status approved ml-7'
+                                      : post.rejected
+                                      ? 'status rejected ml-7'
+                                      : 'status pending ml-7'
+                                  }
+                                ></span>
                               </>
                             ) : (
-                              <b>Annonymous User</b>
+                              <b className="hyperlink">
+                                Annonymous User{' '}
+                                <span
+                                  className={
+                                    post.approved
+                                      ? 'status approved'
+                                      : post.rejected
+                                      ? 'status rejected'
+                                      : 'status pending'
+                                  }
+                                ></span>
+                              </b>
                             )
                           }
                           secondary={
@@ -101,16 +140,68 @@ class TopPosts extends Component {
                           }
                         />
                       </Tooltip>
-                      <Tooltip title="Approved" placement="right-end">
-                        <IconButton style={{ color: '#17ab13' }}>
-                          <BookmarkIcon />
-                        </IconButton>
-                      </Tooltip>
+                      <div className="row">
+                        <AvatarGroup style={{ marginTop: 6 }}>
+                          {post.reactions.length > 0
+                            ? post.reactions.slice(0, 3).map(react => (
+                                <Tooltip
+                                  title={renderUserNames(post.reactions)}
+                                  placement="bottom"
+                                >
+                                  <Avatar
+                                    className={classes.smallAvatar}
+                                    key={react._id}
+                                    alt={react.type}
+                                    src={getReaction(react ? react.type : '')}
+                                  />
+                                </Tooltip>
+                              ))
+                            : ''}
+                        </AvatarGroup>
+                        {post.reactions.length > 0 ? (
+                          <>
+                            <Tooltip
+                              title={renderUserNames(post.reactions)}
+                              placement="bottom"
+                            >
+                              <Link
+                                style={{ marginTop: 6 }}
+                                className="mr-20"
+                                to={`/post/${post._id}/reactions`}
+                                className="actions-text"
+                              >
+                                <span>
+                                  {formateNumber(post.reactions.length)}
+                                </span>
+                              </Link>
+                            </Tooltip>
+                            <Avatar
+                              style={{ marginTop: 6 }}
+                              className={classes.smallAvatar}
+                              alt="Image Not Available"
+                              src={getReaction('share')}
+                            />
+                            <Link
+                              style={{ marginTop: 6 }}
+                              to={`/post/${post._id}/shares`}
+                              className="actions-text"
+                            >
+                              <span>
+                                {post.shares.length
+                                  ? formateNumber(post.shares.length)
+                                  : 'No'}{' '}
+                              </span>
+                            </Link>
+                          </>
+                        ) : (
+                          'No Reactions'
+                        )}
+                      </div>
                     </ListItem>
                   ))
               ) : (
                 <Typography variant="h4" className="text-center">
-                  You haven't got popular posts yet
+                  No Popular Posts
                 </Typography>
               )}
 
@@ -146,4 +237,6 @@ const actionsToProps = {
   getIncomingPosts: actions.getIncomingPosts,
 }
 
-export default withRouter(connect(mapStateToProps, actionsToProps)(TopPosts))
+export default withRouter(
+  connect(mapStateToProps, actionsToProps)(withStyles(styles)(TopPosts)),
+)

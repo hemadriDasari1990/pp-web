@@ -17,18 +17,14 @@ class Metrics extends Component {
     this.state = {}
   }
   render() {
-    const { classes, user, title, icon, name } = this.props
+    const { classes, user, title, icon, name, count } = this.props
     return (
       <Card>
         <CardContent className="container metrics-card-padding">
           <div className="row">
             <div className="col align-self-start metrics-card-title">
               <span className="summary-c-t">{title}</span>
-              <h2>
-                {user && user.likesCount
-                  ? formateNumber(user.likesCount)
-                  : '1.6M'}
-              </h2>
+              <h2 className="text-center">{formateNumber(count)}</h2>
             </div>
             <div
               className="col align-self-end text-center"

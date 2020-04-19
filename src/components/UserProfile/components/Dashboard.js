@@ -20,6 +20,7 @@ import * as actions from '../actions'
 import { Map } from 'immutable'
 import Profile from './Profile'
 import Reactions from './Reactions'
+import Incoming from '../../Timeline/components/Incoming'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class Dashboard extends Component {
             <Reactions />
           </div>
           <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
-            {user && <PostList searchUser={user} />}
+            {user && <Incoming user={user} />}
           </div>
           <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
             {user && <PostsInfo user={user} />}

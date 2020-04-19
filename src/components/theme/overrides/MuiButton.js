@@ -13,7 +13,7 @@ export default {
     borderRadius: 30,
     boxShadow: 'none',
     textTransform: 'none',
-    fontWeight: 600,
+    // fontWeight: 600,
     fontSize: 14,
     lineHeight: 1.5,
     '&:hover': {

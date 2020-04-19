@@ -75,7 +75,7 @@ class Post extends Component {
     }
     await this.props.getUserPreferences(user._id).then(res => {
       this.setState({
-        preferences: res.data.pref[0],
+        preferences: res.data.pref,
       })
     })
     this.setState({

@@ -78,13 +78,16 @@ class Reactions extends Component {
                   <ListItem key={pu._id} alignItems="flex-start">
                     <ListItemAvatar>
                       <Avatar
-                        alt={pu.likedBy.userName}
-                        src={pu.likedBy.photoURL}
+                        alt={pu.likedBy[0].userName}
+                        src={pu.likedBy[0].photoURL}
                       />
                     </ListItemAvatar>
-                    <Tooltip title={pu.likedBy.userName} placement="right-end">
+                    <Tooltip
+                      title={pu.likedBy[0].userName}
+                      placement="right-end"
+                    >
                       <ListItemText
-                        primary={pu.likedBy.userName}
+                        primary={pu.likedBy[0].userName}
                         secondary={
                           <React.Fragment>
                             <Typography
@@ -92,7 +95,7 @@ class Reactions extends Component {
                               variant="body2"
                               color="textPrimary"
                             >
-                              A {pu.likedBy.providerId} User
+                              A {pu.likedBy[0].providerId} User
                             </Typography>
                           </React.Fragment>
                         }

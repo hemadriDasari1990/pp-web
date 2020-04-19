@@ -23,6 +23,7 @@ import Button from '@material-ui/core/Button'
 import FollowIcon from '../../SvgIcons/components/Follow'
 import FollowingIcon from '../../SvgIcons/components/Following'
 import * as globalActions from '../../../actions/index'
+import formateNumber from '../../../util/formateNumber'
 
 class Profile extends Component {
   constructor(props) {
@@ -126,56 +127,48 @@ class Profile extends Component {
             <br />
           </CardContent>
           <Divider />
-          <CardActions
-            className="actions"
-            style={{
-              margin: '20px 15px 20px 25px',
-            }}
-          >
-            <div>
+          <CardActions className="mt-10">
+            <div className="text-center ml-25">
               <Tooltip title="No of People Liked">
                 <Fab
                   color="inherit"
                   size="small"
                   aria-label="preferences"
                   color="primary"
-                  className="actions"
                 >
                   <Avatar style={{ width: 30, height: 30 }} src={userLike} />
                 </Fab>
               </Tooltip>
-              <h2 class="text-center title">12.3k</h2>
-              <div class="text-center followers">Likes</div>
+              <p className="title">{formateNumber(profileUser.no_of_likes)}</p>
+              <div className="followers">Likes</div>
             </div>
-            <div>
+            <div className="text-center ml-25">
               <Tooltip title="No of People Loves">
                 <Fab
                   color="inherit"
                   size="small"
                   aria-label="love"
                   color="primary"
-                  className="actions"
                 >
                   <Avatar style={{ width: 30, height: 30 }} src={love} />
                 </Fab>
               </Tooltip>
-              <h2 class="text-center title">2.3k</h2>
-              <div class="text-center followers">Loved</div>
+              <p className="title">{formateNumber(profileUser.no_of_loves)}</p>
+              <div className="followers">Loved</div>
             </div>
-            <div>
+            <div className="text-center ml-25">
               <Tooltip title="Times Preferences Updated">
                 <Fab
                   color="inherit"
                   size="small"
                   aria-label="preferences"
                   color="primary"
-                  className="actions"
                 >
                   <Avatar src={preferencesIcon} />
                 </Fab>
               </Tooltip>
-              <h2 class="text-center title">4k</h2>
-              <div class="text-center followers">Updated</div>
+              <p className="title">4k</p>
+              <div className="followers">Updated</div>
             </div>
           </CardActions>
         </Card>

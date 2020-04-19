@@ -14,6 +14,7 @@ import Metrics from './Metrics'
 import LoveIcon from '../../SvgIcons/components/Love'
 import LikeIcon from '../../SvgIcons/components/Like'
 import PreferencesIcon from '../../SvgIcons/components/Preferences'
+import * as postActions from '../../Post/actions'
 
 const styles = theme => ({})
 
@@ -25,7 +26,10 @@ class DashBoard extends Component {
     }
   }
 
-  componentDidMount() {}
+  async componentDidMount() {
+    const { user } = this.props
+    await this.props.getUserPreferences(user._id)
+  }
 
   handleTimeline = event => {
     this.props.history.push('/incoming')
@@ -33,65 +37,80 @@ class DashBoard extends Component {
 
   render() {
     const {} = this.state
-    const { user, classes } = this.props
+    const { user, classes, userPreferences } = this.props
     return (
       <React.Fragment>
-        <div className="row">
-          <div className="text-center col-lg-3 col-md-2 col-sm-12 col-xs-12">
-            <h4>Hi, {user ? user.userName : ''}!</h4>
-            <p>Welcome to your social platform</p>
-            <Fab
-              onClick={() => this.handleTimeline()}
-              size="small"
-              color="primary"
-              aria-label="add"
-              variant="extended"
-              className="align-items-center mb-10"
-            >
-              View Timeline <Avatar src={arrowIcon} className="b-s b-w-arrow" />
-            </Fab>
-          </div>
-          <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
-            <Summary type="incoming" title="Incoming Summary" />
-          </div>
-          <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
-            <Summary type="outgoing" title="Outgoing Summary" />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-lg-3 col-md-2 col-sm-12 col-xs-12"></div>
-          <div className="col-lg-3 col-md-3 col-sm col-xs-12">
-            <Metrics
-              icon={
-                <LikeIcon style={{ width: 35, height: 35 }} color="#2a7fff" />
-              }
-              title="People Like You"
-              name="Profile Like"
-            />
-          </div>
-          <div className="col-lg-3 col-md-3 col-sm col-xs-12">
-            <Metrics
-              icon={<LoveIcon className="icon-display" color="#2a7fff" />}
-              title="People Love You"
-              name="Profile Love"
-            />
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-lg-3 col-md-2 col-sm-12 col-xs-12"></div>
-          <div className="col-lg-3 col-md-3 col-sm col-xs-12">
-            <Metrics
-              icon={
-                <PreferencesIcon
-                  style={{ width: 40, height: 40 }}
-                  color="#2a7fff"
+        {user ? (
+          <>
+            <div className="row">
+              <div className="text-center col-lg-3 col-md-2 col-sm-12 col-xs-12">
+                <h4>Hi, {user ? user.userName : ''}!</h4>
+                <p>Welcome to your social platform</p>
+                <Fab
+                  onClick={() => this.handleTimeline()}
+                  size="small"
+                  color="primary"
+                  aria-label="add"
+                  variant="extended"
+                  className="align-items-center mb-10"
+                >
+                  View Timeline{' '}
+                  <Avatar src={arrowIcon} className="b-s b-w-arrow" />
+                </Fab>
+              </div>
+              <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
+                <Summary type="incoming" title="Incoming Summary" />
+              </div>
+              <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
+                <Summary type="outgoing" title="Outgoing Summary" />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-lg-3 col-md-2 col-sm-12 col-xs-12"></div>
+              <div className="col-lg-3 col-md-3 col-sm col-xs-12">
+                <Metrics
+                  icon={
+                    <LikeIcon
+                      style={{ width: 35, height: 35 }}
+                      color="#2a7fff"
+                    />
+                  }
+                  title="People Like You"
+                  name="Profile Like"
+                  count={user.no_of_likes}
                 />
-              }
-              title="Times Updated"
-              name="Preferences"
-            />
-          </div>
-        </div>
+              </div>
+              <div className="col-lg-3 col-md-3 col-sm col-xs-12">
+                <Metrics
+                  icon={<LoveIcon className="icon-display" color="#2a7fff" />}
+                  title="People Love You"
+                  name="Profile Love"
+                  count={user.no_of_loves}
+                />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-lg-3 col-md-2 col-sm-12 col-xs-12"></div>
+              <div className="col-lg-3 col-md-3 col-sm col-xs-12">
+                <Metrics
+                  icon={
+                    <PreferencesIcon
+                      style={{ width: 40, height: 40 }}
+                      color="#2a7fff"
+                    />
+                  }
+                  title="Times Updated"
+                  name="Preferences"
+                  count={
+                    userPreferences && userPreferences.pref
+                      ? userPreferences.pref.count
+                      : 0
+                  }
+                />
+              </div>
+            </div>
+          </>
+        ) : null}
       </React.Fragment>
     )
   }
@@ -101,14 +120,16 @@ DashBoard.propTypes = {}
 
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'])
-
+  const userPreferences = state.getIn(['Post', 'preferences', 'get', 'success'])
   return {
     user,
+    userPreferences,
   }
 }
 
 const actionsToProps = {
   getUser: actions.getUser,
+  getUserPreferences: postActions.getUserPreferences,
 }
 
 export default withRouter(

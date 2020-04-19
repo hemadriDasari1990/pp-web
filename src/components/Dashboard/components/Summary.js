@@ -60,7 +60,11 @@ class Summary extends Component {
             }
           />
           <CardContent className="p-0">
-            {loading ? <Loader /> : null}
+            {loading ? (
+              <List className="list-row p-0 ml-40">
+                <Loader />
+              </List>
+            ) : null}
             {!loading ? (
               <>
                 <List className="list-row p-0 ml-40">

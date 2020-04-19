@@ -57,6 +57,7 @@ class RecentPosts extends Component {
       ireceived,
       user,
     } = this.props
+    console.log('RecentPosts', recentPosts)
     return (
       <React.Fragment>
         <Card style={{ width: '100%', maxWidth: '100%' }}>
@@ -67,15 +68,26 @@ class RecentPosts extends Component {
                 ? recentPosts.map(post => (
                     <ListItem key={post._id} alignItems="flex-start">
                       <ListItemAvatar>
-                        <Avatar
-                          alt={post.postedBy.userName}
-                          src={post.postedBy.photoURL}
-                        />
+                        {!post.isAnonymous ? (
+                          <Avatar
+                            alt={post.postedBy.userName}
+                            src={post.postedBy.photoURL}
+                          />
+                        ) : (
+                          <Avatar
+                            style={{
+                              color: '#ffffff',
+                              backgroundColor: '#1976d2',
+                            }}
+                          >
+                            A
+                          </Avatar>
+                        )}
                       </ListItemAvatar>
-                      <Tooltip title={post.pros} placement="right-end">
+                      <Tooltip title={post.providerId} placement="right-end">
                         <ListItemText
                           primary={
-                            !post.isAnonymous || post.isAnonymous ? (
+                            !post.isAnonymous ? (
                               <>
                                 <Link
                                   className="hyperlink"
@@ -85,14 +97,34 @@ class RecentPosts extends Component {
                                     ? 'You'
                                     : post.postedBy.userName}
                                 </Link>
-                                {post.postedBy.likes.length
+                                <span
+                                  className={
+                                    post.approved
+                                      ? 'status approved ml-7'
+                                      : post.rejected
+                                      ? 'status rejected ml-7'
+                                      : 'status pending ml-7'
+                                  }
+                                ></span>
+                                {/* {post.postedBy.likes.length
                                   ? ' ' +
                                     formateNumber(post.postedTo.likes.length) +
                                     ' Liked'
-                                  : ''}
+                                  : ''} */}
                               </>
                             ) : (
-                              <b>Annonymous User</b>
+                              <b className="hyperlink">
+                                Annonymous User{' '}
+                                <span
+                                  className={
+                                    post.approved
+                                      ? 'status approved'
+                                      : post.rejected
+                                      ? 'status rejected'
+                                      : 'status pending'
+                                  }
+                                ></span>
+                              </b>
                             )
                           }
                           secondary={
@@ -111,7 +143,7 @@ class RecentPosts extends Component {
                         />
                       </Tooltip>
                       <div className="row">
-                        <AvatarGroup>
+                        <AvatarGroup style={{ marginTop: 6 }}>
                           {post.reactions.length > 0
                             ? post.reactions.slice(0, 3).map(react => (
                                 <Tooltip
@@ -121,40 +153,51 @@ class RecentPosts extends Component {
                                   <Avatar
                                     className={classes.smallAvatar}
                                     key={react._id}
-                                    alt="Image Not Available"
+                                    alt={react.type}
                                     src={getReaction(react ? react.type : '')}
                                   />
                                 </Tooltip>
                               ))
-                            : 'No Reactions'}
+                            : ''}
                         </AvatarGroup>
-                        <Tooltip
-                          title={renderUserNames(post.reactions)}
-                          placement="bottom"
-                        >
-                          <Link
-                            className="mr-20"
-                            to={`/post/${post._id}/reactions`}
-                            className="actions-text"
-                          >
-                            <span>{formateNumber(post.reactions.length)}</span>
-                          </Link>
-                        </Tooltip>
-                        <Avatar
-                          className={classes.smallAvatar}
-                          alt="Image Not Available"
-                          src={getReaction('share')}
-                        />
-                        <Link
-                          to={`/post/${post._id}/shares`}
-                          className="actions-text"
-                        >
-                          <span>
-                            {post.shares.length
-                              ? formateNumber(post.shares.length)
-                              : 'No'}{' '}
-                          </span>
-                        </Link>
+                        {post.reactions.length > 0 ? (
+                          <>
+                            <Tooltip
+                              title={renderUserNames(post.reactions)}
+                              placement="bottom"
+                            >
+                              <Link
+                                style={{ marginTop: 6 }}
+                                className="mr-20"
+                                to={`/post/${post._id}/reactions`}
+                                className="actions-text"
+                              >
+                                <span>
+                                  {formateNumber(post.reactions.length)}
+                                </span>
+                              </Link>
+                            </Tooltip>
+                            <Avatar
+                              style={{ marginTop: 6 }}
+                              className={classes.smallAvatar}
+                              alt="Image Not Available"
+                              src={getReaction('share')}
+                            />
+                            <Link
+                              style={{ marginTop: 6 }}
+                              to={`/post/${post._id}/shares`}
+                              className="actions-text"
+                            >
+                              <span>
+                                {post.shares.length
+                                  ? formateNumber(post.shares.length)
+                                  : 'No'}{' '}
+                              </span>
+                            </Link>
+                          </>
+                        ) : (
+                          'No Reactions'
+                        )}
                       </div>
                     </ListItem>
                   ))
@@ -162,7 +205,7 @@ class RecentPosts extends Component {
 
               {!recentPostsLoading && !recentPosts.length && (
                 <Typography variant="h4" className="text-center">
-                  You haven't got posts yet
+                  No Recent Posts
                 </Typography>
               )}
 

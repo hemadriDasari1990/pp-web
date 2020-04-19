@@ -8,7 +8,7 @@ import sad from '../../assets/emojis/sad.svg'
 import share from '../../assets/emojis/share.svg'
 
 export default function getReaction(type) {
-  let icon = null
+  let icon = like
   switch (type.toLowerCase()) {
     case 'like':
       icon = like
@@ -34,7 +34,8 @@ export default function getReaction(type) {
     case 'share':
       icon = share
       break
-      deafult: break
+    default:
+      break
   }
   return icon
 }

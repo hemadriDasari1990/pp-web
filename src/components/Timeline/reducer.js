@@ -99,21 +99,21 @@ export const Timeline = (state = Map(), action) => {
         .setIn(['notifications', 'count', 'errors'], action.errors)
         .setIn(['notifications', 'count', 'loading'], false)
 
-    // case actions.GET_RECENT_POSTS_REQUEST:
-    //   return state
-    //     .setIn(['recent', 'loading'], true)
-    //     .deleteIn(['recent', 'errors'])
-    //     .deleteIn(['recent', 'success'])
+    case actions.GET_RECENT_POSTS_REQUEST:
+      return state
+        .setIn(['recent', 'loading'], true)
+        .deleteIn(['recent', 'errors'])
+        .deleteIn(['recent', 'success'])
 
-    // case actions.GET_RECENT_POSTS_SUCCESS:
-    //   return state
-    //     .setIn(['recent', 'success'], action.data)
-    //     .setIn(['recent', 'loading'], false)
+    case actions.GET_RECENT_POSTS_SUCCESS:
+      return state
+        .setIn(['recent', 'success'], action.data)
+        .setIn(['recent', 'loading'], false)
 
-    // case actions.GET_RECENT_POSTS_ERROR:
-    //   return state
-    //     .setIn(['recent', 'errors'], action.errors)
-    //     .setIn(['recent', 'loading'], false)
+    case actions.GET_RECENT_POSTS_ERROR:
+      return state
+        .setIn(['recent', 'errors'], action.errors)
+        .setIn(['recent', 'loading'], false)
 
     default:
       return state

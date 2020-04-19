@@ -331,19 +331,18 @@ class PostList extends Component {
                           post.rejected
                             ? 'Rejected'
                             : post.approved
-                            ? 'Approved'
+                            ? 'Accepted'
                             : 'Pending'
                         }
                       >
                         <span
-                          className="post-flag"
-                          style={{
-                            backgroundColor: post.approved
-                              ? '#35c9208f'
+                          className={
+                            post.approved
+                              ? 'status approved'
                               : post.rejected
-                              ? '#e91e63'
-                              : '#3f51b5',
-                          }}
+                              ? 'status rejected'
+                              : 'status pending'
+                          }
                         ></span>
                       </Tooltip>
                       <Tooltip title="Update">

@@ -9,9 +9,6 @@ import Typography from '@material-ui/core/Typography'
 import Avatar from '@material-ui/core/Avatar'
 import Divider from '@material-ui/core/Divider'
 import moment from 'moment'
-import MoodIcon from '@material-ui/icons/Mood'
-import MoodBadIcon from '@material-ui/icons/MoodBad'
-import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -35,6 +32,9 @@ import Button from '@material-ui/core/Button'
 import AvatarGroup from '@material-ui/lab/AvatarGroup'
 import { withStyles } from '@material-ui/core/styles'
 import share from '../../../../assets/emojis/share.svg'
+import advice from '../../../../assets/advice.svg'
+import pros from '../../../../assets/pros.svg'
+import cons from '../../../../assets/cons.svg'
 
 const styles = {
   smallAvatar: {
@@ -348,7 +348,7 @@ class PostList extends Component {
                     <List>
                       <ListItem alignItems="flex-start">
                         <ListItemAvatar>
-                          <MoodIcon />
+                          <Avatar src={pros} className="avatar" />
                         </ListItemAvatar>
                         <ListItemText
                           primary="Pros"
@@ -367,7 +367,7 @@ class PostList extends Component {
                       </ListItem>
                       <ListItem alignItems="flex-start">
                         <ListItemAvatar>
-                          <MoodBadIcon />
+                          <Avatar src={cons} className="avatar" />
                         </ListItemAvatar>
                         <ListItemText
                           primary="Cons"
@@ -386,7 +386,7 @@ class PostList extends Component {
                       </ListItem>
                       <ListItem alignItems="flex-start">
                         <ListItemAvatar>
-                          <SentimentSatisfiedIcon />
+                          <Avatar src={advice} className="avatar" />
                         </ListItemAvatar>
                         <ListItemText
                           primary="Advice"
