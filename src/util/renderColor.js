@@ -22,13 +22,8 @@ export default function renderColor(type) {
     case 'angry':
       color = '#2a7fff'
       break
-    case 'share':
-      color = '#606770'
+    default:
       break
-    case 'shared':
-      color = '#2a7fff'
-      break
-      deafult: break
   }
   return color
 }

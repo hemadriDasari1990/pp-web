@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
-import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import Avatar from '@material-ui/core/Avatar'
@@ -10,7 +9,6 @@ import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import BookmarkIcon from '@material-ui/icons/Bookmark'
 import Loader from '../../Loader/components/Loader'
 import * as actions from '../actions'
 import { Map, fromJS } from 'immutable'
@@ -22,7 +20,6 @@ import getReaction from '../../../util/getReaction'
 import renderUserNames from '../../../util/renderUserNames'
 import AvatarGroup from '@material-ui/lab/AvatarGroup'
 import { withStyles } from '@material-ui/core/styles'
-import PropTypes from 'prop-types'
 
 const styles = {
   smallAvatar: {
@@ -175,23 +172,6 @@ class TopPosts extends Component {
                                 </span>
                               </Link>
                             </Tooltip>
-                            <Avatar
-                              style={{ marginTop: 6 }}
-                              className={classes.smallAvatar}
-                              alt="Image Not Available"
-                              src={getReaction('share')}
-                            />
-                            <Link
-                              style={{ marginTop: 6 }}
-                              to={`/post/${post._id}/shares`}
-                              className="actions-text"
-                            >
-                              <span>
-                                {post.shares.length
-                                  ? formateNumber(post.shares.length)
-                                  : 'No'}{' '}
-                              </span>
-                            </Link>
                           </>
                         ) : (
                           'No Reactions'

@@ -39,44 +39,6 @@ export const createOrUpdateReaction = (userId, postId, reaction) => {
   }
 }
 
-export const createShareRequest = () => {
-  return {
-    type: action.CREATE_SHARE_REQUEST,
-    loading: true,
-  }
-}
-
-export const createShareSuccess = res => {
-  return {
-    type: action.CREATE_SHARE_SUCCESS,
-    loading: false,
-    data: res,
-  }
-}
-
-export const createShareError = errors => {
-  return {
-    type: action.CREATE_SHARE_FAILURE,
-    loading: false,
-    errors: errors,
-  }
-}
-
-export const createShare = (userId, postId) => {
-  const options = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ user: userId, post: postId }),
-  }
-  return dispatch => {
-    dispatch(createShareRequest())
-    return fetch(config.URL_PREFIX + `/post/share/${postId}`, options)
-      .then(response => response.json())
-      .then(data => dispatch(createShareSuccess(data)))
-      .catch(errors => dispatch(createShareError(errors)))
-  }
-}
-
 export const createOrUpdateProfileReactionRequest = () => {
   return {
     type: action.CREATE_OR_UPDATE_PROFILE_REACTION_REQUEST,

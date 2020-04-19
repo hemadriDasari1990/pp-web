@@ -378,21 +378,6 @@ margin-inline-start: 0px;
 margin-inline-end: 0px;
 }
 
-.share-btn {
-position: absolute;
-left: 13px;
-cursor: pointer;
-top: -15px;
-&::before {
-  content: "."; opacity: 0;
-  display: block;
-  width: 44px; height: 10px;
-  position: absolute; 
-  top: -10px; left: 0;
-}
-}
-
-
 .cursor {
   cursor: pointer;
 }

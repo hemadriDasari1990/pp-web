@@ -39,16 +39,6 @@ class CardComponent extends Component {
             {this.props.name}
           </Button>
           <span>Total Users: 1.5m</span>
-          {/*<Tooltip title={this.props.code} aria-label="Add">
-		        	<Badge badgeContent={this.props.code} color="primary">
-	                  <Code />
-	                </Badge>
-			    </Tooltip>
-			    <Tooltip title={this.props.phCode} aria-label="Add">
-				    <Badge badgeContent={this.props.phCode} color="primary">
-	                  <Phone />
-	                </Badge>
-			    </Tooltip>*/}
         </CardActions>
       </Card>
     )

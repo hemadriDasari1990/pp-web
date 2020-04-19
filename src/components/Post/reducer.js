@@ -83,22 +83,6 @@ export const Post = (state = Map(), action) => {
         .setIn(['reactions', 'errors'], action.errors)
         .setIn(['reactions', 'loading'], false)
 
-    case actions.GET_SHARES_REQUEST:
-      return state
-        .setIn(['shares', 'loading'], true)
-        .deleteIn(['shares', 'errors'])
-        .deleteIn(['shares', 'success'])
-
-    case actions.GET_SHARES_SUCCESS:
-      return state
-        .setIn(['shares', 'success'], action.data)
-        .setIn(['shares', 'loading'], false)
-
-    case actions.GET_SHARES_ERROR:
-      return state
-        .setIn(['shares', 'errors'], action.errors)
-        .setIn(['shares', 'loading'], false)
-
     default:
       return state
   }
