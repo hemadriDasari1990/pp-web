@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import PostList from './PostList'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import PostsInfo from '../../Timeline/components/PostsInfo'

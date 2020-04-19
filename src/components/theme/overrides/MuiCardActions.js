@@ -6,7 +6,7 @@ export default {
     '&:hover': {
       backgroundColor: '#ffffff',
     },
-    marginBottom: 5,
-    padding: '0px !important',
+    marginBottom: 10,
+    padding: 15,
   },
 }

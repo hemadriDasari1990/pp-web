@@ -37,9 +37,6 @@ const styles = {
 
 class ReactionsList extends Component {
   componentDidMount() {
-    if (!this.props.match.params.id && this.props.user) {
-      this.props.getShares(this.props.user._id)
-    }
     if (this.props.match.params.id) {
       this.props.getReactions(this.props.match.params.id)
     }

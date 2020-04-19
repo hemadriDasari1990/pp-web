@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
-import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
 import Avatar from '@material-ui/core/Avatar'
@@ -10,13 +9,11 @@ import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import BookmarkIcon from '@material-ui/icons/Bookmark'
 import Loader from '../../Loader/components/Loader'
 import * as actions from '../actions'
 import { Map, fromJS } from 'immutable'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import { Link } from 'react-router-dom'
 import getReaction from '../../../util/getReaction'
 import renderUserNames from '../../../util/renderUserNames'
@@ -57,7 +54,6 @@ class RecentPosts extends Component {
       ireceived,
       user,
     } = this.props
-    console.log('RecentPosts', recentPosts)
     return (
       <React.Fragment>
         <Card style={{ width: '100%', maxWidth: '100%' }}>
@@ -106,11 +102,6 @@ class RecentPosts extends Component {
                                       : 'status pending ml-7'
                                   }
                                 ></span>
-                                {/* {post.postedBy.likes.length
-                                  ? ' ' +
-                                    formateNumber(post.postedTo.likes.length) +
-                                    ' Liked'
-                                  : ''} */}
                               </>
                             ) : (
                               <b className="hyperlink">
@@ -177,23 +168,6 @@ class RecentPosts extends Component {
                                 </span>
                               </Link>
                             </Tooltip>
-                            <Avatar
-                              style={{ marginTop: 6 }}
-                              className={classes.smallAvatar}
-                              alt="Image Not Available"
-                              src={getReaction('share')}
-                            />
-                            <Link
-                              style={{ marginTop: 6 }}
-                              to={`/post/${post._id}/shares`}
-                              className="actions-text"
-                            >
-                              <span>
-                                {post.shares.length
-                                  ? formateNumber(post.shares.length)
-                                  : 'No'}{' '}
-                              </span>
-                            </Link>
                           </>
                         ) : (
                           'No Reactions'

@@ -69,7 +69,6 @@ class Post extends Component {
   }
 
   getSelectedUser = async user => {
-    console.log('got the user', user)
     if (!user) {
       return
     }

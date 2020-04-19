@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import IconButton from '@material-ui/core/IconButton'
@@ -10,8 +9,6 @@ import preferencesIcon from '../../../../assets/preferences.svg'
 import Fab from '@material-ui/core/Fab'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import arrowIcon from '../../../../assets/arrow.svg'
-import * as mainActions from '../../../actions/index'
 import { Map, List } from 'immutable'
 import userLike from '../../../../assets/user-like.svg'
 import love from '../../../../assets/love.svg'
@@ -21,14 +18,15 @@ import LoveIcon from '../../SvgIcons/components/Love'
 import LikeIcon from '../../SvgIcons/components/Like'
 import Button from '@material-ui/core/Button'
 import FollowIcon from '../../SvgIcons/components/Follow'
-import FollowingIcon from '../../SvgIcons/components/Following'
 import * as globalActions from '../../../actions/index'
 import formateNumber from '../../../util/formateNumber'
 
 class Profile extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      profileUser: this.props.profileUser,
+    }
   }
 
   componentDidMount() {
@@ -51,13 +49,17 @@ class Profile extends Component {
         this.props.profileUser._id,
         this.props.user._id,
       )
-      await this.props.getUser(this.props.match.params.id)
+      await this.props.getUser(this.props.match.params.id).then(res => {
+        this.setState({
+          profileUser: res.data ? res.data.user : {},
+        })
+      })
     })
   }
 
   render() {
-    const { classes, profileUser, user, profileReaction } = this.props
-    const { open, anchorEl } = this.state
+    const { classes, user, profileReaction } = this.props
+    const { open, anchorEl, profileUser } = this.state
     const loved =
       profileReaction &&
       profileReaction.type === 'love' &&
@@ -114,20 +116,20 @@ class Profile extends Component {
             </div>
             <br />
             <div className="text-center">
-              <Tooltip title="Following">
+              <Tooltip title="Follow">
                 <Button
                   variant="outlined"
                   color="primary"
-                  startIcon={<FollowingIcon />}
+                  startIcon={<FollowIcon />}
                 >
-                  Following
+                  Follow
                 </Button>
               </Tooltip>
             </div>
             <br />
           </CardContent>
           <Divider />
-          <CardActions className="mt-10">
+          <CardActions className="mt-10 p-0">
             <div className="text-center ml-25">
               <Tooltip title="No of People Liked">
                 <Fab

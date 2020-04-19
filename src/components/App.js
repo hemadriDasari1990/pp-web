@@ -26,7 +26,6 @@ import Location from './Footer/components/Location'
 import Developers from './Footer/components/developers'
 import Careers from './Footer/components/careers'
 import ReactionsList from './Reactions/components/List'
-import SharesList from './Shares/components/List'
 import Preferences from './Post/components/Preferences'
 import Pros from './Home/components/Pros'
 import Cons from './Home/components/Cons'
@@ -105,9 +104,6 @@ class App extends Component {
             authenticated={authenticated}
             isAuthenticated={this.isAuthenticated}
           />
-          {/*<section>
-            { authenticated ? <DrawerComponent /> : null }
-          </section>*/}
           <section className="home-background">
             <div className="auto-container">
               <Switch>
@@ -141,11 +137,6 @@ class App extends Component {
                   authenticated={authenticated}
                   path="/post/:id/reactions"
                   component={() => <ReactionsList />}
-                />
-                <PrivateRoute
-                  authenticated={authenticated}
-                  path="/post/:id/shares"
-                  component={() => <SharesList />}
                 />
                 <PrivateRoute
                   authenticated={authenticated}

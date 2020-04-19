@@ -34,7 +34,6 @@ import renderUserNames from '../../../util/renderUserNames'
 import renderColor from '../../../util/renderColor'
 import * as profileActions from '../../UserProfile/actions'
 import Button from '@material-ui/core/Button'
-import share from '../../../../assets/emojis/share.svg'
 import like from '../../../../assets/emojis/like.svg'
 import angry from '../../../../assets/emojis/angry.svg'
 import love from '../../../../assets/emojis/love.svg'
@@ -44,8 +43,6 @@ import wow from '../../../../assets/emojis/surprise.svg'
 import sad from '../../../../assets/emojis/sad.svg'
 import Divider from '@material-ui/core/Divider'
 import getReactionsText from '../../../util/getReactionsText'
-import getSharesText from '../../../util/getSharesText'
-import getShareIcon from '../../../util/getShareIcon'
 
 const styles = {
   smallAvatar: {
@@ -109,11 +106,7 @@ class Outgoing extends Component {
   }
 
   renderHint = () => {
-    const hintArray = [
-      'Be the first to share this',
-      'Be the first to like',
-      'Be the first to react',
-    ]
+    const hintArray = ['Be the first to like', 'Be the first to react']
     let index = 0
     setInterval(() => {
       this.setState({
@@ -121,13 +114,6 @@ class Outgoing extends Component {
       })
       index = (index + 1) % hintArray.length
     }, 2000)
-  }
-
-  createShare = async (userId, postId) => {
-    await this.props.createShare(userId, postId).then(async data => {
-      await this.props.getOutgoingPosts(this.props.user._id)
-      await this.props.getRecentPosts(this.props.user._id)
-    })
   }
 
   toggleShow = flag => {
@@ -336,19 +322,6 @@ class Outgoing extends Component {
                         </span>
                       </Link>
                     </Tooltip>
-                    <div className={classes.rightButton}>
-                      <Link
-                        to={`/post/${post._id}/shares`}
-                        className="actions-text"
-                      >
-                        <span>
-                          {post.shares.length
-                            ? formateNumber(post.shares.length)
-                            : 'No'}{' '}
-                          shares
-                        </span>
-                      </Link>
-                    </div>
                   </div>
                   <Divider />
                 </CardContent>
@@ -388,21 +361,6 @@ class Outgoing extends Component {
                             {getReactionsText(user._id, post.reactions)}
                           </span>
                         </Button>
-
-                        {/*<Tooltip title={post.reactions.filter(r => r.user._id === user._id).length ? post.reactions.filter(r => r.user._id === user._id)[0].type.toLowerCase(): 'like'}>
-                            <IconButton
-                              aria-label="like"
-                              onClick={() => this.createOrUpdateReaction(user._id, post._id, post.reactions.filter(r => r.user._id === user._id).length ? post.reactions.filter(r => r.user._id === user._id)[0].type.toLowerCase(): 'like')}
-                            >
-                              <LikeIcon 
-                              color={this.renderColor(post.reactions.filter(r => r.user._id === user._id).length ? post.reactions.filter(r => r.user._id === user._id)[0].type.toLowerCase(): '#606770')}
-                              
-                              />
-                            </IconButton>
-                          </Tooltip>
-                          <span className="span-name" style={{marginLeft: 7}}>{post.reactions.filter(r => r.user._id === user._id).length ? post.reactions.filter(r => r.user._id === user._id)[0].type.toLowerCase(): 'Like'}  </span>
-                    */}
-
                         {showEmojis && (
                           <div className="reaction-box">
                             <div
@@ -507,38 +465,7 @@ class Outgoing extends Component {
                         )}
                       </a>
                     </div>
-                    {/*<LikeIcon
-                          color={
-                            post.postDetails &&
-                            post.postDetails.filter(d => d.userId == user.uid)
-                              .length
-                              ? 'primary'
-                              : ''
-                          }
-                        />*/}
                   </Tooltip>
-                  {/*<Button style={{float: 'right !important'}} className={classes.button}>
-                      <Avatar className={classes.smallAvatar} src={share} />
-                      <span style={{marginLeft: 7}}>Share</span>
-                    </Button>*/}
-                  <div className={classes.rightButton}>
-                    <Tooltip title="Share">
-                      <Button
-                        style={{
-                          color: renderColor(
-                            getSharesText(user._id, post.shares),
-                          ),
-                        }}
-                        className={classes.button}
-                        onClick={() => this.createShare(user._id, post._id)}
-                      >
-                        {getShareIcon(user._id, post.shares)}
-                        <span className="ml-7">
-                          {getSharesText(user._id, post.shares)}{' '}
-                        </span>
-                      </Button>
-                    </Tooltip>
-                  </div>
                 </CardActions>
               </Card>
             ))
@@ -600,7 +527,6 @@ const mapStateToProps = state => {
 const actionsToProps = {
   deletePost: actions.deletePost,
   getOutgoingPosts: actions.getOutgoingPosts,
-  createShare: profileActions.createShare,
   createOrUpdateReaction: profileActions.createOrUpdateReaction,
   getRecentPosts: actions.getRecentPosts,
 }

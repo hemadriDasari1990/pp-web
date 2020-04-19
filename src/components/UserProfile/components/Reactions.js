@@ -10,13 +10,10 @@ import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import BookmarkIcon from '@material-ui/icons/Bookmark'
 import Loader from '../../Loader/components/Loader'
-import * as actions from '../actions'
 import { Map, fromJS } from 'immutable'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 import formateNumber from '../../../util/formateNumber'
 import * as globalActions from '../../../actions/index'
 import LoveIcon from '../../SvgIcons/components/Love'
@@ -48,11 +45,6 @@ class Reactions extends Component {
       profileUserError,
       profileUserLoading,
     } = this.props
-    console.log(
-      'user',
-      profileUser ? profileUser.reactions : null,
-      profileUserLoading,
-    )
     return (
       <React.Fragment>
         <Card>

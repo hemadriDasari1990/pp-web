@@ -5,7 +5,6 @@ import silly from '../../assets/emojis/silly.svg'
 import smiley from '../../assets/emojis/smiley.svg'
 import wow from '../../assets/emojis/surprise.svg'
 import sad from '../../assets/emojis/sad.svg'
-import share from '../../assets/emojis/share.svg'
 
 export default function getReaction(type) {
   let icon = like
@@ -30,9 +29,6 @@ export default function getReaction(type) {
       break
     case 'angry':
       icon = angry
-      break
-    case 'share':
-      icon = share
       break
     default:
       break

@@ -2,38 +2,18 @@ import React, { Component } from 'react'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardHeader from '@material-ui/core/CardHeader'
-import CardActionArea from '@material-ui/core/CardActionArea'
-import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
-import CardMedia from '@material-ui/core/CardMedia'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import IconButton from '@material-ui/core/IconButton'
-import PropTypes from 'prop-types'
 import withStyles from '@material-ui/core/styles/withStyles'
-import Code from '@material-ui/icons/Code'
 import Tooltip from '@material-ui/core/Tooltip'
-import Phone from '@material-ui/icons/Phone'
-import Badge from '@material-ui/core/Badge'
 import Typography from '@material-ui/core/Typography'
-import LikeIcon from '@material-ui/icons/ThumbUp'
-import DisLikeIcon from '@material-ui/icons/ThumbDown'
 import Avatar from '@material-ui/core/Avatar'
-import Divider from '@material-ui/core/Divider'
 import moment from 'moment'
-import MoodIcon from '@material-ui/icons/Mood'
-import MoodBadIcon from '@material-ui/icons/MoodBad'
-import PublicIcon from '@material-ui/icons/Public'
-import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import formateNumber from '../../../util/formateNumber'
 import VerifiedUserIcon from '@material-ui/icons/VerifiedUser'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import * as actions from '../actions'
-import * as userProfileActions from '../../UserProfile/actions'
 import * as dashboardActions from '../../Timeline/actions'
 import { Map, fromJS } from 'immutable'
 import {
@@ -46,7 +26,6 @@ import {
 import { connect } from 'react-redux'
 import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import Loader from '../../Loader/components/Loader'
-import Chip from '@material-ui/core/Chip'
 import PostsInfo from '../../Timeline/components/PostsInfo'
 import { Link } from 'react-router-dom'
 import AvatarGroup from '@material-ui/lab/AvatarGroup'
@@ -343,19 +322,6 @@ class Notifications extends Component {
                             </span>
                           </Link>
                         </Tooltip>
-                        <div className={classes.rightButton}>
-                          <Link
-                            to={`/post/${post._id}/shares`}
-                            className="actions-text"
-                          >
-                            <span>
-                              {post.shares.length
-                                ? formateNumber(post.shares.length)
-                                : 'No'}{' '}
-                              shares
-                            </span>
-                          </Link>
-                        </div>
                       </div>
                     </CardContent>
                   </Card>
