@@ -7,22 +7,15 @@ import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import BookmarkIcon from '@material-ui/icons/Bookmark'
 import Loader from '../../Loader/components/Loader'
 import * as postActions from '../../Post/actions'
 import { Map, fromJS } from 'immutable'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import like from '../../../../assets/emojis/like.svg'
-import angry from '../../../../assets/emojis/angry.svg'
-import love from '../../../../assets/emojis/love.svg'
-import silly from '../../../../assets/emojis/silly.svg'
-import smiley from '../../../../assets/emojis/smiley.svg'
-import wow from '../../../../assets/emojis/surprise.svg'
-import sad from '../../../../assets/emojis/sad.svg'
 import Badge from '@material-ui/core/Badge'
 import { withStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
+import getReaction from '../../../util/getReaction'
 
 const styles = {
   smallAvatar: {
@@ -38,37 +31,8 @@ const styles = {
 class ReactionsList extends Component {
   componentDidMount() {
     if (this.props.match.params.id) {
-      this.props.getReactions(this.props.match.params.id)
+      this.props.getReactions(this.props.type, this.props.match.params.id)
     }
-  }
-
-  getReaction = type => {
-    let icon = null
-    switch (type.toLowerCase()) {
-      case 'like':
-        icon = like
-        break
-      case 'love':
-        icon = love
-        break
-      case 'sad':
-        icon = sad
-        break
-      case 'wow':
-        icon = wow
-        break
-      case 'silly':
-        icon = silly
-        break
-      case 'smiley':
-        icon = smiley
-        break
-      case 'angry':
-        icon = angry
-        break
-        deafult: break
-    }
-    return icon
   }
 
   renderUserOrigin = provider => {
@@ -88,13 +52,15 @@ class ReactionsList extends Component {
   render() {
     const { classes, reactions, reactionsError, reactionsLoading } = this.props
     return (
-      <React.Fragment>
-        <div className="container">
+      <>
+        {!reactionsLoading && reactions.length ? (
           <Typography variant="h3">People who Reacted</Typography>
-          <List>
+        ) : null}
+        <List>
+          <div className="row">
             {!reactionsLoading && reactions.length
               ? reactions.map(r => (
-                  <>
+                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12">
                     <ListItem key={r._id} alignItems="flex-start">
                       <ListItemAvatar>
                         <Badge
@@ -104,7 +70,7 @@ class ReactionsList extends Component {
                             <Avatar
                               className={classes.smallAvatar}
                               alt="NA"
-                              src={this.getReaction(r.type)}
+                              src={getReaction(r.type)}
                             />
                           }
                         >
@@ -120,15 +86,15 @@ class ReactionsList extends Component {
                           secondary={this.renderUserOrigin(r.user.providerId)}
                         />
                       </Tooltip>
-                      <Tooltip title="View Profile" placement="bottom">
-                        <Button color="primary">
+                      <Tooltip title="View Profile" placement="right-end">
+                        <Button color="primary" className="mt-10">
                           <Link to={`/profile/${r.user._id}`}>
                             View Profile
                           </Link>
                         </Button>
                       </Tooltip>
                     </ListItem>
-                  </>
+                  </div>
                 ))
               : null}
             {!reactionsLoading && !reactions.length && (
@@ -137,9 +103,9 @@ class ReactionsList extends Component {
               </Typography>
             )}
             {reactionsLoading && !reactions.length && <Loader />}
-          </List>
-        </div>
-      </React.Fragment>
+          </div>
+        </List>
+      </>
     )
   }
 }

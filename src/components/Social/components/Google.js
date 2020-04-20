@@ -33,7 +33,6 @@ class Google extends Component {
       .then(async (user, error) => {
         if (!error) {
           const data = await user.user.providerData[0]
-          console.log('hello', user.user.providerData[0])
           await this.props.getUser(data.uid).then(async u => {
             if (!u || (u && u.data && !u.data.user)) {
               await this.props
