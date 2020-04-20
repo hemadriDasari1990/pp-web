@@ -5,18 +5,7 @@ import { connect } from 'react-redux'
 import PostsInfo from '../../Timeline/components/PostsInfo'
 import RecentPosts from '../../Timeline/components/RecentPosts'
 import TopPosts from '../../Timeline/components/TopPosts'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import ListItemText from '@material-ui/core/ListItemText'
-import Avatar from '@material-ui/core/Avatar'
 import * as globalActions from '../../../actions/index'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import userLike from '../../../../assets/user-like.svg'
-import IconButton from '@material-ui/core/IconButton'
-import Tooltip from '@material-ui/core/Tooltip'
-import * as actions from '../actions'
-import { Map } from 'immutable'
 import Profile from './Profile'
 import Reactions from './Reactions'
 import Incoming from '../../Timeline/components/Incoming'
@@ -25,14 +14,12 @@ class Dashboard extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      posts: [],
       user: undefined,
-      userLikeFlag: false,
     }
   }
 
-  async componentDidMount() {
-    await this.props.getUser(this.props.match.params.id).then(res => {
+  componentDidMount() {
+    this.props.getUser(this.props.match.params.id).then(res => {
       this.setState({
         user: res.data ? res.data.user : {},
       })
@@ -41,7 +28,7 @@ class Dashboard extends Component {
 
   render() {
     const { classes, loggedInUser } = this.props
-    const { posts, user, userLikeFlag } = this.state
+    const { user } = this.state
     return (
       <React.Fragment>
         <div className="row">
