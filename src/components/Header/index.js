@@ -4,7 +4,6 @@ import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
 import Badge from '@material-ui/core/Badge'
-import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 import { withStyles } from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -21,12 +20,12 @@ import firebase from '../../firebase'
 import Notifications from './components/Notifications'
 import * as dashboardActions from '../Timeline/actions'
 import libIcon from '../../../assets/lib.svg'
-import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import arrowIcon from '../../../assets/arrow.svg'
 import preferencesIcon from '../../../assets/preferences.svg'
 import notificationsIcon from '../../../assets/notifications.svg'
 import logoutIcon from '../../../assets/logout.svg'
 import Typography from '@material-ui/core/Typography'
+import ListItem from '@material-ui/core/ListItem'
 
 const styles = theme => ({
   avatar: {
@@ -150,31 +149,32 @@ class Header extends React.Component {
   renderMobileMenu = () => {
     const mobileMenuId = 'primary-search-account-menu-mobile'
     return (
-      <ClickAwayListener onClickAway={this.handleMobileMenuClose}>
-        <Menu
-          anchorEl={this.state.mobileMoreAnchorEl}
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-          id={mobileMenuId}
-          keepMounted
-          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-          open={this.state.isMobileMenuOpen}
-          onClose={this.handleMobileMenuClose}
-          onKeyDown={this.handleListKeyDown}
-        >
-          <MenuItem onClick={() => this.showNotifications()}>
-            Notifications
-          </MenuItem>
-          <MenuItem onClick={() => this.openPreferencesForm()}>
-            Preferences
-          </MenuItem>
+      <Menu
+        anchorEl={this.state.mobileMoreAnchorEl}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        id={mobileMenuId}
+        keepMounted
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        open={this.state.isMobileMenuOpen}
+        onClose={() => this.handleMobileMenuClose()}
+        onKeyDown={e => this.handleListKeyDown(e)}
+      >
+        <ListItem className="cursor" onClick={() => this.showNotifications()}>
+          Notifications
+        </ListItem>
+        <ListItem className="cursor" onClick={() => this.openPreferencesForm()}>
+          Preferences
+        </ListItem>
 
-          <MenuItem onClick={() => this.handleLogout()}>Logout</MenuItem>
-        </Menu>
-      </ClickAwayListener>
+        <ListItem className="cursor" onClick={() => this.handleLogout()}>
+          Logout
+        </ListItem>
+      </Menu>
     )
   }
 
   handleMobileMenuClose = () => {
+    console.log('called')
     this.setState({
       mobileMoreAnchorEl: null,
       isMobileMenuOpen: false,

@@ -149,20 +149,10 @@ class Outgoing extends Component {
               <Card key={post._id}>
                 <CardHeader
                   avatar={
-                    !post.isAnonymous ? (
-                      <Avatar
-                        alt={post.postedTo.userName}
-                        src={
-                          post.postedTo.photoURL ? post.postedTo.photoURL : 'A'
-                        }
-                      />
-                    ) : (
-                      <Avatar
-                        style={{ color: '#ffffff', backgroundColor: '#1976d2' }}
-                      >
-                        A
-                      </Avatar>
-                    )
+                    <Avatar
+                      alt={post.postedTo.userName}
+                      src={post.postedTo.photoURL}
+                    />
                   }
                   action={
                     <>
@@ -214,18 +204,14 @@ class Outgoing extends Component {
                     </>
                   }
                   title={
-                    !post.isAnonymous ? (
-                      <>
-                        <Link
-                          className="hyperlink"
-                          to={`/profile/${post.postedTo._id}`}
-                        >
-                          {post.postedTo.userName}
-                        </Link>
-                      </>
-                    ) : (
-                      <b className="hyperlink">Annonymous User</b>
-                    )
+                    <Link
+                      className="hyperlink"
+                      to={`/profile/${post.postedTo._id}`}
+                    >
+                      {post.annonymous
+                        ? post.postedTo.userName + '(Annonymous Post)'
+                        : post.postedTo.userName}
+                    </Link>
                   }
                   subheader={moment(post.createdAt).fromNow()}
                 />

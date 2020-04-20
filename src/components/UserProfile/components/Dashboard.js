@@ -18,12 +18,14 @@ class Dashboard extends Component {
     }
   }
 
-  componentDidMount() {
-    this.props.getUser(this.props.match.params.id).then(res => {
-      this.setState({
-        user: res.data ? res.data.user : {},
-      })
-    })
+  async componentDidMount() {
+    this.props.match.params.id
+      ? await this.props.getUser(this.props.match.params.id).then(res => {
+          this.setState({
+            user: res.data ? res.data.user : {},
+          })
+        })
+      : null
   }
 
   render() {
