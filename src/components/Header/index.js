@@ -174,7 +174,6 @@ class Header extends React.Component {
   }
 
   handleMobileMenuClose = () => {
-    console.log('called')
     this.setState({
       mobileMoreAnchorEl: null,
       isMobileMenuOpen: false,

@@ -182,16 +182,56 @@ export const getReactionsError = errors => {
   }
 }
 
-export const getReactions = postId => {
+export const getReactions = (type, postId) => {
   const options = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   }
   return dispatch => {
     dispatch(getReactionsRequest())
-    return fetch(config.URL_PREFIX + `/post/reactions/${postId}`, options)
+    return fetch(
+      config.URL_PREFIX + `/post/reactions/${postId}?type=${type}`,
+      options,
+    )
       .then(response => response.json())
       .then(data => dispatch(getReactionsSuccess(data)))
       .catch(errors => dispatch(getReactionsError(errors)))
+  }
+}
+
+export const getReactionsCountRequest = () => {
+  return {
+    type: action.GET_REACTIONS_COUNT_REQUEST,
+    loading: true,
+  }
+}
+
+export const getReactionsCountSuccess = reaction => {
+  return {
+    type: action.GET_REACTIONS_COUNT_SUCCESS,
+    loading: false,
+    data: reaction,
+  }
+}
+
+export const getReactionsCountError = errors => {
+  return {
+    type: action.GET_REACTIONS_COUNT_ERROR,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const getReactionsCount = postId => {
+  const options = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  return dispatch => {
+    dispatch(getReactionsCountRequest())
+    return fetch(config.URL_PREFIX + `/post/reactions/${postId}/count`, options)
+      .then(response => response.json())
+      .then(data => dispatch(getReactionsCountSuccess(data)))
+      .catch(errors => dispatch(getReactionsCountError(errors)))
   }
 }

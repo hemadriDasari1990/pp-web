@@ -23,6 +23,9 @@ import MuiDrawer from './MuiDrawer'
 import MuiListItemIcon from './MuiListItemIcon'
 import MuiInputBase from './MuiInputBase'
 import MuiList from './MuiList'
+import MuiTab from './MuiTab'
+import MuiTabs from './MuiTabs'
+import MuiButtonBase from './MuiButtonBase'
 
 export default {
   MuiButton,
@@ -50,4 +53,7 @@ export default {
   MuiListItemIcon,
   MuiInputBase,
   MuiList,
+  MuiTab,
+  MuiTabs,
+  MuiButtonBase,
 }

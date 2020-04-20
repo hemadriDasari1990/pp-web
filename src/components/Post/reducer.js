@@ -83,6 +83,21 @@ export const Post = (state = Map(), action) => {
         .setIn(['reactions', 'errors'], action.errors)
         .setIn(['reactions', 'loading'], false)
 
+    case actions.GET_REACTIONS_COUNT_REQUEST:
+      return state
+        .setIn(['reactions', 'count', 'loading'], true)
+        .deleteIn(['reactions', 'count', 'errors'])
+        .deleteIn(['reactions', 'count', 'success'])
+
+    case actions.GET_REACTIONS_COUNT_SUCCESS:
+      return state
+        .setIn(['reactions', 'count', 'success'], action.data)
+        .setIn(['reactions', 'count', 'loading'], false)
+
+    case actions.GET_REACTIONS_COUNT_ERROR:
+      return state
+        .setIn(['reactions', 'count', 'errors'], action.errors)
+        .setIn(['reactions', 'count', 'loading'], false)
     default:
       return state
   }

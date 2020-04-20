@@ -17,7 +17,6 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 import firebase from '../firebase/index'
 import theme from './theme'
 import UserProfile from './UserProfile/components/Dashboard'
-// import { askForPermissionToReceiveNotifications } from '../firebase/push-notification';
 import Notifications from './Notifications/components/Notification'
 import PageNotFound from './PageNotFound/components/index'
 import About from './Footer/components/About'
@@ -26,19 +25,14 @@ import Location from './Footer/components/Location'
 import Developers from './Footer/components/developers'
 import Careers from './Footer/components/careers'
 import ReactionsList from './Reactions/components/List'
+import Reactions from './Reactions/components/Reactions'
 import Preferences from './Post/components/Preferences'
 import Pros from './Home/components/Pros'
 import Cons from './Home/components/Cons'
 import Advice from './Home/components/Advice'
 import Signin from './Signin/components/Signin'
-import DrawerComponent from './Drawer/components/Drawer'
 import Dashboard from './Dashboard/components/Dashboard'
-import Incoming from './Timeline/components/Incoming'
-import Outgoing from './Timeline/components/Outgoing'
-import Users from './Users/components/Users'
-import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
-import arrowIcon from '../../assets/arrow.svg'
 
 class App extends Component {
   constructor(props) {
@@ -136,7 +130,7 @@ class App extends Component {
                 <PrivateRoute
                   authenticated={authenticated}
                   path="/post/:id/reactions"
-                  component={() => <ReactionsList />}
+                  component={() => <Reactions />}
                 />
                 <PrivateRoute
                   authenticated={authenticated}
