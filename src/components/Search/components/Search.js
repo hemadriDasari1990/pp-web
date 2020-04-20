@@ -4,11 +4,10 @@ import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import withStyles from '@material-ui/core/styles/withStyles'
 import SearchIcon from '@material-ui/icons/Search'
-import InputBase from '@material-ui/core/InputBase'
 import IconButton from '@material-ui/core/IconButton'
-import Autocomplete from '@material-ui/lab/Autocomplete'
 import * as mainActions from '../../../actions/index'
 import PropTypes from 'prop-types'
+import TextField from '@material-ui/core/TextField'
 
 const styles = theme => ({
   input: {
@@ -58,19 +57,25 @@ class Search extends React.Component {
     const { user, users, classes } = this.props
     const { query } = this.state
     return (
-      <div className={classes.input}>
-        <IconButton
-          type="submit"
-          className={classes.iconButton}
-          aria-label="search"
-        >
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          backgroundColor: '#ffffff',
+          borderRadius: 25,
+          height: 40,
+          // width: 270,
+          boxShadow: '0 14px 28px rgba(145, 148, 170, 0.25)',
+        }}
+      >
+        <IconButton type="submit" aria-label="Search people by name">
           <SearchIcon />
         </IconButton>
-        <InputBase
-          placeholder="Search profiles by name"
+        <TextField
+          fullWidth
           defaultValue={query}
-          inputProps={{ 'aria-label': 'Search people by name' }}
-          className={classes.inputBase}
+          InputProps={{ disableUnderline: true }}
+          placeholder="Search people by name"
           onChange={e => this.handleSearch(e)}
           value={query}
         />
