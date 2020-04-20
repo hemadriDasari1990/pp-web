@@ -33,6 +33,7 @@ class Google extends Component {
       .then(async (user, error) => {
         if (!error) {
           const data = await user.user.providerData[0]
+          console.log('hello', user.user.providerData[0])
           await this.props.getUser(data.uid).then(async u => {
             if (!u || (u && u.data && !u.data.user)) {
               await this.props
@@ -50,7 +51,7 @@ class Google extends Component {
                   }
                 })
             } else {
-              this.props.storeUser(u.data.user)
+              u.data ? this.props.storeUser(u.data.user) : null
             }
           })
           // this.props.isAuthenticated(true)

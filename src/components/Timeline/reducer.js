@@ -110,7 +110,7 @@ export const Timeline = (state = Map(), action) => {
         .setIn(['recent', 'success'], action.data)
         .setIn(['recent', 'loading'], false)
 
-    case actions.GET_RECENT_POSTS_ERROR:
+    case actions.GET_RECENT_POSTS_FAILURE:
       return state
         .setIn(['recent', 'errors'], action.errors)
         .setIn(['recent', 'loading'], false)

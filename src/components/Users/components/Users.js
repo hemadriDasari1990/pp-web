@@ -13,6 +13,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import Loader from '../../Loader/components/Loader'
+import Grid from '@material-ui/core/Grid'
 
 class Users extends Component {
   constructor(props) {
@@ -36,39 +37,41 @@ class Users extends Component {
         <List className="row">
           {!usersLoading && users.length ? (
             users.map(user => (
-              <ListItem
-                key={user._id}
-                alignItems="flex-start"
-                className="shadow b-r-15"
-              >
-                <ListItemAvatar>
-                  <Avatar alt={user.userName} src={user.photoURL} />
-                </ListItemAvatar>
-                <Tooltip title={user.userName} placement="right-end">
-                  <ListItemText
-                    primary={user.userName}
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          color="textPrimary"
-                        >
-                          A {user.providerId} user
-                        </Typography>
-                      </React.Fragment>
-                    }
-                  />
-                </Tooltip>
-                <Tooltip title="View Profile" placement="right-end">
-                  <Button
-                    className="mt-10"
-                    onClick={() => this.handleViewProfile(user._id)}
-                  >
-                    View Profile
-                  </Button>
-                </Tooltip>
-              </ListItem>
+              <Grid item lg={4} xs={12} sm={3}>
+                <ListItem
+                  key={user._id}
+                  alignItems="flex-start"
+                  className="shadow b-r-15"
+                >
+                  <ListItemAvatar>
+                    <Avatar alt={user.userName} src={user.photoURL} />
+                  </ListItemAvatar>
+                  <Tooltip title={user.userName} placement="right-end">
+                    <ListItemText
+                      primary={user.userName}
+                      secondary={
+                        <React.Fragment>
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            color="textPrimary"
+                          >
+                            A {user.providerId} user
+                          </Typography>
+                        </React.Fragment>
+                      }
+                    />
+                  </Tooltip>
+                  <Tooltip title="View Profile" placement="right-end">
+                    <Button
+                      className="mt-10"
+                      onClick={() => this.handleViewProfile(user._id)}
+                    >
+                      View Profile
+                    </Button>
+                  </Tooltip>
+                </ListItem>
+              </Grid>
             ))
           ) : (
             <Typography variant="h4" className="text-center">
