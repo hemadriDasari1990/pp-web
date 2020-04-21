@@ -106,11 +106,11 @@ class Reactions extends Component {
     const { classes } = this.props
     return isActive
       ? {
-          color: '#007bff',
+          color: '#fff',
+          background:
+            'linear-gradient(45deg, #2a7fff 1%, #00ff43 80%, #2a7fff 96%, #37ff2a 100%) 0% 0% / 150% 150%',
         }
-      : {
-          color: '#3333',
-        }
+      : {}
   }
 
   render() {
@@ -133,7 +133,7 @@ class Reactions extends Component {
                   onClick={() => this.handleChange(0)}
                   style={this.getStyle(value === 0)}
                   value={value}
-                  label={'All' + formateNumber(reactionsCount.total)}
+                  label={'All ' + formateNumber(reactionsCount.total)}
                   aria-label="phone"
                 />
                 <Tab

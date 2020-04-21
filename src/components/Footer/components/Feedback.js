@@ -163,7 +163,7 @@ class Feedback extends Component {
 
   handleAnnonymous = e => {
     this.setState({
-      annonymous: e.target.value,
+      annonymous: !this.state.annonymous,
     })
   }
 

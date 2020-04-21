@@ -2,7 +2,6 @@ export default {
   root: {},
   wrapper: {
     flexDirection: 'row',
-    color: '#333',
   },
   /* Styles applied to the root element if both `icon` and `label` are provided. */
   labelIcon: {
@@ -17,12 +16,12 @@ export default {
   },
   /* Styles applied to the root element if the parent [`Tabs`](/api/tabs/) has `textColor="primary"`. */
   textColorPrimary: {
-    color: '#3333',
+    color: '#2a7fff',
     '&$selected': {
       color: '#2a7fff',
     },
     '&$disabled': {
-      color: '#333',
+      color: '#3333',
     },
   },
 }
