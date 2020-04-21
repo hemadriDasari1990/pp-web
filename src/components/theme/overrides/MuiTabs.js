@@ -1,17 +1,16 @@
 export default {
   root: {},
   indicator: {
-    backgroundColor: '#2a7fff',
+    // backgroundColor: '#2a7fff',
   },
   /* Styles applied to the root element if the parent [`Tabs`](/api/tabs/) has `textColor="primary"`. */
   textColorPrimary: {
-    color: '#3333',
+    color: '#2a7fff',
     '&$selected': {
-      color: '#2a7fff',
-      backgroundColor: '#2a7fff',
+      color: '#fff',
     },
     '&$disabled': {
-      color: '#333',
+      color: '#3333',
     },
   },
 }

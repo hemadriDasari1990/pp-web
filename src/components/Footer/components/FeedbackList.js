@@ -32,15 +32,21 @@ class FeedbackList extends Component {
               >
                 <ListItem alignItems="flex-start">
                   <ListItemAvatar>
-                    <Avatar
-                      src={!feedback.annonymous ? feedback.photoURL : 'A'}
-                    ></Avatar>
+                    {!feedback.annonymous ? (
+                      <Avatar alt={feedback.userName} src={feedback.photoURL} />
+                    ) : (
+                      <Avatar
+                        style={{ color: '#ffffff', backgroundColor: '#1976d2' }}
+                      >
+                        A
+                      </Avatar>
+                    )}
                   </ListItemAvatar>
                   <ListItemText
                     primary={
                       !feedback.annonymous
                         ? feedback.userName
-                        : 'Annonymous Sser'
+                        : 'Annonymous User'
                     }
                     secondary={
                       <React.Fragment>
