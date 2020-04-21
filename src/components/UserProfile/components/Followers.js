@@ -16,11 +16,11 @@ import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
 import * as globalActions from '../../../actions/index'
-import LoveIcon from '../../SvgIcons/components/Love'
-import LikeIcon from '../../SvgIcons/components/Like'
+import FollowIcon from '../../SvgIcons/components/Follow'
+import FollowingIcon from '../../SvgIcons/components/Following'
 import { Link } from 'react-router-dom'
 
-class Reactions extends Component {
+class Followers extends Component {
   async componentDidMount() {
     await this.props.getUser(this.props.match.params.id)
   }
@@ -37,13 +37,13 @@ class Reactions extends Component {
       <React.Fragment>
         <Card>
           <CardHeader
-            title="Reactions"
+            title="Followers"
             action={
               <a>
                 View All{' '}
                 <b>
                   {formateNumber(
-                    profileUser ? profileUser.reactions.length : 0,
+                    profileUser ? profileUser.followers.length : 0,
                   )}
                 </b>
               </a>
@@ -53,28 +53,28 @@ class Reactions extends Component {
             <List>
               {!profileUserLoading &&
               profileUser &&
-              profileUser.reactions.length ? (
-                profileUser.reactions.slice(0, 3).map(pu => (
-                  <ListItem key={pu._id} alignItems="flex-start">
+              profileUser.followers.length ? (
+                profileUser.followers.slice(0, 3).map(f => (
+                  <ListItem key={f._id} alignItems="flex-start">
                     <ListItemAvatar>
                       <Avatar
-                        alt={pu.likedBy[0].userName}
-                        src={pu.likedBy[0].photoURL}
+                        alt={f.follower[0].userName}
+                        src={f.follower[0].photoURL}
                       />
                     </ListItemAvatar>
                     <Tooltip
-                      title={pu.likedBy[0].userName}
+                      title={f.follower[0].userName}
                       placement="right-end"
                     >
                       <ListItemText
                         primary={
                           <Link
                             className="hyperlink"
-                            to={`/profile/${pu.likedBy[0]._id}`}
+                            to={`/profile/${f.follower[0]._id}`}
                           >
-                            {user && user._id === pu.likedBy[0]._id
+                            {user && user._id === f.follower[0]._id
                               ? 'You'
-                              : pu.likedBy[0].userName}
+                              : f.follower[0].userName}
                           </Link>
                         }
                         secondary={
@@ -84,19 +84,24 @@ class Reactions extends Component {
                               variant="body2"
                               color="textPrimary"
                             >
-                              A {pu.likedBy[0].providerId} User
+                              A {f.follower[0].providerId} User
                             </Typography>
                           </React.Fragment>
                         }
                       />
                     </Tooltip>
-                    <Tooltip title={pu.type.toUpperCase()} placement="bottom">
+                    <Tooltip
+                      placement="bottom"
+                      title={f.follower ? 'Following' : 'Follow'}
+                    >
                       <IconButton>
-                        {pu.type === 'love' && (
-                          <LoveIcon className="icon-display" color="#f10571" />
-                        )}
-                        {pu.type === 'like' && (
-                          <LikeIcon className="icon-display" color="#2a7fff" />
+                        {f.follower ? (
+                          <FollowingIcon
+                            color="#2a7fff"
+                            className="icon-display"
+                          />
+                        ) : (
+                          <FollowIcon className="icon-display" />
                         )}
                       </IconButton>
                     </Tooltip>
@@ -104,7 +109,7 @@ class Reactions extends Component {
                 ))
               ) : (
                 <Typography variant="h4" className="text-center">
-                  No reactions yet
+                  No Foloowers yet
                 </Typography>
               )}
 
@@ -117,13 +122,13 @@ class Reactions extends Component {
   }
 }
 
-Reactions.propTypes = {}
+Followers.propTypes = {}
 
 const mapStateToProps = state => {
-  const user = state.getIn(['user', 'data'])
   const profileUser = state.getIn(['user', 'success'])
   const profileUserLoading = state.getIn(['user', 'loading'], false)
   const profileUserError = state.getIn(['user', 'errors'], Map())
+  const user = state.getIn(['user', 'data'])
   return {
     profileUser: profileUser ? profileUser.user : undefined,
     profileUserError,
@@ -136,4 +141,4 @@ const actionsToProps = {
   getUser: globalActions.getUser,
 }
 
-export default withRouter(connect(mapStateToProps, actionsToProps)(Reactions))
+export default withRouter(connect(mapStateToProps, actionsToProps)(Followers))

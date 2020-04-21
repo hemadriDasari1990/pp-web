@@ -50,14 +50,19 @@ class RecentPosts extends Component {
       recentPosts,
       recentPostsError,
       recentPostsLoading,
-      iposted,
-      ireceived,
       user,
     } = this.props
     return (
       <React.Fragment>
         <Card style={{ width: '100%', maxWidth: '100%' }}>
-          <CardHeader title="Most Recent Posts"></CardHeader>
+          <CardHeader
+            title="Most Recent Posts"
+            action={
+              <a>
+                Shown upto <b>5</b> posts
+              </a>
+            }
+          ></CardHeader>
           <CardContent>
             <List>
               {!recentPostsLoading && recentPosts.length
@@ -80,7 +85,16 @@ class RecentPosts extends Component {
                           </Avatar>
                         )}
                       </ListItemAvatar>
-                      <Tooltip title={post.providerId} placement="right-end">
+                      <Tooltip
+                        title={
+                          post.approved
+                            ? 'Accepted'
+                            : post.rejected
+                            ? 'Rejected'
+                            : 'Pending'
+                        }
+                        placement="right-end"
+                      >
                         <ListItemText
                           primary={
                             !post.isAnonymous ? (

@@ -5,7 +5,6 @@ import CardContent from '@material-ui/core/CardContent'
 import IconButton from '@material-ui/core/IconButton'
 import Avatar from '@material-ui/core/Avatar'
 import Divider from '@material-ui/core/Divider'
-import preferencesIcon from '../../../../assets/preferences.svg'
 import Fab from '@material-ui/core/Fab'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -13,13 +12,14 @@ import { Map, List } from 'immutable'
 import userLike from '../../../../assets/user-like.svg'
 import love from '../../../../assets/love.svg'
 import Tooltip from '@material-ui/core/Tooltip'
-import * as profileActions from '../../UserProfile/actions'
+import * as actions from '../actions'
 import LoveIcon from '../../SvgIcons/components/Love'
 import LikeIcon from '../../SvgIcons/components/Like'
 import Button from '@material-ui/core/Button'
 import FollowIcon from '../../SvgIcons/components/Follow'
 import * as globalActions from '../../../actions/index'
 import formateNumber from '../../../util/formateNumber'
+import FollowingIcon from '../../SvgIcons/components/Following'
 
 class Profile extends Component {
   constructor(props) {
@@ -34,6 +34,13 @@ class Profile extends Component {
       ? this.props.getProfileReaction(
           this.props.profileUser._id,
           this.props.user._id,
+        )
+      : null
+
+    this.props.user && this.props.profileUser
+      ? this.props.getProfileFollower(
+          this.props.user._id,
+          this.props.profileUser._id,
         )
       : null
   }
@@ -57,8 +64,26 @@ class Profile extends Component {
     })
   }
 
+  handleFollow = async () => {
+    const data = {
+      follower: this.props.user._id,
+      followee: this.props.profileUser._id,
+    }
+    await this.props.createOrUpdateProfileFollower(data).then(async res => {
+      await this.props.getProfileFollower(
+        this.props.user._id,
+        this.props.profileUser._id,
+      )
+      await this.props.getUser(this.props.match.params.id).then(res => {
+        this.setState({
+          profileUser: res.data ? res.data.user : {},
+        })
+      })
+    })
+  }
+
   render() {
-    const { classes, user, profileReaction } = this.props
+    const { classes, user, profileReaction, profileFollower } = this.props
     const { open, anchorEl, profileUser } = this.state
     const loved =
       profileReaction &&
@@ -68,6 +93,10 @@ class Profile extends Component {
       profileReaction &&
       profileReaction.type === 'like' &&
       profileReaction.likedBy._id === user._id
+    const following =
+      profileFollower &&
+      profileFollower.follower &&
+      profileFollower.follower._id === user._id
     return (
       <>
         <Card style={{ width: '100%', maxWidth: '100%' }}>
@@ -112,17 +141,20 @@ class Profile extends Component {
             </div>
             <br />
             <div className="text-center">
-              <span>Create usable interface and designs @GraphicSpark</span>
-            </div>
-            <br />
-            <div className="text-center">
-              <Tooltip title="Follow">
+              <Tooltip title={following ? 'Following' : 'Follow'}>
                 <Button
                   variant="outlined"
                   color="primary"
-                  startIcon={<FollowIcon />}
+                  startIcon={
+                    following ? (
+                      <FollowingIcon color="#2a7fff" />
+                    ) : (
+                      <FollowIcon />
+                    )
+                  }
+                  onClick={() => this.handleFollow()}
                 >
-                  Follow
+                  {following ? 'Following' : 'Follow'}
                 </Button>
               </Tooltip>
             </div>
@@ -159,18 +191,20 @@ class Profile extends Component {
               <div className="followers">Loved</div>
             </div>
             <div className="text-center ml-25">
-              <Tooltip title="Times Preferences Updated">
+              <Tooltip title="Followers">
                 <Fab
                   color="inherit"
                   size="small"
-                  aria-label="preferences"
+                  aria-label="followers"
                   color="primary"
                 >
-                  <Avatar src={preferencesIcon} />
+                  <FollowingIcon color="#fff" />
                 </Fab>
               </Tooltip>
-              <p className="title">4k</p>
-              <div className="followers">Updated</div>
+              <p className="title">
+                {formateNumber(profileUser.no_of_followers)}
+              </p>
+              <div className="followers">Followers</div>
             </div>
           </CardActions>
         </Card>
@@ -186,17 +220,24 @@ const mapStateToProps = state => {
     ['UserProfile', 'userlike', 'get', 'success'],
     Map(),
   )
+  const profileFollower = state.getIn(
+    ['UserProfile', 'follower', 'get', 'success'],
+    Map(),
+  )
   const user = state.getIn(['user', 'data'])
   return {
     user,
     profileReaction,
+    profileFollower,
   }
 }
 
 const actionsToProps = {
-  createOrUpdateProfileReaction: profileActions.createOrUpdateProfileReaction,
-  getProfileReaction: profileActions.getProfileReaction,
+  createOrUpdateProfileReaction: actions.createOrUpdateProfileReaction,
+  getProfileReaction: actions.getProfileReaction,
   getUser: globalActions.getUser,
+  createOrUpdateProfileFollower: actions.createOrUpdateProfileFollower,
+  getProfileFollower: actions.getProfileFollower,
 }
 
 export default withRouter(connect(mapStateToProps, actionsToProps)(Profile))

@@ -50,7 +50,13 @@ class ReactionsList extends Component {
     return name
   }
   render() {
-    const { classes, reactions, reactionsError, reactionsLoading } = this.props
+    const {
+      classes,
+      reactions,
+      reactionsError,
+      reactionsLoading,
+      user,
+    } = this.props
     return (
       <>
         {!reactionsLoading && reactions.length ? (
@@ -82,7 +88,16 @@ class ReactionsList extends Component {
                       </ListItemAvatar>
                       <Tooltip title={r.type} placement="top">
                         <ListItemText
-                          primary={r.user.userName}
+                          primary={
+                            <Link
+                              className="hyperlink"
+                              to={`/profile/${r.user._id}`}
+                            >
+                              {user && user._id === r.user._id
+                                ? 'You'
+                                : r.user.userName}
+                            </Link>
+                          }
                           secondary={this.renderUserOrigin(r.user.providerId)}
                         />
                       </Tooltip>
@@ -116,10 +131,12 @@ const mapStateToProps = state => {
   const reactions = state.getIn(['Post', 'reactions', 'success'], Map())
   const reactionsLoading = state.getIn(['Post', 'reactions', 'loading'], false)
   const reactionsError = state.getIn(['Post', 'reactions', 'errors'], Map())
+  const user = state.getIn(['user', 'data'])
   return {
     reactions,
     reactionsLoading,
     reactionsError,
+    user,
   }
 }
 

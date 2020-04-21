@@ -13,6 +13,7 @@ import LikeIcon from '../../SvgIcons/components/Like'
 import PreferencesIcon from '../../SvgIcons/components/Preferences'
 import * as postActions from '../../Post/actions'
 import Loader from '../../Loader/components/Loader'
+import FollowingIcon from '../../SvgIcons/components/Following'
 
 const styles = theme => ({})
 
@@ -74,7 +75,7 @@ class DashBoard extends Component {
                     />
                   }
                   title="People Like You"
-                  name="Profile Like"
+                  name="Like"
                   count={user.no_of_likes}
                 />
               </div>
@@ -82,7 +83,7 @@ class DashBoard extends Component {
                 <Metrics
                   icon={<LoveIcon className="icon-display" color="#2a7fff" />}
                   title="People Love You"
-                  name="Profile Love"
+                  name="Love"
                   count={user.no_of_loves}
                 />
               </div>
@@ -104,6 +105,16 @@ class DashBoard extends Component {
                       ? userPreferences.pref.count
                       : 0
                   }
+                />
+              </div>
+              <div className="col-lg-3 col-md-3 col-sm col-xs-12">
+                <Metrics
+                  icon={
+                    <FollowingIcon className="icon-display" color="#2a7fff" />
+                  }
+                  title="Total Followers"
+                  name="Followers"
+                  count={user.no_of_followers}
                 />
               </div>
             </div>
