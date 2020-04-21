@@ -44,10 +44,6 @@ class Loader extends Component {
     const { completed, showLoader } = this.state
     return (
       <div className="content">
-        {/*showLoader && (
-          <CircularProgress disableShrink className={classes.progress} />
-        )*/}
-
         {showLoader ? (
           <img
             src={loader}
