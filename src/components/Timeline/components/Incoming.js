@@ -139,6 +139,7 @@ class Incoming extends Component {
       deletePostLoading,
       classes,
       user,
+      type,
     } = this.props
     const { open, anchorEl, showEmojis } = this.state
     return (

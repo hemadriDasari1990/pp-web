@@ -169,9 +169,7 @@ class RecentPosts extends Component {
                               </Link>
                             </Tooltip>
                           </>
-                        ) : (
-                          'No Reactions'
-                        )}
+                        ) : null}
                       </div>
                     </ListItem>
                   ))

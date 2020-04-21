@@ -12,6 +12,7 @@ import LoveIcon from '../../SvgIcons/components/Love'
 import LikeIcon from '../../SvgIcons/components/Like'
 import PreferencesIcon from '../../SvgIcons/components/Preferences'
 import * as postActions from '../../Post/actions'
+import Loader from '../../Loader/components/Loader'
 
 const styles = theme => ({})
 
@@ -37,7 +38,7 @@ class DashBoard extends Component {
     const { user, classes, userPreferences } = this.props
     return (
       <React.Fragment>
-        {user ? (
+        {user && userPreferences ? (
           <>
             <div className="row">
               <div className="text-center col-lg-3 col-md-2 col-sm-12 col-xs-12">
@@ -107,7 +108,9 @@ class DashBoard extends Component {
               </div>
             </div>
           </>
-        ) : null}
+        ) : (
+          <Loader />
+        )}
       </React.Fragment>
     )
   }
@@ -118,9 +121,16 @@ DashBoard.propTypes = {}
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'])
   const userPreferences = state.getIn(['Post', 'preferences', 'get', 'success'])
+  const userPreferencesLoading = state.getIn([
+    'Post',
+    'preferences',
+    'get',
+    'loading',
+  ])
   return {
     user,
     userPreferences,
+    userPreferencesLoading,
   }
 }
 

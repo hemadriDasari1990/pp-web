@@ -57,8 +57,8 @@ class FeedbackList extends Component {
                           color="textPrimary"
                         >
                           {feedback.about}
-                        </Typography>
-                        - {feedback.comment}
+                        </Typography>{' '}
+                        - {' ' + feedback.comment}
                       </React.Fragment>
                     }
                   />

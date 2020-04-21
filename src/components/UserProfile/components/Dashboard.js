@@ -9,6 +9,7 @@ import * as globalActions from '../../../actions/index'
 import Profile from './Profile'
 import Reactions from './Reactions'
 import Incoming from '../../Timeline/components/Incoming'
+import Loader from '../../Loader/components/Loader'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -34,18 +35,23 @@ class Dashboard extends Component {
     return (
       <React.Fragment>
         <div className="row">
-          <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
-            {user && loggedInUser && <Profile profileUser={user} />}
-            <Reactions />
-          </div>
-          <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
-            {user && <Incoming user={user} />}
-          </div>
-          <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-            {user && <PostsInfo user={user} />}
-            {user && <RecentPosts user={user} />}
-            {user && <TopPosts user={user} />}
-          </div>
+          {loggedInUser && (
+            <>
+              <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
+                {user && <Profile profileUser={user} />}
+                {user && <Reactions />}
+              </div>
+              <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
+                {user && <Incoming user={user} type="profile" />}
+              </div>
+              <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+                {user && <PostsInfo user={user} />}
+                {user && <RecentPosts user={user} />}
+                {user && <TopPosts user={user} />}
+              </div>
+            </>
+          )}
+          {!loggedInUser || (!user && <Loader />)}
         </div>
       </React.Fragment>
     )

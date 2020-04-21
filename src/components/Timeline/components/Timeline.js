@@ -64,7 +64,7 @@ class Timeline extends Component {
             <Grid item xs={12} sm={4}>
               <Post />
               {user && this.props.location.pathname == '/incoming' && (
-                <Incoming user={user} />
+                <Incoming user={user} type="timeline" />
               )}
               {user && this.props.location.pathname == '/outgoing' && (
                 <Outgoing user={user} />
