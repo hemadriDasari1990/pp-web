@@ -14,6 +14,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
 import Loader from '../../Loader/components/Loader'
 import Grid from '@material-ui/core/Grid'
+import { Link } from 'react-router-dom'
 
 class Users extends Component {
   constructor(props) {
@@ -37,7 +38,7 @@ class Users extends Component {
         <List className="row">
           {!usersLoading && users.length ? (
             users.map(user => (
-              <Grid item lg={4} xs={12} sm={3}>
+              <Grid item lg={4} xs={12} sm={3} style={{ margin: 5 }}>
                 <ListItem
                   key={user._id}
                   alignItems="flex-start"
@@ -48,7 +49,11 @@ class Users extends Component {
                   </ListItemAvatar>
                   <Tooltip title={user.userName} placement="right-end">
                     <ListItemText
-                      primary={user.userName}
+                      primary={
+                        <Link className="hyperlink" to={`/profile/${user._id}`}>
+                          {user.userName}
+                        </Link>
+                      }
                       secondary={
                         <React.Fragment>
                           <Typography

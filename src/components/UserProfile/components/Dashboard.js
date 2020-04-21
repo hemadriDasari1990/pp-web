@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
-import PostsInfo from '../../Timeline/components/PostsInfo'
+import Summary from '../../Dashboard/components/Summary'
 import RecentPosts from '../../Timeline/components/RecentPosts'
 import TopPosts from '../../Timeline/components/TopPosts'
 import * as globalActions from '../../../actions/index'
@@ -10,6 +10,7 @@ import Profile from './Profile'
 import Reactions from './Reactions'
 import Incoming from '../../Timeline/components/Incoming'
 import Loader from '../../Loader/components/Loader'
+import Followers from './Followers'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -40,12 +41,14 @@ class Dashboard extends Component {
               <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
                 {user && <Profile profileUser={user} />}
                 {user && <Reactions />}
+                {user && <Followers />}
               </div>
               <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
                 {user && <Incoming user={user} type="profile" />}
               </div>
               <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                {user && <PostsInfo user={user} />}
+                {user && <Summary type="incoming" title="Incoming Summary" />}
+                {user && <Summary type="outgoing" title="Outgoing Summary" />}
                 {user && <RecentPosts user={user} />}
                 {user && <TopPosts user={user} />}
               </div>

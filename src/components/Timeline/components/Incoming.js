@@ -144,6 +144,7 @@ class Incoming extends Component {
     const { open, anchorEl, showEmojis } = this.state
     return (
       <React.Fragment>
+        {incomingPostsLoading && !incomingPosts ? <Loader /> : null}
         {!incomingPostsLoading && incomingPosts.length
           ? incomingPosts.map(post => (
               <Card key={post._id}>
@@ -218,9 +219,7 @@ class Incoming extends Component {
                           className="hyperlink"
                           to={`/profile/${post.postedBy._id}`}
                         >
-                          {post.postedBy._id === user._id
-                            ? post.postedBy.userName
-                            : 'You'}
+                          {post.postedBy.userName}
                         </Link>
                       </>
                     ) : (
@@ -472,7 +471,6 @@ class Incoming extends Component {
             You haven't received posts
           </Typography>
         ) : null}
-        {incomingPostsLoading ? <Loader /> : null}
         {incomingPostsError && incomingPostsError.size > 0 ? (
           <CustomizedSnackbars
             open={true}

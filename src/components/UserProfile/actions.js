@@ -79,14 +79,14 @@ export const createOrUpdateProfileReaction = data => {
 
 export const getProfileReactionRequest = () => {
   return {
-    type: action.GET_USER_LIKE_REQUEST,
+    type: action.GET_USER_REACTION_REQUEST,
     loading: true,
   }
 }
 
 export const getProfileReactionSuccess = res => {
   return {
-    type: action.GET_USER_LIKE_SUCCESS,
+    type: action.GET_USER_REACTION_SUCCESS,
     loading: false,
     data: res,
   }
@@ -94,7 +94,7 @@ export const getProfileReactionSuccess = res => {
 
 export const getProfileReactionError = errors => {
   return {
-    type: action.GET_USER_LIKE_FAILURE,
+    type: action.GET_USER_REACTION_FAILURE,
     loading: false,
     errors: errors,
   }
@@ -114,5 +114,83 @@ export const getProfileReaction = (user, likedBy) => {
       .then(response => response.json())
       .then(data => dispatch(getProfileReactionSuccess(data)))
       .catch(errors => dispatch(getProfileReactionError(errors)))
+  }
+}
+
+export const createOrUpdateProfileFollowerRequest = () => {
+  return {
+    type: action.CREATE_OR_UPDATE_PROFILE_FOLLOWER_REQUEST,
+    loading: true,
+  }
+}
+
+export const createOrUpdateProfileFollowerSuccess = res => {
+  return {
+    type: action.CREATE_OR_UPDATE_PROFILE_FOLLOWER_SUCCESS,
+    loading: false,
+    data: res,
+  }
+}
+
+export const createOrUpdateProfileFollowerError = errors => {
+  return {
+    type: action.CREATE_OR_UPDATE_PROFILE_FOLLOWER_FAILURE,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const createOrUpdateProfileFollower = data => {
+  const options = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }
+  return dispatch => {
+    dispatch(createOrUpdateProfileFollowerRequest())
+    return fetch(config.URL_PREFIX + `/follow/user`, options)
+      .then(response => response.json())
+      .then(data => dispatch(createOrUpdateProfileFollowerSuccess(data)))
+      .catch(errors => dispatch(createOrUpdateProfileFollowerError(errors)))
+  }
+}
+
+export const getProfileFollowerRequest = () => {
+  return {
+    type: action.GET_USER_FOLLOWER_REQUEST,
+    loading: true,
+  }
+}
+
+export const getProfileFollowerSuccess = res => {
+  return {
+    type: action.GET_USER_FOLLOWER_SUCCESS,
+    loading: false,
+    data: res,
+  }
+}
+
+export const getProfileFollowerError = errors => {
+  return {
+    type: action.GET_USER_FOLLOWER_FAILURE,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const getProfileFollower = (follower, followee) => {
+  const options = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  return dispatch => {
+    dispatch(getProfileFollowerRequest())
+    return fetch(
+      config.URL_PREFIX + `/follow/user/${followee}/${follower}`,
+      options,
+    )
+      .then(response => response.json())
+      .then(data => dispatch(getProfileFollowerSuccess(data)))
+      .catch(errors => dispatch(getProfileFollowerError(errors)))
   }
 }

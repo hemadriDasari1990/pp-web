@@ -208,8 +208,8 @@ class Outgoing extends Component {
                       className="hyperlink"
                       to={`/profile/${post.postedTo._id}`}
                     >
-                      {post.annonymous
-                        ? post.postedTo.userName + '(Annonymous Post)'
+                      {post.isAnonymous
+                        ? post.postedTo.userName + ' (A)'
                         : post.postedTo.userName}
                     </Link>
                   }
@@ -458,7 +458,8 @@ class Outgoing extends Component {
           : null}
         {!outgoingPostsLoading && !outgoingPosts.length ? (
           <Typography variant="h3" className="text-center">
-            No posts has been posted
+            Seems You didnt share openions to others. What are you waiting for.
+            Start sharing now and make others feel great :)
           </Typography>
         ) : null}
         {outgoingPostsLoading ? <Loader /> : null}
