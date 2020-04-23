@@ -115,6 +115,22 @@ export const Timeline = (state = Map(), action) => {
         .setIn(['recent', 'errors'], action.errors)
         .setIn(['recent', 'loading'], false)
 
+    case actions.GET_POST_DETAILS_REQUEST:
+      return state
+        .setIn(['post', 'details', 'loading'], true)
+        .deleteIn(['post', 'details', 'errors'])
+        .deleteIn(['post', 'details', 'success'])
+
+    case actions.GET_POST_DETAILS_SUCCESS:
+      return state
+        .setIn(['post', 'details', 'success'], action.data)
+        .setIn(['post', 'details', 'loading'], false)
+
+    case actions.GET_POST_DETAILS_FAILURE:
+      return state
+        .setIn(['post', 'details', 'errors'], action.errors)
+        .setIn(['post', 'details', 'loading'], false)
+
     default:
       return state
   }

@@ -66,46 +66,50 @@ class Summary extends Component {
             ) : null}
             {!loading ? (
               <>
-                <List className="list-row p-0 ml-40">
+                <List className="list-row p-0">
                   <ListItem alignItems="flex-start" className="p-0">
                     <ListItemText
+                      className="text-center"
                       primary="Accepted"
                       secondary={
-                        <Typography component="span" variant="subtitle1">
+                        <h3 className="f-w-600">
                           {summary ? formateNumber(summary.approved) : 0}
-                        </Typography>
+                        </h3>
                       }
                     />
                   </ListItem>
                   <ListItem alignItems="center" className="p-0">
                     <ListItemText
+                      className="text-center"
                       primary="Rejected"
                       secondary={
-                        <Typography component="span" variant="subtitle1">
+                        <h3 className="f-w-600">
                           {summary ? formateNumber(summary.rejected) : 0}
-                        </Typography>
+                        </h3>
                       }
                     />
                   </ListItem>
                 </List>
-                <List className="list-row p-0 ml-40">
+                <List className="list-row p-0">
                   <ListItem alignItems="flex-start" className="p-0">
                     <ListItemText
+                      className="text-center"
                       primary="Pending"
                       secondary={
-                        <Typography component="span" variant="subtitle1">
+                        <h3 className="f-w-600">
                           {summary ? formateNumber(summary.pending) : 0}
-                        </Typography>
+                        </h3>
                       }
                     />
                   </ListItem>
                   <ListItem className="p-0" alignItems="flex-end">
                     <ListItemText
+                      className="text-center"
                       primary="Total posts"
                       secondary={
-                        <Typography component="span" variant="subtitle1">
+                        <h3 className="f-w-600">
                           {summary ? formateNumber(summary.total) : 0}
-                        </Typography>
+                        </h3>
                       }
                     />
                   </ListItem>

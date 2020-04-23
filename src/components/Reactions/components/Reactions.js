@@ -49,7 +49,9 @@ function TabPanel(props) {
       aria-labelledby={`scrollable-prevent-tab-${index}`}
       {...other}
     >
-      {value === index && <Box p={3}>{children}</Box>}
+      {value === index && (
+        <React.Fragment className="mt-10">{children}</React.Fragment>
+      )}
     </Typography>
   )
 }
@@ -135,6 +137,7 @@ class Reactions extends Component {
                   value={value}
                   label={'All ' + formateNumber(reactionsCount.total)}
                   aria-label="phone"
+                  className="text-capitalize"
                 />
                 <Tab
                   onClick={() => this.handleChange(1, 'like')}

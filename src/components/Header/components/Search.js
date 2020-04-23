@@ -35,7 +35,7 @@ class Search extends React.Component {
   }
 
   componentDidMount() {
-    // this.fetchUsers('');
+    this.props.user ? this.props.getUsers(this.props.user._id, '') : null
   }
 
   renderProfiles = (user, { selected }) => {
@@ -79,7 +79,7 @@ class Search extends React.Component {
         }}
       >
         <IconButton
-          style={{ padding: 2, marginLeft: 10 }}
+          style={{ padding: '2px 2px 0px 2px', marginLeft: 7 }}
           type="submit"
           aria-label="Search people by name"
         >
@@ -146,6 +146,7 @@ class Search extends React.Component {
 
   render() {
     const { users } = this.props
+
     const { value, isLoading } = this.state
     return (
       <div>

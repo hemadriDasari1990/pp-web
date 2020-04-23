@@ -58,6 +58,7 @@ const styles = theme => ({
   },
   badge: {
     color: '#fff',
+    backgroundColor: '#f30404',
   },
 })
 
@@ -68,34 +69,22 @@ class Header extends React.Component {
       showNotification: false,
       isMobileMenuOpen: false,
       mobileMoreAnchorEl: null,
-      notifications: 0,
       logout: false,
     }
+    this.refreshTimeout = null
   }
 
-  async componentDidMount() {
+  componentDidMount() {
     if (this.props.user) {
-      await this.props.getUsers(this.props.user._id, '')
       this.props.user
-        ? await this.props
-            .getNotificationsCount(this.props.user._id)
-            .then(res => {
-              this.setState({
-                notifications: res.data.count,
-              })
-            })
+        ? this.props.getNotificationsCount(this.props.user._id)
         : null
     }
   }
 
-  async componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     if (this.props.user !== prevProps.user && this.props.user) {
-      await this.props.getUsers(this.props.user._id, '')
-      await this.props.getNotificationsCount(this.props.user._id).then(res => {
-        this.setState({
-          notifications: res.data.count,
-        })
-      })
+      this.props.getNotificationsCount(this.props.user._id)
     }
   }
 
@@ -108,19 +97,21 @@ class Header extends React.Component {
 
   handleLogout = async () => {
     await new firebase.auth().signOut().then(async (user, error) => {
-      await this.props.userLogout()
-      this.setState({
-        logout: true,
-        isMobileMenuOpen: false,
-      })
+      if (!error) {
+        await this.props.userLogout()
+        this.setState({
+          logout: true,
+          isMobileMenuOpen: false,
+        })
+      }
     })
-    this.refresh()
+    this.refreshTimeout = setTimeout(() => {
+      this.props.isAuthenticated(false)
+      this.reset()
+    }, 2000)
   }
 
   showNotifications = () => {
-    // this.setState({
-    //   showNotification: !this.state.showNotification
-    // });
     this.setState({
       isMobileMenuOpen: false,
     })
@@ -128,11 +119,12 @@ class Header extends React.Component {
       pathname: '/notifications',
       state: { user: this.props.user },
     })
-    // window.location.reload();
   }
 
-  refresh = () => {
-    this.props.history.push('/')
+  reset = () => {
+    this.setState({
+      logout: false,
+    })
   }
 
   createPost = newPost => {}
@@ -143,6 +135,12 @@ class Header extends React.Component {
       this.setState({
         isMobileMenuOpen: false,
       })
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.refreshTimeout) {
+      clearTimeout(this.refreshTimeout)
     }
   }
 
@@ -196,11 +194,11 @@ class Header extends React.Component {
       classes,
       authenticated,
       user,
-      users,
       createUserSuccess,
       createUserErrors,
+      notificationsCount,
     } = this.props
-    const { showNotification, notifications, logout } = this.state
+    const { showNotification, logout } = this.state
     const mobileMenuId = 'primary-search-account-menu-mobile'
     return (
       <div className={classes.root}>
@@ -214,7 +212,7 @@ class Header extends React.Component {
               </Tooltip>
             </div>
 
-            {users && users.length && authenticated && !logout ? (
+            {authenticated && !logout ? (
               <div className="col-lg-4 m-l-18">
                 <Search type="header" />
               </div>
@@ -245,7 +243,10 @@ class Header extends React.Component {
                   >
                     <Badge
                       showZero
-                      badgeContent={notifications ? notifications : 0}
+                      badgeContent={
+                        notificationsCount ? notificationsCount.unReadCount : 0
+                      }
+                      classes={{ badge: classes.badge }}
                     >
                       <Avatar
                         style={{ width: 30, height: 30 }}
@@ -346,26 +347,28 @@ Header.propTypes = {
 
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'])
-  const users = state.getIn(['user', 'all', 'success'], List())
   const usersLoading = state.getIn(['user', 'all', 'loading'], false)
   const createUserSuccess = state.getIn(['user', 'create', 'success'], Map())
   const createUserloading = state.getIn(['user', 'create', 'loading'], false)
   const createUserErrors = state.getIn(['user', 'create', 'errors'], Map())
-  // const notifications = state.getIn(['`Timeline`', 'notifications', 'çount', 'success'], Map())
+  const notificationsCount = state.getIn([
+    'Timeline',
+    'notifications',
+    'count',
+    'success',
+  ])
 
   return {
     user,
-    users,
     usersLoading,
     createUserSuccess,
     createUserloading,
     createUserErrors,
-    // notifications: notifications.size > 0 ? notifications.count : 0
+    notificationsCount,
   }
 }
 
 const actionsToProps = {
-  getUsers: actions.getUsers,
   userLogout: actions.userLogout,
   getIncomingPosts: dashboardActions.getIncomingPosts,
   getNotificationsCount: dashboardActions.getNotificationsCount,

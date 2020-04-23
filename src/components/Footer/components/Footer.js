@@ -134,7 +134,7 @@ class Footer extends React.Component {
               </div>
               <div className="m-30 col-lg-2 col-md-2 col-sm-2 col-xs-4">
                 <small>
-                  <strong className="primary-color">Education & Support</strong>
+                  <strong className="primary-color">Community Standards</strong>
                 </small>
                 <ul>
                   <li className="m-v-10">
@@ -156,7 +156,7 @@ class Footer extends React.Component {
                 <ul>
                   <li className="m-v-10">
                     <a className="cursor" onClick={() => this.handleAbout()}>
-                      Help & Support
+                      Help Centre
                     </a>
                   </li>
                   <li className="m-v-10">

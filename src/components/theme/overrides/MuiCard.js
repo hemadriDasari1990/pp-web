@@ -7,7 +7,7 @@ export default {
       backgroundColor: '#ffffff',
     },
     marginBottom: 10,
-    borderRadius: 15,
+    borderRadius: 20,
     borderColor: 'transparent',
     borderLeftWidth: 0,
     borderRightWidth: 0,

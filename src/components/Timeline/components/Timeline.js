@@ -3,7 +3,6 @@ import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import firebase from '../../../firebase'
 import Incoming from './Incoming'
-import PostsInfo from './PostsInfo'
 import RecentPosts from './RecentPosts'
 import TopPosts from './TopPosts'
 import * as actions from '../../../actions/index'
@@ -13,6 +12,7 @@ import DrawerComponent from '../../Drawer/components/Drawer'
 import Users from '../../Users/components/Users'
 import Search from '../../Search/components/Search'
 import Grid from '@material-ui/core/Grid'
+import Summary from '../../Dashboard/components/Summary'
 
 class Timeline extends Component {
   constructor(props) {
@@ -73,7 +73,16 @@ class Timeline extends Component {
           )}
           {this.props.location.pathname !== '/users' && (
             <Grid item xs={12} sm={4}>
-              {user && <PostsInfo user={user} />}
+              {user && (
+                <Summary
+                  type={
+                    this.props.location.pathname == '/incoming'
+                      ? 'incoming'
+                      : 'outgoing'
+                  }
+                  title="Summary"
+                />
+              )}
               {user && <RecentPosts user={user} />}
               {user && <TopPosts user={user} />}
             </Grid>

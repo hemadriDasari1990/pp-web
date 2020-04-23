@@ -37,7 +37,7 @@ class Reactions extends Component {
       <React.Fragment>
         <Card>
           <CardHeader
-            title="Reactions"
+            title="Profile Reactions"
             action={
               <a>
                 View All{' '}

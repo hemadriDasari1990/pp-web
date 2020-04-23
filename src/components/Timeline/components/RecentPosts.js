@@ -78,7 +78,7 @@ class RecentPosts extends Component {
                           <Avatar
                             style={{
                               color: '#ffffff',
-                              backgroundColor: '#1976d2',
+                              backgroundColor: '#2a7fff',
                             }}
                           >
                             A

@@ -9,7 +9,7 @@ export default {
   },
   root: {
     color: '#2a7fff',
-    backgroundColor: '#fff',
+    backgroundColor: '#f0f2f5d9',
     borderRadius: 30,
     boxShadow: 'none',
     textTransform: 'none',
@@ -18,7 +18,7 @@ export default {
     lineHeight: 1.5,
     '&:hover': {
       boxShadow: 'none',
-      backgroundColor: '#fff',
+      backgroundColor: '#f0f2f5d9 !important',
     },
     '&:active': {
       boxShadow: 'none',

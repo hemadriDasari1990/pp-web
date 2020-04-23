@@ -5,6 +5,10 @@ import silly from '../../assets/emojis/silly.svg'
 import smiley from '../../assets/emojis/smiley.svg'
 import wow from '../../assets/emojis/surprise.svg'
 import sad from '../../assets/emojis/sad.svg'
+import profileLike from '../../assets/profile-like.svg'
+import profileLove from '../../assets/profile-love.svg'
+import following from '../../assets/following.svg'
+import follow from '../../assets/follow.svg'
 
 export default function getReaction(type) {
   let icon = like
@@ -29,6 +33,18 @@ export default function getReaction(type) {
       break
     case 'angry':
       icon = angry
+      break
+    case 'profile-like':
+      icon = like
+      break
+    case 'profile-love':
+      icon = profileLove
+      break
+    case 'follow':
+      icon = following
+      break
+    case 'un-follow':
+      icon = follow
       break
     default:
       break

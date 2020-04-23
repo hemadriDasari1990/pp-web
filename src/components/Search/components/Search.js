@@ -68,7 +68,11 @@ class Search extends React.Component {
           boxShadow: '0 14px 28px rgba(145, 148, 170, 0.25)',
         }}
       >
-        <IconButton type="submit" aria-label="Search people by name">
+        <IconButton
+          type="submit"
+          aria-label="Search people by name"
+          style={{ padding: '2px 2px 0px 2px', marginLeft: 7 }}
+        >
           <SearchIcon />
         </IconButton>
         <TextField

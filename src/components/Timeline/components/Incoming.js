@@ -74,7 +74,7 @@ class Incoming extends Component {
   }
 
   componentDidMount() {
-    this.props.getIncomingPosts(this.props.user._id)
+    this.props.getIncomingPosts(this.props.user._id, '')
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -92,7 +92,7 @@ class Incoming extends Component {
         this.setState({
           open: false,
         })
-        await this.props.getIncomingPosts(this.props.user._id)
+        await this.props.getIncomingPosts(this.props.user._id, '')
         await this.props.getRecentPosts(this.props.user._id)
         break
       default:
@@ -125,7 +125,7 @@ class Incoming extends Component {
     await this.props
       .createOrUpdateReaction(userId, postId, reaction)
       .then(async data => {
-        await this.props.getIncomingPosts(this.props.user._id)
+        await this.props.getIncomingPosts(this.props.user._id, '')
       })
   }
 
@@ -157,7 +157,7 @@ class Incoming extends Component {
                       />
                     ) : (
                       <Avatar
-                        style={{ color: '#ffffff', backgroundColor: '#1976d2' }}
+                        style={{ color: '#ffffff', backgroundColor: '#2a7fff' }}
                       >
                         A
                       </Avatar>
@@ -468,7 +468,7 @@ class Incoming extends Component {
           : null}
         {!incomingPostsLoading && !incomingPosts.length ? (
           <Typography variant="h3" className="text-center">
-            You haven't received posts
+            You don't have accepted or rejected posts
           </Typography>
         ) : null}
         {incomingPostsError && incomingPostsError.size > 0 ? (
