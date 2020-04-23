@@ -47,16 +47,16 @@ class Google extends Component {
                 .then(user => {
                   if (user && user.data.user) {
                     this.props.storeUser(user.data.user)
+                    this.props.history.push('/dashboard')
                   }
                 })
             } else {
               u.data ? this.props.storeUser(u.data.user) : null
+              this.props.history.push('/dashboard')
             }
           })
-          // this.props.isAuthenticated(true)
-          this.props.history.push('/dashboard')
         } else {
-          // this.props.isAuthenticated(false)
+          this.props.history.push('/')
         }
       })
   }
@@ -89,23 +89,8 @@ Google.propTypes = {
 
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'], Map())
-  const createUserloading = state.getIn(['user', 'create', 'loading'], false)
-  const createUserSuccess = state.getIn(['user', 'create', 'success'], List())
-  // let success = '';
-  //  if(createUserSuccess.size > 0){
-  //     success = createUserSuccess.get("message");
-  // }
-  const createUserErrors = state.getIn(['user', 'create', 'errors'], List())
-  // if(createUserErrors.size > 0){
-  //     errors = createUserErrors.get("error");
-  // }else{
-  //   errors = ''
-  // }
   return {
     user,
-    createUserloading,
-    createUserSuccess,
-    createUserErrors,
   }
 }
 

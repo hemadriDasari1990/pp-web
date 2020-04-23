@@ -50,16 +50,16 @@ class Facebook extends Component {
                 .then(user => {
                   if (user && user.data.user) {
                     this.props.storeUser(user.data.user)
+                    this.props.history.push('/dashboard')
                   }
                 })
             } else {
               this.props.storeUser(u.data.user)
+              this.props.history.push('/dashboard')
             }
           })
-          // this.props.isAuthenticated(true)
-          this.props.history.push('/dashboard')
         } else {
-          // this.props.isAuthenticated(false)
+          this.props.history.push('/')
         }
       })
   }
@@ -81,9 +81,6 @@ class Facebook extends Component {
             Sign In with Facebook
           </Fab>
         </Tooltip>
-        {/*<Button onClick={() => this.auth()} variant="contained" size="small">
-		            Facebook
-		        </Button>*/}
       </>
     )
   }

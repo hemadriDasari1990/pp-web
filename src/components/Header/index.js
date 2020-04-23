@@ -26,6 +26,7 @@ import notificationsIcon from '../../../assets/notifications.svg'
 import logoutIcon from '../../../assets/logout.svg'
 import Typography from '@material-ui/core/Typography'
 import ListItem from '@material-ui/core/ListItem'
+import formateNumber from '../../util/formateNumber'
 
 const styles = theme => ({
   avatar: {
@@ -244,7 +245,9 @@ class Header extends React.Component {
                     <Badge
                       showZero
                       badgeContent={
-                        notificationsCount ? notificationsCount.unReadCount : 0
+                        notificationsCount
+                          ? formateNumber(notificationsCount.unReadCount)
+                          : 0
                       }
                       classes={{ badge: classes.badge }}
                     >

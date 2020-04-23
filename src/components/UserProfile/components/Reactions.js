@@ -49,66 +49,84 @@ class Reactions extends Component {
               </a>
             }
           ></CardHeader>
-          <CardContent className="p-0">
+          <CardContent
+            className={
+              !profileUserLoading &&
+              profileUser &&
+              !profileUser.reactions.length
+                ? ''
+                : 'p-0'
+            }
+          >
             <List>
               {!profileUserLoading &&
               profileUser &&
-              profileUser.reactions.length ? (
-                profileUser.reactions.slice(0, 3).map(pu => (
-                  <ListItem key={pu._id} alignItems="flex-start">
-                    <ListItemAvatar>
-                      <Avatar
-                        alt={pu.likedBy[0].userName}
-                        src={pu.likedBy[0].photoURL}
-                      />
-                    </ListItemAvatar>
-                    <Tooltip
-                      title={pu.likedBy[0].userName}
-                      placement="right-end"
-                    >
-                      <ListItemText
-                        primary={
-                          <Link
-                            className="hyperlink"
-                            to={`/profile/${pu.likedBy[0]._id}`}
-                          >
-                            {user && user._id === pu.likedBy[0]._id
-                              ? 'You'
-                              : pu.likedBy[0].userName}
-                          </Link>
-                        }
-                        secondary={
-                          <React.Fragment>
-                            <Typography
-                              component="span"
-                              variant="body2"
-                              color="textPrimary"
+              profileUser.reactions.length
+                ? profileUser.reactions.slice(0, 3).map(pu => (
+                    <ListItem key={pu._id} alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          alt={pu.likedBy[0].userName}
+                          src={pu.likedBy[0].photoURL}
+                        />
+                      </ListItemAvatar>
+                      <Tooltip
+                        title={pu.likedBy[0].userName}
+                        placement="right-end"
+                      >
+                        <ListItemText
+                          primary={
+                            <Link
+                              className="hyperlink"
+                              to={`/profile/${pu.likedBy[0]._id}`}
                             >
-                              A {pu.likedBy[0].providerId} User
-                            </Typography>
-                          </React.Fragment>
-                        }
-                      />
-                    </Tooltip>
-                    <Tooltip title={pu.type.toUpperCase()} placement="bottom">
-                      <IconButton>
-                        {pu.type === 'love' && (
-                          <LoveIcon className="icon-display" color="#f10571" />
-                        )}
-                        {pu.type === 'like' && (
-                          <LikeIcon className="icon-display" color="#2a7fff" />
-                        )}
-                      </IconButton>
-                    </Tooltip>
-                  </ListItem>
-                ))
-              ) : (
-                <Typography variant="h4" className="text-center">
-                  No reactions yet
-                </Typography>
-              )}
-
-              {profileUserLoading && !profileUser && <Loader />}
+                              {user && user._id === pu.likedBy[0]._id
+                                ? 'You'
+                                : pu.likedBy[0].userName}
+                            </Link>
+                          }
+                          secondary={
+                            <React.Fragment>
+                              <Typography
+                                component="span"
+                                variant="body2"
+                                color="textPrimary"
+                              >
+                                A {pu.likedBy[0].providerId} User
+                              </Typography>
+                            </React.Fragment>
+                          }
+                        />
+                      </Tooltip>
+                      <Tooltip title={pu.type.toUpperCase()} placement="bottom">
+                        <IconButton>
+                          {pu.type === 'love' && (
+                            <LoveIcon
+                              className="icon-display"
+                              color="#f10571"
+                            />
+                          )}
+                          {pu.type === 'like' && (
+                            <LikeIcon
+                              className="icon-display"
+                              color="#2a7fff"
+                            />
+                          )}
+                        </IconButton>
+                      </Tooltip>
+                    </ListItem>
+                  ))
+                : null}
+              {!profileUserLoading &&
+                profileUser &&
+                !profileUser.reactions.length && (
+                  <Typography variant="h4" className="text-center">
+                    No reactions yet
+                  </Typography>
+                )}
+              {profileUserLoading &&
+                profileUser &&
+                !profileUser.reactions.length && <Loader />}
             </List>
           </CardContent>
         </Card>
