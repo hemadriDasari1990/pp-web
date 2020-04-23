@@ -36,7 +36,7 @@ class FeedbackList extends Component {
                       <Avatar alt={feedback.userName} src={feedback.photoURL} />
                     ) : (
                       <Avatar
-                        style={{ color: '#ffffff', backgroundColor: '#1976d2' }}
+                        style={{ color: '#ffffff', backgroundColor: '#2a7fff' }}
                       >
                         A
                       </Avatar>

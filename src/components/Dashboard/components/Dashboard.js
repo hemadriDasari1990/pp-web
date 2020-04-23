@@ -43,7 +43,7 @@ class DashBoard extends Component {
           <>
             <div className="row">
               <div className="text-center col-lg-3 col-md-2 col-sm-12 col-xs-12">
-                <h4>Hi, {user ? user.userName : ''}!</h4>
+                <h5>Hi, {user ? user.userName : ''}!</h5>
                 <p>Welcome to your social platform</p>
                 <Fab
                   onClick={() => this.handleTimeline()}
@@ -69,20 +69,17 @@ class DashBoard extends Component {
               <div className="col-lg-3 col-md-3 col-sm col-xs-12">
                 <Metrics
                   icon={
-                    <LikeIcon
-                      style={{ width: 35, height: 35 }}
-                      color="#2a7fff"
-                    />
+                    <LikeIcon style={{ width: 35, height: 35 }} color="#fff" />
                   }
-                  title="People Like You"
+                  title="Likes"
                   name="Like"
                   count={user.no_of_likes}
                 />
               </div>
               <div className="col-lg-3 col-md-3 col-sm col-xs-12">
                 <Metrics
-                  icon={<LoveIcon className="icon-display" color="#2a7fff" />}
-                  title="People Love You"
+                  icon={<LoveIcon className="icon-display" color="#fff" />}
+                  title="Love"
                   name="Love"
                   count={user.no_of_loves}
                 />
@@ -92,10 +89,18 @@ class DashBoard extends Component {
               <div className="col-lg-3 col-md-2 col-sm-12 col-xs-12"></div>
               <div className="col-lg-3 col-md-3 col-sm col-xs-12">
                 <Metrics
+                  icon={<FollowingIcon className="icon-display" color="#fff" />}
+                  title="Followers"
+                  name="Followers"
+                  count={user.no_of_followers}
+                />
+              </div>
+              <div className="col-lg-3 col-md-3 col-sm col-xs-12">
+                <Metrics
                   icon={
                     <PreferencesIcon
                       style={{ width: 40, height: 40 }}
-                      color="#2a7fff"
+                      color="#fff"
                     />
                   }
                   title="Times Updated"
@@ -105,16 +110,6 @@ class DashBoard extends Component {
                       ? userPreferences.pref.count
                       : 0
                   }
-                />
-              </div>
-              <div className="col-lg-3 col-md-3 col-sm col-xs-12">
-                <Metrics
-                  icon={
-                    <FollowingIcon className="icon-display" color="#2a7fff" />
-                  }
-                  title="Total Followers"
-                  name="Followers"
-                  count={user.no_of_followers}
                 />
               </div>
             </div>

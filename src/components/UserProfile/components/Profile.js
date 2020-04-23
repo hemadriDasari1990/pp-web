@@ -145,6 +145,7 @@ class Profile extends Component {
                 <Button
                   variant="outlined"
                   color="primary"
+                  style={{ backgroundColor: '#fff' }}
                   startIcon={
                     following ? (
                       <FollowingIcon color="#2a7fff" />

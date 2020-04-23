@@ -136,14 +136,17 @@ export const getIncomingPostsError = errors => {
   }
 }
 
-export const getIncomingPosts = userId => {
+export const getIncomingPosts = (userId, flag) => {
   const options = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   }
   return dispatch => {
     dispatch(getIncomingPostsRequest())
-    return fetch(config.URL_PREFIX + `/post/incoming/${userId}`, options)
+    return fetch(
+      config.URL_PREFIX + `/post/incoming/${userId}?flag=${flag}`,
+      options,
+    )
       .then(response => response.json())
       .then(data => dispatch(getIncomingPostsSuccess(data)))
       .catch(errors => dispatch(getIncomingPostsError(errors)))
@@ -194,11 +197,11 @@ export const getNotificationsCountRequest = () => {
   }
 }
 
-export const getNotificationsCountSuccess = count => {
+export const getNotificationsCountSuccess = data => {
   return {
     type: action.GET_NOTIFICATIONS_COUNT_SUCCESS,
     loading: false,
-    data: count,
+    data: data,
   }
 }
 
@@ -217,10 +220,7 @@ export const getNotificationsCount = userId => {
   }
   return dispatch => {
     dispatch(getNotificationsCountRequest())
-    return fetch(
-      config.URL_PREFIX + `/user/${userId}/notifications/count`,
-      options,
-    )
+    return fetch(config.URL_PREFIX + `/notifications/${userId}/count`, options)
       .then(response => response.json())
       .then(data => dispatch(getNotificationsCountSuccess(data)))
       .catch(errors => dispatch(getNotificationsCountError(errors)))
@@ -261,5 +261,42 @@ export const getRecentPosts = userId => {
       .then(response => response.json())
       .then(data => dispatch(getRecentPostsSuccess(data)))
       .catch(errors => dispatch(getRecentPostsError(errors)))
+  }
+}
+
+export const getPostDetailsRequest = () => {
+  return {
+    type: action.GET_POST_DETAILS_REQUEST,
+    loading: true,
+  }
+}
+
+export const getPostDetailsSuccess = post => {
+  return {
+    type: action.GET_POST_DETAILS_SUCCESS,
+    loading: false,
+    data: post,
+  }
+}
+
+export const getPostDetailsError = errors => {
+  return {
+    type: action.GET_POST_DETAILS_FAILURE,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const getPostDetails = postId => {
+  const options = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  return dispatch => {
+    dispatch(getPostDetailsRequest())
+    return fetch(config.URL_PREFIX + `/post/${postId}`, options)
+      .then(response => response.json())
+      .then(data => dispatch(getPostDetailsSuccess(data)))
+      .catch(errors => dispatch(getPostDetailsError(errors)))
   }
 }

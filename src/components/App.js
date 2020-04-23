@@ -32,6 +32,9 @@ import Advice from './Home/components/Advice'
 import Signin from './Signin/components/Signin'
 import Dashboard from './Dashboard/components/Dashboard'
 import Button from '@material-ui/core/Button'
+import PostDetails from './Timeline/components/PostDetails'
+import Loader from './Loader/components/Loader'
+import CustomizedSnackbars from './Snackbar/components/Snackbar'
 
 class App extends Component {
   constructor(props) {
@@ -39,20 +42,24 @@ class App extends Component {
     this.state = {
       authenticated: false,
       user: {},
+      loading: false,
     }
   }
 
   async componentDidMount() {
-    await new firebase.auth().onAuthStateChanged(async user => {
+    await new firebase.auth().onAuthStateChanged(user => {
+      this.setState({
+        loading: true,
+      })
       if (user) {
-        await this.props.getUser(user.providerData[0].uid).then(async u => {
+        this.props.getUser(user.providerData[0].uid).then(u => {
           if (u && u.data && u.data.user) {
             this.setState({
               authenticated: true,
               user: u.data.user,
             })
-            await this.props.storeUser(u.data.user)
-            await this.props.getUsers(u.data.user._id, '')
+            this.props.storeUser(u.data.user)
+            this.props.getUsers(u.data.user._id, '')
             this.props.history.push('/dashboard')
           } else {
             this.setState({
@@ -67,6 +74,9 @@ class App extends Component {
           authenticated: false,
         })
       }
+      this.setState({
+        loading: false,
+      })
     })
   }
 
@@ -76,6 +86,7 @@ class App extends Component {
     }
     this.setState({
       authenticated: flag,
+      loading: flag,
     })
   }
 
@@ -88,7 +99,7 @@ class App extends Component {
   }
 
   render() {
-    const { authenticated, user } = this.state
+    const { authenticated, user, loading } = this.state
     return (
       <React.Fragment>
         <MuiThemeProvider theme={theme}>
@@ -99,68 +110,76 @@ class App extends Component {
           />
           <section className="home-background">
             <div className="auto-container">
-              <Switch>
-                <Route path="/" exact component={Home} />
-                <PrivateRoute
-                  authenticated={authenticated}
-                  path="/incoming"
-                  component={() => <Timeline />}
-                />
-                <PrivateRoute
-                  authenticated={authenticated}
-                  path="/dashboard"
-                  component={() => <Dashboard />}
-                />
-                <PrivateRoute
-                  authenticated={authenticated}
-                  path="/outgoing"
-                  component={() => <Timeline />}
-                />
-                <PrivateRoute
-                  authenticated={authenticated}
-                  path="/profile/:id"
-                  component={() => <UserProfile />}
-                />
-                <PrivateRoute
-                  authenticated={authenticated}
-                  path="/notifications"
-                  component={() => <Notifications user={user} />}
-                />
-                <PrivateRoute
-                  authenticated={authenticated}
-                  path="/post/:id/reactions"
-                  component={() => <Reactions />}
-                />
-                <PrivateRoute
-                  authenticated={authenticated}
-                  path="/users"
-                  component={() => <Timeline />}
-                />
-                <PrivateRoute
-                  authenticated={authenticated}
-                  path="/preferences"
-                  component={() => <Preferences />}
-                />
-                <Route path="/about" component={About} />
-                <Route path="/feedback" component={Feedback} />
-                <Route path="/location" component={Location} />
-                <Route path="/developers" component={Developers} />
-                <Route path="/careers" component={Careers} />
-                <Route path="/pros" component={Pros} />
-                <Route path="/cons" component={Cons} />
-                <Route path="/advice" component={Advice} />
-                <Route path="/signin" component={Signin} />
-              </Switch>
+              {!loading && (
+                <Switch>
+                  <Route path="/" exact component={Home} />
+                  <PrivateRoute
+                    authenticated={authenticated}
+                    path="/incoming"
+                    component={() => <Timeline />}
+                  />
+                  <PrivateRoute
+                    authenticated={authenticated}
+                    path="/dashboard"
+                    component={() => <Dashboard />}
+                  />
+                  <PrivateRoute
+                    authenticated={authenticated}
+                    path="/outgoing"
+                    component={() => <Timeline />}
+                  />
+                  <PrivateRoute
+                    authenticated={authenticated}
+                    path="/profile/:id"
+                    component={() => <UserProfile />}
+                  />
+                  <PrivateRoute
+                    authenticated={authenticated}
+                    path="/notifications"
+                    component={() => <Notifications user={user} />}
+                  />
+                  <PrivateRoute
+                    authenticated={authenticated}
+                    path="/post/:id/reactions"
+                    component={() => <Reactions />}
+                  />
+                  <PrivateRoute
+                    authenticated={authenticated}
+                    path="/post/:id/details"
+                    component={() => <PostDetails />}
+                  />
+                  <PrivateRoute
+                    authenticated={authenticated}
+                    path="/users"
+                    component={() => <Timeline />}
+                  />
+                  <PrivateRoute
+                    authenticated={authenticated}
+                    path="/preferences"
+                    component={() => <Preferences />}
+                  />
+                  <Route path="/about" component={About} />
+                  <Route path="/feedback" component={Feedback} />
+                  <Route path="/location" component={Location} />
+                  <Route path="/developers" component={Developers} />
+                  <Route path="/careers" component={Careers} />
+                  <Route path="/pros" component={Pros} />
+                  <Route path="/cons" component={Cons} />
+                  <Route path="/advice" component={Advice} />
+                  <Route path="/signin" component={Signin} />
+                </Switch>
+              )}
             </div>
           </section>
-          {!authenticated && (
+          {!authenticated && loading && <Loader />}
+          {!authenticated && !loading && (
             <section className="primary-bg-color w-full relative">
               <div className="w-max-1200 w-full m-auto relative p-v-80 p-h-20 fl-justify-around fl-items-center fl-wrap">
                 <div className="row">
                   <div className="col-lg-8 col-md-2 col-sm-2 col-xs-4">
                     <h2 className="w-color">Ready to get started?</h2>
                     <h4 className="w-color">
-                      Login with social account and start sharing openions.
+                      Login with social account and start sharing opinions.
                     </h4>
                   </div>
                   <div className="col-lg-4 col-md-2 col-sm-2 col-xs-4">
@@ -176,6 +195,13 @@ class App extends Component {
                 </div>
               </div>
             </section>
+          )}
+          {authenticated && !loading && (
+            <CustomizedSnackbars
+              open={true}
+              message={'Logged in succesfully'}
+              status={'success'}
+            />
           )}
           <Footer authenticated={authenticated} />
         </MuiThemeProvider>

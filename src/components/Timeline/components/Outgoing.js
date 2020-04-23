@@ -457,9 +457,9 @@ class Outgoing extends Component {
             ))
           : null}
         {!outgoingPostsLoading && !outgoingPosts.length ? (
-          <Typography variant="h3" className="text-center">
-            Seems You didnt share openions to others. What are you waiting for.
-            Start sharing now and make others feel great :)
+          <Typography variant="h5" className="text-center">
+            Seems You haven't started sharing opinions to others. What are you
+            waiting for. Start sharing now and let them know :)
           </Typography>
         ) : null}
         {outgoingPostsLoading ? <Loader /> : null}

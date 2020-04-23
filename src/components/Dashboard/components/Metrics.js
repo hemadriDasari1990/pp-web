@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
+import Divider from '@material-ui/core/Divider'
 import CardContent from '@material-ui/core/CardContent'
 import Typography from '@material-ui/core/Typography'
 import formateNumber from '../../../util/formateNumber'
@@ -22,31 +22,25 @@ class Metrics extends Component {
       <Card>
         <CardContent className="container metrics-card-padding">
           <div className="row">
-            <div className="col align-self-start metrics-card-title">
-              <span className="summary-c-t">{title}</span>
-              <h2 className="text-center">{formateNumber(count)}</h2>
-            </div>
-            <div
-              className="col align-self-end text-center"
-              style={{
-                backgroundColor: '#2a7fff',
-                borderRadius: 20,
-                height: 100,
-              }}
-            >
+            <div className="col align-self-start text-center">
               <Fab
                 color="inherit"
                 size="small"
-                aria-label="likes"
+                aria-label={name}
                 color="primary"
                 style={{
-                  margin: '20% 35% 5% 35%',
-                  backgroundColor: '#fff',
+                  margin: '15% 30% 5% 30%',
+                  backgroundColor: '#2a7fff',
                 }}
               >
                 {icon}
               </Fab>
-              <span className="w-color p-10">{name}</span>
+              <span className="text-center p-10">{name}</span>
+            </div>
+            <Divider orientation="vertical" flexItem />
+            <div className="col text-center metrics-card-title">
+              <span>{title}</span>
+              <h3 className="f-w-600">{formateNumber(count)}</h3>
             </div>
           </div>
         </CardContent>

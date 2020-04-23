@@ -708,9 +708,8 @@ $grey: #333;
   padding-bottom: 0px !important;
 }
 
-.summary-c-t {
-  font-size: 0.8rem;
-  font-weight: 500;
+.f-w-600 {
+  font-weight: 600 !important;
 }
 
 .w-color {
@@ -766,6 +765,10 @@ small {
 .icon-display {
   width: 30px !important; 
   height: 30px !important;
+}
+
+.text-capitalize {
+  text-transform: 'capitalize !important'
 }
 
 

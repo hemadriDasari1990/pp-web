@@ -67,7 +67,11 @@ class ReactionsList extends Component {
             {!reactionsLoading && reactions.length
               ? reactions.map(r => (
                   <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                    <ListItem key={r._id} alignItems="flex-start">
+                    <ListItem
+                      key={r._id}
+                      alignItems="flex-start"
+                      className="shadow b-r-15 cursor mb-10"
+                    >
                       <ListItemAvatar>
                         <Badge
                           classes={{ badge: classes.customBadge }}

@@ -30,12 +30,12 @@ class Google extends Component {
     e.preventDefault()
     await new firebase.auth()
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
-      .then(async (user, error) => {
+      .then((user, error) => {
         if (!error) {
-          const data = await user.user.providerData[0]
-          await this.props.getUser(data.uid).then(async u => {
+          const data = user.user.providerData[0]
+          this.props.getUser(data.uid).then(u => {
             if (!u || (u && u.data && !u.data.user)) {
-              await this.props
+              this.props
                 .createUser({
                   email: data.email,
                   userName: data.displayName,

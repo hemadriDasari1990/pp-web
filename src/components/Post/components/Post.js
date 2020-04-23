@@ -187,7 +187,7 @@ class Post extends Component {
                 {selectedUser && !preferences && (
                   <h6>
                     {selectedUser.userName} don't have preferences updated.
-                    Please feel free to provide your openions
+                    Please feel free to provide your opinions
                   </h6>
                 )}
                 <TextField

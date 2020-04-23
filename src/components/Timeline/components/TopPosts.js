@@ -32,10 +32,10 @@ const styles = {
 class TopPosts extends Component {
   componentDidMount() {
     if (!this.props.match.params.id) {
-      this.props.getIncomingPosts(this.props.user._id)
+      this.props.getIncomingPosts(this.props.user._id, '')
     }
     if (this.props.match.params.id) {
-      this.props.getIncomingPosts(this.props.match.params.id)
+      this.props.getIncomingPosts(this.props.match.params.id, '')
     }
   }
 
@@ -77,7 +77,7 @@ class TopPosts extends Component {
                           <Avatar
                             style={{
                               color: '#ffffff',
-                              backgroundColor: '#1976d2',
+                              backgroundColor: '#2a7fff',
                             }}
                           >
                             A

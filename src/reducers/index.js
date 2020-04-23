@@ -6,6 +6,7 @@ import { Post } from '../components/Post/reducer'
 import { UserProfile } from '../components/UserProfile/reducer'
 import { Timeline } from '../components/Timeline/reducer'
 import { Footer } from '../components/Footer/reducer'
+import { Notifications } from '../components/Notifications/reducer'
 
 const initialState = fromJS({
   locationBeforeTransitions: null,
@@ -25,6 +26,7 @@ const appReducer = combineReducers({
   UserProfile,
   Timeline,
   Footer,
+  Notifications,
 })
 
 const rootReducer = (state, action) => {
