@@ -40,38 +40,25 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      authenticated: false,
-      user: {},
-      loading: false,
+      loading: true,
     }
   }
 
   async componentDidMount() {
-    await new firebase.auth().onAuthStateChanged(user => {
+    await new firebase.auth().onAuthStateChanged(async user => {
       this.setState({
         loading: true,
       })
       if (user) {
-        this.props.getUser(user.providerData[0].uid).then(u => {
+        await this.props.getUser(user.providerData[0].uid).then(u => {
           if (u && u.data && u.data.user) {
-            this.setState({
-              authenticated: true,
-              user: u.data.user,
-            })
             this.props.storeUser(u.data.user)
             this.props.getUsers(u.data.user._id, '')
             this.props.history.push('/dashboard')
           } else {
-            this.setState({
-              authenticated: false,
-            })
             this.props.storeUser(null)
             this.props.history.push('/')
           }
-        })
-      } else {
-        this.setState({
-          authenticated: false,
         })
       }
       this.setState({
@@ -81,11 +68,10 @@ class App extends Component {
   }
 
   isAuthenticated = flag => {
-    if (flag && this.state.user) {
-      this.props.getUsers(this.state.user._id, '')
+    if (flag && this.props.user) {
+      this.props.getUsers(this.props.user._id, '')
     }
     this.setState({
-      authenticated: flag,
       loading: flag,
     })
   }
@@ -99,7 +85,9 @@ class App extends Component {
   }
 
   render() {
-    const { authenticated, user, loading } = this.state
+    const { loading } = this.state
+    const { user } = this.props
+    const authenticated = user ? true : false
     return (
       <React.Fragment>
         <MuiThemeProvider theme={theme}>

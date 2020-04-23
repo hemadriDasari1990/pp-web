@@ -16,6 +16,7 @@ import * as dashboardActions from '../../Timeline/actions'
 import textingImage from '../../../../assets/notifications/texting.svg'
 import NotificationsList from './List'
 import * as actions from '../actions'
+import Loader from '../../Loader/components/Loader'
 
 const styles = {
   default_tab: {
@@ -97,6 +98,14 @@ class Notifications extends Component {
     return name
   }
 
+  getNotificationsCountText = (type, count) => {
+    return (
+      <>
+        <span>{type}&nbsp;</span> <b> {formateNumber(count)}</b>
+      </>
+    )
+  }
+
   handleChange = async (index, type) => {
     this.setState({
       value: index,
@@ -117,65 +126,82 @@ class Notifications extends Component {
   }
 
   render() {
-    const { classes, notificationsCount, user } = this.props
+    const {
+      classes,
+      notificationsCount,
+      notificationsCountLoading,
+      user,
+      notificationsCountError,
+    } = this.props
     const { value, type } = this.state
     return (
       <React.Fragment>
         <h2 className="text-center">Notifications</h2>
-        {notificationsCount && notificationsCount.total > 0 ? (
-          <>
-            <AppBar position="static">
-              <Tabs
-                textColor="primary"
-                value={value}
-                aria-label="scrollable prevent tabs example"
-                fullWidth={true}
-                centered
-              >
-                <Tab
-                  onClick={() => this.handleChange(1, 'all')}
-                  style={this.getStyle(value === 1)}
+        {!notificationsCountLoading &&
+          notificationsCount &&
+          notificationsCount.total > 0 && (
+            <>
+              <AppBar position="static">
+                <Tabs
+                  textColor="primary"
                   value={value}
-                  label={'All ' + formateNumber(notificationsCount.total)}
-                  aria-label="phone"
-                  className="text-capitalize"
-                />
-                <Tab
-                  onClick={() => this.handleChange(2, 'read')}
-                  style={this.getStyle(value === 2)}
-                  value={value}
-                  label={'Read ' + formateNumber(notificationsCount.readCount)}
-                  aria-label="phone"
-                  className="text-capitalize"
-                />
-                <Tab
-                  onClick={() => this.handleChange(3, 'unread')}
-                  style={this.getStyle(value === 3)}
-                  value={value}
-                  label={
-                    'Un Read ' + formateNumber(notificationsCount.unReadCount)
-                  }
-                  aria-label="favorite"
-                  className="text-capitalize"
-                />
-              </Tabs>
-            </AppBar>
-            <TabPanel className="mt-10" value={value} index={1}>
-              <NotificationsList type={type} />
-            </TabPanel>
-            <TabPanel className="mt-10" value={value} index={2}>
-              <NotificationsList type={type} />
-            </TabPanel>
-            <TabPanel className="mt-10" value={value} index={3}>
-              <NotificationsList type={type} />
-            </TabPanel>
-          </>
-        ) : (
+                  aria-label="scrollable prevent tabs example"
+                  fullWidth={true}
+                  centered
+                >
+                  <Tab
+                    onClick={() => this.handleChange(1, 'all')}
+                    style={this.getStyle(value === 1)}
+                    value={value}
+                    label={this.getNotificationsCountText(
+                      'All',
+                      formateNumber(notificationsCount.total),
+                    )}
+                    aria-label="phone"
+                    className="text-capitalize"
+                  />
+                  <Tab
+                    onClick={() => this.handleChange(2, 'read')}
+                    style={this.getStyle(value === 2)}
+                    value={value}
+                    label={this.getNotificationsCountText(
+                      'Read',
+                      formateNumber(notificationsCount.readCount),
+                    )}
+                    aria-label="phone"
+                    className="text-capitalize"
+                  />
+                  <Tab
+                    onClick={() => this.handleChange(3, 'unread')}
+                    style={this.getStyle(value === 3)}
+                    value={value}
+                    label={this.getNotificationsCountText(
+                      'Un Read',
+                      formateNumber(notificationsCount.unReadCount),
+                    )}
+                    aria-label="favorite"
+                    className="text-capitalize"
+                  />
+                </Tabs>
+              </AppBar>
+              <TabPanel className="mt-10" value={value} index={1}>
+                <NotificationsList type={type} />
+              </TabPanel>
+              <TabPanel className="mt-10" value={value} index={2}>
+                <NotificationsList type={type} />
+              </TabPanel>
+              <TabPanel className="mt-10" value={value} index={3}>
+                <NotificationsList type={type} />
+              </TabPanel>
+            </>
+          )}
+        {!notificationsCountLoading && !notificationsCount && (
           <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
             <h2 className="text-center">No records found</h2>
             <img src={textingImage} />
           </div>
         )}
+        {notificationsCountLoading && <Loader />}
       </React.Fragment>
     )
   }
@@ -191,9 +217,23 @@ const mapStateToProps = state => {
     'count',
     'success',
   ])
+  const notificationsCountLoading = state.getIn([
+    'Timeline',
+    'notifications',
+    'count',
+    'loading',
+  ])
+  const notificationsCountError = state.getIn([
+    'Timeline',
+    'notifications',
+    'count',
+    'error',
+  ])
   return {
     notificationsCount,
+    notificationsCountLoading,
     user,
+    notificationsCountError,
   }
 }
 

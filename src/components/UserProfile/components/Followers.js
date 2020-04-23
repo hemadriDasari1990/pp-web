@@ -49,71 +49,83 @@ class Followers extends Component {
               </a>
             }
           ></CardHeader>
-          <CardContent className="p-0">
+          <CardContent
+            className={
+              !profileUserLoading &&
+              profileUser &&
+              !profileUser.followers.length
+                ? ''
+                : 'p-0'
+            }
+          >
             <List>
               {!profileUserLoading &&
               profileUser &&
-              profileUser.followers.length ? (
-                profileUser.followers.slice(0, 3).map(f => (
-                  <ListItem key={f._id} alignItems="flex-start">
-                    <ListItemAvatar>
-                      <Avatar
-                        alt={f.follower[0].userName}
-                        src={f.follower[0].photoURL}
-                      />
-                    </ListItemAvatar>
-                    <Tooltip
-                      title={f.follower[0].userName}
-                      placement="right-end"
-                    >
-                      <ListItemText
-                        primary={
-                          <Link
-                            className="hyperlink"
-                            to={`/profile/${f.follower[0]._id}`}
-                          >
-                            {user && user._id === f.follower[0]._id
-                              ? 'You'
-                              : f.follower[0].userName}
-                          </Link>
-                        }
-                        secondary={
-                          <React.Fragment>
-                            <Typography
-                              component="span"
-                              variant="body2"
-                              color="textPrimary"
+              profileUser.followers.length
+                ? profileUser.followers.slice(0, 3).map(f => (
+                    <ListItem key={f._id} alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          alt={f.follower[0].userName}
+                          src={f.follower[0].photoURL}
+                        />
+                      </ListItemAvatar>
+                      <Tooltip
+                        title={f.follower[0].userName}
+                        placement="right-end"
+                      >
+                        <ListItemText
+                          primary={
+                            <Link
+                              className="hyperlink"
+                              to={`/profile/${f.follower[0]._id}`}
                             >
-                              A {f.follower[0].providerId} User
-                            </Typography>
-                          </React.Fragment>
-                        }
-                      />
-                    </Tooltip>
-                    <Tooltip
-                      placement="bottom"
-                      title={f.follower ? 'Following' : 'Follow'}
-                    >
-                      <IconButton>
-                        {f.follower ? (
-                          <FollowingIcon
-                            color="#2a7fff"
-                            className="icon-display"
-                          />
-                        ) : (
-                          <FollowIcon className="icon-display" />
-                        )}
-                      </IconButton>
-                    </Tooltip>
-                  </ListItem>
-                ))
-              ) : (
-                <Typography variant="h4" className="text-center">
-                  No Foloowers yet
-                </Typography>
-              )}
-
-              {profileUserLoading && !profileUser && <Loader />}
+                              {user && user._id === f.follower[0]._id
+                                ? 'You'
+                                : f.follower[0].userName}
+                            </Link>
+                          }
+                          secondary={
+                            <React.Fragment>
+                              <Typography
+                                component="span"
+                                variant="body2"
+                                color="textPrimary"
+                              >
+                                A {f.follower[0].providerId} User
+                              </Typography>
+                            </React.Fragment>
+                          }
+                        />
+                      </Tooltip>
+                      <Tooltip
+                        placement="bottom"
+                        title={f.follower ? 'Following' : 'Follow'}
+                      >
+                        <IconButton>
+                          {f.follower ? (
+                            <FollowingIcon
+                              color="#2a7fff"
+                              className="icon-display"
+                            />
+                          ) : (
+                            <FollowIcon className="icon-display" />
+                          )}
+                        </IconButton>
+                      </Tooltip>
+                    </ListItem>
+                  ))
+                : null}
+              {!profileUserLoading &&
+                profileUser &&
+                !profileUser.followers.length && (
+                  <Typography variant="h4" className="text-center">
+                    No Followers yet
+                  </Typography>
+                )}
+              {profileUserLoading &&
+                profileUser &&
+                !profileUser.followers.length && <Loader />}
             </List>
           </CardContent>
         </Card>

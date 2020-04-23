@@ -99,7 +99,7 @@ class Profile extends Component {
       profileFollower.follower._id === user._id
     return (
       <>
-        <Card style={{ width: '100%', maxWidth: '100%' }}>
+        <Card>
           <CardContent>
             <div className="row f-r">
               <Tooltip title="Love">
@@ -162,50 +162,56 @@ class Profile extends Component {
             <br />
           </CardContent>
           <Divider />
-          <CardActions className="mt-10 p-0">
-            <div className="text-center ml-25">
-              <Tooltip title="No of People Liked">
-                <Fab
-                  color="inherit"
-                  size="small"
-                  aria-label="preferences"
-                  color="primary"
-                >
-                  <Avatar style={{ width: 30, height: 30 }} src={userLike} />
-                </Fab>
-              </Tooltip>
-              <p className="title">{formateNumber(profileUser.no_of_likes)}</p>
-              <div className="followers">Likes</div>
-            </div>
-            <div className="text-center ml-25">
-              <Tooltip title="No of People Loves">
-                <Fab
-                  color="inherit"
-                  size="small"
-                  aria-label="love"
-                  color="primary"
-                >
-                  <Avatar style={{ width: 30, height: 30 }} src={love} />
-                </Fab>
-              </Tooltip>
-              <p className="title">{formateNumber(profileUser.no_of_loves)}</p>
-              <div className="followers">Loved</div>
-            </div>
-            <div className="text-center ml-25">
-              <Tooltip title="Followers">
-                <Fab
-                  color="inherit"
-                  size="small"
-                  aria-label="followers"
-                  color="primary"
-                >
-                  <FollowingIcon color="#fff" />
-                </Fab>
-              </Tooltip>
-              <p className="title">
-                {formateNumber(profileUser.no_of_followers)}
-              </p>
-              <div className="followers">Followers</div>
+          <CardActions className="mt-10 p-0 fl-justify-content">
+            <div className="row">
+              <div className="col align-self-start text-center">
+                <Tooltip title="No of People Liked">
+                  <Fab
+                    color="inherit"
+                    size="small"
+                    aria-label="preferences"
+                    color="primary"
+                  >
+                    <Avatar style={{ width: 30, height: 30 }} src={userLike} />
+                  </Fab>
+                </Tooltip>
+                <p className="title">
+                  {formateNumber(profileUser.no_of_likes)}
+                </p>
+                <div className="followers">Likes</div>
+              </div>
+              <div className="col align-self-center text-center">
+                <Tooltip title="No of People Loves">
+                  <Fab
+                    color="inherit"
+                    size="small"
+                    aria-label="love"
+                    color="primary"
+                  >
+                    <Avatar style={{ width: 30, height: 30 }} src={love} />
+                  </Fab>
+                </Tooltip>
+                <p className="title">
+                  {formateNumber(profileUser.no_of_loves)}
+                </p>
+                <div className="followers">Loved</div>
+              </div>
+              <div className="col align-self-end text-center">
+                <Tooltip title="Followers">
+                  <Fab
+                    color="inherit"
+                    size="small"
+                    aria-label="followers"
+                    color="primary"
+                  >
+                    <FollowingIcon color="#fff" />
+                  </Fab>
+                </Tooltip>
+                <p className="title">
+                  {formateNumber(profileUser.no_of_followers)}
+                </p>
+                <div className="followers">Followers</div>
+              </div>
             </div>
           </CardActions>
         </Card>
