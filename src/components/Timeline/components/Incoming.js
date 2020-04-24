@@ -144,7 +144,9 @@ class Incoming extends Component {
     const { open, anchorEl, showEmojis } = this.state
     return (
       <React.Fragment>
-        {incomingPostsLoading && !incomingPosts ? <Loader /> : null}
+        {incomingPostsLoading && incomingPosts && !incomingPosts.length ? (
+          <Loader />
+        ) : null}
         {!incomingPostsLoading && incomingPosts.length
           ? incomingPosts.map(post => (
               <Card key={post._id}>
@@ -467,7 +469,7 @@ class Incoming extends Component {
             ))
           : null}
         {!incomingPostsLoading && !incomingPosts.length ? (
-          <Typography variant="h3" className="text-center">
+          <Typography variant="h5" className="text-center">
             You don't have accepted or rejected posts
           </Typography>
         ) : null}

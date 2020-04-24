@@ -462,7 +462,9 @@ class Outgoing extends Component {
             waiting for. Start sharing now and let them know :)
           </Typography>
         ) : null}
-        {outgoingPostsLoading ? <Loader /> : null}
+        {outgoingPostsLoading && outgoingPosts && !outgoingPosts.length ? (
+          <Loader />
+        ) : null}
         {outgoingPostsError && outgoingPostsError.size > 0 ? (
           <CustomizedSnackbars
             open={true}
