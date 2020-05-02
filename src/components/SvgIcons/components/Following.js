@@ -4,7 +4,6 @@ import SvgIcon from '@material-ui/core/SvgIcon'
 const FollowingIcon = props => (
   <SvgIcon {...props} viewBox="8 11 27 27">
     <g>
-      <title>background</title>
       <rect
         fill="none"
         id="canvas_background"

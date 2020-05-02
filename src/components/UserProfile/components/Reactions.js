@@ -16,9 +16,12 @@ import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
 import * as globalActions from '../../../actions/index'
-import LoveIcon from '../../SvgIcons/components/Love'
-import LikeIcon from '../../SvgIcons/components/Like'
+import LikeIcon from '@material-ui/icons/ThumbUpAlt'
+import LoveIcon from '@material-ui/icons/Favorite'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
+import getPastTime from '../../../util/getPastTime'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 
 class Reactions extends Component {
   async componentDidMount() {
@@ -66,24 +69,29 @@ class Reactions extends Component {
                     <ListItem key={pu._id} alignItems="flex-start">
                       <ListItemAvatar>
                         <Avatar
-                          alt={pu.likedBy[0].userName}
-                          src={pu.likedBy[0].photoURL}
+                          alt={pu.likedBy.userName}
+                          src={pu.likedBy.photoURL}
                         />
                       </ListItemAvatar>
                       <Tooltip
-                        title={pu.likedBy[0].userName}
+                        title={pu.likedBy.userName}
                         placement="right-end"
                       >
                         <ListItemText
                           primary={
-                            <Link
-                              className="hyperlink"
-                              to={`/profile/${pu.likedBy[0]._id}`}
-                            >
-                              {user && user._id === pu.likedBy[0]._id
-                                ? 'You'
-                                : pu.likedBy[0].userName}
-                            </Link>
+                            <>
+                              <Link
+                                className="hyperlink"
+                                to={`/profile/${pu.likedBy._id}`}
+                              >
+                                {user && user._id === pu.likedBy._id
+                                  ? 'You '
+                                  : pu.likedBy.userName + ' '}
+                              </Link>
+                              <small className="grey-color ">
+                                {getPastTime(pu.updatedAt)}
+                              </small>
+                            </>
                           }
                           secondary={
                             <React.Fragment>
@@ -92,28 +100,32 @@ class Reactions extends Component {
                                 variant="body2"
                                 color="textPrimary"
                               >
-                                A {pu.likedBy[0].providerId} User
+                                A {pu.likedBy.providerId} User
                               </Typography>
                             </React.Fragment>
                           }
                         />
                       </Tooltip>
-                      <Tooltip title={pu.type.toUpperCase()} placement="bottom">
-                        <IconButton>
-                          {pu.type === 'love' && (
-                            <LoveIcon
-                              className="icon-display"
-                              color="#f10571"
-                            />
-                          )}
-                          {pu.type === 'like' && (
-                            <LikeIcon
-                              className="icon-display"
-                              color="#2a7fff"
-                            />
-                          )}
-                        </IconButton>
-                      </Tooltip>
+                      <ListItemSecondaryAction>
+                        <Tooltip
+                          title={pu.type.toUpperCase()}
+                          placement="bottom"
+                        >
+                          <IconButton
+                            style={{
+                              color:
+                                pu.type === 'like' ? '#2a7fff' : '#ff0016c7',
+                            }}
+                          >
+                            {pu.type === 'love' && (
+                              <LoveIcon className="icon-display" />
+                            )}
+                            {pu.type === 'like' && (
+                              <LikeIcon className="icon-display" />
+                            )}
+                          </IconButton>
+                        </Tooltip>
+                      </ListItemSecondaryAction>
                     </ListItem>
                   ))
                 : null}

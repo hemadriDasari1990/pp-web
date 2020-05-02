@@ -16,6 +16,7 @@ import Badge from '@material-ui/core/Badge'
 import { withStyles } from '@material-ui/core/styles'
 import { Link } from 'react-router-dom'
 import getReaction from '../../../util/getReaction'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 
 const styles = {
   smallAvatar: {
@@ -105,13 +106,15 @@ class ReactionsList extends Component {
                           secondary={this.renderUserOrigin(r.user.providerId)}
                         />
                       </Tooltip>
-                      <Tooltip title="View Profile" placement="right-end">
-                        <Button color="primary" className="mt-10">
-                          <Link to={`/profile/${r.user._id}`}>
-                            View Profile
-                          </Link>
-                        </Button>
-                      </Tooltip>
+                      <ListItemSecondaryAction>
+                        <Tooltip title="View Profile" placement="right-end">
+                          <Button color="primary" className="mt-10">
+                            <Link to={`/profile/${r.user._id}`}>
+                              View Profile
+                            </Link>
+                          </Button>
+                        </Tooltip>
+                      </ListItemSecondaryAction>
                     </ListItem>
                   </div>
                 ))

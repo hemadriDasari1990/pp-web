@@ -19,6 +19,9 @@ import * as globalActions from '../../../actions/index'
 import FollowIcon from '../../SvgIcons/components/Follow'
 import FollowingIcon from '../../SvgIcons/components/Following'
 import { Link } from 'react-router-dom'
+import moment from 'moment'
+import getPastTime from '../../../util/getPastTime'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 
 class Followers extends Component {
   async componentDidMount() {
@@ -76,14 +79,19 @@ class Followers extends Component {
                       >
                         <ListItemText
                           primary={
-                            <Link
-                              className="hyperlink"
-                              to={`/profile/${f.follower[0]._id}`}
-                            >
-                              {user && user._id === f.follower[0]._id
-                                ? 'You'
-                                : f.follower[0].userName}
-                            </Link>
+                            <>
+                              <Link
+                                className="hyperlink"
+                                to={`/profile/${f.follower[0]._id}`}
+                              >
+                                {user && user._id === f.follower[0]._id
+                                  ? 'You '
+                                  : f.follower[0].userName + ' '}
+                              </Link>
+                              <small className="grey-color ">
+                                {getPastTime(f.updatedAt)}
+                              </small>
+                            </>
                           }
                           secondary={
                             <React.Fragment>
@@ -98,21 +106,23 @@ class Followers extends Component {
                           }
                         />
                       </Tooltip>
-                      <Tooltip
-                        placement="bottom"
-                        title={f.follower ? 'Following' : 'Follow'}
-                      >
-                        <IconButton>
-                          {f.follower ? (
-                            <FollowingIcon
-                              color="#2a7fff"
-                              className="icon-display"
-                            />
-                          ) : (
-                            <FollowIcon className="icon-display" />
-                          )}
-                        </IconButton>
-                      </Tooltip>
+                      <ListItemSecondaryAction>
+                        <Tooltip
+                          placement="bottom"
+                          title={f.follower ? 'Following' : 'Follow'}
+                        >
+                          <IconButton>
+                            {f.follower ? (
+                              <FollowingIcon
+                                color="#2a7fff"
+                                className="icon-display"
+                              />
+                            ) : (
+                              <FollowIcon className="icon-display" />
+                            )}
+                          </IconButton>
+                        </Tooltip>
+                      </ListItemSecondaryAction>
                     </ListItem>
                   ))
                 : null}

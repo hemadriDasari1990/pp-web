@@ -181,13 +181,7 @@ class Feedback extends Component {
       errorMessage,
       annonymous,
     } = this.state
-    const {
-      user,
-      feedbacks,
-      saveFeedbackSuccess,
-      saveFeedbackLoading,
-      feedbacksLoading,
-    } = this.props
+    const { user, saveFeedbackSuccess, saveFeedbackLoading } = this.props
     return (
       <React.Fragment>
         <h1>Feedback</h1>
@@ -200,7 +194,7 @@ class Feedback extends Component {
           Users feedback is valuable for Us and we're always thankfull to them
           :)
         </p>
-        {user && feedbacks && (
+        {user && (
           <>
             <h2 className="h2-header">Form</h2>
             <div className="col-lg-12">
@@ -371,20 +365,12 @@ class Feedback extends Component {
                 status="error"
               />
             ) : null}
-            <div className="col-lg-12">
-              <h2>Feedbacks We Received</h2>
-              <p className="margin-bottom">
-                We are really thankful to below people who are helping us to
-                improve the system.
-              </p>
-            </div>
           </>
         )}
 
         {!user && <h4>*Please login to share your feedback </h4>}
         {saveFeedbackLoading && <Loader />}
-        {feedbacks && <FeedbackList feedbacks={feedbacks.feedbacks} />}
-        {feedbacksLoading && <Loader />}
+        <FeedbackList />
       </React.Fragment>
     )
   }

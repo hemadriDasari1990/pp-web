@@ -8,6 +8,6 @@ export default {
     fontSize: 14,
     fontWeight: 'normal',
     lineHeight: '1.38',
-    padding: '16px 16px 0px 16px',
+    padding: '8px 8px 0px 8px !important',
   },
 }

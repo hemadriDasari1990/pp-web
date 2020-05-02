@@ -235,3 +235,122 @@ export const getReactionsCount = postId => {
       .catch(errors => dispatch(getReactionsCountError(errors)))
   }
 }
+
+export const getCommentsRequest = () => {
+  return {
+    type: action.GET_COMMENTS_REQUEST,
+    loading: true,
+  }
+}
+
+export const getCommentsSuccess = reactions => {
+  return {
+    type: action.GET_COMMENTS_SUCCESS,
+    loading: false,
+    data: reactions,
+  }
+}
+
+export const getCommentsError = errors => {
+  return {
+    type: action.GET_COMMENTS_ERROR,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const getComments = postId => {
+  const options = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  return dispatch => {
+    dispatch(getCommentsRequest())
+    return fetch(config.URL_PREFIX + `/post/comments/${postId}`, options)
+      .then(response => response.json())
+      .then(data => dispatch(getCommentsSuccess(data)))
+      .catch(errors => dispatch(getCommentsError(errors)))
+  }
+}
+
+export const getCommentsCountRequest = () => {
+  return {
+    type: action.GET_COMMENTS_COUNT_REQUEST,
+    loading: true,
+  }
+}
+
+export const getCommentsCountSuccess = reaction => {
+  return {
+    type: action.GET_COMMENTS_COUNT_SUCCESS,
+    loading: false,
+    data: reaction,
+  }
+}
+
+export const getCommentsCountError = errors => {
+  return {
+    type: action.GET_COMMENTS_COUNT_ERROR,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const getCommentsCount = postId => {
+  const options = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  return dispatch => {
+    dispatch(getCommentsCountRequest())
+    return fetch(config.URL_PREFIX + `/post/comments/${postId}/count`, options)
+      .then(response => response.json())
+      .then(data => dispatch(getCommentsCountSuccess(data)))
+      .catch(errors => dispatch(getCommentsCountError(errors)))
+  }
+}
+
+export const createOrUpdateCommentReactionRequest = () => {
+  return {
+    type: action.CREATE_OR_UPDATE_COMMENT_REACTION_REQUEST,
+    loading: true,
+  }
+}
+
+export const createOrUpdateCommentReactionSuccess = res => {
+  return {
+    type: action.CREATE_OR_UPDATE_COMMENT_REACTION_SUCCESS,
+    loading: false,
+    data: res,
+  }
+}
+
+export const createOrUpdateCommentReactionError = errors => {
+  return {
+    type: action.CREATE_OR_UPDATE_COMMENT_REACTION_ERROR,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const createOrUpdateCommentReaction = (userId, commentId, reaction) => {
+  const options = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      reactedBy: userId,
+      type: reaction,
+      comment: commentId,
+    }),
+  }
+  return dispatch => {
+    dispatch(createOrUpdateCommentReactionRequest())
+    return fetch(
+      config.URL_PREFIX + `/post/comment/reaction/${commentId}`,
+      options,
+    )
+      .then(response => response.json())
+      .then(data => dispatch(createOrUpdateCommentReactionSuccess(data)))
+      .catch(errors => dispatch(createOrUpdateCommentReactionError(errors)))
+  }
+}

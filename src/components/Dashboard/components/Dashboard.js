@@ -8,12 +8,12 @@ import { withStyles } from '@material-ui/core/styles'
 import Fab from '@material-ui/core/Fab'
 import Avatar from '@material-ui/core/Avatar'
 import Metrics from './Metrics'
-import LoveIcon from '../../SvgIcons/components/Love'
-import LikeIcon from '../../SvgIcons/components/Like'
 import PreferencesIcon from '../../SvgIcons/components/Preferences'
 import * as postActions from '../../Post/actions'
 import Loader from '../../Loader/components/Loader'
 import FollowingIcon from '../../SvgIcons/components/Following'
+import LikeIcon from '@material-ui/icons/ThumbUpAlt'
+import LoveIcon from '@material-ui/icons/Favorite'
 
 const styles = theme => ({})
 
@@ -68,9 +68,7 @@ class DashBoard extends Component {
               <div className="col-lg-3 col-md-2 col-sm-12 col-xs-12"></div>
               <div className="col-lg-3 col-md-3 col-sm col-xs-12">
                 <Metrics
-                  icon={
-                    <LikeIcon style={{ width: 35, height: 35 }} color="#fff" />
-                  }
+                  icon={<LikeIcon />}
                   title="Likes"
                   name="Like"
                   count={user.no_of_likes}
@@ -78,7 +76,7 @@ class DashBoard extends Component {
               </div>
               <div className="col-lg-3 col-md-3 col-sm col-xs-12">
                 <Metrics
-                  icon={<LoveIcon className="icon-display" color="#fff" />}
+                  icon={<LoveIcon />}
                   title="Love"
                   name="Love"
                   count={user.no_of_loves}

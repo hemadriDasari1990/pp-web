@@ -22,14 +22,14 @@ import Fab from '@material-ui/core/Fab'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import * as dashboardActions from '../../Timeline/actions'
 import ReadIcon from '@material-ui/icons/DoneAll'
-
+import getPastTime from '../../../util/getPastTime'
+import Divider from '@material-ui/core/Divider'
 const styles = {
-  smallAvatar: {
-    top: '150%',
-    width: 22,
-    height: 22,
-  },
+  smallAvatar: {},
   customBadge: {
+    top: '90%',
+    width: 35,
+    height: 35,
     backgroundColor: 'unset !important',
   },
 }
@@ -97,6 +97,36 @@ class NotificationsList extends Component {
           </span>
         )
         break
+      case 'dislike':
+        message = (
+          <span>
+            <Link className="hyperlink" to={`/profile/${sender._id}`}>
+              {sender.userName}
+            </Link>{' '}
+            reacted to your post
+          </span>
+        )
+        break
+      case 'thinking':
+        message = (
+          <span>
+            <Link className="hyperlink" to={`/profile/${sender._id}`}>
+              {sender.userName}
+            </Link>{' '}
+            reacted to your post
+          </span>
+        )
+        break
+      case 'perfect':
+        message = (
+          <span>
+            <Link className="hyperlink" to={`/profile/${sender._id}`}>
+              {sender.userName}
+            </Link>{' '}
+            reacted to your post
+          </span>
+        )
+        break
       case 'love':
         message = (
           <span>
@@ -117,37 +147,7 @@ class NotificationsList extends Component {
           </span>
         )
         break
-      case 'sad':
-        message = (
-          <span>
-            <Link className="hyperlink" to={`/profile/${sender._id}`}>
-              {sender.userName}
-            </Link>{' '}
-            reacted to your post
-          </span>
-        )
-        break
-      case 'silly':
-        message = (
-          <span>
-            <Link className="hyperlink" to={`/profile/${sender._id}`}>
-              {sender.userName}
-            </Link>{' '}
-            reacted to your post
-          </span>
-        )
-        break
-      case 'smiley':
-        message = (
-          <span>
-            <Link className="hyperlink" to={`/profile/${sender._id}`}>
-              {sender.userName}
-            </Link>{' '}
-            reacted to your post
-          </span>
-        )
-        break
-      case 'angry':
+      case 'tounghout':
         message = (
           <span>
             <Link className="hyperlink" to={`/profile/${sender._id}`}>
@@ -207,6 +207,46 @@ class NotificationsList extends Component {
           </span>
         )
         break
+      case 'post-comment':
+        message = (
+          <span>
+            <Link className="hyperlink" to={`/profile/${sender._id}`}>
+              {sender.userName}
+            </Link>{' '}
+            commented on your post
+          </span>
+        )
+        break
+      case 'post-accept':
+        message = (
+          <span>
+            <Link className="hyperlink" to={`/profile/${sender._id}`}>
+              {sender.userName}
+            </Link>{' '}
+            accepted your post
+          </span>
+        )
+        break
+      case 'post-reject':
+        message = (
+          <span>
+            <Link className="hyperlink" to={`/profile/${sender._id}`}>
+              {sender.userName}
+            </Link>{' '}
+            rejected your post
+          </span>
+        )
+        break
+      case 'comment-like':
+        message = (
+          <span>
+            <Link className="hyperlink" to={`/profile/${sender._id}`}>
+              {sender.userName}
+            </Link>{' '}
+            liked your comment
+          </span>
+        )
+        break
       default:
         break
     }
@@ -222,25 +262,34 @@ class NotificationsList extends Component {
       case 'like':
         this.viewPostDetails(resourceId)
         break
+      case 'dislike':
+        this.viewPostDetails(resourceId)
+        break
+      case 'thinking':
+        this.viewPostDetails(resourceId)
+        break
+      case 'perfect':
+        this.viewPostDetails(resourceId)
+        break
       case 'love':
         this.viewPostDetails(resourceId)
         break
       case 'wow':
         this.viewPostDetails(resourceId)
         break
-      case 'sad':
-        this.viewPostDetails(resourceId)
-        break
-      case 'silly':
-        this.viewPostDetails(resourceId)
-        break
-      case 'smiley':
-        this.viewPostDetails(resourceId)
-        break
-      case 'angry':
+      case 'tounghout':
         this.viewPostDetails(resourceId)
         break
       case 'post-created':
+        this.viewPostDetails(resourceId)
+        break
+      case 'post-comment':
+        this.viewPostDetails(resourceId)
+        break
+      case 'post-accept':
+        this.viewPostDetails(resourceId)
+        break
+      case 'post-reject':
         this.viewPostDetails(resourceId)
         break
       default:
@@ -273,7 +322,7 @@ class NotificationsList extends Component {
                       <ListItem
                         key={n._id}
                         alignItems="flex-start"
-                        className="shadow b-r-15 cursor mb-10"
+                        className="cursor mb-10 p-0 notification-item"
                         onClick={() =>
                           this.viewNotifications(
                             n._id,
@@ -288,7 +337,7 @@ class NotificationsList extends Component {
                             classes={{ badge: classes.customBadge }}
                             overlap="circle"
                             badgeContent={
-                              <Avatar
+                              <img
                                 className={classes.smallAvatar}
                                 alt="NA"
                                 src={getReaction(n.type)}
@@ -308,7 +357,7 @@ class NotificationsList extends Component {
                               {this.renderMessage(n.type, n.sender)}
                             </Typography>
                           }
-                          secondary={moment(n.createdAt).fromNow()}
+                          secondary={getPastTime(n.updatedAt)}
                         />
                         <ListItemSecondaryAction>
                           <Tooltip title={n.read ? 'Read' : 'Un Read'}>
@@ -319,6 +368,7 @@ class NotificationsList extends Component {
                         </ListItemSecondaryAction>
                       </ListItem>
                     </Tooltip>
+                    <Divider />
                   </div>
                 ))
               : null}

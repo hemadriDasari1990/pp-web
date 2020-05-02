@@ -33,6 +33,7 @@ class Preferences extends Component {
       id: '',
       data: {},
     }
+    this.timeout
   }
 
   async componentDidMount() {
@@ -95,9 +96,7 @@ class Preferences extends Component {
             user: user._id,
             id: id,
           })
-          setTimeout(() => {
-            this.props.history.push('/dashboard')
-          }, 1000)
+          this.redirectToDashboard()
         }
       } else {
         await this.props.savePreferences({
@@ -107,10 +106,20 @@ class Preferences extends Component {
           user: user._id,
           count: 1,
         })
-        setTimeout(() => {
-          this.props.history.push('/dashboard')
-        }, 1000)
+        this.redirectToDashboard()
       }
+    }
+  }
+
+  redirectToDashboard = () => {
+    this.timeout = setTimeout(() => {
+      this.props.history.push('/dashboard')
+    }, 2000)
+  }
+
+  componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout)
     }
   }
 
@@ -259,16 +268,10 @@ class Preferences extends Component {
             </Fab>
           </div>
         </div>
-        {/* {!savePreferencesLoading && savePreferencesSuccess ? (
-          <CustomizedSnackbars
-            open={true}
-            message="Preferences are updated successfully"
-            status="success"
-          />
-        ) : null} */}
         {/* {savePreferencesError ? <CustomizedSnackbars open={open} message="Cannot save preferences. Please try again" status={status} />: null}
         {updatePreferencesError ? <CustomizedSnackbars open={open} message="Cannot save preferences. Please try again" status={status} />: null} */}
-        {!updatePreferencesLoading && updatePreferencesSuccess ? (
+        {!updatePreferencesLoading &&
+        (updatePreferencesSuccess.size || savePreferencesSuccess.size) ? (
           <CustomizedSnackbars
             open={true}
             message="Preferences are updated successfully"

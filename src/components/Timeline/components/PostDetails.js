@@ -35,6 +35,8 @@ import cons from '../../../../assets/cons.svg'
 import getReaction from '../../../util/getReaction'
 import renderUserNames from '../../../util/renderUserNames'
 import textingImage from '../../../../assets/notifications/texting.svg'
+import getPastTime from '../../../util/getPastTime'
+import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
 
 const styles = {
   smallAvatar: {
@@ -198,12 +200,14 @@ class PostDetails extends Component {
                           <span
                             className={
                               postDetails.approved
-                                ? 'status approved m-t-7 m-r-20'
+                                ? 'approved ' + 'reactions-subheader'
                                 : postDetails.rejected
-                                ? 'status rejected m-t-7 m-r-20'
-                                : 'status pending m-t-7 m-r-20'
+                                ? 'rejected ' + 'reactions-subheader'
+                                : 'pending ' + 'reactions-subheader'
                             }
-                          ></span>
+                          >
+                            {getCardSubHeaderStatus(postDetails)}
+                          </span>
                         </Tooltip>
                       )}
                     </>
@@ -220,7 +224,7 @@ class PostDetails extends Component {
                       <b className="hyperlink">Annonymous User</b>
                     )
                   }
-                  subheader={moment(postDetails.createdAt).fromNow()}
+                  subheader={getPastTime(postDetails.updatedAt)}
                 />
                 <CardContent style={{ minHeight: '300px !important' }}>
                   <List>
@@ -282,7 +286,7 @@ class PostDetails extends Component {
                       />
                     </ListItem>
                   </List>
-                  <div className="actions-align">
+                  <div className="row ml-15 mr-15">
                     <AvatarGroup>
                       {postDetails.reactions.length > 0
                         ? postDetails.reactions.slice(0, 3).map(react => (

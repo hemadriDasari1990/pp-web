@@ -19,5 +19,6 @@ export default {
   },
   action: {
     margin: '0px !important',
+    marginTop: '-12px !important',
   },
 }

@@ -18,7 +18,7 @@ export const createOrUpdateReactionSuccess = res => {
 
 export const createOrUpdateReactionError = errors => {
   return {
-    type: action.CREATE_OR_UPDATE_REACTION_FAILURE,
+    type: action.CREATE_OR_UPDATE_REACTION_ERROR,
     loading: false,
     errors: errors,
   }
@@ -56,7 +56,7 @@ export const createOrUpdateProfileReactionSuccess = res => {
 
 export const createOrUpdateProfileReactionError = errors => {
   return {
-    type: action.CREATE_OR_UPDATE_PROFILE_REACTION_FAILURE,
+    type: action.CREATE_OR_UPDATE_PROFILE_REACTION_ERROR,
     loading: false,
     errors: errors,
   }
@@ -94,7 +94,7 @@ export const getProfileReactionSuccess = res => {
 
 export const getProfileReactionError = errors => {
   return {
-    type: action.GET_USER_REACTION_FAILURE,
+    type: action.GET_USER_REACTION_ERROR,
     loading: false,
     errors: errors,
   }
@@ -134,7 +134,7 @@ export const createOrUpdateProfileFollowerSuccess = res => {
 
 export const createOrUpdateProfileFollowerError = errors => {
   return {
-    type: action.CREATE_OR_UPDATE_PROFILE_FOLLOWER_FAILURE,
+    type: action.CREATE_OR_UPDATE_PROFILE_FOLLOWER_ERROR,
     loading: false,
     errors: errors,
   }
@@ -172,7 +172,7 @@ export const getProfileFollowerSuccess = res => {
 
 export const getProfileFollowerError = errors => {
   return {
-    type: action.GET_USER_FOLLOWER_FAILURE,
+    type: action.GET_USER_FOLLOWER_ERROR,
     loading: false,
     errors: errors,
   }

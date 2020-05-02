@@ -9,17 +9,15 @@ import Fab from '@material-ui/core/Fab'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { Map, List } from 'immutable'
-import userLike from '../../../../assets/user-like.svg'
-import love from '../../../../assets/love.svg'
 import Tooltip from '@material-ui/core/Tooltip'
 import * as actions from '../actions'
-import LoveIcon from '../../SvgIcons/components/Love'
-import LikeIcon from '../../SvgIcons/components/Like'
 import Button from '@material-ui/core/Button'
 import FollowIcon from '../../SvgIcons/components/Follow'
 import * as globalActions from '../../../actions/index'
 import formateNumber from '../../../util/formateNumber'
 import FollowingIcon from '../../SvgIcons/components/Following'
+import LikeIcon from '@material-ui/icons/ThumbUpAlt'
+import LoveIcon from '@material-ui/icons/Favorite'
 
 class Profile extends Component {
   constructor(props) {
@@ -106,24 +104,20 @@ class Profile extends Component {
                 <IconButton
                   className="f-r"
                   aria-label="settings"
+                  style={{ color: loved ? '#ff0016c7' : '#0c0b0b5e' }}
                   onClick={() => this.handleReaction('love', profileUser._id)}
                 >
-                  <LoveIcon
-                    className="icon-display"
-                    color={loved ? '#f10571' : '#6c757d'}
-                  />
+                  <LoveIcon className="icon-display" />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Like">
                 <IconButton
                   aria-label="settings"
                   className="f-r"
+                  style={{ color: liked ? '#2a7fff' : '#0c0b0b5e' }}
                   onClick={() => this.handleReaction('like', profileUser._id)}
                 >
-                  <LikeIcon
-                    className="icon-display"
-                    color={liked ? '#2a7fff' : '#6c757d'}
-                  />
+                  <LikeIcon className="icon-display" />
                 </IconButton>
               </Tooltip>
             </div>
@@ -139,18 +133,20 @@ class Profile extends Component {
                 ? 'A Google User'
                 : 'A Facebook User'}
             </div>
-            <br />
-            <div className="text-center">
+            <div className="mt-25 text-center">
               <Tooltip title={following ? 'Following' : 'Follow'}>
                 <Button
-                  variant="outlined"
-                  color="primary"
-                  style={{ backgroundColor: '#fff' }}
+                  variant={following ? 'contained' : 'outlined'}
+                  style={{
+                    width: 150,
+                    backgroundColor: following ? '#2a7fff' : '#fff',
+                    color: following ? '#fff' : '#0c0b0b5e',
+                  }}
                   startIcon={
                     following ? (
-                      <FollowingIcon color="#2a7fff" />
+                      <FollowingIcon color="#fff" />
                     ) : (
-                      <FollowIcon />
+                      <FollowIcon color="#0c0b0b5e" />
                     )
                   }
                   onClick={() => this.handleFollow()}
@@ -159,7 +155,6 @@ class Profile extends Component {
                 </Button>
               </Tooltip>
             </div>
-            <br />
           </CardContent>
           <Divider />
           <CardActions className="mt-10 p-0 fl-justify-content">
@@ -172,7 +167,7 @@ class Profile extends Component {
                     aria-label="preferences"
                     color="primary"
                   >
-                    <Avatar style={{ width: 30, height: 30 }} src={userLike} />
+                    <LikeIcon />
                   </Fab>
                 </Tooltip>
                 <p className="title">
@@ -188,7 +183,7 @@ class Profile extends Component {
                     aria-label="love"
                     color="primary"
                   >
-                    <Avatar style={{ width: 30, height: 30 }} src={love} />
+                    <LoveIcon />
                   </Fab>
                 </Tooltip>
                 <p className="title">

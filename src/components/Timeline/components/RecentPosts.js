@@ -21,6 +21,12 @@ import AvatarGroup from '@material-ui/lab/AvatarGroup'
 import { withStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import formateNumber from '../../../util/formateNumber'
+import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
+import Button from '@material-ui/core/Button'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import getPastTime from '../../../util/getPastTime'
+import IconButton from '@material-ui/core/IconButton'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 
 const styles = {
   smallAvatar: {
@@ -44,6 +50,12 @@ class RecentPosts extends Component {
     //this.props.getIncomingPosts(this.props.user._id)
   }
 
+  viewPost = postId => {
+    this.props.history.push(`/post/${postId}/details`)
+  }
+
+  handleCommentMenu = () => {}
+
   render() {
     const {
       classes,
@@ -54,7 +66,7 @@ class RecentPosts extends Component {
     } = this.props
     return (
       <React.Fragment>
-        <Card style={{ width: '100%', maxWidth: '100%' }}>
+        <Card>
           <CardHeader
             title="Most Recent Posts"
             action={
@@ -107,29 +119,9 @@ class RecentPosts extends Component {
                                     ? 'You'
                                     : post.postedBy.userName}
                                 </Link>
-                                <span
-                                  className={
-                                    post.approved
-                                      ? 'status approved ml-7'
-                                      : post.rejected
-                                      ? 'status rejected ml-7'
-                                      : 'status pending ml-7'
-                                  }
-                                ></span>
                               </>
                             ) : (
-                              <b className="hyperlink">
-                                Annonymous User{' '}
-                                <span
-                                  className={
-                                    post.approved
-                                      ? 'status approved'
-                                      : post.rejected
-                                      ? 'status rejected'
-                                      : 'status pending'
-                                  }
-                                ></span>
-                              </b>
+                              <b className="hyperlink">Annonymous User </b>
                             )
                           }
                           secondary={
@@ -139,52 +131,39 @@ class RecentPosts extends Component {
                                 variant="body2"
                                 color="textPrimary"
                               >
-                                {post.pros.length > 40
-                                  ? post.pros.substring(0, 40) + '...'
-                                  : post.pros}
+                                {post.pros}
                               </Typography>
+                              <br />
                             </React.Fragment>
                           }
                         />
                       </Tooltip>
-                      <div className="row">
-                        <AvatarGroup style={{ marginTop: 6 }}>
-                          {post.reactions.length > 0
-                            ? post.reactions.slice(0, 3).map(react => (
-                                <Tooltip
-                                  title={renderUserNames(post.reactions)}
-                                  placement="bottom"
-                                >
-                                  <Avatar
-                                    className={classes.smallAvatar}
-                                    key={react._id}
-                                    alt={react.type}
-                                    src={getReaction(react ? react.type : '')}
-                                  />
-                                </Tooltip>
-                              ))
-                            : ''}
-                        </AvatarGroup>
-                        {post.reactions.length > 0 ? (
-                          <>
-                            <Tooltip
-                              title={renderUserNames(post.reactions)}
-                              placement="bottom"
-                            >
-                              <Link
-                                style={{ marginTop: 6 }}
-                                className="mr-20"
-                                to={`/post/${post._id}/reactions`}
-                                className="actions-text"
-                              >
-                                <span>
-                                  {formateNumber(post.reactions.length)}
-                                </span>
-                              </Link>
-                            </Tooltip>
-                          </>
-                        ) : null}
-                      </div>
+                      <ListItemSecondaryAction className="t-37 r-5">
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={
+                            post.approved
+                              ? 'approved ' + 'mr-10 reactions-subheader'
+                              : post.rejected
+                              ? 'rejected ' + 'mr-10 reactions-subheader'
+                              : 'pending ' + 'mr-10 reactions-subheader'
+                          }
+                        >
+                          {getCardSubHeaderStatus(post)}
+                        </Typography>
+                        <small className="grey-color ">
+                          {getPastTime(post.updatedAt)}
+                        </small>
+                        <Tooltip title="Action">
+                          <IconButton
+                            aria-label="settings"
+                            onClick={this.handleCommentMenu}
+                          >
+                            <MoreHorizIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </ListItemSecondaryAction>
                     </ListItem>
                   ))
                 : null}

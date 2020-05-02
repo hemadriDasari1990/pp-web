@@ -18,7 +18,7 @@ export const getNotificationsSuccess = data => {
 
 export const getNotificationsError = errors => {
   return {
-    type: action.GET_NOTIFICATIONS_FAILURE,
+    type: action.GET_NOTIFICATIONS_ERROR,
     loading: false,
     errors: errors,
   }
@@ -58,7 +58,7 @@ export const markReadSuccess = res => {
 
 export const markReadError = errors => {
   return {
-    type: action.MARK_NOTIFICATION_READ_FAILURE,
+    type: action.MARK_NOTIFICATION_READ_ERROR,
     loading: false,
     errors: errors,
   }

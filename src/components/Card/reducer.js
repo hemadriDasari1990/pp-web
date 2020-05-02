@@ -5,7 +5,7 @@
 //     case types.SIGNUP_SUCCESS:
 //     case types.LOGIN_SUCCESS:
 //       return action.data
-//     case types.LOGIN_FAILURE:
+//     case types.LOGIN_ERROR:
 //       return {}
 //     default:
 //       return state

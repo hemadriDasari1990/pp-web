@@ -7,6 +7,6 @@ export default {
       backgroundColor: '#ffffff',
     },
     marginBottom: 10,
-    padding: 15,
+    padding: '2px 15px 2px 15px',
   },
 }

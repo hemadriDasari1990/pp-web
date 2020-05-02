@@ -33,15 +33,24 @@ import renderUserNames from '../../../util/renderUserNames'
 import renderColor from '../../../util/renderColor'
 import * as profileActions from '../../UserProfile/actions'
 import Button from '@material-ui/core/Button'
-import like from '../../../../assets/emojis/like.svg'
-import angry from '../../../../assets/emojis/angry.svg'
+// import like from '../../../../assets/emojis/like.svg'
+// import dislike from '../../../../assets/emojis/dislike.svg'
+import perfect from '../../../../assets/emojis/perfect.svg'
+import thinking from '../../../../assets/emojis/thinking.svg'
 import love from '../../../../assets/emojis/love.svg'
-import silly from '../../../../assets/emojis/silly.svg'
-import smiley from '../../../../assets/emojis/smiley.svg'
+import tounghout from '../../../../assets/emojis/tounghout.svg'
 import wow from '../../../../assets/emojis/surprise.svg'
-import sad from '../../../../assets/emojis/sad.svg'
 import Divider from '@material-ui/core/Divider'
 import getReactionsText from '../../../util/getReactionsText'
+import NoRecords from '../../NoRecords/components/NoRecords'
+import commentIcon from '../../../../assets/comment.svg'
+import CreateComment from './comments/CreateComment'
+import * as postActions from '../../Post/actions'
+import CommentsList from './comments/List'
+import getCardSubHeaderText from '../../../util/getCardSubHeaderText'
+import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
+import LikeIcon from '@material-ui/icons/ThumbUpAlt'
+import DisLikeIcon from '@material-ui/icons/ThumbDown'
 
 const styles = {
   smallAvatar: {
@@ -61,6 +70,15 @@ const styles = {
   rightButton: {
     marginLeft: 'auto',
   },
+  comment: {
+    marginLeft: 'auto',
+    width: '150px !important',
+    height: '35px !important',
+  },
+  reactionAvatar: {
+    width: 30,
+    height: 30,
+  },
 }
 
 class Incoming extends Component {
@@ -70,11 +88,13 @@ class Incoming extends Component {
       open: false,
       anchorEl: undefined,
       showEmojis: false,
+      showCommentInput: false,
+      comment: '',
     }
   }
 
-  componentDidMount() {
-    this.props.getIncomingPosts(this.props.user._id, '')
+  async componentDidMount() {
+    await this.props.getIncomingPosts(this.props.user._id, '')
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -111,7 +131,11 @@ class Incoming extends Component {
   }
 
   renderHint = () => {
-    const hintArray = ['Be the first to like', 'Be the first to react']
+    const hintArray = [
+      'Be the first to like',
+      'Be the first to react',
+      'Be the first to comment on this',
+    ]
     let index = 0
     setInterval(() => {
       this.setState({
@@ -129,6 +153,25 @@ class Incoming extends Component {
       })
   }
 
+  showCommentInput = () => {
+    this.setState({
+      showCommentInput: !this.state.showCommentInput,
+    })
+  }
+
+  hideComment = postId => {
+    this.setState({
+      showCommentInput: !this.state.showCommentInput,
+    })
+    this.props.getComments(postId)
+  }
+
+  handleComment = event => {
+    this.setState({
+      comment: event.target.value,
+    })
+  }
+
   render() {
     const {
       incomingPosts,
@@ -140,8 +183,9 @@ class Incoming extends Component {
       classes,
       user,
       type,
+      commentsCount,
     } = this.props
-    const { open, anchorEl, showEmojis } = this.state
+    const { open, anchorEl, showEmojis, showCommentInput, comment } = this.state
     return (
       <React.Fragment>
         {incomingPostsLoading && incomingPosts && !incomingPosts.length ? (
@@ -179,12 +223,14 @@ class Incoming extends Component {
                         <span
                           className={
                             post.approved
-                              ? 'status approved'
+                              ? 'accepted ' + 'reactions-subheader'
                               : post.rejected
-                              ? 'status rejected'
-                              : 'status pending'
+                              ? 'rejected ' + 'reactions-subheader'
+                              : 'pending ' + 'reactions-subheader'
                           }
-                        ></span>
+                        >
+                          {getCardSubHeaderStatus(post)}
+                        </span>
                       </Tooltip>
                       <Tooltip title="Update">
                         <IconButton
@@ -228,7 +274,7 @@ class Incoming extends Component {
                       <b className="hyperlink">Annonymous User</b>
                     )
                   }
-                  subheader={moment(post.createdAt).fromNow()}
+                  subheader={getCardSubHeaderText(post.createdAt)}
                 />
                 <CardContent style={{ minHeight: '300px !important' }}>
                   <List>
@@ -290,9 +336,9 @@ class Incoming extends Component {
                       />
                     </ListItem>
                   </List>
-                  <div className="actions-align">
+                  <div className="row ml-15 mr-15">
                     <AvatarGroup>
-                      {post.reactions.length > 0
+                      {post.reactionsCount > 0
                         ? post.reactions.slice(0, 3).map(react => (
                             <Tooltip
                               title={renderUserNames(post.reactions)}
@@ -315,14 +361,14 @@ class Incoming extends Component {
                       <Link
                         to={`/post/${post._id}/reactions`}
                         className="actions-text"
-                      >
-                        <span>
-                          {post.reactions.length
-                            ? formateNumber(post.reactions.length)
-                            : 'No Reactions'}
-                        </span>
-                      </Link>
+                      ></Link>
                     </Tooltip>
+                    <span className="cursor actions-text v-align-middle grey-color ">
+                      {formateNumber(post.reactionsCount) + ' - '}
+                    </span>
+                    <span className="cursor actions-text v-align-middle grey-color ">
+                      {formateNumber(post.commentsCount) + ' Comments'}
+                    </span>
                   </div>
                   <Divider />
                 </CardContent>
@@ -335,11 +381,6 @@ class Incoming extends Component {
                     >
                       <a className="like-btn">
                         <Button
-                          style={{
-                            color: renderColor(
-                              getReactionsText(user._id, post.reactions),
-                            ),
-                          }}
                           className={classes.button}
                           onClick={() =>
                             this.createOrUpdateReaction(
@@ -355,14 +396,21 @@ class Incoming extends Component {
                               getReactionsText(user._id, post.reactions),
                             )}
                           />
-                          <span style={{ marginLeft: 7 }}>
+                          <span
+                            style={{
+                              color: renderColor(
+                                getReactionsText(user._id, post.reactions),
+                              ),
+                              marginLeft: 7,
+                            }}
+                          >
                             {getReactionsText(user._id, post.reactions)}
                           </span>
                         </Button>
                         {showEmojis && (
                           <div className="reaction-box">
                             <div
-                              className="reaction-icon"
+                              className="v-align-middle reaction-icon"
                               onClick={() =>
                                 this.createOrUpdateReaction(
                                   user._id,
@@ -372,11 +420,61 @@ class Incoming extends Component {
                               }
                             >
                               <Tooltip title="Like" placement="top">
-                                <img src={like} width={43} height={38} />
+                                <Avatar className={classes.reactionAvatar}>
+                                  <LikeIcon color="secondary" />
+                                </Avatar>
                               </Tooltip>
                             </div>
                             <div
-                              className="reaction-icon"
+                              className="v-align-middle reaction-icon"
+                              onClick={() =>
+                                this.createOrUpdateReaction(
+                                  user._id,
+                                  post._id,
+                                  'dislike',
+                                )
+                              }
+                            >
+                              <Tooltip title="Dis Like" placement="top">
+                                <Avatar className={classes.reactionAvatar}>
+                                  <DisLikeIcon />
+                                </Avatar>
+                              </Tooltip>
+                            </div>
+                            <div
+                              className="v-align-middle reaction-icon"
+                              onClick={() =>
+                                this.createOrUpdateReaction(
+                                  user._id,
+                                  post._id,
+                                  'perfect',
+                                )
+                              }
+                            >
+                              <Tooltip title="Perfect" placement="top">
+                                <Avatar className={classes.reactionAvatar}>
+                                  <img src={perfect} />
+                                </Avatar>
+                              </Tooltip>
+                            </div>
+                            <div
+                              className="v-align-middle reaction-icon"
+                              onClick={() =>
+                                this.createOrUpdateReaction(
+                                  user._id,
+                                  post._id,
+                                  'thinking',
+                                )
+                              }
+                            >
+                              <Tooltip title="Thinking" placement="top">
+                                <Avatar className={classes.reactionAvatar}>
+                                  <img src={thinking} />
+                                </Avatar>
+                              </Tooltip>
+                            </div>
+                            <div
+                              className="v-align-middle reaction-icon"
                               onClick={() =>
                                 this.createOrUpdateReaction(
                                   user._id,
@@ -386,49 +484,25 @@ class Incoming extends Component {
                               }
                             >
                               <Tooltip title="Love" placement="top">
-                                <img src={love} width={40} height={40} />
+                                <Avatar className={classes.reactionAvatar}>
+                                  <img src={love} />
+                                </Avatar>
                               </Tooltip>
                             </div>
                             <div
-                              className="reaction-icon"
+                              className="v-align-middle reaction-icon"
                               onClick={() =>
                                 this.createOrUpdateReaction(
                                   user._id,
                                   post._id,
-                                  'angry',
+                                  'tounghout',
                                 )
                               }
                             >
-                              <Tooltip title="Angry" placement="top">
-                                <img src={angry} width={40} height={40} />
-                              </Tooltip>
-                            </div>
-                            <div
-                              className="reaction-icon"
-                              onClick={() =>
-                                this.createOrUpdateReaction(
-                                  user._id,
-                                  post._id,
-                                  'silly',
-                                )
-                              }
-                            >
-                              <Tooltip title="Silly" placement="top">
-                                <img src={silly} width={40} height={40} />
-                              </Tooltip>
-                            </div>
-                            <div
-                              className="reaction-icon"
-                              onClick={() =>
-                                this.createOrUpdateReaction(
-                                  user._id,
-                                  post._id,
-                                  'smiley',
-                                )
-                              }
-                            >
-                              <Tooltip title="Smiley" placement="top">
-                                <img src={smiley} width={40} height={40} />
+                              <Tooltip title="Toungh Out" placement="top">
+                                <Avatar className={classes.reactionAvatar}>
+                                  <img src={tounghout} />
+                                </Avatar>
                               </Tooltip>
                             </div>
                             <div
@@ -442,21 +516,9 @@ class Incoming extends Component {
                               }
                             >
                               <Tooltip title="Wow" placement="top">
-                                <img src={wow} width={40} height={40} />
-                              </Tooltip>
-                            </div>
-                            <div
-                              className="reaction-icon"
-                              onClick={() =>
-                                this.createOrUpdateReaction(
-                                  user._id,
-                                  post._id,
-                                  'sad',
-                                )
-                              }
-                            >
-                              <Tooltip title="Sad" placement="top">
-                                <img src={sad} width={40} height={40} />
+                                <Avatar className={classes.reactionAvatar}>
+                                  <img src={wow} />
+                                </Avatar>
                               </Tooltip>
                             </div>
                           </div>
@@ -464,14 +526,41 @@ class Incoming extends Component {
                       </a>
                     </div>
                   </Tooltip>
+                  <Tooltip title="Comment">
+                    <Button
+                      className={classes.comment}
+                      onClick={() => this.showCommentInput()}
+                    >
+                      <img className={classes.smallAvatar} src={commentIcon} />
+                      <span style={{ marginLeft: 7 }}>Comment</span>
+                    </Button>
+                  </Tooltip>
+                </CardActions>
+                {showCommentInput && (
+                  <CardActions disableSpacing style={{ paddingTop: 0 }}>
+                    <CreateComment
+                      type="parent"
+                      post={post}
+                      showCommentInput={showCommentInput}
+                      hideComment={this.hideComment}
+                    />
+                  </CardActions>
+                )}
+                <CardActions disableSpacing style={{ paddingTop: 0 }}>
+                  <CommentsList type="parent" post={post} />
                 </CardActions>
               </Card>
             ))
           : null}
         {!incomingPostsLoading && !incomingPosts.length ? (
-          <Typography variant="h5" className="text-center">
-            You don't have accepted or rejected posts
-          </Typography>
+          <NoRecords
+            title={type === 'profile' ? 'No Posts' : 'No Incoming Posts'}
+            message={
+              type === 'profile'
+                ? 'There are no posts to show'
+                : 'You have not received posts'
+            }
+          />
         ) : null}
         {incomingPostsError && incomingPostsError.size > 0 ? (
           <CustomizedSnackbars
@@ -518,6 +607,7 @@ const mapStateToProps = state => {
     ['Timeline', 'incoming', 'errors'],
     Map(),
   )
+  const commentsCount = state.getIn(['Post', 'comments', 'count', 'success'])
   return {
     incomingPosts,
     incomingPostsError,
@@ -525,6 +615,7 @@ const mapStateToProps = state => {
     deletePostSuccess,
     deletePostError,
     deletePostLoading,
+    commentsCount,
   }
 }
 
@@ -533,6 +624,8 @@ const actionsToProps = {
   deletePost: actions.deletePost,
   createOrUpdateReaction: profileActions.createOrUpdateReaction,
   getRecentPosts: actions.getRecentPosts,
+  getCommentsCount: postActions.getCommentsCount,
+  getComments: postActions.getComments,
 }
 
 export default withRouter(

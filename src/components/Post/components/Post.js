@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField'
-import Search from '../../Header/components/Search'
+import Search from '../../Search/components/Search'
 import * as actions from '../actions'
 import { withRouter } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -134,7 +134,7 @@ class Post extends Component {
                 <Avatar
                   size="small"
                   src={user ? user.photoURL : ''}
-                  style={{ marginLeft: 10 }}
+                  style={{ marginLeft: 15, marginBottom: 15 }}
                 />
                 <span className="g-color mt-10 m-l-18">
                   What's on your mind, {user.userName}?{' '}

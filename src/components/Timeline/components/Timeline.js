@@ -8,7 +8,6 @@ import TopPosts from './TopPosts'
 import * as actions from '../../../actions/index'
 import Outgoing from './Outgoing'
 import Post from '../../Post/components/Post'
-import DrawerComponent from '../../Drawer/components/Drawer'
 import Users from '../../Users/components/Users'
 import Search from '../../Search/components/Search'
 import Grid from '@material-ui/core/Grid'
@@ -50,9 +49,6 @@ class Timeline extends Component {
     return (
       <React.Fragment>
         <Grid container spacing={1}>
-          <Grid item xs={12} sm={1}>
-            <DrawerComponent />
-          </Grid>
           {user && this.props.location.pathname == '/users' && (
             <Grid item lg={11} xs={12} sm={3}>
               <Search />

@@ -7,6 +7,7 @@ import twitterIcon from '../../../../assets/social/twitter.svg'
 import instagramIcon from '../../../../assets/social/instagram.svg'
 import youtubeIcon from '../../../../assets/social/youtube.svg'
 import Divider from '@material-ui/core/Divider'
+import Fab from '@material-ui/core/Fab'
 
 const styles = theme => ({
   root: {
@@ -20,6 +21,9 @@ const styles = theme => ({
     height: 30,
     backgroundColor: '#2a7fff',
     borderRadius: 16,
+  },
+  label: {
+    color: '#2a7fff',
   },
 })
 
@@ -94,191 +98,179 @@ class Footer extends React.Component {
     })
   }
 
+  handleSignin = () => {
+    this.props.history.push('/signin')
+  }
+
   render() {
     const { classes, authenticated } = this.props
     const { value } = this.state
     return (
       <React.Fragment>
-        <footer className="p-v-30 w-full">
-          <div className="w-max-1200 w-full m-auto">
-            <div className="row fl fl-justify-between fl-wrap">
-              <div className="m-30 col-lg-2 col-md-2 col-sm-2 col-xs-4">
-                <small>
-                  <strong className="primary-color">About</strong>
-                </small>
-                <ul>
-                  <li className="m-v-10">
-                    <a className="cursor" onClick={() => this.handleAbout()}>
-                      Writenpost, Inc
-                    </a>
-                  </li>
-                  <li className="m-v-10">
-                    <a className="cursor" onClick={() => this.handleCareers()}>
-                      Careers
-                    </a>
-                  </li>
-                  <li className="m-v-10">
-                    <a className="cursor" onClick={() => this.handleFeedback()}>
-                      Feedback
-                    </a>
-                  </li>
-                  <li className="m-v-10">
-                    <a
-                      className="cursor"
-                      onClick={() => this.handleDevelopers()}
-                    >
-                      Developers
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div className="m-30 col-lg-2 col-md-2 col-sm-2 col-xs-4">
-                <small>
-                  <strong className="primary-color">Community Standards</strong>
-                </small>
-                <ul>
-                  <li className="m-v-10">
-                    <a className="cursor" onClick={() => this.handleAbout()}>
-                      Community
-                    </a>
-                  </li>
-                  <li className="m-v-10">
-                    <a className="cursor" onClick={() => this.handleCareers()}>
-                      FAQ
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div className="m-30 col-lg-2 col-md-2 col-sm-2 col-xs-4">
-                <small>
-                  <strong className="primary-color">Help & Support</strong>
-                </small>
-                <ul>
-                  <li className="m-v-10">
-                    <a className="cursor" onClick={() => this.handleAbout()}>
-                      Help Centre
-                    </a>
-                  </li>
-                  <li className="m-v-10">
-                    <a className="cursor" onClick={() => this.handleCareers()}>
-                      Terms Of Service
-                    </a>
-                  </li>
-                  <li className="m-v-10">
-                    <a className="cursor" onClick={() => this.handleFeedback()}>
-                      Privacy Policy
-                    </a>
-                  </li>
-                </ul>
-              </div>
-              <div className="m-30 col-lg-2 col-md-2 col-sm-2 col-xs-4">
-                <small>
-                  <strong className="primary-color">Follow Us</strong>
-                </small>
-                <ul>
-                  <li className="m-v-10">
-                    <a href="https://www.facebook.com" target="_blank">
-                      <img className={classes.icon} src={fbIcon} /> Facebook
-                    </a>
-                  </li>
-                  <li className="m-v-10">
-                    <a href="https://www.instagram.com" target="_blank">
-                      <img className={classes.icon} src={twitterIcon} /> Twitter
-                    </a>
-                  </li>
-                  <li className="m-v-10">
-                    <a href="https://www.twitter.com/" target="_blank">
-                      <img className={classes.icon} src={instagramIcon} />{' '}
-                      Instagram
-                    </a>
-                  </li>
-                  <li className="m-v-10">
-                    <a href="https://www.youtube.com" target="_blank">
-                      <img className={classes.icon} src={youtubeIcon} /> Youtube
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <Divider color="primary" />
-            <div className="w-max-1200 w-full m-auto relative p-h-20 fl-justify-around fl-items-center fl-wrap">
+        {!authenticated && (
+          <section className="primary-bg-color w-full relative">
+            <div className="w-max-1200 w-full m-auto relative p-v-80 p-h-20 fl-justify-around fl-items-center fl-wrap">
               <div className="row">
                 <div className="col-lg-8 col-md-2 col-sm-2 col-xs-4">
-                  <p className="mt-5">© 2020 Writenpost, Inc.</p>
-                  <p>
-                    Writenpost and Writenpost logo are registered trademarks of
-                    Writenpost, Inc.
-                  </p>
+                  <h2 className="w-color">Ready to get started?</h2>
+                  <h4 className="w-color">
+                    Login with your social account and start sharing opinions.
+                  </h4>
+                </div>
+                <div className="col-lg-4 col-md-2 col-sm-2 col-xs-4">
+                  <Fab
+                    onClick={() => this.handleSignin()}
+                    size="small"
+                    aria-label="add"
+                    variant="extended"
+                    className="mt-25"
+                    classes={{ label: classes.label }}
+                  >
+                    login With Social Account
+                  </Fab>
                 </div>
               </div>
             </div>
-          </div>
-        </footer>
-        {/*<footer className="footer-v2">
-          <div className="max-width">
-            <div className="footer">
-              <div className="row row-footer border-bottom social">
-                <div className="col-lg-2 col-md-2 col-sm-2 col-xs-4">
-                  Discover Us
+          </section>
+        )}
+        <section>
+          <footer className="p-v-30 w-full">
+            <div className="w-max-1200 w-full m-auto">
+              <div className="row fl fl-justify-between fl-wrap">
+                <div className="m-30 col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                  <small>
+                    <strong className="primary-color">About</strong>
+                  </small>
+                  <ul>
+                    <li className="m-v-10">
+                      <a className="cursor" onClick={() => this.handleAbout()}>
+                        Writenpost, Inc
+                      </a>
+                    </li>
+                    <li className="m-v-10">
+                      <a
+                        className="cursor"
+                        onClick={() => this.handleCareers()}
+                      >
+                        Careers
+                      </a>
+                    </li>
+                    <li className="m-v-10">
+                      <a
+                        className="cursor"
+                        onClick={() => this.handleFeedback()}
+                      >
+                        Feedback
+                      </a>
+                    </li>
+                    <li className="m-v-10">
+                      <a
+                        className="cursor"
+                        onClick={() => this.handleDevelopers()}
+                      >
+                        Developers
+                      </a>
+                    </li>
+                  </ul>
                 </div>
-                <div style={{ marginLeft: 20 }}>
-                  <a
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => this.handleAbout()}
-                  >
-                    About
-                  </a>
-                  <a
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => this.handleCareers()}
-                  >
-                    Careers
-                  </a>
-                  
-                  <a
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => this.handleFeedback()}
-                  >
-                    Feedback
-                  </a>
-                  <a
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => this.handleDevelopers()}
-                  >
-                    Developers
-                  </a>
+                <div className="m-30 col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                  <small>
+                    <strong className="primary-color">
+                      Community Standards
+                    </strong>
+                  </small>
+                  <ul>
+                    <li className="m-v-10">
+                      <a className="cursor" onClick={() => this.handleAbout()}>
+                        Community
+                      </a>
+                    </li>
+                    <li className="m-v-10">
+                      <a
+                        className="cursor"
+                        onClick={() => this.handleCareers()}
+                      >
+                        FAQ
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="m-30 col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                  <small>
+                    <strong className="primary-color">Help & Support</strong>
+                  </small>
+                  <ul>
+                    <li className="m-v-10">
+                      <a className="cursor" onClick={() => this.handleAbout()}>
+                        Help Centre
+                      </a>
+                    </li>
+                    <li className="m-v-10">
+                      <a
+                        className="cursor"
+                        onClick={() => this.handleCareers()}
+                      >
+                        Terms Of Service
+                      </a>
+                    </li>
+                    <li className="m-v-10">
+                      <a
+                        className="cursor"
+                        onClick={() => this.handleFeedback()}
+                      >
+                        Privacy Policy
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div className="m-30 col-lg-2 col-md-2 col-sm-2 col-xs-4">
+                  <small>
+                    <strong className="primary-color">Follow Us</strong>
+                  </small>
+                  <ul>
+                    <li className="m-v-10">
+                      <a href="https://www.facebook.com" target="_blank">
+                        <img className={classes.icon} src={fbIcon} /> Facebook
+                      </a>
+                    </li>
+                    <li className="m-v-10">
+                      <a href="https://www.instagram.com" target="_blank">
+                        <img className={classes.icon} src={twitterIcon} />{' '}
+                        Twitter
+                      </a>
+                    </li>
+                    <li className="m-v-10">
+                      <a href="https://www.twitter.com/" target="_blank">
+                        <img className={classes.icon} src={instagramIcon} />{' '}
+                        Instagram
+                      </a>
+                    </li>
+                    <li className="m-v-10">
+                      <a href="https://www.youtube.com" target="_blank">
+                        <img className={classes.icon} src={youtubeIcon} />{' '}
+                        Youtube
+                      </a>
+                    </li>
+                  </ul>
                 </div>
               </div>
-              <div className="row row-footer border-bottom social">
-                <div className="col-lg-2 col-md-2 col-sm-2 col-xs-4">
-                  Social Links
-                </div>
-                <div style={{ marginLeft: 20 }}>
-                  <a href="https://www.facebook.com" target="_blank">
-                    <img className={classes.icon} src={fbIcon} />
-                  </a>
-
-                  <a href="https://www.instagram.com" target="_blank">
-                    <img className={classes.icon} src={twitterIcon} />
-                  </a>
-
-                  <a href="https://www.twitter.com/" target="_blank">
-                    <img className={classes.icon} src={instagramIcon} />
-                  </a>
-
-                  <a href="https://www.youtube.com" target="_blank">
-                    <img className={classes.icon} src={youtubeIcon} />
-                  </a>
+              <Divider color="primary" />
+              <div className="w-max-1200 w-full m-auto relative p-h-20 fl-justify-around fl-items-center fl-wrap">
+                <div className="row">
+                  <div className="col-lg-8 col-md-2 col-sm-2 col-xs-4">
+                    <span className="mt-5">
+                      <b>Writenpost, Inc</b> © 2020
+                    </span>
+                    <span>
+                      &nbsp; Writenpost and Writenpost logo are registered
+                      trademarks of Writenpost, Inc.
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="row-footer tc-links clearfix">
-              <div className="copyrights">
-                Copyright © 2020 Writenpost Inc. All rights reserved.
-              </div>
-            </div>
-          </div>
-    </footer> */}
+          </footer>
+        </section>
       </React.Fragment>
     )
   }

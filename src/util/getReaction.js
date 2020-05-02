@@ -1,14 +1,15 @@
 import like from '../../assets/emojis/like.svg'
-import angry from '../../assets/emojis/angry.svg'
 import love from '../../assets/emojis/love.svg'
-import silly from '../../assets/emojis/silly.svg'
-import smiley from '../../assets/emojis/smiley.svg'
+import tounghout from '../../assets/emojis/tounghout.svg'
 import wow from '../../assets/emojis/surprise.svg'
-import sad from '../../assets/emojis/sad.svg'
 import profileLike from '../../assets/profile-like.svg'
 import profileLove from '../../assets/profile-love.svg'
 import following from '../../assets/following.svg'
 import follow from '../../assets/follow.svg'
+import comment from '../../assets/comment.svg'
+import dislike from '../../assets/emojis/dislike.svg'
+import perfect from '../../assets/emojis/perfect.svg'
+import thinking from '../../assets/emojis/thinking.svg'
 
 export default function getReaction(type) {
   let icon = like
@@ -16,23 +17,23 @@ export default function getReaction(type) {
     case 'like':
       icon = like
       break
+    case 'dislike':
+      icon = dislike
+      break
+    case 'perfect':
+      icon = perfect
+      break
+    case 'thinking':
+      icon = thinking
+      break
     case 'love':
       icon = love
-      break
-    case 'sad':
-      icon = sad
       break
     case 'wow':
       icon = wow
       break
-    case 'silly':
-      icon = silly
-      break
-    case 'smiley':
-      icon = smiley
-      break
-    case 'angry':
-      icon = angry
+    case 'tounghout':
+      icon = tounghout
       break
     case 'profile-like':
       icon = like
@@ -45,6 +46,18 @@ export default function getReaction(type) {
       break
     case 'un-follow':
       icon = follow
+      break
+    case 'post-comment':
+      icon = comment
+      break
+    case 'post-accept':
+      icon = like
+      break
+    case 'post-reject':
+      icon = like
+      break
+    case 'comment-like':
+      icon = like
       break
     default:
       break

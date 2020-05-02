@@ -40,7 +40,7 @@ class Loader extends Component {
   }
 
   render() {
-    const { classes, authenticated } = this.props
+    const { classes } = this.props
     const { completed, showLoader } = this.state
     return (
       <div className="content">

@@ -15,6 +15,11 @@ import Typography from '@material-ui/core/Typography'
 import Loader from '../../Loader/components/Loader'
 import Grid from '@material-ui/core/Grid'
 import { Link } from 'react-router-dom'
+import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
+import getPastTime from '../../../util/getPastTime'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import IconButton from '@material-ui/core/IconButton'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 
 class Users extends Component {
   constructor(props) {
@@ -29,6 +34,8 @@ class Users extends Component {
   handleViewProfile = userId => {
     this.props.history.push(`/profile/${userId}`)
   }
+
+  handleMenu = () => {}
 
   render() {
     const { classes, users, usersLoading } = this.props
@@ -50,9 +57,14 @@ class Users extends Component {
                   <Tooltip title={user.userName} placement="right-end">
                     <ListItemText
                       primary={
-                        <Link className="hyperlink" to={`/profile/${user._id}`}>
-                          {user.userName}
-                        </Link>
+                        <>
+                          <Link
+                            className="hyperlink"
+                            to={`/profile/${user._id}`}
+                          >
+                            {user.userName + ' '}
+                          </Link>
+                        </>
                       }
                       secondary={
                         <React.Fragment>
@@ -61,20 +73,25 @@ class Users extends Component {
                             variant="body2"
                             color="textPrimary"
                           >
-                            A {user.providerId} user
+                            {getCardSubHeaderProfileSummary(user)}
                           </Typography>
                         </React.Fragment>
                       }
                     />
                   </Tooltip>
-                  <Tooltip title="View Profile" placement="right-end">
-                    <Button
-                      className="mt-10"
-                      onClick={() => this.handleViewProfile(user._id)}
-                    >
-                      View Profile
-                    </Button>
-                  </Tooltip>
+                  <ListItemSecondaryAction className="t-37 r-5">
+                    <small className="grey-color ">
+                      {getPastTime(user.createdAt)}
+                    </small>
+                    <Tooltip title="Action">
+                      <IconButton
+                        aria-label="settings"
+                        onClick={this.handleMenu}
+                      >
+                        <MoreHorizIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </ListItemSecondaryAction>
                 </ListItem>
               </Grid>
             ))

@@ -47,7 +47,7 @@ class Summary extends Component {
     const { summary, loading } = this.state
     return (
       <React.Fragment>
-        <Card style={{ width: '100%', maxWidth: '100%' }}>
+        <Card>
           <CardHeader
             title={title}
             className="card-title"

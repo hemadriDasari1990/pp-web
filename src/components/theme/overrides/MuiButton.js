@@ -7,6 +7,10 @@ export default {
     width: '150px !important',
     textTransform: 'none',
   },
+  outlined: {
+    padding: '6px 9px !important',
+    // marginTop: -30
+  },
   root: {
     color: '#2a7fff',
     backgroundColor: '#f0f2f5d9',

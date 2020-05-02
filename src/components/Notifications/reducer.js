@@ -12,7 +12,7 @@ export const Notifications = (state = Map(), action) => {
     case actions.GET_NOTIFICATIONS_SUCCESS:
       return state.setIn(['success'], action.data).setIn(['loading'], false)
 
-    case actions.GET_NOTIFICATIONS_FAILURE:
+    case actions.GET_NOTIFICATIONS_ERROR:
       return state.setIn(['errors'], action.errors).setIn(['loading'], false)
 
     case actions.MARK_NOTIFICATION_READ_REQUEST:
@@ -26,7 +26,7 @@ export const Notifications = (state = Map(), action) => {
         .setIn(['markRead', 'success'], action.data)
         .setIn(['markRead', 'loading'], false)
 
-    case actions.MARK_NOTIFICATION_READ_FAILURE:
+    case actions.MARK_NOTIFICATION_READ_ERROR:
       return state
         .setIn(['markRead', 'errors'], action.errors)
         .setIn(['markRead', 'loading'], false)

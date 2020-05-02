@@ -8,11 +8,11 @@ export const getFeedbacksRequest = () => {
   }
 }
 
-export const getFeedbacksSuccess = preferences => {
+export const getFeedbacksSuccess = feedbacks => {
   return {
     type: action.GET_FEEDBACKS_SUCCESS,
     loading: false,
-    data: preferences,
+    data: feedbacks ? feedbacks.feedbacks : undefined,
   }
 }
 
