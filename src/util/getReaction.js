@@ -44,9 +44,6 @@ export default function getReaction(type) {
     case 'follow':
       icon = following
       break
-    case 'un-follow':
-      icon = follow
-      break
     case 'post-comment':
       icon = comment
       break

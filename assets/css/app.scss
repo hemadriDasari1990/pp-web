@@ -544,7 +544,7 @@ $blue: #2b7eff;
   border-radius: 50%;
   // margin: $border;
 
-  &.approved, &.approved:before {
+  &.accepted, &.accepted:before {
     background: $green;
   }
   
@@ -846,7 +846,7 @@ small {
   right: 5px !important;
 }
 
-.approved {
+.accepted {
   background-color: $green;
   color: #fff !important;
 }

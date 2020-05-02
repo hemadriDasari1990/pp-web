@@ -187,16 +187,6 @@ class NotificationsList extends Component {
           </span>
         )
         break
-      case 'un-follow':
-        message = (
-          <span>
-            <Link className="hyperlink" to={`/profile/${sender._id}`}>
-              {sender.userName}
-            </Link>{' '}
-            unfollowed you
-          </span>
-        )
-        break
       case 'post-created':
         message = (
           <span>
@@ -372,20 +362,6 @@ class NotificationsList extends Component {
                   </div>
                 ))
               : null}
-            {notifications &&
-            notifications.length &&
-            notificationsCount &&
-            limit < notificationsCount.total ? (
-              <div className="col text-center">
-                <Button
-                  color="primary"
-                  className="mt-10"
-                  onClick={() => this.showMoreNotifications()}
-                >
-                  Show More Notifications
-                </Button>
-              </div>
-            ) : null}
             {!notificationsLoading &&
               (!notifications || !notifications.length) && (
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -397,6 +373,20 @@ class NotificationsList extends Component {
               (!notifications || !notifications.length) && <Loader />}
           </div>
         </List>
+        {notifications &&
+        notifications.length &&
+        notificationsCount &&
+        limit < notificationsCount.total ? (
+          <div className="text-center">
+            <Button
+              color="primary"
+              className="mt-10"
+              onClick={() => this.showMoreNotifications()}
+            >
+              Show More Notifications
+            </Button>
+          </div>
+        ) : null}
       </>
     )
   }

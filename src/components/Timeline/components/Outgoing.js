@@ -388,7 +388,7 @@ class Outgoing extends Component {
                         {showEmojis && (
                           <div className="reaction-box">
                             <div
-                              className="reaction-icon"
+                              className="v-align-middle reaction-icon"
                               onClick={() =>
                                 this.createOrUpdateReaction(
                                   user._id,
@@ -402,7 +402,7 @@ class Outgoing extends Component {
                               </Tooltip>
                             </div>
                             <div
-                              className="reaction-icon"
+                              className="v-align-middle reaction-icon"
                               onClick={() =>
                                 this.createOrUpdateReaction(
                                   user._id,
@@ -416,7 +416,7 @@ class Outgoing extends Component {
                               </Tooltip>
                             </div>
                             <div
-                              className="reaction-icon"
+                              className="v-align-middle reaction-icon"
                               onClick={() =>
                                 this.createOrUpdateReaction(
                                   user._id,
@@ -430,7 +430,7 @@ class Outgoing extends Component {
                               </Tooltip>
                             </div>
                             <div
-                              className="reaction-icon"
+                              className="v-align-middle reaction-icon"
                               onClick={() =>
                                 this.createOrUpdateReaction(
                                   user._id,
@@ -444,7 +444,7 @@ class Outgoing extends Component {
                               </Tooltip>
                             </div>
                             <div
-                              className="reaction-icon"
+                              className="v-align-middle reaction-icon"
                               onClick={() =>
                                 this.createOrUpdateReaction(
                                   user._id,
@@ -458,7 +458,7 @@ class Outgoing extends Component {
                               </Tooltip>
                             </div>
                             <div
-                              className="reaction-icon"
+                              className="v-align-middle reaction-icon"
                               onClick={() =>
                                 this.createOrUpdateReaction(
                                   user._id,
@@ -472,7 +472,7 @@ class Outgoing extends Component {
                               </Tooltip>
                             </div>
                             <div
-                              className="reaction-icon"
+                              className="v-align-middle reaction-icon"
                               onClick={() =>
                                 this.createOrUpdateReaction(
                                   user._id,

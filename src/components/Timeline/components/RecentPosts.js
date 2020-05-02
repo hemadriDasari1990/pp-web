@@ -144,7 +144,7 @@ class RecentPosts extends Component {
                           variant="body2"
                           className={
                             post.approved
-                              ? 'approved ' + 'mr-10 reactions-subheader'
+                              ? 'accepted ' + 'mr-10 reactions-subheader'
                               : post.rejected
                               ? 'rejected ' + 'mr-10 reactions-subheader'
                               : 'pending ' + 'mr-10 reactions-subheader'

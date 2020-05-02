@@ -200,7 +200,7 @@ class PostDetails extends Component {
                           <span
                             className={
                               postDetails.approved
-                                ? 'approved ' + 'reactions-subheader'
+                                ? 'accepted ' + 'reactions-subheader'
                                 : postDetails.rejected
                                 ? 'rejected ' + 'reactions-subheader'
                                 : 'pending ' + 'reactions-subheader'
