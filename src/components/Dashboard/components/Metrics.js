@@ -40,7 +40,9 @@ class Metrics extends Component {
             <Divider orientation="vertical" flexItem />
             <div className="col text-center metrics-card-title">
               <span>{title}</span>
-              <h3 className="f-w-600">{formateNumber(count)}</h3>
+              <h3 className="f-w-600">
+                {count > 0 ? formateNumber(count) : 0}
+              </h3>
             </div>
           </div>
         </CardContent>
