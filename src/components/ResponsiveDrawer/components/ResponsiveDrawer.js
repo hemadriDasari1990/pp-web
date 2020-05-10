@@ -249,8 +249,8 @@ class ResponsiveDrawer extends React.Component {
       classes,
       authenticated,
       user,
-      createUserSuccess,
-      createUserErrors,
+      createOrUpdateUserSuccess,
+      createOrUpdateUserErrors,
       notificationsCount,
       container,
       theme,
@@ -350,21 +350,21 @@ class ResponsiveDrawer extends React.Component {
               </div>
             )} */}
             {/* {showNotification && <Notifications openMenu={showNotification} />} */}
-            {createUserSuccess &&
-              createUserSuccess.size > 0 &&
-              createUserSuccess.get('message') && (
+            {createOrUpdateUserSuccess &&
+              createOrUpdateUserSuccess.size > 0 &&
+              createOrUpdateUserSuccess.get('message') && (
                 <CustomizedSnackbars
                   open={true}
-                  message={createUserSuccess.get('message')}
+                  message={createOrUpdateUserSuccess.get('message')}
                   status={'success'}
                 />
               )}
-            {createUserErrors &&
-              createUserErrors.size > 0 &&
-              createUserErrors.get('message') && (
+            {createOrUpdateUserErrors &&
+              createOrUpdateUserErrors.size > 0 &&
+              createOrUpdateUserErrors.get('message') && (
                 <CustomizedSnackbars
                   open={true}
-                  message={createUserErrors.get('message')}
+                  message={createOrUpdateUserErrors.get('message')}
                   status={'error'}
                 />
               )}
@@ -449,9 +449,18 @@ ResponsiveDrawer.propTypes = {
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'])
   const usersLoading = state.getIn(['user', 'all', 'loading'], false)
-  const createUserSuccess = state.getIn(['user', 'create', 'success'], Map())
-  const createUserloading = state.getIn(['user', 'create', 'loading'], false)
-  const createUserErrors = state.getIn(['user', 'create', 'errors'], Map())
+  const createOrUpdateUserSuccess = state.getIn(
+    ['user', 'create-or-update', 'success'],
+    Map(),
+  )
+  const createOrUpdateUserLoading = state.getIn(
+    ['user', 'create-or-update', 'loading'],
+    false,
+  )
+  const createOrUpdateUserErrors = state.getIn(
+    ['user', 'create-or-update', 'errors'],
+    Map(),
+  )
   const notificationsCount = state.getIn([
     'Timeline',
     'notifications',
@@ -462,9 +471,9 @@ const mapStateToProps = state => {
   return {
     user,
     usersLoading,
-    createUserSuccess,
-    createUserloading,
-    createUserErrors,
+    createOrUpdateUserSuccess,
+    createOrUpdateUserLoading,
+    createOrUpdateUserErrors,
     notificationsCount,
   }
 }

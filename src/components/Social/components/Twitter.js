@@ -34,28 +34,21 @@ class Twitter extends Component {
       .then((user, error) => {
         if (!error) {
           const data = user.user.providerData[0]
-          this.props.getUser(data.uid).then(u => {
-            if (!u || (u && u.data && !u.data.user)) {
-              this.props
-                .createUser({
-                  email: user.additionalUserInfo.profile.email,
-                  userName: data.displayName,
-                  photoURL: data.photoURL,
-                  uid: data.uid,
-                  phoneNumber: data.phoneNumber,
-                  providerId: data.providerId,
-                })
-                .then(user => {
-                  if (user && user.data.user) {
-                    this.props.storeUser(user.data.user)
-                    this.props.history.push('/dashboard')
-                  }
-                })
-            } else {
-              u.data ? this.props.storeUser(u.data.user) : null
-              this.props.history.push('/dashboard')
-            }
-          })
+          this.props
+            .createOrUpdateUser({
+              email: user.additionalUserInfo.profile.email,
+              userName: data.displayName,
+              photoURL: data.photoURL,
+              uid: data.uid,
+              phoneNumber: data.phoneNumber,
+              providerId: data.providerId,
+            })
+            .then(user => {
+              if (user && user.data.user) {
+                this.props.storeUser(user.data.user)
+                this.props.history.push('/dashboard')
+              }
+            })
         } else {
           this.props.history.push('/')
         }
@@ -98,8 +91,7 @@ const mapStateToProps = state => {
 
 const actionsToProps = {
   storeUser: actions.storeUser,
-  createUser: actions.createUser,
-  getUser: actions.getUser,
+  createOrUpdateUser: actions.createOrUpdateUser,
 }
 
 export default withRouter(

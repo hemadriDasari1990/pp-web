@@ -32,33 +32,23 @@ class Facebook extends Component {
     const provider = new firebase.auth.FacebookAuthProvider()
     provider.addScope('email')
     await new firebase.auth().signInWithPopup(provider).then((user, error) => {
-      if (error) {
-        this.props.history.push('/')
-      }
       if (!error) {
         const data = user.user.providerData[0]
-        this.props.getUser(data.uid).then(u => {
-          if (!u || (u && u.data && !u.data.user)) {
-            this.props
-              .createUser({
-                email: data.email,
-                userName: data.displayName,
-                photoURL: data.photoURL,
-                uid: data.uid,
-                phoneNumber: data.phoneNumber,
-                providerId: data.providerId,
-              })
-              .then(user => {
-                if (user && user.data.user) {
-                  this.props.storeUser(user.data.user)
-                  this.props.history.push('/dashboard')
-                }
-              })
-          } else {
-            this.props.storeUser(u.data.user)
-            this.props.history.push('/dashboard')
-          }
-        })
+        this.props
+          .createOrUpdateUser({
+            email: data.email,
+            userName: data.displayName,
+            photoURL: data.photoURL,
+            uid: data.uid,
+            phoneNumber: data.phoneNumber,
+            providerId: data.providerId,
+          })
+          .then(user => {
+            if (user && user.data.user) {
+              this.props.storeUser(user.data.user)
+              this.props.history.push('/dashboard')
+            }
+          })
       } else {
         this.props.history.push('/')
       }
@@ -100,8 +90,7 @@ const mapStateToProps = state => {
 
 const actionsToProps = {
   storeUser: actions.storeUser,
-  createUser: actions.createUser,
-  getUser: actions.getUser,
+  createOrUpdateUser: actions.createOrUpdateUser,
 }
 
 export default withRouter(

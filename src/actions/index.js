@@ -1,4 +1,5 @@
 import * as action from '../constants/actionTypes'
+
 import config from '../config'
 
 export const storeUser = user => {
@@ -14,42 +15,42 @@ export const userLogout = () => {
   }
 }
 
-export const createUserRequest = () => {
+export const createOrUpdateUserRequest = () => {
   return {
-    type: action.CREATE_USER_REQUEST,
+    type: action.CREATE_OR_UPDATE_USER_REQUEST,
     loading: true,
   }
 }
 
-export const createUserSuccess = user => {
+export const createOrUpdateUserSuccess = user => {
   return {
-    type: action.CREATE_USER_SUCCESS,
+    type: action.CREATE_OR_UPDATE_USER_SUCCESS,
     loading: false,
     data: user,
   }
 }
 
-export const createUserError = errors => {
+export const createOrUpdateUserError = errors => {
   return {
-    type: action.CREATE_USER_ERROR,
+    type: action.CREATE_OR_UPDATE_USER_ERROR,
     loading: false,
     errors: errors,
   }
 }
 
-export const createUser = user => {
+export const createOrUpdateUser = user => {
   const options = {
-    method: 'POST',
+    method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(user),
   }
   return dispatch => {
-    dispatch(createUserRequest())
-    return fetch(config.URL_PREFIX + '/user/create', options)
+    dispatch(createOrUpdateUserRequest())
+    return fetch(config.URL_PREFIX + '/user/createOrUpdate', options)
       .then(response => response.json())
-      .then(data => dispatch(createUserSuccess(data)))
+      .then(data => dispatch(createOrUpdateUserSuccess(data)))
       .catch(errors => {
-        dispatch(createUserError(errors))
+        dispatch(createOrUpdateUserError(errors))
       })
   }
 }

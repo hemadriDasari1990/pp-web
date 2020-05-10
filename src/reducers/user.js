@@ -1,4 +1,5 @@
 import * as actions from '../constants/actionTypes'
+
 import { Map, fromJS } from 'immutable'
 
 export const user = (state = Map(), action) => {
@@ -6,21 +7,21 @@ export const user = (state = Map(), action) => {
     case actions.STORE_USER:
       return state.setIn(['data'], action.user)
 
-    case actions.CREATE_USER_REQUEST:
+    case actions.CREATE_OR_UPDATE_USER_REQUEST:
       return state
-        .setIn(['create', 'loading'], true)
-        .deleteIn(['create', 'errors'])
-        .deleteIn(['create', 'success'])
+        .setIn(['create-or-update', 'loading'], true)
+        .deleteIn(['create-or-update', 'errors'])
+        .deleteIn(['create-or-update', 'success'])
 
-    case actions.CREATE_USER_SUCCESS:
+    case actions.CREATE_OR_UPDATE_USER_SUCCESS:
       return state
-        .setIn(['create', 'success'], fromJS(action.data))
-        .setIn(['create', 'loading'], false)
+        .setIn(['create-or-update', 'success'], fromJS(action.data))
+        .setIn(['create-or-update', 'loading'], false)
 
-    case actions.CREATE_USER_ERROR:
+    case actions.CREATE_OR_UPDATE_USER_ERROR:
       return state
-        .setIn(['create', 'errors'], fromJS(action.errors))
-        .setIn(['create', 'loading'], false)
+        .setIn(['create-or-update', 'errors'], fromJS(action.errors))
+        .setIn(['create-or-update', 'loading'], false)
 
     case actions.GET_USERS_REQUEST:
       return state
