@@ -1,31 +1,28 @@
+import * as actions from '../actions'
+
+import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
-import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
-import CardContent from '@material-ui/core/CardContent'
-import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
+import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+
 import Avatar from '@material-ui/core/Avatar'
-import ListItemText from '@material-ui/core/ListItemText'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import CardHeader from '@material-ui/core/CardHeader'
+import IconButton from '@material-ui/core/IconButton'
+import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import Loader from '../../Loader/components/Loader'
-import * as actions from '../actions'
-import { Map, fromJS } from 'immutable'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import formateNumber from '../../../util/formateNumber'
-import getReaction from '../../../util/getReaction'
-import renderUserNames from '../../../util/renderUserNames'
-import AvatarGroup from '@material-ui/lab/AvatarGroup'
-import { withStyles } from '@material-ui/core/styles'
-import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
-import Button from '@material-ui/core/Button'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import getPastTime from '../../../util/getPastTime'
-import IconButton from '@material-ui/core/IconButton'
+import ListItemText from '@material-ui/core/ListItemText'
+import Loader from '../../Loader/components/Loader'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
+import { connect } from 'react-redux'
+import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
+import getPastTime from '../../../util/getPastTime'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
   smallAvatar: {
@@ -35,26 +32,26 @@ const styles = {
   },
 }
 
-class TopPosts extends Component {
+class PopularPosts extends Component {
   componentDidMount() {
     if (!this.props.match.params.id) {
-      this.props.getIncomingPosts(this.props.user._id, '')
+      this.props.getPopularPosts(this.props.user._id, this.props.type)
     }
     if (this.props.match.params.id) {
-      this.props.getIncomingPosts(this.props.match.params.id, '')
+      this.props.getPopularPosts(this.props.match.params.id, this.props.type)
     }
   }
 
   componentDidUpdate(prevProps, prevState) {
-    //this.props.getIncomingPosts(this.props.user._id)
+    //this.props.getpopularPosts(this.props.user._id)
   }
 
   render() {
     const {
       classes,
-      incomingPosts,
-      incomingPostsError,
-      incomingPostsLoading,
+      popularPosts,
+      popularPostsError,
+      popularPostsLoading,
       iposted,
       ireceived,
       user,
@@ -62,13 +59,16 @@ class TopPosts extends Component {
     return (
       <React.Fragment>
         <Card>
-          <CardHeader title="Popular Posts"></CardHeader>
+          <CardHeader
+            title="Popular Posts"
+            action={<a>View All</a>}
+          ></CardHeader>
           <CardContent>
             <List>
-              {!incomingPostsLoading &&
-              incomingPosts.length &&
-              incomingPosts.filter(p => p.approved).slice(0, 5).length ? (
-                incomingPosts
+              {!popularPostsLoading &&
+              popularPosts.length &&
+              popularPosts.filter(p => p.approved).slice(0, 5).length ? (
+                popularPosts
                   .filter(p => p.approved)
                   .slice(0, 5)
                   .map(post => (
@@ -90,7 +90,14 @@ class TopPosts extends Component {
                           </Avatar>
                         )}
                       </ListItemAvatar>
-                      <Tooltip title={post.pros} placement="right-end">
+                      <Tooltip
+                        title={
+                          post.isAnonymous
+                            ? 'Annonymous User'
+                            : post.postedBy.userName
+                        }
+                        placement="top"
+                      >
                         <ListItemText
                           primary={
                             !post.isAnonymous ? (
@@ -101,7 +108,8 @@ class TopPosts extends Component {
                                 >
                                   {user && user._id === post.postedBy._id
                                     ? 'You'
-                                    : post.postedBy.userName}
+                                    : post.postedBy.userName.substring(0, 15) +
+                                      '...'}
                                 </Link>
                               </>
                             ) : (
@@ -115,28 +123,41 @@ class TopPosts extends Component {
                                 variant="body2"
                                 color="textPrimary"
                               >
-                                {post.pros}
+                                {post.type === 'Generic'
+                                  ? post.message.substring(0, 45) + '...'
+                                  : ''}
+                                {post.type === 'Opinion' ? (
+                                  <>
+                                    <b>Pros&nbsp;-&nbsp;</b>{' '}
+                                    {post.pros.substring(0, 45)} + '...'
+                                  </>
+                                ) : (
+                                  ''
+                                )}
                               </Typography>
                             </React.Fragment>
                           }
                         />
                       </Tooltip>
-                      <ListItemSecondaryAction className="t-37 r-5">
+                      <ListItemSecondaryAction
+                        style={{ top: '28%' }}
+                        className="r-5"
+                      >
                         <Typography
                           component="span"
                           variant="body2"
                           className={
                             post.approved
-                              ? 'accepted ' + 'mr-10 reactions-subheader'
+                              ? 'status accepted ' + 'mr-10'
                               : post.rejected
-                              ? 'rejected ' + 'mr-10 reactions-subheader'
-                              : 'pending ' + 'mr-10 reactions-subheader'
+                              ? 'status rejected ' + 'mr-10'
+                              : 'status pending ' + 'mr-10'
                           }
                         >
                           {getCardSubHeaderStatus(post)}
                         </Typography>
                         <small className="grey-color ">
-                          {getPastTime(post.updatedAt)}
+                          {getPastTime(post.createdAt)}
                         </small>
                         <Tooltip title="Action">
                           <IconButton
@@ -155,7 +176,7 @@ class TopPosts extends Component {
                 </Typography>
               )}
 
-              {incomingPostsLoading && !incomingPosts.length && <Loader />}
+              {popularPostsLoading && !popularPosts.length && <Loader />}
             </List>
           </CardContent>
         </Card>
@@ -164,29 +185,29 @@ class TopPosts extends Component {
   }
 }
 
-TopPosts.propTypes = {}
+PopularPosts.propTypes = {}
 
 const mapStateToProps = state => {
-  const incomingPosts = state.getIn(['Timeline', 'incoming', 'success'], Map())
-  const incomingPostsLoading = state.getIn(
-    ['Timeline', 'incoming', 'loading'],
+  const popularPosts = state.getIn(['Timeline', 'popular', 'success'], Map())
+  const popularPostsLoading = state.getIn(
+    ['Timeline', 'popular', 'loading'],
     false,
   )
-  const incomingPostsError = state.getIn(
-    ['Timeline', 'incoming', 'errors'],
+  const popularPostsError = state.getIn(
+    ['Timeline', 'popular', 'errors'],
     Map(),
   )
   return {
-    incomingPosts,
-    incomingPostsError,
-    incomingPostsLoading,
+    popularPosts,
+    popularPostsError,
+    popularPostsLoading,
   }
 }
 
 const actionsToProps = {
-  getIncomingPosts: actions.getIncomingPosts,
+  getPopularPosts: actions.getPopularPosts,
 }
 
 export default withRouter(
-  connect(mapStateToProps, actionsToProps)(withStyles(styles)(TopPosts)),
+  connect(mapStateToProps, actionsToProps)(withStyles(styles)(PopularPosts)),
 )

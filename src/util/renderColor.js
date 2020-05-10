@@ -10,10 +10,10 @@ export default function renderColor(type) {
       color = '#2a7fff'
       break
     case 'perfect':
-      color = '#3ef106'
+      color = '#f7b125'
       break
     case 'thinking':
-      color = '#fd7e14'
+      color = '#f7b125'
       break
     case 'love':
       color = 'red'
@@ -22,7 +22,7 @@ export default function renderColor(type) {
       color = '#2a7fff'
       break
     case 'tounghout':
-      color = '#f106b2'
+      color = '#f7b125'
       break
     default:
       break

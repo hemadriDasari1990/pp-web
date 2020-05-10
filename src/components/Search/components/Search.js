@@ -1,18 +1,20 @@
-import React from 'react'
-import TextField from '@material-ui/core/TextField'
+import * as mainActions from '../../../actions/index'
+
+import React, { Component } from 'react'
+
+import Autocomplete from '@material-ui/lab/Autocomplete'
 import Avatar from '@material-ui/core/Avatar'
-import { withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import SearchIcon from '@material-ui/icons/Search'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import * as mainActions from '../../../actions/index'
 import PropTypes from 'prop-types'
-import Autocomplete from '@material-ui/lab/Autocomplete'
+import SearchIcon from '@material-ui/icons/Search'
+import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
-import CircularProgress from '@material-ui/core/CircularProgress'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({
@@ -30,7 +32,7 @@ const styles = theme => ({
   },
 })
 
-class Search extends React.Component {
+class Search extends Component {
   constructor(props) {
     super(props)
 

@@ -1,15 +1,12 @@
 import React, { Component } from 'react'
-import Card from '@material-ui/core/Card'
-import Divider from '@material-ui/core/Divider'
-import CardContent from '@material-ui/core/CardContent'
-import Typography from '@material-ui/core/Typography'
-import formateNumber from '../../../util/formateNumber'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { Map, fromJS } from 'immutable'
-import Loader from '../../Loader/components/Loader'
-import Avatar from '@material-ui/core/Avatar'
+
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import Divider from '@material-ui/core/Divider'
 import Fab from '@material-ui/core/Fab'
+import { connect } from 'react-redux'
+import formateNumber from '../../../util/formateNumber'
 
 class Metrics extends Component {
   constructor(props) {
@@ -20,17 +17,14 @@ class Metrics extends Component {
     const { classes, user, title, icon, name, count } = this.props
     return (
       <Card>
-        <CardContent className="container metrics-card-padding">
+        <CardContent>
           <div className="row">
             <div className="col align-self-start text-center">
               <Fab
-                color="inherit"
                 size="small"
-                aria-label={name}
                 color="primary"
                 style={{
-                  margin: '15% 30% 5% 30%',
-                  backgroundColor: '#2a7fff',
+                  margin: '10% 30% 5% 30%',
                 }}
               >
                 {icon}

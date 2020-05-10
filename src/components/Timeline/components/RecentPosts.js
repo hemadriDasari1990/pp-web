@@ -1,32 +1,29 @@
+import * as actions from '../actions'
+
+import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
-import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
-import CardContent from '@material-ui/core/CardContent'
-import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
+import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+
 import Avatar from '@material-ui/core/Avatar'
-import ListItemText from '@material-ui/core/ListItemText'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import CardHeader from '@material-ui/core/CardHeader'
+import IconButton from '@material-ui/core/IconButton'
+import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import Loader from '../../Loader/components/Loader'
-import * as actions from '../actions'
-import { Map, fromJS } from 'immutable'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import getReaction from '../../../util/getReaction'
-import renderUserNames from '../../../util/renderUserNames'
-import AvatarGroup from '@material-ui/lab/AvatarGroup'
-import { withStyles } from '@material-ui/core/styles'
-import PropTypes from 'prop-types'
-import formateNumber from '../../../util/formateNumber'
-import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
-import Button from '@material-ui/core/Button'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import getPastTime from '../../../util/getPastTime'
-import IconButton from '@material-ui/core/IconButton'
+import ListItemText from '@material-ui/core/ListItemText'
+import Loader from '../../Loader/components/Loader'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import PropTypes from 'prop-types'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
+import { connect } from 'react-redux'
+import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
+import getPastTime from '../../../util/getPastTime'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
   smallAvatar: {
@@ -69,11 +66,7 @@ class RecentPosts extends Component {
         <Card>
           <CardHeader
             title="Most Recent Posts"
-            action={
-              <a>
-                Shown upto <b>5</b> posts
-              </a>
-            }
+            action={<a>View All</a>}
           ></CardHeader>
           <CardContent>
             <List>
@@ -99,13 +92,11 @@ class RecentPosts extends Component {
                       </ListItemAvatar>
                       <Tooltip
                         title={
-                          post.approved
-                            ? 'Accepted'
-                            : post.rejected
-                            ? 'Rejected'
-                            : 'Pending'
+                          post.isAnonymous
+                            ? 'Annonymous User'
+                            : post.postedBy.userName
                         }
-                        placement="right-end"
+                        placement="top"
                       >
                         <ListItemText
                           primary={
@@ -117,11 +108,12 @@ class RecentPosts extends Component {
                                 >
                                   {user && user._id === post.postedBy._id
                                     ? 'You'
-                                    : post.postedBy.userName}
+                                    : post.postedBy.userName.substring(0, 15) +
+                                      '...'}
                                 </Link>
                               </>
                             ) : (
-                              <b className="hyperlink">Annonymous User </b>
+                              <b className="hyperlink">Annonymous ... </b>
                             )
                           }
                           secondary={
@@ -131,29 +123,39 @@ class RecentPosts extends Component {
                                 variant="body2"
                                 color="textPrimary"
                               >
-                                {post.pros}
+                                {post.type === 'Generic'
+                                  ? post.message.substring(0, 45) + '...'
+                                  : ''}
+                                {post.type === 'Opinion' ? (
+                                  <>
+                                    <b>Pros&nbsp;-&nbsp;</b>{' '}
+                                    {post.pros.substring(0, 45)} + '...'
+                                  </>
+                                ) : (
+                                  ''
+                                )}
                               </Typography>
                               <br />
                             </React.Fragment>
                           }
                         />
                       </Tooltip>
-                      <ListItemSecondaryAction className="t-37 r-5">
+                      <ListItemSecondaryAction style={{ top: '28%' }}>
                         <Typography
                           component="span"
                           variant="body2"
                           className={
                             post.approved
-                              ? 'accepted ' + 'mr-10 reactions-subheader'
+                              ? 'status accepted ' + 'mr-10'
                               : post.rejected
-                              ? 'rejected ' + 'mr-10 reactions-subheader'
-                              : 'pending ' + 'mr-10 reactions-subheader'
+                              ? 'status rejected ' + 'mr-10'
+                              : 'status pending ' + 'mr-10'
                           }
                         >
                           {getCardSubHeaderStatus(post)}
                         </Typography>
-                        <small className="grey-color ">
-                          {getPastTime(post.updatedAt)}
+                        <small className="grey-color">
+                          {getPastTime(post.createdAt)}
                         </small>
                         <Tooltip title="Action">
                           <IconButton

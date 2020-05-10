@@ -1,36 +1,26 @@
+import * as postActions from '../../../Post/actions'
+
+import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
-import Button from '@material-ui/core/Button'
-import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
+import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+
 import Avatar from '@material-ui/core/Avatar'
-import ListItemText from '@material-ui/core/ListItemText'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import Badge from '@material-ui/core/Badge'
+import LikeIcon from '@material-ui/icons/ThumbUpAlt'
+import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../../Loader/components/Loader'
-import * as postActions from '../../../Post/actions'
-import { Map, fromJS } from 'immutable'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import Badge from '@material-ui/core/Badge'
-import { withStyles } from '@material-ui/core/styles'
-import { Link } from 'react-router-dom'
-import getReaction from '../../../../util/getReaction'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import moment from 'moment'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import IconButton from '@material-ui/core/IconButton'
-import getPastTime from '../../../../util/getPastTime'
-import ButtonGroup from '@material-ui/core/ButtonGroup'
-import ReplyIcon from '@material-ui/icons/Reply'
-import likeIcon from '../../../../../assets/emojis/like.svg'
-import CreateComment from './CreateComment'
-import LikeIcon from '@material-ui/icons/ThumbUpAlt'
-import isReactedToComment from '../../../../util/isReactedToComment'
-import AvatarGroup from '@material-ui/lab/AvatarGroup'
-import renderUserNames from '../../../../util/renderUserNames'
-import formateNumber from '../../../../util/formateNumber'
 import MaterialLink from '@material-ui/core/Link'
+import Tooltip from '@material-ui/core/Tooltip'
+import { connect } from 'react-redux'
+import formateNumber from '../../../../util/formateNumber'
+import getPastTime from '../../../../util/getPastTime'
+import isReactedToComment from '../../../../util/isReactedToComment'
+import renderUserNames from '../../../../util/renderUserNames'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
   smallAvatar: {
@@ -102,7 +92,6 @@ class CommentsList extends Component {
 
   render() {
     const { classes, commentsError, commentsLoading, user, post } = this.props
-    console.log('comment list called')
     const { comments } = this.state
     return (
       <>

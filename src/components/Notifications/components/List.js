@@ -1,31 +1,34 @@
+import * as actions from '../actions'
+import * as dashboardActions from '../../Timeline/actions'
+
 import React, { Component } from 'react'
-import Button from '@material-ui/core/Button'
-import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
+import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+
 import Avatar from '@material-ui/core/Avatar'
-import ListItemText from '@material-ui/core/ListItemText'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import Badge from '@material-ui/core/Badge'
+import Button from '@material-ui/core/Button'
+import Divider from '@material-ui/core/Divider'
+import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import Loader from '../../Loader/components/Loader'
-import * as actions from '../actions'
-import { Map, fromJS } from 'immutable'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import Badge from '@material-ui/core/Badge'
-import { withStyles } from '@material-ui/core/styles'
-import { Link } from 'react-router-dom'
-import getReaction from '../../../util/getReaction'
-import moment from 'moment'
-import textingImage from '../../../../assets/notifications/texting.svg'
-import Fab from '@material-ui/core/Fab'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import * as dashboardActions from '../../Timeline/actions'
+import ListItemText from '@material-ui/core/ListItemText'
+import Loader from '../../Loader/components/Loader'
 import ReadIcon from '@material-ui/icons/DoneAll'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
+import { connect } from 'react-redux'
 import getPastTime from '../../../util/getPastTime'
-import Divider from '@material-ui/core/Divider'
+import getReaction from '../../../util/getReaction'
+import textingImage from '../../../../assets/notifications/texting.svg'
+import { withStyles } from '@material-ui/core/styles'
+
 const styles = {
-  smallAvatar: {},
+  smallAvatar: {
+    width: 23,
+    height: 23,
+  },
   customBadge: {
     top: '90%',
     width: 35,
@@ -307,7 +310,7 @@ class NotificationsList extends Component {
           <div className="row">
             {!notificationsLoading && notifications && notifications.length
               ? notifications.map(n => (
-                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                  <div className="col-lg-4 col-md-6 col-sm-4 col-xs-12">
                     <Tooltip title="Mark Read" placement="bottom">
                       <ListItem
                         key={n._id}
@@ -327,11 +330,20 @@ class NotificationsList extends Component {
                             classes={{ badge: classes.customBadge }}
                             overlap="circle"
                             badgeContent={
-                              <img
+                              <Avatar
                                 className={classes.smallAvatar}
-                                alt="NA"
-                                src={getReaction(n.type)}
-                              />
+                                key={n._id}
+                                alt={n.sender ? n.sender.userName : ''}
+                                style={{
+                                  backgroundColor:
+                                    n.type.toLowerCase() === 'love' ||
+                                    n.type.toLowerCase() === 'profile-love'
+                                      ? '#ff0016c7'
+                                      : '',
+                                }}
+                              >
+                                {getReaction(n ? n.type : '')}
+                              </Avatar>
                             }
                           >
                             <Avatar

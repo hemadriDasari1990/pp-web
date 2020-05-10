@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+
+import Hemadri from '../../../../assets/hemadri.jpg'
+import Lokesh from '../../../../assets/lokesh.jpg'
 import ProfileCard from '../../Home/components/card'
 import Rajesh from '../../../../assets/rajesh.jpg'
-import Lokesh from '../../../../assets/lokesh.jpg'
-import Hemadri from '../../../../assets/hemadri.jpg'
+import { withRouter } from 'react-router-dom'
 
 class About extends Component {
   constructor(props) {

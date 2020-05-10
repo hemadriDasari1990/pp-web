@@ -1,9 +1,17 @@
+import * as actions from '../../../actions/index'
+
 import React, { Component } from 'react'
-import * as actions from '../../../actions/index';
-import firebase from '../../../firebase';
-import { BrowserRouter as Router, Route, Redirect, withRouter, Switch } from 'react-router-dom';
-import { connect } from 'react-redux';
-import CustomizedSnackbars from '../../Snackbar/components/Snackbar';
+import {
+  Redirect,
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  withRouter,
+} from 'react-router-dom'
+
+import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
+import { connect } from 'react-redux'
+import firebase from '../../../firebase'
 
 class Logout extends Component {
   constructor() {
@@ -11,46 +19,49 @@ class Logout extends Component {
     this.state = {
       logout: false,
       message: '',
-      status: ''
+      status: '',
     }
   }
 
   componentDidMount() {
     new firebase.auth().signOut().then(async (user, error) => {
-      if(user){
-        await this.props.userLogout();
-        this.setState({ logout: true, message: 'Logout Successfull', status: 'success' });
-        this.props.history.push('/home');
+      if (user) {
+        await this.props.userLogout()
+        this.setState({
+          logout: true,
+          message: 'Logout Successfull',
+          status: 'success',
+        })
+        this.props.history.push('/home')
       }
 
-      if(error){
-        this.setState({ logout: false, message: 'Error while logging out. Please try again!', status: 'error' });
+      if (error) {
+        this.setState({
+          logout: false,
+          message: 'Error while logging out. Please try again!',
+          status: 'error',
+        })
       }
-    });
+    })
   }
 
   render() {
-    const { logout, message, status } = this.state;
+    const { logout, message, status } = this.state
 
     return (
       <React.Fragment>
-        {
-          logout && <CustomizedSnackbars message={message} status={status} />
-        }
+        {logout && <CustomizedSnackbars message={message} status={status} />}
       </React.Fragment>
     )
   }
 }
 
 const mapStateToProps = state => {
-
-  return {
-
-  };
+  return {}
 }
 
 const actionsToProps = {
-  userLogout: actions.userLogout
+  userLogout: actions.userLogout,
 }
 
-export default withRouter(connect(mapStateToProps, actionsToProps)(Logout));
+export default withRouter(connect(mapStateToProps, actionsToProps)(Logout))

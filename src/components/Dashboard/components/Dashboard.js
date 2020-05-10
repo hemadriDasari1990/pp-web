@@ -1,19 +1,21 @@
+import * as actions from '../../../actions/index'
+import * as postActions from '../../Post/actions'
+
 import React, { Component } from 'react'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import * as actions from '../../../actions/index'
-import Summary from './Summary'
-import arrowIcon from '../../../../assets/arrow.svg'
-import { withStyles } from '@material-ui/core/styles'
-import Fab from '@material-ui/core/Fab'
+
 import Avatar from '@material-ui/core/Avatar'
+import Fab from '@material-ui/core/Fab'
+import LikeIcon from '@material-ui/icons/ThumbUpAlt'
+import Loader from '../../Loader/components/Loader'
+import LoveIcon from '@material-ui/icons/Favorite'
 import Metrics from './Metrics'
 import PreferencesIcon from '../../SvgIcons/components/Preferences'
-import * as postActions from '../../Post/actions'
-import Loader from '../../Loader/components/Loader'
-import FollowingIcon from '../../SvgIcons/components/Following'
-import LikeIcon from '@material-ui/icons/ThumbUpAlt'
-import LoveIcon from '@material-ui/icons/Favorite'
+import RssFeedOutlinedIcon from '@material-ui/icons/RssFeedOutlined'
+import Summary from './Summary'
+import arrowIcon from '../../../../assets/arrow.svg'
+import { connect } from 'react-redux'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({})
 
@@ -38,11 +40,11 @@ class DashBoard extends Component {
     const {} = this.state
     const { user, classes, userPreferences } = this.props
     return (
-      <React.Fragment>
+      <div className="container">
         {user && userPreferences ? (
           <>
             <div className="row">
-              <div className="text-center col-lg-3 col-md-2 col-sm-12 col-xs-12">
+              <div className="text-center col-lg-4 col-md-12 col-sm-12 col-xs-12">
                 <h5>Hi, {user ? user.userName : ''}!</h5>
                 <p>Welcome to your social platform</p>
                 <Fab
@@ -57,16 +59,16 @@ class DashBoard extends Component {
                   <Avatar src={arrowIcon} className="b-s b-w-arrow" />
                 </Fab>
               </div>
-              <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
+              <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                 <Summary type="incoming" title="Incoming Summary" />
               </div>
-              <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
+              <div className="col-lg-4 col-md-6 col-sm-12 col-xs-12">
                 <Summary type="outgoing" title="Outgoing Summary" />
               </div>
             </div>
             <div className="row">
-              <div className="col-lg-3 col-md-2 col-sm-12 col-xs-12"></div>
-              <div className="col-lg-3 col-md-3 col-sm col-xs-12">
+              <div className="col-lg-4 col-md-0 col-sm-12 col-xs-12"></div>
+              <div className="col-lg-4 col-md-6 col-sm col-xs-12">
                 <Metrics
                   icon={<LikeIcon />}
                   title="Likes"
@@ -74,7 +76,7 @@ class DashBoard extends Component {
                   count={user.no_of_likes}
                 />
               </div>
-              <div className="col-lg-3 col-md-3 col-sm col-xs-12">
+              <div className="col-lg-4 col-md-0 col-sm col-xs-12">
                 <Metrics
                   icon={<LoveIcon />}
                   title="Love"
@@ -84,16 +86,21 @@ class DashBoard extends Component {
               </div>
             </div>
             <div className="row">
-              <div className="col-lg-3 col-md-2 col-sm-12 col-xs-12"></div>
-              <div className="col-lg-3 col-md-3 col-sm col-xs-12">
+              <div className="col-lg-4 col-md-0 col-sm-12 col-xs-12"></div>
+              <div className="col-lg-4 col-md-6 col-sm col-xs-12">
                 <Metrics
-                  icon={<FollowingIcon className="icon-display" color="#fff" />}
+                  icon={
+                    <RssFeedOutlinedIcon
+                      className="icon-display"
+                      color="#fff"
+                    />
+                  }
                   title="Followers"
                   name="Followers"
                   count={user.no_of_followers}
                 />
               </div>
-              <div className="col-lg-3 col-md-3 col-sm col-xs-12">
+              <div className="col-lg-4 col-md-6 col-sm col-xs-12">
                 <Metrics
                   icon={
                     <PreferencesIcon
@@ -115,7 +122,7 @@ class DashBoard extends Component {
         ) : (
           <Loader />
         )}
-      </React.Fragment>
+      </div>
     )
   }
 }

@@ -1,17 +1,17 @@
-import React, { Component } from 'react'
-import Button from '@material-ui/core/Button'
-import Avatar from '@material-ui/core/Avatar'
 import * as actions from '../../actions'
+import * as postActions from '../../../Post/actions'
+
 import { Map, fromJS } from 'immutable'
+import React, { Component } from 'react'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
+import PropTypes from 'prop-types'
+import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
-import PropTypes from 'prop-types'
-import Divider from '@material-ui/core/Divider'
-import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid'
-import CheckRoundedIcon from '@material-ui/icons/CheckRounded'
-import * as postActions from '../../../Post/actions'
 
 const styles = {}
 

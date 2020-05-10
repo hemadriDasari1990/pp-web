@@ -1,4 +1,5 @@
 import * as actions from '../../constants/actionTypes'
+
 import { Map, fromJS } from 'immutable'
 
 export const Timeline = (state = Map(), action) => {
@@ -114,6 +115,22 @@ export const Timeline = (state = Map(), action) => {
       return state
         .setIn(['recent', 'errors'], action.errors)
         .setIn(['recent', 'loading'], false)
+
+    case actions.GET_POPULAR_POSTS_REQUEST:
+      return state
+        .setIn(['popular', 'loading'], true)
+        .deleteIn(['popular', 'errors'])
+        .deleteIn(['popular', 'success'])
+
+    case actions.GET_POPULAR_POSTS_SUCCESS:
+      return state
+        .setIn(['popular', 'success'], action.data)
+        .setIn(['popular', 'loading'], false)
+
+    case actions.GET_POPULAR_POSTS_ERROR:
+      return state
+        .setIn(['popular', 'errors'], action.errors)
+        .setIn(['popular', 'loading'], false)
 
     case actions.GET_POST_DETAILS_REQUEST:
       return state

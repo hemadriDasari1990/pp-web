@@ -1,45 +1,33 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import IconButton from '@material-ui/core/IconButton'
-import Badge from '@material-ui/core/Badge'
-import Menu from '@material-ui/core/Menu'
-import { withStyles } from '@material-ui/core/styles'
-import MenuIcon from '@material-ui/icons/Menu'
-import Tooltip from '@material-ui/core/Tooltip'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import { Map, List } from 'immutable'
-import Avatar from '@material-ui/core/Avatar'
 import * as actions from '../../../actions/index'
-import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
-import Fab from '@material-ui/core/Fab'
-import Search from '../../Search/components/Search'
-import firebase from '../../../firebase'
-// import Notifications from './components/Notifications'
 import * as dashboardActions from '../../Timeline/actions'
-import libIcon from '../../../../assets/lib.svg'
-import arrowIcon from '../../../../assets/arrow.svg'
-import preferencesIcon from '../../../../assets/preferences.svg'
-import notificationsIcon from '../../../../assets/notifications.svg'
-import logoutIcon from '../../../../assets/logout.svg'
-import Typography from '@material-ui/core/Typography'
-import ListItem from '@material-ui/core/ListItem'
-import formateNumber from '../../../util/formateNumber'
+
+import { List, Map } from 'immutable'
+
+import AppBar from '@material-ui/core/AppBar'
+import Avatar from '@material-ui/core/Avatar'
+import Badge from '@material-ui/core/Badge'
 import CssBaseline from '@material-ui/core/CssBaseline'
+import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import Drawer from '@material-ui/core/Drawer'
-import Divider from '@material-ui/core/Divider'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import InboxIcon from '@material-ui/icons/MoveToInbox'
-import MailIcon from '@material-ui/icons/Mail'
-import NavItems from './NavItems'
-import Hidden from '@material-ui/core/Hidden'
-import Routes from '../../Routes'
-import Footer from '../../Footer/components/Footer'
 import DrawerComponent from '../../Drawer/components/Drawer'
-import SearchIcon from '@material-ui/icons/Search'
+import Fab from '@material-ui/core/Fab'
+import Footer from '../../Footer/components/Footer'
+import Hidden from '@material-ui/core/Hidden'
+import IconButton from '@material-ui/core/IconButton'
+import MenuIcon from '@material-ui/icons/Menu'
+import NotificationsIcon from '@material-ui/icons/Notifications'
+import PropTypes from 'prop-types'
+import React from 'react'
+import Routes from '../../Routes'
+import Search from '../../Search/components/Search'
+import Toolbar from '@material-ui/core/Toolbar'
+import Tooltip from '@material-ui/core/Tooltip'
+import arrowIcon from '../../../../assets/arrow.svg'
+import { connect } from 'react-redux'
+import formateNumber from '../../../util/formateNumber'
+import libIcon from '../../../../assets/lib.svg'
+import { withRouter } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
 
 const drawerWidth = 110
 
@@ -81,6 +69,8 @@ const styles = theme => ({
   badge: {
     color: '#fff',
     backgroundColor: '#f30404',
+    marginTop: 15,
+    marginRight: 10,
   },
   appBar: {
     position: 'fixed',
@@ -100,7 +90,6 @@ const styles = theme => ({
   },
   //   toolbar: theme.mixins.toolbar,
   drawerPaper: {
-    marginTop: 62,
     position: 'fixed !important',
     width: drawerWidth,
     overflow: 'auto',
@@ -126,8 +115,7 @@ const styles = theme => ({
   appContent: theme.mixins.gutters({
     flex: '1 1 100%', // https://github.com/philipwalton/flexbugs#flexbug-17
     maxWidth: '100%', // https://github.com/philipwalton/flexbugs#flexbug-17
-    padding: '80px 0px 0px 0px !important', // equal to AppBar height + 16px
-    margin: '0 auto',
+    padding: '80px 0px 0px 0px', // equal to AppBar height + 16px
     // Set the max content width for each breakpoint
     // Content will be centered in the space to the right/left of drawer
     // [theme.breakpoints.up("lg")]: {
@@ -172,10 +160,10 @@ class ResponsiveDrawer extends React.Component {
       return
     }
 
-    let offsetRight =
+    const offsetRight =
       document.body.offsetWidth - (e.clientX - document.body.offsetLeft)
-    let minWidth = 50
-    let maxWidth = 600
+    const minWidth = 50
+    const maxWidth = 600
     if (offsetRight > minWidth && offsetRight < maxWidth) {
       this.setState({ newWidth: { width: offsetRight } })
     }
@@ -311,28 +299,22 @@ class ResponsiveDrawer extends React.Component {
                 </Tooltip> */}
                 </div>
                 <Tooltip title="Notifications" aria-label="notification">
-                  <Fab
-                    size="small"
-                    onClick={() => this.showNotifications()}
-                    aria-label="Add"
-                    className={classes.margin}
-                    color="primary"
+                  <Badge
+                    showZero
+                    badgeContent={
+                      notificationsCount
+                        ? formateNumber(notificationsCount.unReadCount)
+                        : 0
+                    }
+                    classes={{ badge: classes.badge }}
                   >
-                    <Badge
-                      showZero
-                      badgeContent={
-                        notificationsCount
-                          ? formateNumber(notificationsCount.unReadCount)
-                          : 0
-                      }
-                      classes={{ badge: classes.badge }}
-                    >
-                      <Avatar
-                        style={{ width: 30, height: 30 }}
-                        src={notificationsIcon}
-                      />
-                    </Badge>
-                  </Fab>
+                    <NotificationsIcon
+                      className="cursor"
+                      style={{ fontSize: 35, marginTop: 15, marginRight: 10 }}
+                      onClick={() => this.showNotifications()}
+                      color="primary"
+                    />
+                  </Badge>
                 </Tooltip>
                 <Tooltip title={user.userName} aria-label="Add">
                   <Avatar
@@ -446,10 +428,12 @@ class ResponsiveDrawer extends React.Component {
           </nav>
         )}
         <main className={classes.appContent}>
-          <div className="p-10" style={{ minHeight: '100vh' }}>
+          <section className="body-container" style={{ minHeight: '100vh' }}>
             <Routes authenticated={authenticated} />
-          </div>
-          <Footer authenticated={authenticated} />
+          </section>
+          <section className="body-section">
+            <Footer authenticated={authenticated} />
+          </section>
         </main>
       </div>
     )

@@ -17,9 +17,9 @@ export function getCardSubHeaderProfileSummary(user) {
   return (
     <>
       <span className="grey-color ">
-        <b>{formateNumber(user.no_of_likes)}</b> Likes &nbsp;&nbsp;{' '}
-        <b>{formateNumber(user.no_of_loves)}</b> Love &nbsp;&nbsp;{' '}
-        <b>{formateNumber(user.no_of_followers)}</b> Followers
+        <b>{formateNumber(user.no_of_likes) || 0}</b> Likes &nbsp;&nbsp;{' '}
+        <b>{formateNumber(user.no_of_loves) || 0}</b> Love &nbsp;&nbsp;{' '}
+        <b>{formateNumber(user.no_of_followers) || 0}</b> Followers
       </span>
     </>
   )
@@ -100,7 +100,7 @@ export function getCardSubHeaderReactionsSummary(post) {
 export function getCardSubHeaderStatus(post) {
   return (
     <>
-      {post.approved ? <small>Approved</small> : null}
+      {post.approved ? <small>Accepted</small> : null}
       {post.rejected ? <small>Rejected</small> : null}
       {!post.approved && !post.rejected ? <small>Pending</small> : null}
     </>

@@ -1,25 +1,26 @@
-import React, { Component } from 'react'
-import Button from '@material-ui/core/Button'
-import Avatar from '@material-ui/core/Avatar'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
 import * as mainActions from '../../../actions/index'
-import { Map } from 'immutable'
-import Tooltip from '@material-ui/core/Tooltip'
 import * as profileActions from '../../UserProfile/actions'
+
+import React, { Component } from 'react'
+import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+
+import Avatar from '@material-ui/core/Avatar'
+import Grid from '@material-ui/core/Grid'
+import IconButton from '@material-ui/core/IconButton'
+import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
-import Typography from '@material-ui/core/Typography'
 import Loader from '../../Loader/components/Loader'
-import Grid from '@material-ui/core/Grid'
-import { Link } from 'react-router-dom'
+import { Map } from 'immutable'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
+import { connect } from 'react-redux'
 import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
 import getPastTime from '../../../util/getPastTime'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import IconButton from '@material-ui/core/IconButton'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 
 class Users extends Component {
   constructor(props) {
@@ -45,7 +46,7 @@ class Users extends Component {
         <List className="row">
           {!usersLoading && users.length ? (
             users.map(user => (
-              <Grid item lg={4} xs={12} sm={3} style={{ margin: 5 }}>
+              <Grid item lg={4} md={6} xs={12} sm={8}>
                 <ListItem
                   key={user._id}
                   alignItems="flex-start"
@@ -79,7 +80,7 @@ class Users extends Component {
                       }
                     />
                   </Tooltip>
-                  <ListItemSecondaryAction className="t-37 r-5">
+                  <ListItemSecondaryAction className="r-5">
                     <small className="grey-color ">
                       {getPastTime(user.createdAt)}
                     </small>

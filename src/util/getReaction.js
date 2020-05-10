@@ -1,60 +1,56 @@
-import like from '../../assets/emojis/like.svg'
-import love from '../../assets/emojis/love.svg'
-import tounghout from '../../assets/emojis/tounghout.svg'
-import wow from '../../assets/emojis/surprise.svg'
-import profileLike from '../../assets/profile-like.svg'
-import profileLove from '../../assets/profile-love.svg'
-import following from '../../assets/following.svg'
-import follow from '../../assets/follow.svg'
-import comment from '../../assets/comment.svg'
-import dislike from '../../assets/emojis/dislike.svg'
+import CancelIcon from '@material-ui/icons/Cancel'
+import CheckCircleIcon from '@material-ui/icons/CheckCircle'
+import CommentIcon from '@material-ui/icons/ChatBubble'
+import DisLikeIcon from '@material-ui/icons/ThumbDownAlt'
+import LikeIcon from '@material-ui/icons/ThumbUpAlt'
+import LoveIcon from '@material-ui/icons/Favorite'
+import React from 'react'
+import RssFeedOutlinedIcon from '@material-ui/icons/RssFeedOutlined'
 import perfect from '../../assets/emojis/perfect.svg'
 import thinking from '../../assets/emojis/thinking.svg'
+import tounghout from '../../assets/emojis/tounghout.svg'
 
 export default function getReaction(type) {
-  let icon = like
+  let icon = <LikeIcon style={{ fontSize: 12 }} />
   switch (type.toLowerCase()) {
     case 'like':
-      icon = like
+      icon = <LikeIcon style={{ fontSize: 12 }} color="secondary" />
       break
     case 'dislike':
-      icon = dislike
+      icon = <DisLikeIcon style={{ fontSize: 12 }} color="secondary" />
       break
     case 'perfect':
-      icon = perfect
+      icon = <img src={perfect} />
       break
     case 'thinking':
-      icon = thinking
+      icon = <img src={thinking} />
       break
     case 'love':
-      icon = love
-      break
-    case 'wow':
-      icon = wow
+      icon = <LoveIcon style={{ fontSize: 12 }} color="secondary" />
       break
     case 'tounghout':
-      icon = tounghout
+      icon = <img src={tounghout} />
       break
     case 'profile-like':
-      icon = like
+      icon = <LikeIcon style={{ fontSize: 12 }} color="secondary" />
       break
     case 'profile-love':
-      icon = profileLove
+      icon = <LoveIcon style={{ fontSize: 12 }} color="secondary" />
       break
     case 'follow':
-      icon = following
+      icon = <RssFeedOutlinedIcon style={{ fontSize: 12 }} color="secondary" />
       break
     case 'post-comment':
-      icon = comment
+      icon = <CommentIcon style={{ fontSize: 12 }} color="secondary" />
       break
     case 'post-accept':
-      icon = like
+      icon = <CheckCircleIcon style={{ fontSize: 15 }} color="secondary" />
       break
     case 'post-reject':
-      icon = like
+      icon = <CancelIcon style={{ fontSize: 15 }} color="secondary" />
       break
     case 'comment-like':
-      icon = like
+      icon = <LikeIcon style={{ fontSize: 12 }} color="secondary" />
       break
     default:
       break

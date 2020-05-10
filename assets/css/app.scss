@@ -1,6 +1,9 @@
-html, body {
-  overflow-x: hidden;
-}
+@import './reactions.scss';
+@import './menu.scss';
+
+// html, body {
+//   overflow-x: hidden;
+// }
 
 // html {
 //   overflow-y: scroll;
@@ -10,8 +13,14 @@ html,
 body {
   margin: 0;
   height: 100%;
-  overflow-x: hidden;
+  // overflow-x: hidden;
+  padding: 0;
 }
+
+// .container {
+//   overflow-y: scroll;
+//   overflow-x: hidden;
+// }
 
 body {   
   // font-family: "Apercu","Helvetica Neue",Helvetica,"Calibri","Roboto",Arial,sans-serif;
@@ -153,29 +162,6 @@ p.blue {
 color: #0273d4;
 font-size: 45px;
 font-weight: 300;
-}
-
-.page-not-found {
-color: #1b198e;
-position: absolute;
-width: 100px;
-height: 50px;
-top: 40%;
-left: 50%;
-margin-left: -50px; 
-margin-top: -25px;  
-font-size: 100px;
-}
-
-.page-not-found-text {
-color: #f50d62;
-position: absolute;
-width: 50%;
-height: 50px;
-top: 45%;
-left: 30%;
-margin-left: -50px; 
-font-size: 100px;
 }
 
 .react-autosuggest__suggestions-list {
@@ -396,66 +382,7 @@ margin-inline-end: 0px;
   cursor: pointer;
 }
 
-.feed {
-position: relative;
 
-.like-btn {
-  position: absolute;
-  left: 13px;
-  cursor: pointer;
-  top: -15px;
-  &::before {
-    content: "."; opacity: 0;
-    display: block;
-    width: 44px; height: 10px;
-    position: absolute; 
-    top: -10px; left: 0;
-  }
-  
-  .reaction-box {
-    position: absolute;
-    width: 340px; 
-    height: 45px;
-    background: #fff;
-    border-radius: 28px;
-    left: -15px; 
-    bottom: 25px; 
-    display: none;
-    margin-bottom: 10px;
-    border: 1px solid #3333;
-    
-    .reaction-icon {
-      width: 40px; height: 40px;
-      display: inline-block;
-      border-radius: 20px;
-      margin: 0 -1px 0 8px;
-      text-align: center;
-      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      // transform: translate(0, 100px) scale(0);
-    }
-  }
-
-  &:hover {
-    
-    .reaction-box {
-      display: block;  
-              
-      .reaction-icon {
-        
-        &.show {
-          opacity: 1;
-          transform: translate(0, 0) scale(1);
-        }
-        
-        &:hover {
-          transform: scale(1.4);
-          transform-origin: bottom; 
-        }
-      }
-    }
-  }
-}
-}
 
 .hint-area {
 width: 100%;
@@ -496,10 +423,10 @@ margin-top: 2px;
 margin-left: 2px;
 color: inherit;
 display: block;
-line-height: 16px;
+line-height: 22px;
 max-height: 16px;
 overflow: hidden;
-font-weight: 500;
+font-weight: 600;
 color: #1c1e21;
 font-size: 13px;
 
@@ -518,10 +445,6 @@ width: 25px !important;
 height: 25px !important;
 }
 
-.text-center {
-  text-align: center;
-}
-
 .title {
   text-transform: lowercase;
 }
@@ -532,41 +455,43 @@ height: 25px !important;
 
 $size: 15px;
 $border: 10px;
-$green: #2eff2b;
-$red: #ff0202fa;
+$green: #3bf038;
+$red: #F03861;
 $blue: #2b7eff;
 
 .status {
   position: relative;
   display: inline-block;
-  width: $size;
-  height: $size;
-  border-radius: 50%;
-  // margin: $border;
-
+  padding: 2px 5px;
+  text-align: center;
+  // font-size: $size;
+  font-weight: 600 !important;
+  border-radius: 3px;
+  color: #fff !important;
+  margin: $border;
   &.accepted, &.accepted:before {
-    background: $green;
+    background-color: $green;
   }
   
   &.rejected, &.rejected:before {
-    background: $red;
+    background-color: $red;
   }
   
   &.pending, &.pending:before {
-    background: $blue;
+    background-color: $blue;
   }
   
-  &:before {
-    content: '';
-    display: block;
-    position: absolute;
-    left: -($border / 2);
-    top: -($border / 2);
-    width: $size + $border;
-    height: $size + $border;
-    border-radius: 50%;
-    animation: pulse 1.5s infinite ease-in;
-  }
+  // &:before {
+  //   content: '';
+  //   display: block;
+  //   position: absolute;
+  //   left: -($border / 2);
+  //   top: -($border / 2);
+  //   width: $size + $border;
+  //   height: $size + $border;
+  //   border-radius: 50%;
+  //   animation: pulse 1.5s infinite ease-in;
+  // }
 }
 
 @keyframes pulse {
@@ -650,16 +575,13 @@ $blue: #2b7eff;
   margin-top: 10px !important;
 }
 
-.profile{
+.profile {
   left: 30% !important;
   display: flex !important;
-  margin-top: -100px;
-  border-radius:100%;
   margin-top:30px;
-  margin-bottom: 20px !important;
+  margin-bottom: 20px;
   width:100px !important;
   height:100px !important;
-  box-shadow: 0 14px 28px rgba(145, 148, 170, 0.25), 0 10px 10px rgba(79, 99, 158, 0.22);
 }
 
 .fl-justify-between {
@@ -688,6 +610,10 @@ $blue: #2b7eff;
 
 .mb-10 {
   margin-bottom: 10px !important;
+}
+
+.mb-25 {
+  margin-bottom: 25px !important;
 }
 
 .mt-minus-2 {
@@ -745,10 +671,6 @@ $blue: #2b7eff;
 
 li > a {
   color: #333;
-}
-
-.metrics-card-padding {
-  padding: 5px 20px 5px 5px !important;
 }
 
 .metrics-card-title {
@@ -846,20 +768,20 @@ small {
   right: 5px !important;
 }
 
-.accepted {
-  background-color: $green;
-  color: #fff !important;
-}
+// .accepted {
+//   background-color: $green;
+//   color: #fff !important;
+// }
 
-.rejected {
-  background-color: $red;
-  color: #fff !important;
-}
+// .rejected {
+//   background-color: $red;
+//   color: #fff !important;
+// }
 
-.pending {
-  background-color: $blue;
-  color: #fff !important;
-}
+// .pending {
+//   background-color: $blue;
+//   color: #fff !important;
+// }
 
 .b-text {
   font-weight: bold !important;
@@ -905,7 +827,7 @@ small {
 }
 
 .reaction-text {
-  margin-top: -0.7px;
+  margin-top: 0.5px;
   font-size: 11px;
   line-height: 16px;
 }
@@ -967,6 +889,55 @@ small {
   }
 }
 
+.body-container {
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding-left: calc(50vw - 50%);
+  padding-right: calc(50vw - 50%);
+  width: auto;
+}
+
+.body-section {
+  padding: 80px 0;
+}
+
+.card-button-text {
+    align-items: center;
+    color: #606770;
+    display: flex;
+    flex: 1 0;
+    font-weight: 600;
+    justify-content: center;
+    line-height: 14px;
+    position: relative;
+    text-decoration: none;
+    transition: 400ms cubic-bezier(.08,.52,.52,1) transform;
+}
+
+.card-actions {
+  margin: 0 12px !important;
+  min-height: 32px !important;
+  padding: 4px 0 !important;
+}
+
+.btn-outlined::after {
+  height: 100%;
+  left: -35%;
+  top: 0;
+  transform: skew(50deg);
+  transition-duration: 0.6s;
+  transform-origin: top left;
+  width: 0;
+}
+
+.btn-outlined:hover:after {
+  height: 100%;
+}
+
+.middle-content {
+  overflow: auto;
+  height: auto;
+}
 
 
 

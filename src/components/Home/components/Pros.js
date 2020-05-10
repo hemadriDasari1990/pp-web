@@ -1,23 +1,20 @@
 import React, { Component } from 'react'
+
+import { List } from 'immutable'
 import PropTypes from 'prop-types'
-import withStyles from '@material-ui/core/styles/withStyles'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { List } from 'immutable'
+import withStyles from '@material-ui/core/styles/withStyles'
 
-const styles = theme => ({
-  
-})
+const styles = theme => ({})
 
 class Pros extends Component {
-  
   render() {
     const { classes } = this.props
     return (
       <React.Fragment>
         <div className="container">
           <h2 className="h2-header">Coming soon...</h2>
-          
         </div>
       </React.Fragment>
     )

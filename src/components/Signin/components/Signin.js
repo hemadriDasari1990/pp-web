@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
+
+import Facebook from '../../Social/components/Facebook'
+import Google from '../../Social/components/Google'
+import Linkedin from '../../Social/components/Linkedin'
 import PropTypes from 'prop-types'
-import withStyles from '@material-ui/core/styles/withStyles'
+import Social from '../../../../assets/social.svg'
+import Twitter from '../../Social/components/Twitter'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { List } from 'immutable'
-import Google from '../../Social/components/Google'
-import Facebook from '../../Social/components/Facebook'
-import Linkedin from '../../Social/components/Linkedin'
-import Twitter from '../../Social/components/Twitter'
-import Social from '../../../../assets/social.svg'
+import withStyles from '@material-ui/core/styles/withStyles'
 
 const styles = theme => ({
   button: {},
@@ -44,7 +44,7 @@ class Signin extends Component {
               </h6>
               <Facebook />
               <Google />
-              <Linkedin />
+              {/* <Linkedin /> */}
               <Twitter />
             </div>
           </div>

@@ -1,55 +1,60 @@
+import * as actions from '../actions'
+import * as postActions from '../../Post/actions'
+import * as profileActions from '../../UserProfile/actions'
+
+import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
+import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+
+import Avatar from '@material-ui/core/Avatar'
+import AvatarGroup from '@material-ui/lab/AvatarGroup'
+import Button from '@material-ui/core/Button'
+import CancelPresentationIcon from '@material-ui/icons/CancelPresentation'
 import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import CardHeader from '@material-ui/core/CardHeader'
+import CommentIcon from '@material-ui/icons/ChatBubbleOutline'
+import CommentsList from './comments/List'
+import CreateComment from './comments/CreateComment'
+import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
+import DisLikeIcon from '@material-ui/icons/ThumbDownAlt'
+import Divider from '@material-ui/core/Divider'
+import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
+import Fab from '@material-ui/core/Fab'
+import Fade from '@material-ui/core/Fade'
 import IconButton from '@material-ui/core/IconButton'
-import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
-import Avatar from '@material-ui/core/Avatar'
-import moment from 'moment'
+import LikeIcon from '@material-ui/icons/ThumbUpAlt'
+import LikeOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined'
+import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import formateNumber from '../../../util/formateNumber'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import * as actions from '../actions'
-import { Map, fromJS } from 'immutable'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
+import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../Loader/components/Loader'
-import { Link } from 'react-router-dom'
-import AvatarGroup from '@material-ui/lab/AvatarGroup'
-import { withStyles } from '@material-ui/core/styles'
-import PropTypes from 'prop-types'
-import advice from '../../../../assets/advice.svg'
-import pros from '../../../../assets/pros.svg'
-import cons from '../../../../assets/cons.svg'
-import getReaction from '../../../util/getReaction'
-import renderUserNames from '../../../util/renderUserNames'
-import renderColor from '../../../util/renderColor'
-import * as profileActions from '../../UserProfile/actions'
-import Button from '@material-ui/core/Button'
-import like from '../../../../assets/emojis/like.svg'
-import dislike from '../../../../assets/emojis/dislike.svg'
-import perfect from '../../../../assets/emojis/perfect.svg'
-import thinking from '../../../../assets/emojis/thinking.svg'
-import love from '../../../../assets/emojis/love.svg'
-import tounghout from '../../../../assets/emojis/tounghout.svg'
-import wow from '../../../../assets/emojis/surprise.svg'
-import Divider from '@material-ui/core/Divider'
-import getReactionsText from '../../../util/getReactionsText'
+import LoveIcon from '@material-ui/icons/Favorite'
+import Menu from '@material-ui/core/Menu'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import NoRecords from '../../NoRecords/components/NoRecords'
-import commentIcon from '../../../../assets/comment.svg'
-import CreateComment from './comments/CreateComment'
-import * as postActions from '../../Post/actions'
-import CommentsList from './comments/List'
-import getCardSubHeaderText from '../../../util/getCardSubHeaderText'
+import PropTypes from 'prop-types'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
+import advice from '../../../../assets/advice.svg'
+import { connect } from 'react-redux'
+import cons from '../../../../assets/cons.svg'
+import formateNumber from '../../../util/formateNumber'
 import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
+import getCardSubHeaderText from '../../../util/getCardSubHeaderText'
+import getReaction from '../../../util/getReaction'
+import getReactionsText from '../../../util/getReactionsText'
+import perfect from '../../../../assets/emojis/perfect.svg'
+import pros from '../../../../assets/pros.svg'
+import renderColor from '../../../util/renderColor'
+import renderUserNames from '../../../util/renderUserNames'
+import thinking from '../../../../assets/emojis/thinking.svg'
+import tounghout from '../../../../assets/emojis/tounghout.svg'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
   smallAvatar: {
@@ -57,13 +62,21 @@ const styles = {
     height: 20,
     borderColor: '#fff',
   },
+  reactionAvatar: {
+    width: 25,
+    height: 25,
+  },
+  emojiAvatar: {
+    width: 40,
+    height: 40,
+  },
   avatar: {
     marginTop: 0,
     width: '100%',
     textAlign: 'center',
   },
   button: {
-    width: '150px !important',
+    width: '250px !important',
     height: '35px !important',
   },
   rightButton: {
@@ -71,7 +84,7 @@ const styles = {
   },
   comment: {
     marginLeft: 'auto',
-    width: '150px !important',
+    width: '250px !important',
     height: '35px !important',
   },
 }
@@ -84,7 +97,7 @@ class Outgoing extends Component {
       anchorEl: undefined,
       showEmojis: false,
       showCommentInput: false,
-      comment: '',
+      postId: null,
     }
   }
 
@@ -166,6 +179,92 @@ class Outgoing extends Component {
     })
   }
 
+  renderMenu = post => {
+    return (
+      <Menu
+        id="fade-menu"
+        open={this.state.open}
+        onClose={this.handleClose}
+        anchorEl={this.state.anchorEl}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        keepMounted
+        getContentAnchorEl={null}
+        TransitionComponent={Fade}
+      >
+        <ListItem
+          className="cursor pt-0 pb-0 pl-2 pr-2 menu-item"
+          onClick={() => this.handleMenuItem('delete', post._id)}
+        >
+          <ListItemAvatar style={{ minWidth: 35 }}>
+            <DeleteOutlineIcon />
+          </ListItemAvatar>
+          <ListItemText
+            primary="Delete Post"
+            secondary={
+              <React.Fragment>
+                <Typography
+                  component="p"
+                  variant="body2"
+                  color="textPrimary"
+                  className="menu-item-text"
+                >
+                  Once deleted and will be deleted
+                </Typography>
+              </React.Fragment>
+            }
+          />
+        </ListItem>
+        <ListItem className="cursor pt-0 pb-0 pl-2 pr-2 menu-item">
+          <ListItemAvatar style={{ minWidth: 35 }}>
+            <CancelPresentationIcon />
+          </ListItemAvatar>
+          <ListItemText
+            primary="Hide Post"
+            secondary={
+              <React.Fragment>
+                <Typography
+                  component="p"
+                  variant="body2"
+                  color="textPrimary"
+                  className="menu-item-text"
+                >
+                  See fewer posts like this
+                </Typography>
+              </React.Fragment>
+            }
+          />
+        </ListItem>
+        <ListItem className="cursor pt-0 pb-0 pl-2 pr-2 menu-item">
+          <ListItemAvatar style={{ minWidth: 35 }}>
+            <EditOutlinedIcon />
+          </ListItemAvatar>
+          <ListItemText
+            primary="Edit Post"
+            secondary={
+              <React.Fragment>
+                <Typography
+                  component="p"
+                  variant="body2"
+                  color="textPrimary"
+                  className="menu-item-text"
+                >
+                  Update the post
+                </Typography>
+              </React.Fragment>
+            }
+          />
+        </ListItem>
+      </Menu>
+    )
+  }
+
+  showComments = postId => {
+    this.setState({
+      postId,
+    })
+  }
+
   render() {
     const {
       outgoingPosts,
@@ -177,7 +276,7 @@ class Outgoing extends Component {
       user,
       classes,
     } = this.props
-    const { open, anchorEl, showEmojis, showCommentInput, comment } = this.state
+    const { open, anchorEl, showEmojis, showCommentInput, postId } = this.state
     return (
       <React.Fragment>
         {!outgoingPostsLoading && outgoingPosts.length
@@ -192,27 +291,29 @@ class Outgoing extends Component {
                   }
                   action={
                     <>
-                      <Tooltip
-                        title={
-                          post.rejected
-                            ? 'Rejected'
-                            : post.approved
-                            ? 'Accepted'
-                            : 'Pending'
-                        }
-                      >
-                        <span
-                          className={
-                            post.approved
-                              ? 'accepted ' + 'reactions-subheader'
-                              : post.rejected
-                              ? 'rejected ' + 'reactions-subheader'
-                              : 'pending ' + 'reactions-subheader'
+                      {post.type === 'Opinion' ? (
+                        <Tooltip
+                          title={
+                            post.rejected
+                              ? 'Rejected'
+                              : post.approved
+                              ? 'Accepted'
+                              : 'Pending'
                           }
                         >
-                          {getCardSubHeaderStatus(post)}
-                        </span>
-                      </Tooltip>
+                          <span
+                            className={
+                              post.approved
+                                ? 'status accepted '
+                                : post.rejected
+                                ? 'status rejected '
+                                : 'status pending '
+                            }
+                          >
+                            {getCardSubHeaderStatus(post)}
+                          </span>
+                        </Tooltip>
+                      ) : null}
                       <Tooltip title="Update">
                         <IconButton
                           aria-label="settings"
@@ -221,24 +322,7 @@ class Outgoing extends Component {
                           <MoreHorizIcon />
                         </IconButton>
                       </Tooltip>
-                      <Menu
-                        open={open}
-                        onClose={this.handleClose}
-                        anchorEl={anchorEl}
-                        anchorOrigin={{
-                          vertical: 'bottom',
-                          horizontal: 'bottom',
-                        }}
-                        getContentAnchorEl={null}
-                      >
-                        <MenuItem
-                          onClick={() =>
-                            this.handleMenuItem('delete', post._id)
-                          }
-                        >
-                          Delete
-                        </MenuItem>
-                      </Menu>
+                      {this.renderMenu(post)}
                     </>
                   }
                   title={
@@ -251,9 +335,24 @@ class Outgoing extends Component {
                         : post.postedTo.userName}
                     </Link>
                   }
-                  subheader={getCardSubHeaderText(post.updatedAt)}
+                  subheader={
+                    <>
+                      {getCardSubHeaderText(post.createdAt)}
+                      &nbsp;&nbsp;
+                      {!post.isAnonymous && (
+                        <>
+                          <span>
+                            <b>
+                              {formateNumber(post.postedTo.total_followers)}
+                            </b>
+                            &nbsp;Followers&nbsp;
+                          </span>
+                        </>
+                      )}
+                    </>
+                  }
                 />
-                <CardContent style={{ minHeight: '300px !important' }}>
+                <CardContent className="p-0">
                   <List>
                     <ListItem alignItems="flex-start">
                       <ListItemAvatar>
@@ -313,193 +412,253 @@ class Outgoing extends Component {
                       />
                     </ListItem>
                   </List>
-                  <div className="row ml-15 mr-15">
-                    <AvatarGroup>
-                      {post.reactions.length > 0
-                        ? post.reactions.slice(0, 3).map(react => (
-                            <Tooltip
-                              title={renderUserNames(post.reactions)}
-                              placement="bottom"
-                            >
-                              <Avatar
-                                className={classes.smallAvatar}
-                                key={react._id}
-                                alt="Image Not Available"
-                                src={getReaction(react ? react.type : '')}
-                              />
-                            </Tooltip>
-                          ))
-                        : 'No Reactions'}
-                    </AvatarGroup>
+                  {post.approved ? (
+                    <>
+                      <div className="row ml-15 mr-15">
+                        <AvatarGroup max={3} className="v-align-middle">
+                          {post.reactions.length > 0
+                            ? post.reactions.slice(0, 3).map(react => (
+                                <Tooltip
+                                  title={renderUserNames(post.reactions)}
+                                  placement="bottom"
+                                  key={react._id}
+                                >
+                                  <Avatar
+                                    className={classes.reactionAvatar}
+                                    key={react._id}
+                                    alt="Image Not Available"
+                                    style={{
+                                      backgroundColor:
+                                        react.type.toLowerCase() === 'love'
+                                          ? '#ff0016c7'
+                                          : '',
+                                    }}
+                                  >
+                                    {getReaction(react ? react.type : '')}
+                                  </Avatar>
+                                </Tooltip>
+                              ))
+                            : 'No Reactions'}
+                        </AvatarGroup>
+                        <span className="cursor actions-text v-align-middle grey-color ">
+                          <Tooltip
+                            title={renderUserNames(post.reactions)}
+                            placement="bottom"
+                          >
+                            <Link to={`/post/${post._id}/reactions`}>
+                              {formateNumber(post.reactions.length) + ' - '}
+                            </Link>
+                          </Tooltip>
+                        </span>
+                        <span
+                          onClick={() => this.showComments(post._id)}
+                          className="cursor actions-text v-align-middle grey-color "
+                        >
+                          {formateNumber(post.comments.length) + ' Comments'}
+                        </span>
+                      </div>
+                      <Divider />
+                    </>
+                  ) : null}
+                </CardContent>
+                {post.approved ? (
+                  <CardActions className="card-actions" disableSpacing>
                     <Tooltip
-                      title={renderUserNames(post.reactions)}
+                      title={getReactionsText(user._id, post.reactions)}
                       placement="bottom"
                     >
-                      <Link
-                        to={`/post/${post._id}/reactions`}
-                        className="actions-text"
-                      ></Link>
+                      <div
+                        className="feed"
+                        onMouseEnter={() => this.toggleShow(true)}
+                        onMouseLeave={() => this.toggleShow(false)}
+                      >
+                        <a className="like-btn">
+                          <Button
+                            className={classes.button}
+                            onClick={() =>
+                              this.createOrUpdateReaction(
+                                user._id,
+                                post._id,
+                                getReactionsText(user._id, post.reactions),
+                              )
+                            }
+                          >
+                            <div className="card-button-text">
+                              {post.reactions.filter(
+                                r => r.user._id === user._id,
+                              ).length ? (
+                                <Avatar
+                                  className={classes.smallAvatar}
+                                  alt="Image Not Available"
+                                  style={{
+                                    backgroundColor:
+                                      getReactionsText(
+                                        user._id,
+                                        post.reactions,
+                                      ).toLowerCase() === 'love'
+                                        ? '#ff0016c7'
+                                        : '',
+                                  }}
+                                >
+                                  {getReaction(
+                                    getReactionsText(user._id, post.reactions),
+                                  )}
+                                </Avatar>
+                              ) : (
+                                <LikeOutlinedIcon
+                                  style={{ fontSize: 20, color: '#606770' }}
+                                />
+                              )}
+                              <span
+                                className="ml-7"
+                                style={{
+                                  color: renderColor(
+                                    post.reactions.length
+                                      ? getReactionsText(
+                                          user._id,
+                                          post.reactions,
+                                        )
+                                      : '',
+                                  ),
+                                }}
+                              >
+                                {getReactionsText(user._id, post.reactions) ||
+                                  'Like'}
+                              </span>
+                            </div>
+                          </Button>
+                          {showEmojis && (
+                            <div className="reaction-box">
+                              <div
+                                className="v-align-middle reaction-icon"
+                                onClick={() =>
+                                  this.createOrUpdateReaction(
+                                    user._id,
+                                    post._id,
+                                    'like',
+                                  )
+                                }
+                              >
+                                <Tooltip title="Like" placement="top">
+                                  <Fab
+                                    className={classes.emojiAvatar}
+                                    color="primary"
+                                  >
+                                    <LikeIcon color="secondary" />
+                                  </Fab>
+                                </Tooltip>
+                              </div>
+                              <div
+                                className="v-align-middle reaction-icon"
+                                onClick={() =>
+                                  this.createOrUpdateReaction(
+                                    user._id,
+                                    post._id,
+                                    'dislike',
+                                  )
+                                }
+                              >
+                                <Tooltip title="Dis Like" placement="top">
+                                  <Fab
+                                    className={classes.emojiAvatar}
+                                    color="primary"
+                                  >
+                                    <DisLikeIcon color="secondary" />
+                                  </Fab>
+                                </Tooltip>
+                              </div>
+                              <div
+                                className="v-align-middle reaction-icon"
+                                onClick={() =>
+                                  this.createOrUpdateReaction(
+                                    user._id,
+                                    post._id,
+                                    'love',
+                                  )
+                                }
+                              >
+                                <Tooltip title="Love" placement="top">
+                                  <Fab
+                                    className={classes.emojiAvatar}
+                                    style={{ backgroundColor: '#ff0016c7' }}
+                                  >
+                                    <LoveIcon color="secondary" />
+                                  </Fab>
+                                </Tooltip>
+                              </div>
+                              <div
+                                className="v-align-middle reaction-icon"
+                                onClick={() =>
+                                  this.createOrUpdateReaction(
+                                    user._id,
+                                    post._id,
+                                    'perfect',
+                                  )
+                                }
+                              >
+                                <Tooltip title="Perfect" placement="top">
+                                  <Fab className={classes.emojiAvatar}>
+                                    <img src={perfect} />
+                                  </Fab>
+                                </Tooltip>
+                              </div>
+                              <div
+                                className="v-align-middle reaction-icon"
+                                onClick={() =>
+                                  this.createOrUpdateReaction(
+                                    user._id,
+                                    post._id,
+                                    'tounghout',
+                                  )
+                                }
+                              >
+                                <Tooltip title="Toungh Out" placement="top">
+                                  <Fab className={classes.emojiAvatar}>
+                                    <img src={tounghout} />
+                                  </Fab>
+                                </Tooltip>
+                              </div>
+                              <div
+                                className="v-align-middle reaction-icon"
+                                onClick={() =>
+                                  this.createOrUpdateReaction(
+                                    user._id,
+                                    post._id,
+                                    'thinking',
+                                  )
+                                }
+                              >
+                                <Tooltip title="Thinking" placement="top">
+                                  <Fab className={classes.emojiAvatar}>
+                                    <img src={thinking} />
+                                  </Fab>
+                                </Tooltip>
+                              </div>
+                            </div>
+                          )}
+                        </a>
+                      </div>
                     </Tooltip>
-                    <span className="cursor actions-text v-align-middle grey-color ">
-                      {formateNumber(post.reactions.length) + ' - '}
-                    </span>
-                    <span className="cursor actions-text v-align-middle grey-color ">
-                      {formateNumber(post.comments.length) + ' Comments'}
-                    </span>
-                  </div>
-                  <Divider />
-                </CardContent>
-                <CardActions disableSpacing>
-                  <Tooltip
-                    title={getReactionsText(user._id, post.reactions)}
-                    placement="bottom"
-                  >
-                    <div
-                      className="feed"
-                      onMouseEnter={() => this.toggleShow(true)}
-                      onMouseLeave={() => this.toggleShow(false)}
-                    >
-                      <a className="like-btn">
-                        <Button
-                          style={{
-                            color: renderColor(
-                              getReactionsText(user._id, post.reactions),
-                            ),
-                          }}
-                          className={classes.button}
-                          onClick={() =>
-                            this.createOrUpdateReaction(
-                              user._id,
-                              post._id,
-                              getReactionsText(user._id, post.reactions),
-                            )
-                          }
-                        >
-                          <Avatar
-                            className={classes.smallAvatar}
-                            src={getReaction(
-                              getReactionsText(user._id, post.reactions),
-                            )}
+                    <Tooltip title="Comment">
+                      <Button
+                        className={classes.comment}
+                        onClick={() => this.showCommentInput()}
+                      >
+                        <div className="card-button-text">
+                          <CommentIcon
+                            style={{ color: '#606770' }}
+                            style={{ fontSize: 20 }}
                           />
-                          <span className="ml-7">
-                            {getReactionsText(user._id, post.reactions)}
-                          </span>
-                        </Button>
-                        {showEmojis && (
-                          <div className="reaction-box">
-                            <div
-                              className="v-align-middle reaction-icon"
-                              onClick={() =>
-                                this.createOrUpdateReaction(
-                                  user._id,
-                                  post._id,
-                                  'like',
-                                )
-                              }
-                            >
-                              <Tooltip title="Like" placement="top">
-                                <img src={like} width={43} height={38} />
-                              </Tooltip>
-                            </div>
-                            <div
-                              className="v-align-middle reaction-icon"
-                              onClick={() =>
-                                this.createOrUpdateReaction(
-                                  user._id,
-                                  post._id,
-                                  'dislike',
-                                )
-                              }
-                            >
-                              <Tooltip title="Dis Like" placement="top">
-                                <img src={dislike} width={43} height={38} />
-                              </Tooltip>
-                            </div>
-                            <div
-                              className="v-align-middle reaction-icon"
-                              onClick={() =>
-                                this.createOrUpdateReaction(
-                                  user._id,
-                                  post._id,
-                                  'perfect',
-                                )
-                              }
-                            >
-                              <Tooltip title="Perfect" placement="top">
-                                <img src={perfect} width={43} height={38} />
-                              </Tooltip>
-                            </div>
-                            <div
-                              className="v-align-middle reaction-icon"
-                              onClick={() =>
-                                this.createOrUpdateReaction(
-                                  user._id,
-                                  post._id,
-                                  'thinking',
-                                )
-                              }
-                            >
-                              <Tooltip title="Thinking" placement="top">
-                                <img src={thinking} width={43} height={38} />
-                              </Tooltip>
-                            </div>
-                            <div
-                              className="v-align-middle reaction-icon"
-                              onClick={() =>
-                                this.createOrUpdateReaction(
-                                  user._id,
-                                  post._id,
-                                  'love',
-                                )
-                              }
-                            >
-                              <Tooltip title="Love" placement="top">
-                                <img src={love} width={40} height={40} />
-                              </Tooltip>
-                            </div>
-                            <div
-                              className="v-align-middle reaction-icon"
-                              onClick={() =>
-                                this.createOrUpdateReaction(
-                                  user._id,
-                                  post._id,
-                                  'tounghout',
-                                )
-                              }
-                            >
-                              <Tooltip title="Toungh Out" placement="top">
-                                <img src={tounghout} width={40} height={40} />
-                              </Tooltip>
-                            </div>
-                            <div
-                              className="v-align-middle reaction-icon"
-                              onClick={() =>
-                                this.createOrUpdateReaction(
-                                  user._id,
-                                  post._id,
-                                  'wow',
-                                )
-                              }
-                            >
-                              <Tooltip title="Wow" placement="top">
-                                <img src={wow} width={40} height={40} />
-                              </Tooltip>
-                            </div>
-                          </div>
-                        )}
-                      </a>
-                    </div>
-                  </Tooltip>
-                  <Tooltip title="Comment">
-                    <Button
-                      className={classes.comment}
-                      onClick={() => this.showCommentInput()}
-                    >
-                      <img className={classes.smallAvatar} src={commentIcon} />
-                      <span style={{ marginLeft: 7 }}>Comment</span>
-                    </Button>
-                  </Tooltip>
-                </CardActions>
+                          <span className="ml-7">Comment</span>
+                        </div>
+                      </Button>
+                    </Tooltip>
+                  </CardActions>
+                ) : null}
+                {showCommentInput ||
+                (post.comments.length && postId !== post._id) ? (
+                  <Divider />
+                ) : null}
                 {showCommentInput && (
                   <CardActions disableSpacing style={{ paddingTop: 0 }}>
                     <CreateComment
@@ -510,7 +669,7 @@ class Outgoing extends Component {
                   </CardActions>
                 )}
                 <CardActions disableSpacing style={{ paddingTop: 0 }}>
-                  <CommentsList post={post} />
+                  {postId !== post._id && <CommentsList post={post} />}
                 </CardActions>
               </Card>
             ))
@@ -518,8 +677,7 @@ class Outgoing extends Component {
         {!outgoingPostsLoading && !outgoingPosts.length ? (
           <NoRecords
             title="No Outgoing Posts"
-            message="Seems You haven't started sharing opinions to others. What are you
-          waiting for. Start sharing now and let them know :)"
+            message="You haven't shared opinions to others"
           />
         ) : null}
         {outgoingPostsLoading && outgoingPosts && !outgoingPosts.length ? (

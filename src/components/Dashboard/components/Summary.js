@@ -1,19 +1,20 @@
+import * as timelineActions from '../../Timeline/actions'
+
 import React, { Component } from 'react'
+import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+
+import Avatar from '@material-ui/core/Avatar'
 import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
-import Typography from '@material-ui/core/Typography'
+import CardHeader from '@material-ui/core/CardHeader'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import formateNumber from '../../../util/formateNumber'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import * as timelineActions from '../../Timeline/actions'
 import Loader from '../../Loader/components/Loader'
+import { connect } from 'react-redux'
+import formateNumber from '../../../util/formateNumber'
 import incomingIcon from '../../../../assets/incoming.svg'
 import outgoingIcon from '../../../../assets/outgoing.svg'
-import Avatar from '@material-ui/core/Avatar'
 
 class Summary extends Component {
   constructor(props) {

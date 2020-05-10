@@ -7,6 +7,9 @@ export default {
       backgroundColor: 'red',
     },
     fontFamily: 'inherit',
+    '&:hover': {
+      // backgroundColor: 'red',
+    },
   },
   button: {
     margin: '5px 5px 20px 5px',

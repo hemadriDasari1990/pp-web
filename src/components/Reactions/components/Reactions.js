@@ -1,41 +1,25 @@
-import React, { Component } from 'react'
-import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
-import Avatar from '@material-ui/core/Avatar'
 import * as postActions from '../../Post/actions'
-import { Map, fromJS } from 'immutable'
+
+import React, { Component } from 'react'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { withStyles } from '@material-ui/core/styles'
-import formateNumber from '../../../util/formateNumber'
-import AppBar from '@material-ui/core/AppBar'
-import Tabs from '@material-ui/core/Tabs'
+
+import Avatar from '@material-ui/core/Avatar'
+import DisLikeIcon from '@material-ui/icons/ThumbDownAlt'
+import LikeIcon from '@material-ui/icons/ThumbUpAlt'
+import LoveIcon from '@material-ui/icons/Favorite'
+import PropTypes from 'prop-types'
+import Reactionslist from './List'
 import Tab from '@material-ui/core/Tab'
-import like from '../../../../assets/emojis/like.svg'
-import dislike from '../../../../assets/emojis/dislike.svg'
+import Tabs from '@material-ui/core/Tabs'
+import Typography from '@material-ui/core/Typography'
+import { connect } from 'react-redux'
+import formateNumber from '../../../util/formateNumber'
 import perfect from '../../../../assets/emojis/perfect.svg'
 import thinking from '../../../../assets/emojis/thinking.svg'
-import love from '../../../../assets/emojis/love.svg'
 import tounghout from '../../../../assets/emojis/tounghout.svg'
-import wow from '../../../../assets/emojis/surprise.svg'
-import PropTypes from 'prop-types'
-import Box from '@material-ui/core/Box'
-import Reactionslist from './List'
+import { withStyles } from '@material-ui/core/styles'
 
-const styles = {
-  default_tab: {
-    color: '#68C222',
-    width: '33.3%',
-    backgroundColor: '#FFFFFF',
-    fontSize: 15,
-  },
-  active_tab: {
-    color: 'red',
-    width: '33.3%',
-    backgroundColor: '#FFFFFF',
-    fontSize: 15,
-  },
-}
+const styles = {}
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -122,83 +106,80 @@ class Reactions extends Component {
       <React.Fragment>
         {reactionsCount ? (
           <>
-            <AppBar position="static">
-              <Tabs
-                textColor="primary"
-                value={value}
-                variant="scrollable"
-                scrollButtons="off"
-                aria-label="scrollable prevent tabs example"
-                initialSelectedIndex={value}
-              >
-                <Tab
-                  onClick={() => this.handleChange(0)}
-                  style={this.getStyle(value === 0)}
-                  value={value}
-                  label={'All ' + formateNumber(reactionsCount.total)}
-                  aria-label="phone"
-                  className="text-capitalize"
-                />
-                <Tab
-                  onClick={() => this.handleChange(1, 'like')}
-                  style={this.getStyle(value === 1)}
-                  value={value}
-                  label={formateNumber(reactionsCount.like)}
-                  icon={<Avatar className="mr-7 small-avatar" src={like} />}
-                  aria-label="phone"
-                />
-                <Tab
-                  onClick={() => this.handleChange(2, 'dislike')}
-                  style={this.getStyle(value === 2)}
-                  value={value}
-                  label={formateNumber(reactionsCount.dislike)}
-                  icon={<Avatar className="mr-7 small-avatar" src={dislike} />}
-                  aria-label="phone"
-                />
-                <Tab
-                  onClick={() => this.handleChange(3, 'love')}
-                  style={this.getStyle(value === 3)}
-                  value={value}
-                  label={formateNumber(reactionsCount.love)}
-                  icon={<Avatar className="mr-7 small-avatar" src={love} />}
-                  aria-label="favorite"
-                />
-                <Tab
-                  onClick={() => this.handleChange(4, tounghout)}
-                  style={this.getStyle(value === 4)}
-                  value={value}
-                  label={formateNumber(reactionsCount.tounghout)}
-                  icon={
-                    <Avatar className="mr-7 small-avatar" src={tounghout} />
-                  }
-                  aria-label="help"
-                />
-                <Tab
-                  onClick={() => this.handleChange(5, 'thinking')}
-                  style={this.getStyle(value === 5)}
-                  value={value}
-                  label={formateNumber(reactionsCount.thinking)}
-                  icon={<Avatar className="mr-7 small-avatar" src={thinking} />}
-                  aria-label="phone"
-                />
-                <Tab
-                  onClick={() => this.handleChange(6, 'perfect')}
-                  style={this.getStyle(value === 6)}
-                  value={value}
-                  label={formateNumber(reactionsCount.perfect)}
-                  icon={<Avatar className="mr-7 small-avatar" src={perfect} />}
-                  aria-label="phone"
-                />
-                <Tab
-                  onClick={() => this.handleChange(7, 'wow')}
-                  style={this.getStyle(value === 7)}
-                  value={value}
-                  label={formateNumber(reactionsCount.wow)}
-                  icon={<Avatar className="mr-7 small-avatar" src={wow} />}
-                  aria-label="up"
-                />
-              </Tabs>
-            </AppBar>
+            <Tabs
+              textColor="primary"
+              value={value}
+              scrollButtons="off"
+              aria-label="scrollable prevent tabs example"
+              initialSelectedIndex={value}
+              indicatorColor="primary"
+              centered={true}
+            >
+              <Tab
+                onClick={() => this.handleChange(0)}
+                value={0}
+                label={'All ' + formateNumber(reactionsCount.total)}
+                aria-label="phone"
+                className="text-capitalize"
+              />
+              <Tab
+                onClick={() => this.handleChange(1, 'like')}
+                value={1}
+                label={formateNumber(reactionsCount.like)}
+                icon={
+                  <Avatar className="mr-7 small-avatar">
+                    <LikeIcon color="secondary" style={{ fontSize: 20 }} />
+                  </Avatar>
+                }
+                aria-label="like"
+              />
+              <Tab
+                onClick={() => this.handleChange(2, 'dislike')}
+                value={2}
+                label={formateNumber(reactionsCount.dislike)}
+                icon={
+                  <Avatar className="mr-7 small-avatar">
+                    <DisLikeIcon color="secondary" style={{ fontSize: 20 }} />
+                  </Avatar>
+                }
+                aria-label="dislike"
+              />
+              <Tab
+                onClick={() => this.handleChange(3, 'love')}
+                value={3}
+                label={formateNumber(reactionsCount.love)}
+                icon={
+                  <Avatar
+                    className="mr-7 small-avatar"
+                    style={{ backgroundColor: '#ff0016c7' }}
+                  >
+                    <LoveIcon color="secondary" style={{ fontSize: 20 }} />
+                  </Avatar>
+                }
+                aria-label="loove"
+              />
+              <Tab
+                onClick={() => this.handleChange(4, tounghout)}
+                value={4}
+                label={formateNumber(reactionsCount.tounghout)}
+                icon={<Avatar className="mr-7 small-avatar" src={tounghout} />}
+                aria-label="tounghout"
+              />
+              <Tab
+                onClick={() => this.handleChange(5, 'thinking')}
+                value={5}
+                label={formateNumber(reactionsCount.thinking)}
+                icon={<Avatar className="mr-7 small-avatar" src={thinking} />}
+                aria-label="thinking"
+              />
+              <Tab
+                onClick={() => this.handleChange(6, 'perfect')}
+                value={6}
+                label={formateNumber(reactionsCount.perfect)}
+                icon={<Avatar className="mr-7 small-avatar" src={perfect} />}
+                aria-label="perfect"
+              />
+            </Tabs>
             <TabPanel value={value} index={0}>
               <Reactionslist />
             </TabPanel>
@@ -219,9 +200,6 @@ class Reactions extends Component {
             </TabPanel>
             <TabPanel value={value} index={6}>
               <Reactionslist type="perfect" />
-            </TabPanel>
-            <TabPanel value={value} index={7}>
-              <Reactionslist type="wow" />
             </TabPanel>
           </>
         ) : null}

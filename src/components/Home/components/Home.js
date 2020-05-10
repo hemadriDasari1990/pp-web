@@ -1,16 +1,18 @@
+import * as footerActions from '../../Footer/actions'
+
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import withStyles from '@material-ui/core/styles/withStyles'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+
+import Feedbacks from './Feedbacks'
 import { List } from 'immutable'
 import ProfileCard from './card'
-import pros from '../../../../assets/pros.svg'
-import cons from '../../../../assets/cons.svg'
+import PropTypes from 'prop-types'
 import advice from '../../../../assets/advice.svg'
+import { connect } from 'react-redux'
+import cons from '../../../../assets/cons.svg'
 import home from '../../../../assets/people.svg'
-import Feedbacks from './Feedbacks'
-import * as footerActions from '../../Footer/actions'
+import pros from '../../../../assets/pros.svg'
+import { withRouter } from 'react-router-dom'
+import withStyles from '@material-ui/core/styles/withStyles'
 
 const styles = theme => ({
   card: {
@@ -40,7 +42,7 @@ class Home extends Component {
     const { classes, authenticate } = this.props
     return (
       <React.Fragment>
-        <section>
+        <section className="body-section">
           <div className="row">
             <div className="content-column col-lg-5 col-md-12 col-sm-12">
               <div className="inner-column">
@@ -66,7 +68,7 @@ class Home extends Component {
             </div>
           </div>
         </section>
-        <section>
+        <section className="body-section">
           <h2 className="h2-header">Our Core Features</h2>
           <p>
             We built this system to help people in sharing feedback about each
@@ -113,7 +115,7 @@ class Home extends Component {
             </div>
           </div>
         </section>
-        <section>
+        <section className="body-section">
           <Feedbacks />
         </section>
       </React.Fragment>

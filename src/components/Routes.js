@@ -1,39 +1,31 @@
-import React, { Component } from 'react'
-import Home from './Home/components/Home'
-import { connect } from 'react-redux'
 import {
   BrowserRouter,
-  Route,
   Redirect,
-  withRouter,
+  Route,
   Switch,
+  withRouter,
 } from 'react-router-dom'
-import Timeline from './Timeline/components/Timeline'
-import * as actions from '../actions/index'
-import Footer from './Footer/components/Footer'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import firebase from '../firebase/index'
-import theme from './theme'
-import UserProfile from './UserProfile/components/Dashboard'
+import React, { Component } from 'react'
+
+import About from './Footer/components/About'
+import Advice from './Home/components/Advice'
+import Careers from './Footer/components/careers'
+import Cons from './Home/components/Cons'
+import Dashboard from './Dashboard/components/Dashboard'
+import Developers from './Footer/components/developers'
+import Feedback from './Footer/components/Feedback'
+import Home from './Home/components/Home'
+import Location from './Footer/components/Location'
 import Notifications from './Notifications/components/Notification'
 import PageNotFound from './PageNotFound/components/index'
-import About from './Footer/components/About'
-import Feedback from './Footer/components/Feedback'
-import Location from './Footer/components/Location'
-import Developers from './Footer/components/developers'
-import Careers from './Footer/components/careers'
-import Reactions from './Reactions/components/Reactions'
+import PostDetails from './Timeline/components/PostDetails'
 import Preferences from './Post/components/Preferences'
 import Pros from './Home/components/Pros'
-import Cons from './Home/components/Cons'
-import Advice from './Home/components/Advice'
+import Reactions from './Reactions/components/Reactions'
 import Signin from './Signin/components/Signin'
-import Dashboard from './Dashboard/components/Dashboard'
-import Button from '@material-ui/core/Button'
-import PostDetails from './Timeline/components/PostDetails'
-import Loader from './Loader/components/Loader'
-import CustomizedSnackbars from './Snackbar/components/Snackbar'
+import Timeline from './Timeline/components/Timeline'
+import UserProfile from './UserProfile/components/Dashboard'
+import { connect } from 'react-redux'
 
 class Routes extends Component {
   constructor(props) {
@@ -119,6 +111,7 @@ class Routes extends Component {
           <Route path="/cons" component={Cons} />
           <Route path="/advice" component={Advice} />
           <Route path="/signin" component={Signin} />
+          <Route path="*" component={PageNotFound} />
         </Switch>
       </React.Fragment>
     )

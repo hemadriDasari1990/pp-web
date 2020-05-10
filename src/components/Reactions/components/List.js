@@ -1,22 +1,25 @@
+import * as postActions from '../../Post/actions'
+
+import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
-import Button from '@material-ui/core/Button'
-import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
+import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+
 import Avatar from '@material-ui/core/Avatar'
-import ListItemText from '@material-ui/core/ListItemText'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import Badge from '@material-ui/core/Badge'
+import Button from '@material-ui/core/Button'
+import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import Loader from '../../Loader/components/Loader'
-import * as postActions from '../../Post/actions'
-import { Map, fromJS } from 'immutable'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import Badge from '@material-ui/core/Badge'
-import { withStyles } from '@material-ui/core/styles'
-import { Link } from 'react-router-dom'
-import getReaction from '../../../util/getReaction'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import ListItemText from '@material-ui/core/ListItemText'
+import Loader from '../../Loader/components/Loader'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
+import { connect } from 'react-redux'
+import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
+import getReaction from '../../../util/getReaction'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
   smallAvatar: {
@@ -59,7 +62,7 @@ class ReactionsList extends Component {
       user,
     } = this.props
     return (
-      <>
+      <div>
         {!reactionsLoading && reactions.length ? (
           <Typography variant="h3">People who Reacted</Typography>
         ) : null}
@@ -67,7 +70,7 @@ class ReactionsList extends Component {
           <div className="row">
             {!reactionsLoading && reactions.length
               ? reactions.map(r => (
-                  <div className="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                  <div className="col-lg-3 col-md-4 col-sm-4 col-xs-12">
                     <ListItem
                       key={r._id}
                       alignItems="flex-start"
@@ -80,13 +83,22 @@ class ReactionsList extends Component {
                           badgeContent={
                             <Avatar
                               className={classes.smallAvatar}
-                              alt="NA"
-                              src={getReaction(r.type)}
-                            />
+                              key={r._id}
+                              alt={r.user ? r.user.userName : ''}
+                              style={{
+                                backgroundColor:
+                                  r.type.toLowerCase() === 'love' ||
+                                  r.type.toLowerCase() === 'profile-love'
+                                    ? '#ff0016c7'
+                                    : '',
+                              }}
+                            >
+                              {getReaction(r ? r.type : '')}
+                            </Avatar>
                           }
                         >
                           <Avatar
-                            alt={r.user.userName.substring(0, 1)}
+                            alt={r.user ? r.user.userName.substring(0, 1) : ''}
                             src={r.user.photoURL}
                           />
                         </Badge>
@@ -103,12 +115,20 @@ class ReactionsList extends Component {
                                 : r.user.userName}
                             </Link>
                           }
-                          secondary={this.renderUserOrigin(r.user.providerId)}
+                          secondary={
+                            <Typography
+                              component="span"
+                              variant="body2"
+                              color="textPrimary"
+                            >
+                              {getCardSubHeaderProfileSummary(r.user)}
+                            </Typography>
+                          }
                         />
                       </Tooltip>
                       <ListItemSecondaryAction>
                         <Tooltip title="View Profile" placement="right-end">
-                          <Button color="primary" className="mt-10">
+                          <Button color="primary">
                             <Link to={`/profile/${r.user._id}`}>
                               View Profile
                             </Link>
@@ -127,7 +147,7 @@ class ReactionsList extends Component {
             {reactionsLoading && !reactions.length && <Loader />}
           </div>
         </List>
-      </>
+      </div>
     )
   }
 }

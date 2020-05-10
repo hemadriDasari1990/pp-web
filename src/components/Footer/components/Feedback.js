@@ -1,15 +1,17 @@
-import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
-import TextField from '@material-ui/core/TextField'
-import Checkbox from '@material-ui/core/Checkbox'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import Fab from '@material-ui/core/Fab'
 import * as actions from '../actions'
-import { connect } from 'react-redux'
+
 import { Map, fromJS } from 'immutable'
+import React, { Component } from 'react'
+
+import Checkbox from '@material-ui/core/Checkbox'
 import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
+import Fab from '@material-ui/core/Fab'
 import FeedbackList from './FeedbackList'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Loader from '../../Loader/components/Loader'
+import TextField from '@material-ui/core/TextField'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 class Feedback extends Component {
   constructor(props) {

@@ -1,27 +1,41 @@
+import * as globalActions from '../../../actions/index'
+
+import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
-import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
-import CardContent from '@material-ui/core/CardContent'
-import IconButton from '@material-ui/core/IconButton'
-import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
+import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+
 import Avatar from '@material-ui/core/Avatar'
-import ListItemText from '@material-ui/core/ListItemText'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import Badge from '@material-ui/core/Badge'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import CardHeader from '@material-ui/core/CardHeader'
+import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../Loader/components/Loader'
-import { Map, fromJS } from 'immutable'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
-import * as globalActions from '../../../actions/index'
-import FollowIcon from '../../SvgIcons/components/Follow'
-import FollowingIcon from '../../SvgIcons/components/Following'
-import { Link } from 'react-router-dom'
-import moment from 'moment'
 import getPastTime from '../../../util/getPastTime'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import getReaction from '../../../util/getReaction'
+import { withStyles } from '@material-ui/core/styles'
+
+const styles = {
+  smallAvatar: {
+    width: 23,
+    height: 23,
+  },
+  customBadge: {
+    top: '90%',
+    width: 35,
+    height: 35,
+    backgroundColor: 'unset !important',
+  },
+}
 
 class Followers extends Component {
   async componentDidMount() {
@@ -68,10 +82,24 @@ class Followers extends Component {
                 ? profileUser.followers.slice(0, 3).map(f => (
                     <ListItem key={f._id} alignItems="flex-start">
                       <ListItemAvatar>
-                        <Avatar
-                          alt={f.follower[0].userName}
-                          src={f.follower[0].photoURL}
-                        />
+                        <Badge
+                          classes={{ badge: classes.customBadge }}
+                          overlap="circle"
+                          badgeContent={
+                            <Avatar
+                              className={classes.smallAvatar}
+                              key={f._id}
+                              alt={f.follower[0] ? f.follower[0].userName : ''}
+                            >
+                              {getReaction('follow')}
+                            </Avatar>
+                          }
+                        >
+                          <Avatar
+                            alt={f.follower[0].userName.substring(0, 1)}
+                            src={f.follower[0].photoURL}
+                          />
+                        </Badge>
                       </ListItemAvatar>
                       <Tooltip
                         title={f.follower[0].userName}
@@ -106,23 +134,7 @@ class Followers extends Component {
                           }
                         />
                       </Tooltip>
-                      <ListItemSecondaryAction>
-                        <Tooltip
-                          placement="bottom"
-                          title={f.follower ? 'Following' : 'Follow'}
-                        >
-                          <IconButton>
-                            {f.follower ? (
-                              <FollowingIcon
-                                color="#2a7fff"
-                                className="icon-display"
-                              />
-                            ) : (
-                              <FollowIcon className="icon-display" />
-                            )}
-                          </IconButton>
-                        </Tooltip>
-                      </ListItemSecondaryAction>
+                      <ListItemSecondaryAction></ListItemSecondaryAction>
                     </ListItem>
                   ))
                 : null}
@@ -163,4 +175,6 @@ const actionsToProps = {
   getUser: globalActions.getUser,
 }
 
-export default withRouter(connect(mapStateToProps, actionsToProps)(Followers))
+export default withRouter(
+  connect(mapStateToProps, actionsToProps)(withStyles(styles)(Followers)),
+)

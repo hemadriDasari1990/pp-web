@@ -1,17 +1,17 @@
-import React, { Component } from 'react'
-import Button from '@material-ui/core/Button'
-import Avatar from '@material-ui/core/Avatar'
 import * as actions from '../../actions'
+import * as postActions from '../../../Post/actions'
+
 import { Map, fromJS } from 'immutable'
+import React, { Component } from 'react'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
+import PropTypes from 'prop-types'
+import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
-import PropTypes from 'prop-types'
-import Divider from '@material-ui/core/Divider'
-import TextField from '@material-ui/core/TextField'
-import Grid from '@material-ui/core/Grid'
-import CheckRoundedIcon from '@material-ui/icons/CheckRounded'
-import * as postActions from '../../../Post/actions'
 
 const styles = {}
 
@@ -38,7 +38,7 @@ class CreateComment extends Component {
     await this.props.createComment(postId, data).then(async data => {
       this.props.hideComment(postId)
       await this.props.getCommentsCount(postId)
-      await this.props.getComments(this.props.post._id)
+      await this.props.getComments(postId)
     })
   }
 
@@ -50,7 +50,6 @@ class CreateComment extends Component {
 
   render() {
     const { classes, showCommentInput, post, user } = this.props
-    console.log('create comment called')
     const { comment } = this.state
     return (
       <>
@@ -60,11 +59,12 @@ class CreateComment extends Component {
               <Avatar
                 size="small"
                 src={post.postedBy.photoURL}
-                style={{ marginLeft: 10 }}
+                className="m-l-10"
               />
             </Grid>
-            <Grid lg={8} item>
+            <Grid lg={8} md={8} item>
               <TextField
+                className="m-0"
                 key="comment"
                 margin="normal"
                 type="string"
@@ -80,14 +80,13 @@ class CreateComment extends Component {
                 required
               />
             </Grid>
-            <Grid item>
+            <Grid lg={1} md={1} item>
               <Button
-                className="mt-minus-30"
                 disabled={comment ? false : true}
                 onClick={() => this.createComment(post._id)}
-                variant={'outlined'}
-                size="small"
-                color={'primary'}
+                variant="outlined"
+                size="medium"
+                color="primary"
               >
                 Save
               </Button>
@@ -104,10 +103,6 @@ CreateComment.propTypes = {
 }
 
 const mapStateToProps = state => {
-  const deletePostSuccess = state.getIn(
-    ['Timeline', 'post', 'delete', 'success'],
-    Map(),
-  )
   const user = state.getIn(['user', 'data'])
   return {
     user,

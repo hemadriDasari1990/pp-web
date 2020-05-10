@@ -1,16 +1,18 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import Summary from '../../Dashboard/components/Summary'
-import RecentPosts from '../../Timeline/components/RecentPosts'
-import TopPosts from '../../Timeline/components/TopPosts'
 import * as globalActions from '../../../actions/index'
-import Profile from './Profile'
-import Reactions from './Reactions'
+
+import React, { Component } from 'react'
+
+import Followers from './Followers'
 import Incoming from '../../Timeline/components/Incoming'
 import Loader from '../../Loader/components/Loader'
-import Followers from './Followers'
+import PopularPosts from '../../Timeline/components/PopularPosts'
+import Profile from './Profile'
+import PropTypes from 'prop-types'
+import Reactions from './Reactions'
+import RecentPosts from '../../Timeline/components/RecentPosts'
+import Summary from '../../Dashboard/components/Summary'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 class Dashboard extends Component {
   constructor(props) {
@@ -34,7 +36,7 @@ class Dashboard extends Component {
     const { classes, loggedInUser } = this.props
     const { user } = this.state
     return (
-      <React.Fragment>
+      <div className="container">
         <div className="row">
           {loggedInUser && (
             <>
@@ -50,13 +52,13 @@ class Dashboard extends Component {
                 {user && <Summary type="incoming" title="Incoming Summary" />}
                 {user && <Summary type="outgoing" title="Outgoing Summary" />}
                 {user && <RecentPosts user={user} />}
-                {user && <TopPosts user={user} />}
+                {user && <PopularPosts user={user} type="incoming" />}
               </div>
             </>
           )}
           {!loggedInUser || (!user && <Loader />)}
         </div>
-      </React.Fragment>
+      </div>
     )
   }
 }

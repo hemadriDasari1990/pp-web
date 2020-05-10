@@ -1,17 +1,18 @@
 import React, { Component } from 'react'
+
+import Avatar from '@material-ui/core/Avatar'
+import LikeIcon from '@material-ui/icons/ThumbUpAlt'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import Avatar from '@material-ui/core/Avatar'
-import Typography from '@material-ui/core/Typography'
-import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import { withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import Loader from '../../Loader/components/Loader'
-import LikeIcon from '../../SvgIcons/components/Like'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import ListItemText from '@material-ui/core/ListItemText'
+import Loader from '../../Loader/components/Loader'
+import PropTypes from 'prop-types'
+import Typography from '@material-ui/core/Typography'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({
   root: {

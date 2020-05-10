@@ -1,4 +1,5 @@
 import * as action from '../../constants/actionTypes'
+
 import config from '../../config'
 
 export const deletePostRequest = () => {
@@ -261,6 +262,46 @@ export const getRecentPosts = userId => {
       .then(response => response.json())
       .then(data => dispatch(getRecentPostsSuccess(data)))
       .catch(errors => dispatch(getRecentPostsError(errors)))
+  }
+}
+
+export const getPopularPostsRequest = () => {
+  return {
+    type: action.GET_POPULAR_POSTS_REQUEST,
+    loading: true,
+  }
+}
+
+export const getPopularPostsSuccess = posts => {
+  return {
+    type: action.GET_POPULAR_POSTS_SUCCESS,
+    loading: false,
+    data: posts,
+  }
+}
+
+export const getPopularPostsError = errors => {
+  return {
+    type: action.GET_POPULAR_POSTS_ERROR,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const getPopularPosts = (userId, type) => {
+  const options = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  return dispatch => {
+    dispatch(getPopularPostsRequest())
+    return fetch(
+      config.URL_PREFIX + `/post/${userId}/popularPosts?type=${type}`,
+      options,
+    )
+      .then(response => response.json())
+      .then(data => dispatch(getPopularPostsSuccess(data)))
+      .catch(errors => dispatch(getPopularPostsError(errors)))
   }
 }
 

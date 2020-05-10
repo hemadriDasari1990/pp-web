@@ -1,23 +1,24 @@
+import * as actions from '../actions'
+import * as globalActions from '../../../actions/index'
+
+import { List, Map } from 'immutable'
 import React, { Component } from 'react'
+import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
-import IconButton from '@material-ui/core/IconButton'
-import Avatar from '@material-ui/core/Avatar'
 import Divider from '@material-ui/core/Divider'
 import Fab from '@material-ui/core/Fab'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { Map, List } from 'immutable'
-import Tooltip from '@material-ui/core/Tooltip'
-import * as actions from '../actions'
-import Button from '@material-ui/core/Button'
-import FollowIcon from '../../SvgIcons/components/Follow'
-import * as globalActions from '../../../actions/index'
-import formateNumber from '../../../util/formateNumber'
-import FollowingIcon from '../../SvgIcons/components/Following'
+import IconButton from '@material-ui/core/IconButton'
 import LikeIcon from '@material-ui/icons/ThumbUpAlt'
 import LoveIcon from '@material-ui/icons/Favorite'
+import RssFeedOutlinedIcon from '@material-ui/icons/RssFeedOutlined'
+import Tooltip from '@material-ui/core/Tooltip'
+import { connect } from 'react-redux'
+import formateNumber from '../../../util/formateNumber'
 
 class Profile extends Component {
   constructor(props) {
@@ -99,28 +100,30 @@ class Profile extends Component {
       <>
         <Card>
           <CardContent>
-            <div className="row f-r">
-              <Tooltip title="Love">
-                <IconButton
-                  className="f-r"
-                  aria-label="settings"
-                  style={{ color: loved ? '#ff0016c7' : '#0c0b0b5e' }}
-                  onClick={() => this.handleReaction('love', profileUser._id)}
-                >
-                  <LoveIcon className="icon-display" />
-                </IconButton>
-              </Tooltip>
-              <Tooltip title="Like">
-                <IconButton
-                  aria-label="settings"
-                  className="f-r"
-                  style={{ color: liked ? '#2a7fff' : '#0c0b0b5e' }}
-                  onClick={() => this.handleReaction('like', profileUser._id)}
-                >
-                  <LikeIcon className="icon-display" />
-                </IconButton>
-              </Tooltip>
-            </div>
+            {profileUser && user && profileUser._id != user._id && (
+              <div className="row f-r">
+                <Tooltip title="Love">
+                  <IconButton
+                    className="f-r"
+                    aria-label="settings"
+                    style={{ color: loved ? '#ff0016c7' : '#0c0b0b5e' }}
+                    onClick={() => this.handleReaction('love', profileUser._id)}
+                  >
+                    <LoveIcon className="icon-display" />
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Like">
+                  <IconButton
+                    aria-label="settings"
+                    className="f-r"
+                    style={{ color: liked ? '#2a7fff' : '#0c0b0b5e' }}
+                    onClick={() => this.handleReaction('like', profileUser._id)}
+                  >
+                    <LikeIcon className="icon-display" />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            )}
             <Avatar
               className="profile"
               alt={profileUser.userName}
@@ -133,28 +136,24 @@ class Profile extends Component {
                 ? 'A Google User'
                 : 'A Facebook User'}
             </div>
-            <div className="mt-25 text-center">
-              <Tooltip title={following ? 'Following' : 'Follow'}>
-                <Button
-                  variant={following ? 'contained' : 'outlined'}
-                  style={{
-                    width: 150,
-                    backgroundColor: following ? '#2a7fff' : '#fff',
-                    color: following ? '#fff' : '#0c0b0b5e',
-                  }}
-                  startIcon={
-                    following ? (
-                      <FollowingIcon color="#fff" />
-                    ) : (
-                      <FollowIcon color="#0c0b0b5e" />
-                    )
-                  }
-                  onClick={() => this.handleFollow()}
-                >
-                  {following ? 'Following' : 'Follow'}
-                </Button>
-              </Tooltip>
-            </div>
+            {profileUser && user && profileUser._id != user._id && (
+              <div className="mt-25 text-center">
+                <Tooltip title={following ? 'Following' : 'Follow'}>
+                  <Button
+                    variant="extended"
+                    style={{
+                      width: 150,
+                      backgroundColor: '#2a7fff',
+                      color: '#fff',
+                    }}
+                    startIcon={<RssFeedOutlinedIcon color="secondary" />}
+                    onClick={() => this.handleFollow()}
+                  >
+                    {following ? 'Following' : 'Follow'}
+                  </Button>
+                </Tooltip>
+              </div>
+            )}
           </CardContent>
           <Divider />
           <CardActions className="mt-10 p-0 fl-justify-content">
@@ -177,12 +176,7 @@ class Profile extends Component {
               </div>
               <div className="col align-self-center text-center">
                 <Tooltip title="No of People Loves">
-                  <Fab
-                    color="inherit"
-                    size="small"
-                    aria-label="love"
-                    color="primary"
-                  >
+                  <Fab size="small" aria-label="love" color="primary">
                     <LoveIcon />
                   </Fab>
                 </Tooltip>
@@ -193,13 +187,8 @@ class Profile extends Component {
               </div>
               <div className="col align-self-end text-center">
                 <Tooltip title="Followers">
-                  <Fab
-                    color="inherit"
-                    size="small"
-                    aria-label="followers"
-                    color="primary"
-                  >
-                    <FollowingIcon color="#fff" />
+                  <Fab size="small" aria-label="followers" color="primary">
+                    <RssFeedOutlinedIcon color="#fff" />
                   </Fab>
                 </Tooltip>
                 <p className="title">

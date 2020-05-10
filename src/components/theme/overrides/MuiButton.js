@@ -8,13 +8,16 @@ export default {
     textTransform: 'none',
   },
   outlined: {
-    padding: '6px 9px !important',
+    padding: '6px 9px',
+    '&:hover': {
+      fontWeight: 'bold',
+    },
+    color: '#606770',
+    borderColor: '#606770',
     // marginTop: -30
   },
   root: {
-    color: '#2a7fff',
-    backgroundColor: '#f0f2f5d9',
-    borderRadius: 30,
+    // borderRadius: 30,
     boxShadow: 'none',
     textTransform: 'none',
     // fontWeight: 600,
@@ -22,7 +25,6 @@ export default {
     lineHeight: 1.5,
     '&:hover': {
       boxShadow: 'none',
-      backgroundColor: '#f0f2f5d9 !important',
     },
     '&:active': {
       boxShadow: 'none',

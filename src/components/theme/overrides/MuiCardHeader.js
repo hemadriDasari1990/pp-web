@@ -15,7 +15,7 @@ export default {
   },
   subheader: {
     fontFamily: 'inherit',
-    color: palette.text.primary,
+    color: '#00000099',
   },
   action: {
     margin: '0px !important',

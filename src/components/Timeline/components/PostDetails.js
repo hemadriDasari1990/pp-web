@@ -1,42 +1,39 @@
+import * as timelineActions from '../../Timeline/actions'
+
 import React, { Component } from 'react'
+import {
+  Redirect,
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  withRouter,
+} from 'react-router-dom'
+
+import Avatar from '@material-ui/core/Avatar'
+import AvatarGroup from '@material-ui/lab/AvatarGroup'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
 import CardContent from '@material-ui/core/CardContent'
-import withStyles from '@material-ui/core/styles/withStyles'
-import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
-import Avatar from '@material-ui/core/Avatar'
-import moment from 'moment'
+import CardHeader from '@material-ui/core/CardHeader'
+import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import formateNumber from '../../../util/formateNumber'
-import VerifiedUserIcon from '@material-ui/icons/VerifiedUser'
-import * as timelineActions from '../../Timeline/actions'
-import { Map, fromJS } from 'immutable'
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect,
-  withRouter,
-  Switch,
-} from 'react-router-dom'
-import { connect } from 'react-redux'
-import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
+import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../Loader/components/Loader'
-import Summary from '../../Dashboard/components/Summary'
-import { Link } from 'react-router-dom'
-import AvatarGroup from '@material-ui/lab/AvatarGroup'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
+import VerifiedUserIcon from '@material-ui/icons/VerifiedUser'
 import advice from '../../../../assets/advice.svg'
-import pros from '../../../../assets/pros.svg'
+import { connect } from 'react-redux'
 import cons from '../../../../assets/cons.svg'
-import getReaction from '../../../util/getReaction'
-import renderUserNames from '../../../util/renderUserNames'
-import textingImage from '../../../../assets/notifications/texting.svg'
-import getPastTime from '../../../util/getPastTime'
+import formateNumber from '../../../util/formateNumber'
 import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
+import getPastTime from '../../../util/getPastTime'
+import getReaction from '../../../util/getReaction'
+import pros from '../../../../assets/pros.svg'
+import renderUserNames from '../../../util/renderUserNames'
+import withStyles from '@material-ui/core/styles/withStyles'
 
 const styles = {
   smallAvatar: {
@@ -126,7 +123,7 @@ class PostDetails extends Component {
       <React.Fragment>
         <div className="row">
           <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12"></div>
-          <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
+          <div className="col-lg-4 col-md-7 col-sm-12 col-xs-12">
             {!postDetailsLoading && postDetails ? (
               <Card>
                 <CardHeader

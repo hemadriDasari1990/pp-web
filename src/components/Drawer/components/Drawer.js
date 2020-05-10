@@ -1,29 +1,25 @@
+import * as actions from '../../../actions/index'
+
 import React, { Component } from 'react'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
 
-import { withStyles } from '@material-ui/core/styles'
-import PropTypes from 'prop-types'
+import Avatar from '@material-ui/core/Avatar'
+import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
+import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import List from '@material-ui/core/List'
-import incomingIcon from '../../../../assets/incoming.svg'
-import Avatar from '@material-ui/core/Avatar'
-import outgoingIcon from '../../../../assets/outgoing.svg'
-import usersIcon from '../../../../assets/users.svg'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import dashboardIcon from '../../../../assets/dashboard.svg'
 import firebase from '../../../firebase'
-import * as actions from '../../../actions/index'
-import preferencesIcon from '../../../../assets/preferences.svg'
-import notificationsIcon from '../../../../assets/notifications.svg'
-import logoutIcon from '../../../../assets/logout.svg'
-import PreferencesIcon from '../../SvgIcons/components/Preferences'
-import Fab from '@material-ui/core/Fab'
 import formateNumber from '../../../util/formateNumber'
-import Badge from '@material-ui/core/Badge'
-import * as timelineActions from '../../Timeline/actions'
-import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
+import incomingIcon from '../../../../assets/incoming.svg'
+import logoutIcon from '../../../../assets/logout.svg'
+import outgoingIcon from '../../../../assets/outgoing.svg'
+import preferencesIcon from '../../../../assets/preferences.svg'
+import usersIcon from '../../../../assets/users.svg'
+import { withStyles } from '@material-ui/core/styles'
 
 const color = '#2a7fff'
 const styles = {
@@ -124,37 +120,37 @@ class DrawerComponent extends Component {
     return (
       <>
         <List>
-          <ListItem button key={1} onClick={this.handleDashboard}>
+          <ListItem button key={1} onClick={() => this.handleDashboard()}>
             <ListItemIcon>
               <Avatar className={classes.avatar} src={dashboardIcon} />
             </ListItemIcon>
             <ListItemText>Dashboard</ListItemText>
           </ListItem>
-          <ListItem button key={2} onClick={this.handleIncoming}>
+          <ListItem button key={2} onClick={() => this.handleIncoming()}>
             <ListItemIcon>
               <Avatar className={classes.avatar} src={incomingIcon} />
             </ListItemIcon>
             <ListItemText>Incoming</ListItemText>
           </ListItem>
-          <ListItem button key={3} onClick={this.handleOutgoing}>
+          <ListItem button key={3} onClick={() => this.handleOutgoing()}>
             <ListItemIcon>
               <Avatar className={classes.avatar} src={outgoingIcon} />
             </ListItemIcon>
             <ListItemText>Outgoing</ListItemText>
           </ListItem>
-          <ListItem button key={5} onClick={this.handleUsers}>
+          <ListItem button key={5} onClick={() => this.handleUsers()}>
             <ListItemIcon>
               <Avatar className={classes.avatar} src={usersIcon} />
             </ListItemIcon>
             <ListItemText>Users</ListItemText>
           </ListItem>
-          <ListItem button key={6} onClick={this.handlePreferences}>
+          <ListItem button key={6} onClick={() => this.handlePreferences()}>
             <ListItemIcon>
               <Avatar className={classes.avatar1} src={preferencesIcon} />
             </ListItemIcon>
             <ListItemText>Preferences</ListItemText>
           </ListItem>
-          <ListItem button key={7} onClick={this.handleLogout}>
+          <ListItem button key={7} onClick={() => this.handleLogout()}>
             <ListItemIcon>
               <Avatar className={classes.avatar1} src={logoutIcon} />
             </ListItemIcon>

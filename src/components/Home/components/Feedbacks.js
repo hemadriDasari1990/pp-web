@@ -1,13 +1,11 @@
 import React, { Component } from 'react'
+
+import FeedbackList from '../../Footer/components/FeedbackList'
+import { List } from 'immutable'
 import PropTypes from 'prop-types'
-import withStyles from '@material-ui/core/styles/withStyles'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import { List } from 'immutable'
-import GridList from '@material-ui/core/GridList'
-import GridListTile from '@material-ui/core/GridListTile'
-import GridListTileBar from '@material-ui/core/GridListTileBar'
-import FeedbackList from '../../Footer/components/FeedbackList'
+import withStyles from '@material-ui/core/styles/withStyles'
 
 const styles = theme => ({
   root: {

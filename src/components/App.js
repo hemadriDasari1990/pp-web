@@ -1,21 +1,22 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import * as actions from '../actions/index'
+
 import {
   BrowserRouter,
-  Route,
   Redirect,
-  withRouter,
+  Route,
   Switch,
+  withRouter,
 } from 'react-router-dom'
-import Timeline from './Timeline/components/Timeline'
-import * as actions from '../actions/index'
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles'
+import React, { Component } from 'react'
+
 import CssBaseline from '@material-ui/core/CssBaseline'
+import CustomizedSnackbars from './Snackbar/components/Snackbar'
+import ResponsiveDrawer from './ResponsiveDrawer/components/ResponsiveDrawer'
+import { connect } from 'react-redux'
 import firebase from '../firebase/index'
 import theme from './theme'
 import { withStyles } from '@material-ui/core/styles'
-import ResponsiveDrawer from './ResponsiveDrawer/components/ResponsiveDrawer'
-import CustomizedSnackbars from './Snackbar/components/Snackbar'
 
 const styles = theme => ({})
 

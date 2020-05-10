@@ -1,13 +1,15 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import { withRouter } from 'react-router-dom'
-import fbIcon from '../../../../assets/social/fb.svg'
-import twitterIcon from '../../../../assets/social/twitter.svg'
-import instagramIcon from '../../../../assets/social/instagram.svg'
-import youtubeIcon from '../../../../assets/social/youtube.svg'
+import React, { Component } from 'react'
+
+import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
-import Fab from '@material-ui/core/Fab'
+import FacebookIcon from '@material-ui/icons/Facebook'
+import InstagramIcon from '@material-ui/icons/Instagram'
+import LinkedInIcon from '@material-ui/icons/LinkedIn'
+import PropTypes from 'prop-types'
+import TwitterIcon from '@material-ui/icons/Twitter'
+import YouTubeIcon from '@material-ui/icons/YouTube'
+import { withRouter } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({
   root: {
@@ -17,17 +19,12 @@ const styles = theme => ({
     right: 0,
     flexGrow: 1,
   },
-  icon: {
-    height: 30,
-    backgroundColor: '#2a7fff',
-    borderRadius: 16,
-  },
   label: {
     color: '#2a7fff',
   },
 })
 
-class Footer extends React.Component {
+class Footer extends Component {
   state = {
     value: '',
   }
@@ -117,17 +114,16 @@ class Footer extends React.Component {
                     Login with your social account and start sharing opinions.
                   </h4>
                 </div>
-                <div className="col-lg-4 col-md-2 col-sm-2 col-xs-4">
-                  <Fab
+                <div className="mt-25 col-lg-4 col-md-2 col-sm-2 col-xs-4">
+                  <Button
                     onClick={() => this.handleSignin()}
                     size="small"
-                    aria-label="add"
-                    variant="extended"
-                    className="mt-25"
-                    classes={{ label: classes.label }}
+                    variant="outlined"
+                    color="secondary"
+                    className="btn-outlined p-2"
                   >
                     login With Social Account
-                  </Fab>
+                  </Button>
                 </div>
               </div>
             </div>
@@ -230,25 +226,32 @@ class Footer extends React.Component {
                   <ul>
                     <li className="m-v-10">
                       <a href="https://www.facebook.com" target="_blank">
-                        <img className={classes.icon} src={fbIcon} /> Facebook
+                        <FacebookIcon color="primary" />
+                        &nbsp;Facebook
                       </a>
                     </li>
                     <li className="m-v-10">
                       <a href="https://www.instagram.com" target="_blank">
-                        <img className={classes.icon} src={twitterIcon} />{' '}
-                        Twitter
+                        <TwitterIcon color="primary" />
+                        &nbsp;Twitter
                       </a>
                     </li>
                     <li className="m-v-10">
                       <a href="https://www.twitter.com/" target="_blank">
-                        <img className={classes.icon} src={instagramIcon} />{' '}
-                        Instagram
+                        <InstagramIcon color="primary" />
+                        &nbsp;Instagram
                       </a>
                     </li>
                     <li className="m-v-10">
                       <a href="https://www.youtube.com" target="_blank">
-                        <img className={classes.icon} src={youtubeIcon} />{' '}
-                        Youtube
+                        <YouTubeIcon color="primary" />
+                        &nbsp;Youtube
+                      </a>
+                    </li>
+                    <li className="m-v-10">
+                      <a href="https://www.instagram.com" target="_blank">
+                        <LinkedInIcon color="primary" />
+                        &nbsp;Linkedin
                       </a>
                     </li>
                   </ul>

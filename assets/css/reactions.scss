@@ -1,0 +1,61 @@
+.feed {
+    position: relative;
+    
+    .like-btn {
+      position: absolute;
+      left: 10px;
+      cursor: pointer;
+      bottom: -16px; left: 13px;
+      &::before {
+        content: "."; opacity: 0;
+        display: block;
+        width: 40px; height: 40px;
+        position: absolute; 
+        top: -10px; left: 0;
+      }
+      
+      .reaction-box {
+        position: absolute;
+        width: 320px; 
+        background: #fff;
+        border-radius: 35px;
+        left: -25px; 
+        bottom: 35px;
+        display: none;
+        // margin-bottom: 2px;
+        border: 1px solid rgba(190, 188, 188, 0.2);
+        padding: 5px;
+        // box-shadow: 0 14px 28px rgba(145, 148, 170, 0.25), 0 10px 10px rgba(79, 99, 158, 0.22);
+        .reaction-icon {
+          vertical-align: center;
+          display: inline-block;
+          border-radius: 20px;
+          text-align: center;
+          transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        //   opacity: 0;
+        // transform: translate(0, 100px) scale(0);
+        }
+      }
+    
+      &:hover {
+        .reaction-box {
+          display: block;  
+          
+          .reaction-icon {
+            animation: clap 3s ease-in-out infinite;
+            &.show {
+              opacity: 1;
+              transform: translate(0, 0) scale(1);
+            }
+            
+            &:hover {
+              transform: scale(1.4);
+              transform-origin: bottom; 
+            }
+          }
+        }
+      }
+    }
+    }
+
+    
