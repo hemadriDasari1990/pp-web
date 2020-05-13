@@ -58,6 +58,9 @@ class Opinion extends Component {
           advice: '',
           preferences: '',
         })
+        setTimeout(() => {
+          this.handleClose()
+        }, 2000)
       })
     }
   }
@@ -153,10 +156,10 @@ class Opinion extends Component {
               </>
             )}
             {selectedUser && !preferences && (
-              <h6>
+              <h5>
                 {selectedUser.userName} don't have preferences updated. Please
                 feel free to provide your opinions
-              </h6>
+              </h5>
             )}
             <TextField
               required={preferences && preferences.pros == 'yes' ? true : false}
@@ -170,6 +173,9 @@ class Opinion extends Component {
               autoFocus
               margin="dense"
               fullWidth
+              multiline
+              rows={2}
+              rowsMax={4}
             />
             <br />
             <TextField
@@ -182,6 +188,9 @@ class Opinion extends Component {
               onChange={e => this.handleInput(e)}
               margin="dense"
               fullWidth
+              multiline
+              rows={2}
+              rowsMax={4}
             />
             <br />
             <TextField
@@ -194,6 +203,9 @@ class Opinion extends Component {
               onChange={e => this.handleInput(e)}
               margin="dense"
               fullWidth
+              multiline
+              rows={2}
+              rowsMax={4}
             />
             <FormGroup>
               <FormControlLabel

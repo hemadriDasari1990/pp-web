@@ -34,6 +34,8 @@ import getReaction from '../../../util/getReaction'
 import pros from '../../../../assets/pros.svg'
 import renderUserNames from '../../../util/renderUserNames'
 import withStyles from '@material-ui/core/styles/withStyles'
+import getProvider from '../../../util/getProvider'
+import getCardSubHeaderText from '../../../util/getCardSubHeaderText'
 
 const styles = {
   smallAvatar: {
@@ -197,10 +199,10 @@ class PostDetails extends Component {
                           <span
                             className={
                               postDetails.approved
-                                ? 'accepted ' + 'reactions-subheader'
+                                ? 'status accepted '
                                 : postDetails.rejected
-                                ? 'rejected ' + 'reactions-subheader'
-                                : 'pending ' + 'reactions-subheader'
+                                ? 'status rejected '
+                                : 'status pending '
                             }
                           >
                             {getCardSubHeaderStatus(postDetails)}
@@ -210,112 +212,170 @@ class PostDetails extends Component {
                     </>
                   }
                   title={
+                    (postDetails.isAnonymous &&
+                      postDetails.postedBy._id === user._id) ||
                     !postDetails.isAnonymous ? (
-                      <Link
-                        className="hyperlink"
-                        to={`/profile/${postDetails.postedBy._id}`}
-                      >
-                        {postDetails.postedBy.userName}
-                      </Link>
+                      <>
+                        <Link
+                          className="hyperlink"
+                          to={`/profile/${postDetails.postedBy._id}`}
+                        >
+                          {postDetails.isAnonymous &&
+                          postDetails.postedBy._id === user._id
+                            ? 'You'
+                            : postDetails.postedBy.userName}
+                        </Link>
+                        &nbsp;
+                        {getProvider(postDetails.postedBy.providerId)}
+                      </>
                     ) : (
                       <b className="hyperlink">Annonymous User</b>
                     )
                   }
-                  subheader={getPastTime(postDetails.updatedAt)}
+                  subheader={
+                    <>
+                      {getCardSubHeaderText(postDetails.createdAt)}&nbsp;&nbsp;
+                      {!postDetails.isAnonymous && (
+                        <>
+                          <span>
+                            <b>
+                              {formateNumber(
+                                postDetails.postedBy.total_followers,
+                              )}
+                            </b>
+                            &nbsp;Followers&nbsp;
+                          </span>
+                        </>
+                      )}
+                    </>
+                  }
                 />
-                <CardContent style={{ minHeight: '300px !important' }}>
-                  <List>
-                    <ListItem alignItems="flex-start">
-                      <ListItemAvatar>
-                        <Avatar src={pros} className="avatar" />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary="Pros"
-                        secondary={
-                          <React.Fragment>
-                            <Typography
-                              component="p"
-                              variant="body2"
-                              color="textPrimary"
-                            >
-                              {postDetails.pros}
-                            </Typography>
-                          </React.Fragment>
-                        }
-                      />
-                    </ListItem>
-                    <ListItem alignItems="flex-start">
-                      <ListItemAvatar>
-                        <Avatar src={cons} className="avatar" />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary="Cons"
-                        secondary={
-                          <React.Fragment>
-                            <Typography
-                              component="p"
-                              variant="body2"
-                              color="textPrimary"
-                            >
-                              {postDetails.cons}
-                            </Typography>
-                          </React.Fragment>
-                        }
-                      />
-                    </ListItem>
-                    <ListItem alignItems="flex-start">
-                      <ListItemAvatar>
-                        <Avatar src={advice} className="avatar" />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary="Advice"
-                        secondary={
-                          <React.Fragment>
-                            <Typography
-                              component="p"
-                              variant="body2"
-                              color="textPrimary"
-                            >
-                              {postDetails.advice}
-                            </Typography>
-                          </React.Fragment>
-                        }
-                      />
-                    </ListItem>
-                  </List>
+                <CardContent className="pt-0 pl-0 pr-0">
+                  {postDetails.type === 'Generic' && (
+                    <>
+                      <List>
+                        <ListItem alignItems="flex-start">
+                          <ListItemText
+                            secondary={
+                              <React.Fragment>
+                                <Typography
+                                  component="p"
+                                  variant="body2"
+                                  color="textPrimary"
+                                >
+                                  {postDetails.message}
+                                </Typography>
+                              </React.Fragment>
+                            }
+                          />
+                        </ListItem>
+                      </List>
+                    </>
+                  )}
+                  {postDetails.type === 'Opinion' && (
+                    <List>
+                      <ListItem alignItems="flex-start">
+                        <ListItemAvatar>
+                          <Avatar src={pros} className="avatar" />
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary="Pros"
+                          secondary={
+                            <React.Fragment>
+                              <Typography
+                                component="p"
+                                variant="body2"
+                                color="textPrimary"
+                              >
+                                {postDetails.pros}
+                              </Typography>
+                            </React.Fragment>
+                          }
+                        />
+                      </ListItem>
+                      <ListItem alignItems="flex-start">
+                        <ListItemAvatar>
+                          <Avatar src={cons} className="avatar" />
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary="Cons"
+                          secondary={
+                            <React.Fragment>
+                              <Typography
+                                component="p"
+                                variant="body2"
+                                color="textPrimary"
+                              >
+                                {postDetails.cons}
+                              </Typography>
+                            </React.Fragment>
+                          }
+                        />
+                      </ListItem>
+                      <ListItem alignItems="flex-start">
+                        <ListItemAvatar>
+                          <Avatar src={advice} className="avatar" />
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary="Advice"
+                          secondary={
+                            <React.Fragment>
+                              <Typography
+                                component="p"
+                                variant="body2"
+                                color="textPrimary"
+                              >
+                                {postDetails.advice}
+                              </Typography>
+                            </React.Fragment>
+                          }
+                        />
+                      </ListItem>
+                    </List>
+                  )}
                   <div className="row ml-15 mr-15">
-                    <AvatarGroup>
+                    <AvatarGroup max={3} className="v-align-middle">
                       {postDetails.reactions.length > 0
                         ? postDetails.reactions.slice(0, 3).map(react => (
                             <Tooltip
                               title={renderUserNames(postDetails.reactions)}
                               placement="bottom"
+                              key={react._id}
                             >
                               <Avatar
                                 className={classes.smallAvatar}
                                 key={react._id}
                                 alt="Image Not Available"
-                                src={getReaction(react ? react.type : '')}
-                              />
+                                style={{
+                                  backgroundColor:
+                                    react.type.toLowerCase() === 'love'
+                                      ? '#ff0016c7'
+                                      : '',
+                                }}
+                              >
+                                {getReaction(react ? react.type : '')}
+                              </Avatar>
                             </Tooltip>
                           ))
                         : 'No Reactions'}
                     </AvatarGroup>
-                    <Tooltip
-                      title={renderUserNames(postDetails.reactions)}
-                      placement="bottom"
-                    >
-                      <Link
-                        to={`/post/${postDetails._id}/reactions`}
-                        className="actions-text"
+
+                    <span className="cursor actions-text v-align-middle grey-color ">
+                      <Tooltip
+                        title={renderUserNames(postDetails.reactions)}
+                        placement="bottom"
                       >
-                        <span>
-                          {postDetails.reactions.length
-                            ? formateNumber(postDetails.reactions.length)
-                            : 'No Reactions'}
-                        </span>
-                      </Link>
-                    </Tooltip>
+                        <Link to={`/post/${postDetails._id}/reactions`}>
+                          {formateNumber(postDetails.reactions.length) + ' - '}
+                        </Link>
+                      </Tooltip>
+                    </span>
+                    <span
+                      onClick={() => this.showComments(postDetails._id)}
+                      className="cursor actions-text v-align-middle grey-color"
+                    >
+                      {formateNumber(postDetails.comments.length) + ' Comments'}
+                    </span>
                   </div>
                 </CardContent>
               </Card>

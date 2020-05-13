@@ -55,6 +55,7 @@ import renderUserNames from '../../../util/renderUserNames'
 import thinking from '../../../../assets/emojis/thinking.svg'
 import tounghout from '../../../../assets/emojis/tounghout.svg'
 import { withStyles } from '@material-ui/core/styles'
+import getProvider from '../../../util/getProvider'
 
 const styles = {
   smallAvatar: {
@@ -326,14 +327,18 @@ class Outgoing extends Component {
                     </>
                   }
                   title={
-                    <Link
-                      className="hyperlink"
-                      to={`/profile/${post.postedTo._id}`}
-                    >
-                      {post.isAnonymous
-                        ? post.postedTo.userName + ' (A)'
-                        : post.postedTo.userName}
-                    </Link>
+                    <>
+                      <Link
+                        className="hyperlink"
+                        to={`/profile/${post.postedTo._id}`}
+                      >
+                        {post.isAnonymous
+                          ? post.postedTo.userName + ' (A)'
+                          : post.postedTo.userName}
+                      </Link>
+                      &nbsp;
+                      {getProvider(post.postedTo.providerId)}
+                    </>
                   }
                   subheader={
                     <>

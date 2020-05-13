@@ -17,64 +17,45 @@ import Summary from '../../Dashboard/components/Summary'
 import Users from '../../Users/components/Users'
 import { connect } from 'react-redux'
 import firebase from '../../../firebase'
-import LeftGrid from './LeftGrid'
-import CenterGrid from './CenterGrid'
-import RightGrid from './RightGrid'
-import Container from '@material-ui/core/Container'
 
-class Timeline extends Component {
+class LeftGrid extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      user: null,
-    }
+    this.state = {}
   }
 
-  componentDidMount() {
-    new firebase.auth().onAuthStateChanged(async user => {
-      if (
-        user &&
-        Array.isArray(user.providerData) &&
-        user.providerData.length
-      ) {
-        await this.props.getUser(user.providerData[0].uid).then(async u => {
-          if (u && u.data && u.data.user) {
-            this.setState({
-              user: u.data.user,
-            })
-          }
-        })
-      }
-    })
-  }
+  componentDidMount() {}
 
   handleUser = event => {
     this.props.history.push('/dashboard')
   }
 
   render() {
-    const { user } = this.state
-    const {} = this.props
+    const {} = this.state
+    const { user } = this.props
     return (
-      <Container fixed>
-        <Grid container spacing={1} className="of-h">
-          <LeftGrid />
-          <CenterGrid />
-          <RightGrid />
+      <>
+        <Grid item lg={3} md={3} xs={12} sm={9} className="middle-content">
+          {user && <Profile profileUser={user} />}
+          <Reactions />
+          <Followers />
         </Grid>
-      </Container>
+      </>
     )
   }
 }
 
-Timeline.propTypes = {}
+LeftGrid.propTypes = {}
 
 const mapStateToProps = state => {
-  return {}
+  const user = state.getIn(['user', 'data'])
+  return {
+    user,
+  }
 }
 
 const actionsToProps = {
   getUser: actions.getUser,
 }
 
-export default withRouter(connect(mapStateToProps, actionsToProps)(Timeline))
+export default withRouter(connect(mapStateToProps, actionsToProps)(LeftGrid))

@@ -183,35 +183,11 @@ class ResponsiveDrawer extends React.Component {
     }
   }
 
-  // componentDidMount() {
-  //   if (this.props.user) {
-  //     this.props.user
-  //       ? this.props.getNotificationsCount(this.props.user._id)
-  //       : null
-  //   }
-  // }
-
   componentDidUpdate(prevProps, prevState) {
     if (this.props.user !== prevProps.user && this.props.user) {
       this.props.getNotificationsCount(this.props.user._id)
     }
   }
-
-  // handleLogout = async () => {
-  //   await new firebase.auth().signOut().then(async (user, error) => {
-  //     if (!error) {
-  //       await this.props.userLogout()
-  //       this.setState({
-  //         logout: true,
-  //         isMobileMenuOpen: false,
-  //       })
-  //     }
-  //   })
-  //   this.refreshTimeout = setTimeout(() => {
-  //     this.props.isAuthenticated(false)
-  //     this.reset()
-  //   }, 2000)
-  // }
 
   reset = () => {
     this.setState({

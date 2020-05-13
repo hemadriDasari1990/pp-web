@@ -23,6 +23,7 @@ import Search from '../../Search/components/Search'
 import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
 
 class Post extends Component {
   constructor(props) {

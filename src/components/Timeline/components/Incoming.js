@@ -55,6 +55,8 @@ import renderUserNames from '../../../util/renderUserNames'
 import thinking from '../../../../assets/emojis/thinking.svg'
 import tounghout from '../../../../assets/emojis/tounghout.svg'
 import { withStyles } from '@material-ui/core/styles'
+import getProvider from '../../../util/getProvider'
+import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
 
 const styles = {
   smallAvatar: {
@@ -305,10 +307,7 @@ class Incoming extends Component {
                   avatar={
                     (post.isAnonymous && post.postedBy._id == user._id) ||
                     !post.isAnonymous ? (
-                      <Avatar
-                        alt={post.postedBy.userName}
-                        src={post.postedBy.photoURL}
-                      />
+                      <AvatarOnline user={post.postedBy} />
                     ) : (
                       <Avatar
                         style={{ color: '#ffffff', backgroundColor: '#2a7fff' }}
@@ -342,6 +341,8 @@ class Incoming extends Component {
                             ? 'You'
                             : post.postedBy.userName}
                         </Link>
+                        &nbsp;
+                        {getProvider(post.postedBy.providerId)}
                       </>
                     ) : (
                       <b className="hyperlink">Annonymous User</b>

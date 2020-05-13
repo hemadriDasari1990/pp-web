@@ -42,6 +42,7 @@ class Facebook extends Component {
             uid: data.uid,
             phoneNumber: data.phoneNumber,
             providerId: data.providerId,
+            lastActiveTime: Date.now(),
           })
           .then(user => {
             if (user && user.data.user) {

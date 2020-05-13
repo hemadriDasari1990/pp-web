@@ -19,7 +19,12 @@ import thinking from '../../../../assets/emojis/thinking.svg'
 import tounghout from '../../../../assets/emojis/tounghout.svg'
 import { withStyles } from '@material-ui/core/styles'
 
-const styles = {}
+const styles = {
+  tab: {
+    minWidth: 65, // a number of your choice
+    width: 65, // a number of your choice
+  },
+}
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props
@@ -109,11 +114,12 @@ class Reactions extends Component {
             <Tabs
               textColor="primary"
               value={value}
-              scrollButtons="off"
+              scrollButtons="auto"
               aria-label="scrollable prevent tabs example"
               initialSelectedIndex={value}
               indicatorColor="primary"
               centered={true}
+              variant="scrollable"
             >
               <Tab
                 onClick={() => this.handleChange(0)}
@@ -121,28 +127,31 @@ class Reactions extends Component {
                 label={'All ' + formateNumber(reactionsCount.total)}
                 aria-label="phone"
                 className="text-capitalize"
+                classes={{ root: classes.tab }}
               />
               <Tab
                 onClick={() => this.handleChange(1, 'like')}
                 value={1}
                 label={formateNumber(reactionsCount.like)}
                 icon={
-                  <Avatar className="mr-7 small-avatar">
-                    <LikeIcon color="secondary" style={{ fontSize: 20 }} />
+                  <Avatar className="mr-2 small-avatar">
+                    <LikeIcon color="secondary" style={{ fontSize: 10 }} />
                   </Avatar>
                 }
                 aria-label="like"
+                classes={{ root: classes.tab }}
               />
               <Tab
                 onClick={() => this.handleChange(2, 'dislike')}
                 value={2}
                 label={formateNumber(reactionsCount.dislike)}
                 icon={
-                  <Avatar className="mr-7 small-avatar">
-                    <DisLikeIcon color="secondary" style={{ fontSize: 20 }} />
+                  <Avatar className="mr-2 small-avatar">
+                    <DisLikeIcon color="secondary" style={{ fontSize: 10 }} />
                   </Avatar>
                 }
                 aria-label="dislike"
+                classes={{ root: classes.tab }}
               />
               <Tab
                 onClick={() => this.handleChange(3, 'love')}
@@ -150,34 +159,38 @@ class Reactions extends Component {
                 label={formateNumber(reactionsCount.love)}
                 icon={
                   <Avatar
-                    className="mr-7 small-avatar"
+                    className="mr-2 small-avatar"
                     style={{ backgroundColor: '#ff0016c7' }}
                   >
-                    <LoveIcon color="secondary" style={{ fontSize: 20 }} />
+                    <LoveIcon color="secondary" style={{ fontSize: 10 }} />
                   </Avatar>
                 }
                 aria-label="loove"
+                classes={{ root: classes.tab }}
               />
               <Tab
                 onClick={() => this.handleChange(4, tounghout)}
                 value={4}
                 label={formateNumber(reactionsCount.tounghout)}
-                icon={<Avatar className="mr-7 small-avatar" src={tounghout} />}
+                icon={<Avatar className="mr-2 small-avatar" src={tounghout} />}
                 aria-label="tounghout"
+                classes={{ root: classes.tab }}
               />
               <Tab
                 onClick={() => this.handleChange(5, 'thinking')}
                 value={5}
                 label={formateNumber(reactionsCount.thinking)}
-                icon={<Avatar className="mr-7 small-avatar" src={thinking} />}
+                icon={<Avatar className="mr-2 small-avatar" src={thinking} />}
                 aria-label="thinking"
+                classes={{ root: classes.tab }}
               />
               <Tab
                 onClick={() => this.handleChange(6, 'perfect')}
                 value={6}
                 label={formateNumber(reactionsCount.perfect)}
-                icon={<Avatar className="mr-7 small-avatar" src={perfect} />}
+                icon={<Avatar className="mr-2 small-avatar" src={perfect} />}
                 aria-label="perfect"
+                classes={{ root: classes.tab }}
               />
             </Tabs>
             <TabPanel value={value} index={0}>

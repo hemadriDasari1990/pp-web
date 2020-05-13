@@ -128,3 +128,43 @@ export const getUsers = (userId, text) => {
       .catch(errors => dispatch(getUsersError(errors)))
   }
 }
+
+export const updateUserRequest = () => {
+  return {
+    type: action.UPDATE_USER_REQUEST,
+    loading: true,
+  }
+}
+
+export const updateUserSuccess = user => {
+  return {
+    type: action.UPDATE_USER_SUCCESS,
+    loading: false,
+    data: user,
+  }
+}
+
+export const updateUserError = errors => {
+  return {
+    type: action.UPDATE_USER_ERROR,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const updateUser = (userId, data) => {
+  const options = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }
+  return dispatch => {
+    dispatch(updateUserRequest())
+    return fetch(config.URL_PREFIX + `/user/update/${userId}`, options)
+      .then(response => response.json())
+      .then(data => dispatch(updateUserSuccess(data)))
+      .catch(errors => {
+        dispatch(updateUserError(errors))
+      })
+  }
+}

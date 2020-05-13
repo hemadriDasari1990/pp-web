@@ -15,10 +15,23 @@ import Fab from '@material-ui/core/Fab'
 import IconButton from '@material-ui/core/IconButton'
 import LikeIcon from '@material-ui/icons/ThumbUpAlt'
 import LoveIcon from '@material-ui/icons/Favorite'
-import RssFeedOutlinedIcon from '@material-ui/icons/RssFeedOutlined'
+import FollowIcon from '@material-ui/icons/RssFeedOutlined'
 import Tooltip from '@material-ui/core/Tooltip'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
+import getPastTime from '../../../util/getPastTime'
+import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
+import { withStyles } from '@material-ui/core/styles'
+
+const styles = {
+  followIcon: {
+    width: 150,
+    backgroundColor: '#ebf0ff',
+    color: '#2b7eff',
+    borderRadius: 25,
+    fontWeight: 'bold',
+  },
+}
 
 class Profile extends Component {
   constructor(props) {
@@ -96,6 +109,8 @@ class Profile extends Component {
       profileFollower &&
       profileFollower.follower &&
       profileFollower.follower._id === user._id
+    const showlastSeen =
+      user && profileUser && user._id === profileUser._id ? false : true
     return (
       <>
         <Card>
@@ -131,22 +146,25 @@ class Profile extends Component {
             />
             <h5 className="text-center">{profileUser.userName}</h5>
             <div className="text-center">
-              {' '}
-              {profileUser.providerId === 'google.com'
-                ? 'A Google User'
-                : 'A Facebook User'}
+              {showlastSeen ? (
+                <small>
+                  {' Last Active '}
+                  <b style={{ color: '#2b7eff' }}>
+                    {getPastTime(profileUser.lastActiveTime)}
+                  </b>{' '}
+                  {' ago'}
+                </small>
+              ) : (
+                <b style={{ color: '#1ad01a' }}>Active Now</b>
+              )}
             </div>
             {profileUser && user && profileUser._id != user._id && (
               <div className="mt-25 text-center">
                 <Tooltip title={following ? 'Following' : 'Follow'}>
                   <Button
                     variant="extended"
-                    style={{
-                      width: 150,
-                      backgroundColor: '#2a7fff',
-                      color: '#fff',
-                    }}
-                    startIcon={<RssFeedOutlinedIcon color="secondary" />}
+                    className={classes.followIcon}
+                    startIcon={<FollowIcon color="primary" />}
                     onClick={() => this.handleFollow()}
                   >
                     {following ? 'Following' : 'Follow'}
@@ -188,7 +206,7 @@ class Profile extends Component {
               <div className="col align-self-end text-center">
                 <Tooltip title="Followers">
                   <Fab size="small" aria-label="followers" color="primary">
-                    <RssFeedOutlinedIcon color="#fff" />
+                    <FollowIcon color="#fff" />
                   </Fab>
                 </Tooltip>
                 <p className="title">
@@ -231,4 +249,6 @@ const actionsToProps = {
   getProfileFollower: actions.getProfileFollower,
 }
 
-export default withRouter(connect(mapStateToProps, actionsToProps)(Profile))
+export default withRouter(
+  connect(mapStateToProps, actionsToProps)(withStyles(styles)(Profile)),
+)

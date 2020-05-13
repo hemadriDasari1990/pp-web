@@ -17,6 +17,7 @@ import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+import Container from '@material-ui/core/Container'
 
 class Preferences extends Component {
   constructor(props) {
@@ -144,7 +145,7 @@ class Preferences extends Component {
       count,
     } = this.state
     return (
-      <React.Fragment>
+      <Container fixed>
         <div className="col-lg-8 col-md-6 col-sm-6 col-xs-6">
           <h1>Preferences</h1>
           <p>
@@ -278,7 +279,7 @@ class Preferences extends Component {
             status="success"
           />
         ) : null}
-      </React.Fragment>
+      </Container>
     )
   }
 }

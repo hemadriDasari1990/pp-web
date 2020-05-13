@@ -30,6 +30,7 @@ class App extends Component {
   }
 
   async componentDidMount() {
+    this.whenUserLevesThePage()
     this.handleConnectionChange()
     window.addEventListener('online', this.handleConnectionChange)
     window.addEventListener('offline', this.handleConnectionChange)
@@ -38,8 +39,11 @@ class App extends Component {
         loading: true,
       })
       if (user) {
-        await this.props.getUser(user.providerData[0].uid).then(u => {
+        await this.props.getUser(user.providerData[0].uid).then(async u => {
           if (u && u.data && u.data.user) {
+            await this.props.updateUser(u.data.user._id, {
+              lastActiveTime: Date.now(),
+            })
             this.props.storeUser(u.data.user)
             this.props.getUsers(u.data.user._id, '')
             this.props.history.push('/dashboard')
@@ -55,6 +59,14 @@ class App extends Component {
     })
   }
 
+  whenUserLevesThePage() {
+    window.onbeforeunload = async () => {
+      await this.props.updateUser(this.props.user._id, {
+        lastActiveTime: Date.now(),
+      })
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener('online', this.handleConnectionChange)
     window.removeEventListener('offline', this.handleConnectionChange)
@@ -63,39 +75,12 @@ class App extends Component {
   handleConnectionChange = () => {
     const condition = navigator.onLine ? 'online' : 'offline'
     if (condition === 'online') {
-      const webPing = setInterval(() => {
-        fetch('//google.com', {
-          mode: 'no-cors',
-        })
-          .then(() => {
-            this.setState({ isDisconnected: false }, () => {
-              return clearInterval(webPing)
-            })
-          })
-          .catch(() => this.setState({ isDisconnected: true }))
-      }, 2000)
+      this.setState({ isDisconnected: false }, () => {})
       return
     }
 
     return this.setState({ isDisconnected: true })
   }
-
-  // isAuthenticated = flag => {
-  //   if (flag && this.props.user) {
-  //     this.props.getUsers(this.props.user._id, '')
-  //   }
-  //   this.setState({
-  //     loading: flag,
-  //   })
-  // }
-
-  componentWillUnMount() {
-    // this.unSubscribe()
-  }
-
-  // handleSignin = () => {
-  //   this.props.history.push('/signin')
-  // }
 
   render() {
     const { loading, isDisconnected } = this.state
@@ -133,6 +118,7 @@ const actionsToProps = {
   storeUser: actions.storeUser,
   getUsers: actions.getUsers,
   getUser: actions.getUser,
+  updateUser: actions.updateUser,
 }
 
 export default withRouter(

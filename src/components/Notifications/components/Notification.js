@@ -66,18 +66,23 @@ class Notifications extends Component {
     this.state = {
       value: 0,
       type: 'all',
-      limit: 10,
+      // limit: 0,
+      // notifications: []
     }
   }
 
   async componentDidMount() {
     if (this.props.user) {
       await this.props.getNotificationsCount(this.props.user._id)
-      await this.props.getNotifications(
-        this.props.user._id,
-        this.state.type,
-        this.state.limit,
-      )
+      // await this.props.getNotifications(
+      //   this.props.user._id,
+      //   this.state.type,
+      //   this.state.limit,
+      // ).then(res => {
+      //   this.setState({
+      //     notifications: res.data
+      //   });
+      // })
     }
   }
 
@@ -108,15 +113,20 @@ class Notifications extends Component {
     this.setState({
       value: index,
       type,
-      limit: this.state.limit + 10,
     })
-    this.props.user
-      ? await this.props.getNotifications(
-          this.props.user._id,
-          type,
-          this.state.limit,
-        )
-      : null
+    // this.props.user
+    //   ? await this.props.getNotifications(
+    //       this.props.user._id,
+    //       type,
+    //       this.state.limit,
+    //     ).then(res => {
+    //       const notifiations = [...this.state.notifications];
+    //       notifications.push(res.data);
+    //       this.setState({
+    //         notifiations
+    //       });
+    //     })
+    //   : null
   }
 
   render() {
@@ -127,7 +137,7 @@ class Notifications extends Component {
       user,
       notificationsCountError,
     } = this.props
-    const { value, type } = this.state
+    const { value, type, notifications } = this.state
     return (
       <React.Fragment>
         <h2 className="text-center">Notifications</h2>

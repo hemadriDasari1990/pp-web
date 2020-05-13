@@ -21,7 +21,7 @@ import PageNotFound from './PageNotFound/components/index'
 import PostDetails from './Timeline/components/PostDetails'
 import Preferences from './Post/components/Preferences'
 import Pros from './Home/components/Pros'
-import Reactions from './Reactions/components/Reactions'
+import Reactions from './UserProfile/components/Reactions'
 import Signin from './Signin/components/Signin'
 import Timeline from './Timeline/components/Timeline'
 import UserProfile from './UserProfile/components/Dashboard'
@@ -79,13 +79,23 @@ class Routes extends Component {
           />
           <PrivateRoute
             authenticated={authenticated}
+            path="/user/reactions"
+            component={() => <Timeline />}
+          />
+          <PrivateRoute
+            authenticated={authenticated}
+            path="/user/followers"
+            component={() => <Timeline />}
+          />
+          <PrivateRoute
+            authenticated={authenticated}
             path="/notifications"
             component={() => <Notifications user={user} />}
           />
           <PrivateRoute
             authenticated={authenticated}
             path="/post/:id/reactions"
-            component={() => <Reactions />}
+            component={() => <Timeline />}
           />
           <PrivateRoute
             authenticated={authenticated}

@@ -21,6 +21,7 @@ import getPastTime from '../../../../util/getPastTime'
 import isReactedToComment from '../../../../util/isReactedToComment'
 import renderUserNames from '../../../../util/renderUserNames'
 import { withStyles } from '@material-ui/core/styles'
+import AvatarOnline from '../../../AvatarOnline/components/AvatarOnline'
 
 const styles = {
   smallAvatar: {
@@ -78,15 +79,34 @@ class CommentsList extends Component {
 
   handleCommentMenu = () => {}
 
-  createOrUpdateCommentReaction = async (userId, commentId, reaction) => {
+  createOrUpdateCommentReaction = async (
+    userId,
+    commentId,
+    reaction,
+    index,
+  ) => {
     await this.props
       .createOrUpdateCommentReaction(userId, commentId, reaction)
-      .then(async data => {
-        await this.props.getComments(this.props.post._id).then(res => {
-          this.setState({
-            comments: res.data,
-          })
-        })
+      .then(async res => {
+        const comments = [...this.state.comments]
+        const comment = comments[index]
+        if (!res.data.reaction) {
+          const likeReactions = comment.like_reactions.filter(
+            lr => lr.reactedBy._id !== userId,
+          )
+          comment.like_reactions = likeReactions
+          comment.likesCount = --comment.likesCount
+        } else {
+          comment.likesCount = ++comment.likesCount
+          comment.like_reactions.push(res.data.reaction)
+        }
+        comments[index] = comment
+        this.setState(
+          {
+            comments,
+          },
+          () => {},
+        )
       })
   }
 
@@ -98,7 +118,7 @@ class CommentsList extends Component {
         <List dense={true}>
           <div className="row">
             {!commentsLoading && comments.length
-              ? comments.map(c => (
+              ? comments.map((c, index) => (
                   <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                     <ListItem
                       key={c._id}
@@ -181,6 +201,7 @@ class CommentsList extends Component {
                                         user._id,
                                         c._id,
                                         'like',
+                                        index,
                                       )
                                     }
                                   >

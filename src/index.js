@@ -12,7 +12,6 @@ import * as serviceWorker from './serviceworker'
 import { createBrowserHistory } from 'history'
 
 if (process.env.NODE_ENV === 'production') Offline.install()
-
 export const Root = () => (
   <Provider store={store}>
     <BrowserRouter history={createBrowserHistory}>

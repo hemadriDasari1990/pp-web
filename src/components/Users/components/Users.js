@@ -21,39 +21,97 @@ import Typography from '@material-ui/core/Typography'
 import { connect } from 'react-redux'
 import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
 import getPastTime from '../../../util/getPastTime'
+import getProvider from '../../../util/getProvider'
+import AskIcon from '@material-ui/icons/PlaylistAddRounded'
+import FollowIcon from '@material-ui/icons/RssFeedOutlined'
+import AskedIcon from '@material-ui/icons/PlaylistAddCheckRounded'
+import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
+import Fab from '@material-ui/core/Fab'
 
 class Users extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      users: [],
+    }
   }
 
   async componentDidMount() {
-    await this.props.getUsers(this.props.user._id, '')
+    await this.props.getUsers(this.props.user._id, '').then(res => {
+      this.setState({
+        users: res.data,
+      })
+    })
   }
 
   handleViewProfile = userId => {
     this.props.history.push(`/profile/${userId}`)
   }
 
+  handleFollow = async (cUser, index) => {
+    const data = {
+      follower: this.props.user._id,
+      followee: cUser._id,
+    }
+    const users = [...this.state.users]
+    const user = users[index]
+    await this.props.createOrUpdateProfileFollower(data).then(async res => {
+      if (!res.data.data) {
+        const followers = user.followers.filter(
+          f => f.follower._id !== this.props.user._id,
+        )
+        user.followers = followers
+        user.no_of_followers = --user.no_of_followers
+      } else {
+        await this.props
+          .getProfileFollower(this.props.user._id, user._id)
+          .then(followerRes => {
+            const follower = followerRes.data
+            user.no_of_followers = ++user.no_of_followers
+            user.followers.push(follower)
+          })
+      }
+      users[index] = user
+      this.setState(
+        {
+          users,
+        },
+        () => {},
+      )
+    })
+  }
+
+  renderFollowerColor = followers => {
+    if (!followers) {
+      return
+    }
+    return followers.filter(f => f.follower._id === this.props.user._id).length
+      ? 'primary'
+      : ''
+  }
+
+  ifSameUser = user => {
+    return user._id === this.props.user._id ? true : false
+  }
+
   handleMenu = () => {}
 
   render() {
-    const { classes, users, usersLoading } = this.props
-    const { open, anchorEl } = this.state
+    const { classes, usersLoading } = this.props
+    const { open, anchorEl, users } = this.state
     return (
-      <>
-        <List className="row">
+      <div>
+        <List>
           {!usersLoading && users.length ? (
-            users.map(user => (
-              <Grid item lg={4} md={6} xs={12} sm={8}>
+            users.map((user, index) => (
+              <Grid item lg={12} md={12} xs={12} sm={12}>
                 <ListItem
                   key={user._id}
                   alignItems="flex-start"
-                  className="shadow b-r-15"
+                  className="shadow b-r-15 mt-10"
                 >
                   <ListItemAvatar>
-                    <Avatar alt={user.userName} src={user.photoURL} />
+                    <AvatarOnline user={user} />
                   </ListItemAvatar>
                   <Tooltip title={user.userName} placement="right-end">
                     <ListItemText
@@ -65,6 +123,8 @@ class Users extends Component {
                           >
                             {user.userName + ' '}
                           </Link>
+                          &nbsp;
+                          {getProvider(user.providerId)}
                         </>
                       }
                       secondary={
@@ -80,19 +140,23 @@ class Users extends Component {
                       }
                     />
                   </Tooltip>
-                  <ListItemSecondaryAction className="r-5">
-                    <small className="grey-color ">
-                      {getPastTime(user.createdAt)}
-                    </small>
-                    <Tooltip title="Action">
-                      <IconButton
-                        aria-label="settings"
-                        onClick={this.handleMenu}
-                      >
-                        <MoreHorizIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </ListItemSecondaryAction>
+                  {!this.ifSameUser(user) ? (
+                    <ListItemSecondaryAction className="r-5">
+                      <Tooltip title="Ask For Opinion" placement="right-end">
+                        <IconButton>
+                          <AskIcon />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Follow User" placement="right-end">
+                        <IconButton
+                          onClick={() => this.handleFollow(user, index)}
+                          color={this.renderFollowerColor(user.followers)}
+                        >
+                          <FollowIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </ListItemSecondaryAction>
+                  ) : null}
                 </ListItem>
               </Grid>
             ))
@@ -104,7 +168,7 @@ class Users extends Component {
         </List>
 
         {usersLoading && !users.length && <Loader />}
-      </>
+      </div>
     )
   }
 }
@@ -125,6 +189,8 @@ const mapStateToProps = state => {
 const actionsToProps = {
   getUsers: mainActions.getUsers,
   createOrUpdateProfileReaction: profileActions.createOrUpdateProfileReaction,
+  createOrUpdateProfileFollower: profileActions.createOrUpdateProfileFollower,
+  getProfileFollower: profileActions.getProfileFollower,
 }
 
 export default withRouter(connect(mapStateToProps, actionsToProps)(Users))

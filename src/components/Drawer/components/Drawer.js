@@ -88,6 +88,9 @@ class DrawerComponent extends Component {
   }
 
   handleLogout = async () => {
+    await this.props.updateUser(this.props.user._id, {
+      lastActiveTime: Date.now(),
+    })
     this.props.toggleDrawer()
     await new firebase.auth().signOut().then(async (user, error) => {
       if (!error) {
@@ -98,7 +101,6 @@ class DrawerComponent extends Component {
       }
     })
     this.refreshTimeout = setTimeout(() => {
-      // this.props.isAuthenticated(false)
       this.reset()
     }, 2000)
   }
@@ -174,6 +176,7 @@ DrawerComponent.propTypes = {
 }
 
 const mapStateToProps = state => {
+  const user = state.getIn(['user', 'data'])
   const notificationsCount = state.getIn([
     'Timeline',
     'notifications',
@@ -181,12 +184,14 @@ const mapStateToProps = state => {
     'success',
   ])
   return {
+    user,
     notificationsCount,
   }
 }
 
 const actionsToProps = {
   userLogout: actions.userLogout,
+  updateUser: actions.updateUser,
 }
 
 export default withRouter(

@@ -37,11 +37,24 @@ class Signin extends Component {
             </div>
           </div>
           <div className="content-column col-lg-5 col-md-12 col-sm-12">
-            <div className="p-h-20 fl-justify-around fl-items-center inner-column">
-              <h1 className="m-l-18">Social Logins</h1>
-              <h6 className="m-l-18">
-                Make a login using social network accounts
-              </h6>
+            <div className="m-l-18 p-h-20 fl-justify-around fl-items-center inner-column">
+              <h1>Social Logins</h1>
+              <p>Make a login using social network accounts</p>
+              <span>
+                You knew what? Different social logins but one account. You
+                heard it right.
+              </span>
+              <br />
+              <br />
+              <span>
+                For eg: You logged in with Facebook and you got some posts or
+                reactions on profile etc from others. So later on you decided to
+                login with google account instead of using Facebook login so
+                when you login with Google you will see the same data wha you
+                had in Facebook
+              </span>
+              <br />
+              <br />
               <Facebook />
               <Google />
               {/* <Linkedin /> */}

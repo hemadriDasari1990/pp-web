@@ -17,8 +17,8 @@ export function getCardSubHeaderProfileSummary(user) {
   return (
     <>
       <span className="grey-color ">
-        <b>{formateNumber(user.no_of_likes) || 0}</b> Likes &nbsp;&nbsp;{' '}
-        <b>{formateNumber(user.no_of_loves) || 0}</b> Love &nbsp;&nbsp;{' '}
+        <b>{formateNumber(user.no_of_likes) || 0}</b> Likes&nbsp;{' '}
+        <b>{formateNumber(user.no_of_loves) || 0}</b> Love &nbsp;{' '}
         <b>{formateNumber(user.no_of_followers) || 0}</b> Followers
       </span>
     </>

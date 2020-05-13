@@ -51,6 +51,22 @@ export const user = (state = Map(), action) => {
     case actions.GET_USER_ERROR:
       return state.setIn(['errors'], action.errors).setIn(['loading'], false)
 
+    case actions.UPDATE_USER_REQUEST:
+      return state
+        .setIn(['update', 'loading'], true)
+        .deleteIn(['update', 'errors'])
+        .deleteIn(['update', 'success'])
+
+    case actions.UPDATE_USER_SUCCESS:
+      return state
+        .setIn(['update', 'success'], fromJS(action.data))
+        .setIn(['update', 'loading'], false)
+
+    case actions.UPDATE_USER_ERROR:
+      return state
+        .setIn(['update', 'errors'], fromJS(action.errors))
+        .setIn(['update', 'loading'], false)
+
     default:
       return state
   }

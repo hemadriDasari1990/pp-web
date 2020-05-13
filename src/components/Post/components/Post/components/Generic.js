@@ -70,17 +70,16 @@ class Generic extends Component {
     return (
       <div>
         <TextField
+          multiline
+          rows={2}
+          rowsMax={4}
           required={true}
-          id="standard-required"
           name="message"
           label="Whats on your mind?"
-          placeholder="Write here"
-          defaultValue=""
           value={message}
           onChange={e => this.handleInput(e)}
-          autoFocus
-          margin="dense"
           fullWidth
+          margin="normal"
           className="mt-25 mb-25"
         />
         {createPostLoading ? <Loader /> : null}

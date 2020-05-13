@@ -23,6 +23,7 @@ import getPastTime from '../../../util/getPastTime'
 import getReaction from '../../../util/getReaction'
 import textingImage from '../../../../assets/notifications/texting.svg'
 import { withStyles } from '@material-ui/core/styles'
+import getProvider from '../../../util/getProvider'
 
 const styles = {
   smallAvatar: {
@@ -41,16 +42,23 @@ class NotificationsList extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      limit: 10,
+      limit: 0,
+      notifications: [],
     }
   }
   componentDidMount() {
     if (this.props.user) {
-      this.props.getNotifications(
-        this.props.user._id,
-        this.props.type,
-        this.state.limit,
-      )
+      this.props
+        .getNotifications(
+          this.props.user._id,
+          this.props.type,
+          this.state.limit,
+        )
+        .then(res => {
+          this.setState({
+            notifications: res.data,
+          })
+        })
     }
   }
 
@@ -69,19 +77,17 @@ class NotificationsList extends Component {
     return name
   }
 
-  showMoreNotifications = () => {
-    this.setState(
-      {
-        limit: parseInt(this.state.limit) + 10,
-      },
-      () => {
-        this.props.getNotifications(
-          this.props.user._id,
-          this.props.type,
-          parseInt(this.state.limit),
-        )
-      },
-    )
+  showMoreNotifications = async () => {
+    const limit = parseInt(this.state.limit) + 10
+    await this.props
+      .getNotifications(this.props.user._id, this.props.type, limit)
+      .then(res => {
+        const notifications = [...this.state.notifications, ...res.data]
+        this.setState({
+          notifications,
+          limit,
+        })
+      })
   }
 
   renderMessage = (type, sender) => {
@@ -96,7 +102,7 @@ class NotificationsList extends Component {
             <Link className="hyperlink" to={`/profile/${sender._id}`}>
               {sender.userName}
             </Link>{' '}
-            reacted to your post
+            {getProvider(sender.providerId)} reacted to your post
           </span>
         )
         break
@@ -106,7 +112,7 @@ class NotificationsList extends Component {
             <Link className="hyperlink" to={`/profile/${sender._id}`}>
               {sender.userName}
             </Link>{' '}
-            reacted to your post
+            {getProvider(sender.providerId)} reacted to your post
           </span>
         )
         break
@@ -116,7 +122,7 @@ class NotificationsList extends Component {
             <Link className="hyperlink" to={`/profile/${sender._id}`}>
               {sender.userName}
             </Link>{' '}
-            reacted to your post
+            {getProvider(sender.providerId)} reacted to your post
           </span>
         )
         break
@@ -126,7 +132,7 @@ class NotificationsList extends Component {
             <Link className="hyperlink" to={`/profile/${sender._id}`}>
               {sender.userName}
             </Link>{' '}
-            reacted to your post
+            {getProvider(sender.providerId)} reacted to your post
           </span>
         )
         break
@@ -136,7 +142,7 @@ class NotificationsList extends Component {
             <Link className="hyperlink" to={`/profile/${sender._id}`}>
               {sender.userName}
             </Link>{' '}
-            reacted to your post
+            {getProvider(sender.providerId)} reacted to your post
           </span>
         )
         break
@@ -146,7 +152,7 @@ class NotificationsList extends Component {
             <Link className="hyperlink" to={`/profile/${sender._id}`}>
               {sender.userName}
             </Link>{' '}
-            reacted to your post
+            {getProvider(sender.providerId)} reacted to your post
           </span>
         )
         break
@@ -156,7 +162,7 @@ class NotificationsList extends Component {
             <Link className="hyperlink" to={`/profile/${sender._id}`}>
               {sender.userName}
             </Link>{' '}
-            reacted to your post
+            {getProvider(sender.providerId)} reacted to your post
           </span>
         )
         break
@@ -166,7 +172,7 @@ class NotificationsList extends Component {
             <Link className="hyperlink" to={`/profile/${sender._id}`}>
               {sender.userName}
             </Link>{' '}
-            reacted to your profile
+            {getProvider(sender.providerId)} reacted to your profile
           </span>
         )
         break
@@ -176,7 +182,7 @@ class NotificationsList extends Component {
             <Link className="hyperlink" to={`/profile/${sender._id}`}>
               {sender.userName}
             </Link>{' '}
-            reacted to your profile
+            {getProvider(sender.providerId)} reacted to your profile
           </span>
         )
         break
@@ -186,7 +192,7 @@ class NotificationsList extends Component {
             <Link className="hyperlink" to={`/profile/${sender._id}`}>
               {sender.userName}
             </Link>{' '}
-            started following you
+            {getProvider(sender.providerId)} started following you
           </span>
         )
         break
@@ -196,7 +202,7 @@ class NotificationsList extends Component {
             <Link className="hyperlink" to={`/profile/${sender._id}`}>
               {sender.userName}
             </Link>{' '}
-            Posted on your wall
+            {getProvider(sender.providerId)} Posted on your wall
           </span>
         )
         break
@@ -206,7 +212,7 @@ class NotificationsList extends Component {
             <Link className="hyperlink" to={`/profile/${sender._id}`}>
               {sender.userName}
             </Link>{' '}
-            commented on your post
+            {getProvider(sender.providerId)} commented on your post
           </span>
         )
         break
@@ -216,7 +222,7 @@ class NotificationsList extends Component {
             <Link className="hyperlink" to={`/profile/${sender._id}`}>
               {sender.userName}
             </Link>{' '}
-            accepted your post
+            {getProvider(sender.providerId)} accepted your post
           </span>
         )
         break
@@ -226,7 +232,7 @@ class NotificationsList extends Component {
             <Link className="hyperlink" to={`/profile/${sender._id}`}>
               {sender.userName}
             </Link>{' '}
-            rejected your post
+            {getProvider(sender.providerId)} rejected your post
           </span>
         )
         break
@@ -236,7 +242,7 @@ class NotificationsList extends Component {
             <Link className="hyperlink" to={`/profile/${sender._id}`}>
               {sender.userName}
             </Link>{' '}
-            liked your comment
+            {getProvider(sender.providerId)} liked your comment
           </span>
         )
         break
@@ -294,23 +300,58 @@ class NotificationsList extends Component {
     this.props.history.push(`/post/${postId}/details`)
   }
 
+  isShowMore = () => {
+    let showLoadMore = false
+    const { notifications } = this.state
+    const { notificationsCount, type } = this.props
+    switch (type.toLowerCase()) {
+      case 'all':
+        showLoadMore =
+          notifications.length !== notificationsCount.total &&
+          notificationsCount.total > 10
+            ? true
+            : false
+        break
+      case 'read':
+        showLoadMore =
+          notifications.length !== notificationsCount.readCount &&
+          notificationsCount.readCount > 10
+            ? true
+            : false
+        break
+      case 'unread':
+        showLoadMore =
+          notifications.length !== notificationsCount.unReadCount &&
+          notificationsCount.unReadCount > 10
+            ? true
+            : false
+        break
+      default:
+        break
+    }
+    return showLoadMore
+  }
+
   render() {
     const {
       classes,
-      notifications,
       notificationsError,
       notificationsLoading,
       user,
       notificationsCount,
+      type,
     } = this.props
-    const { limit } = this.state
+    const { limit, notifications } = this.state
     return (
       <>
         <List className="mt-25">
           <div className="row">
             {!notificationsLoading && notifications && notifications.length
               ? notifications.map(n => (
-                  <div className="col-lg-4 col-md-6 col-sm-4 col-xs-12">
+                  <div
+                    key={n._id}
+                    className="col-lg-4 col-md-6 col-sm-4 col-xs-12"
+                  >
                     <Tooltip title="Mark Read" placement="bottom">
                       <ListItem
                         key={n._id}
@@ -359,7 +400,7 @@ class NotificationsList extends Component {
                               {this.renderMessage(n.type, n.sender)}
                             </Typography>
                           }
-                          secondary={getPastTime(n.updatedAt)}
+                          secondary={getPastTime(n.createdAt)}
                         />
                         <ListItemSecondaryAction>
                           <Tooltip title={n.read ? 'Read' : 'Un Read'}>
@@ -385,10 +426,7 @@ class NotificationsList extends Component {
               (!notifications || !notifications.length) && <Loader />}
           </div>
         </List>
-        {notifications &&
-        notifications.length &&
-        notificationsCount &&
-        limit < notificationsCount.total ? (
+        {this.isShowMore() ? (
           <div className="text-center">
             <Button
               color="primary"

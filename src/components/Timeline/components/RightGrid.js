@@ -17,64 +17,47 @@ import Summary from '../../Dashboard/components/Summary'
 import Users from '../../Users/components/Users'
 import { connect } from 'react-redux'
 import firebase from '../../../firebase'
-import LeftGrid from './LeftGrid'
-import CenterGrid from './CenterGrid'
-import RightGrid from './RightGrid'
-import Container from '@material-ui/core/Container'
 
-class Timeline extends Component {
+class RightGrid extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      user: null,
-    }
+    this.state = {}
   }
 
-  componentDidMount() {
-    new firebase.auth().onAuthStateChanged(async user => {
-      if (
-        user &&
-        Array.isArray(user.providerData) &&
-        user.providerData.length
-      ) {
-        await this.props.getUser(user.providerData[0].uid).then(async u => {
-          if (u && u.data && u.data.user) {
-            this.setState({
-              user: u.data.user,
-            })
-          }
-        })
-      }
-    })
-  }
+  componentDidMount() {}
 
   handleUser = event => {
     this.props.history.push('/dashboard')
   }
 
   render() {
-    const { user } = this.state
-    const {} = this.props
+    const {} = this.state
+    const { user } = this.props
+    const type =
+      this.props.location.pathname == '/incoming' ? 'incoming' : 'outgoing'
     return (
-      <Container fixed>
-        <Grid container spacing={1} className="of-h">
-          <LeftGrid />
-          <CenterGrid />
-          <RightGrid />
+      <>
+        <Grid item lg={4} md={6} xs={12} sm={9} className="of-h">
+          {user && <Summary type={type} title="Summary" />}
+          {user && <RecentPosts user={user} />}
+          {user && <PopularPosts user={user} type={type} />}
         </Grid>
-      </Container>
+      </>
     )
   }
 }
 
-Timeline.propTypes = {}
+RightGrid.propTypes = {}
 
 const mapStateToProps = state => {
-  return {}
+  const user = state.getIn(['user', 'data'])
+  return {
+    user,
+  }
 }
 
 const actionsToProps = {
   getUser: actions.getUser,
 }
 
-export default withRouter(connect(mapStateToProps, actionsToProps)(Timeline))
+export default withRouter(connect(mapStateToProps, actionsToProps)(RightGrid))

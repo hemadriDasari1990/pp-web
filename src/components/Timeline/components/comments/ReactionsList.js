@@ -12,7 +12,6 @@ import PropTypes from 'prop-types'
 import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
-
 const styles = {}
 
 class CreateComment extends Component {
