@@ -198,8 +198,7 @@ class Notifications extends Component {
         {!notificationsCountLoading &&
           notificationsCount &&
           !notificationsCount.total && (
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <h2 className="text-center">No records found</h2>
+            <div className="text-center col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <img src={textingImage} />
             </div>
           )}

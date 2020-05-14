@@ -415,15 +415,7 @@ class NotificationsList extends Component {
                   </div>
                 ))
               : null}
-            {!notificationsLoading &&
-              (!notifications || !notifications.length) && (
-                <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                  <h2 className="text-center">No records found</h2>
-                  <img src={textingImage} />
-                </div>
-              )}
-            {notificationsLoading &&
-              (!notifications || !notifications.length) && <Loader />}
+            {notificationsLoading && <Loader />}
           </div>
         </List>
         {this.isShowMore() ? (

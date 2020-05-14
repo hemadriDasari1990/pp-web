@@ -118,7 +118,6 @@ class Reactions extends Component {
               aria-label="scrollable prevent tabs example"
               initialSelectedIndex={value}
               indicatorColor="primary"
-              centered={true}
               variant="scrollable"
             >
               <Tab
