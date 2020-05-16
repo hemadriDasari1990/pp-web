@@ -35,7 +35,10 @@ class DashBoard extends Component {
 
   async componentDidMount() {
     const { user } = this.props
-    user ? await this.props.getUserPreferences(user._id) : null
+    if (user) {
+      await this.props.getUser(user._id)
+      await this.props.getUserPreferences(user._id)
+    }
   }
 
   handleTimeline = event => {

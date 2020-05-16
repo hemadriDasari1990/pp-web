@@ -166,7 +166,8 @@ class Users extends Component {
           </div>
         </Grid>
         <List>
-          {!usersLoading && filteredUsers.length ? (
+          {!usersLoading &&
+            filteredUsers.length &&
             filteredUsers.map((user, index) => (
               <Grid item lg={12} md={12} xs={12} sm={12}>
                 <ListItem
@@ -235,8 +236,8 @@ class Users extends Component {
                   ) : null}
                 </ListItem>
               </Grid>
-            ))
-          ) : (
+            ))}
+          {!usersLoading && !users.length && (
             <Typography variant="h4" className="m-10 text-center">
               No users found
             </Typography>

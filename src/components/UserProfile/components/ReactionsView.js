@@ -146,11 +146,13 @@ class ReactionsView extends Component {
                   </ListItem>
                 ))
               : null}
-            {!hasReactions ? (
-              <Typography variant="h4" className="text-center">
-                No reactions
-              </Typography>
-            ) : null}
+            {!profileUserLoading &&
+              profileUser &&
+              !profileUser.reactions.length && (
+                <Typography variant="h4" className="text-center">
+                  No reactions
+                </Typography>
+              )}
             {profileUserLoading &&
               profileUser &&
               !profileUser.reactions.length && <Loader />}
