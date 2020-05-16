@@ -52,6 +52,21 @@ module.exports = {
       },
     ],
   },
+  optimization: {
+    minimizer: [
+      // we specify a custom UglifyJsPlugin here to get source maps in production
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        uglifyOptions: {
+          compress: false,
+          ecma: 6,
+          mangle: true,
+        },
+        sourceMap: true,
+      }),
+    ],
+  },
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
@@ -59,7 +74,7 @@ module.exports = {
         NODE_ENV: JSON.stringify('production'),
       },
     }),
-    new webpack.optimize.UglifyJsPlugin(), //minify everything
+    // new webpack.optimize.UglifyJsPlugin(), //minify everything
     new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
     new webpack.optimize.CommonsChunkPlugin({
       names: ['vendor', 'manifest'],
