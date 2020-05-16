@@ -20,7 +20,7 @@ switch (global.NODE_ENV) {
   case 'testing':
     break
   default: {
-    config.URL_PREFIX = 'https://api.feedbacklib.com/apii'
+    config.URL_PREFIX = 'https://api.feedbacklib.com/api'
     break
   }
 }
