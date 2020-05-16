@@ -129,7 +129,6 @@ class Notifications extends Component {
         notificationsCount.unReadCount -= 1
         break
       case 'delete':
-        console.log('check data', notification)
         if (notification.read) {
           notificationsCount.readCount -= 1
         }
