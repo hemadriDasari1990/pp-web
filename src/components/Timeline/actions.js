@@ -1,4 +1,5 @@
 import * as action from '../../constants/actionTypes'
+
 import config from '../../config'
 
 export const deletePostRequest = () => {
@@ -93,7 +94,7 @@ export const getPostsSummarySuccess = data => {
 
 export const getPostsSummaryError = errors => {
   return {
-    type: action.GET_POSTS_SUMMARY_FAILURE,
+    type: action.GET_POSTS_SUMMARY_ERROR,
     loading: false,
     errors: errors,
   }
@@ -170,7 +171,7 @@ export const getOutgoingPostsSuccess = posts => {
 
 export const getOutgoingPostsError = errors => {
   return {
-    type: action.GET_OUTGOING_POSTS_FAILURE,
+    type: action.GET_OUTGOING_POSTS_ERROR,
     loading: false,
     errors: errors,
   }
@@ -207,7 +208,7 @@ export const getNotificationsCountSuccess = data => {
 
 export const getNotificationsCountError = errors => {
   return {
-    type: action.GET_NOTIFICATIONS_COUNT_FAILURE,
+    type: action.GET_NOTIFICATIONS_COUNT_ERROR,
     loading: false,
     errors: errors,
   }
@@ -244,7 +245,7 @@ export const getRecentPostsSuccess = posts => {
 
 export const getRecentPostsError = errors => {
   return {
-    type: action.GET_RECENT_POSTS_FAILURE,
+    type: action.GET_RECENT_POSTS_ERROR,
     loading: false,
     errors: errors,
   }
@@ -261,6 +262,46 @@ export const getRecentPosts = userId => {
       .then(response => response.json())
       .then(data => dispatch(getRecentPostsSuccess(data)))
       .catch(errors => dispatch(getRecentPostsError(errors)))
+  }
+}
+
+export const getPopularPostsRequest = () => {
+  return {
+    type: action.GET_POPULAR_POSTS_REQUEST,
+    loading: true,
+  }
+}
+
+export const getPopularPostsSuccess = posts => {
+  return {
+    type: action.GET_POPULAR_POSTS_SUCCESS,
+    loading: false,
+    data: posts,
+  }
+}
+
+export const getPopularPostsError = errors => {
+  return {
+    type: action.GET_POPULAR_POSTS_ERROR,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const getPopularPosts = (userId, type) => {
+  const options = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  return dispatch => {
+    dispatch(getPopularPostsRequest())
+    return fetch(
+      config.URL_PREFIX + `/post/${userId}/popularPosts?type=${type}`,
+      options,
+    )
+      .then(response => response.json())
+      .then(data => dispatch(getPopularPostsSuccess(data)))
+      .catch(errors => dispatch(getPopularPostsError(errors)))
   }
 }
 
@@ -281,7 +322,7 @@ export const getPostDetailsSuccess = post => {
 
 export const getPostDetailsError = errors => {
   return {
-    type: action.GET_POST_DETAILS_FAILURE,
+    type: action.GET_POST_DETAILS_ERROR,
     loading: false,
     errors: errors,
   }
@@ -298,5 +339,43 @@ export const getPostDetails = postId => {
       .then(response => response.json())
       .then(data => dispatch(getPostDetailsSuccess(data)))
       .catch(errors => dispatch(getPostDetailsError(errors)))
+  }
+}
+
+export const createCommentRequest = () => {
+  return {
+    type: action.CREATE_POST_COMMENT_REQUEST,
+    loading: true,
+  }
+}
+
+export const createCommentSuccess = res => {
+  return {
+    type: action.CREATE_POST_COMMENT_SUCCESS,
+    loading: false,
+    data: res,
+  }
+}
+
+export const createCommentError = errors => {
+  return {
+    type: action.CREATE_POST_COMMENT_ERROR,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const createComment = (postId, comment) => {
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(comment),
+  }
+  return dispatch => {
+    dispatch(createCommentRequest())
+    return fetch(config.URL_PREFIX + `/post/comment/${postId}`, options)
+      .then(response => response.json())
+      .then(data => dispatch(createCommentSuccess(data)))
+      .catch(errors => dispatch(createCommentError(errors)))
   }
 }

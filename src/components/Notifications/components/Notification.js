@@ -1,22 +1,19 @@
-import React, { Component } from 'react'
-import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
-import Avatar from '@material-ui/core/Avatar'
-import { Map, fromJS } from 'immutable'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { withStyles } from '@material-ui/core/styles'
-import formateNumber from '../../../util/formateNumber'
-import AppBar from '@material-ui/core/AppBar'
-import Tabs from '@material-ui/core/Tabs'
-import Tab from '@material-ui/core/Tab'
-import PropTypes from 'prop-types'
-import Box from '@material-ui/core/Box'
-import * as dashboardActions from '../../Timeline/actions'
-import textingImage from '../../../../assets/notifications/texting.svg'
-import NotificationsList from './List'
 import * as actions from '../actions'
+import * as dashboardActions from '../../Timeline/actions'
+
+import React, { Component } from 'react'
+import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+
 import Loader from '../../Loader/components/Loader'
+import NotificationsList from './List'
+import PropTypes from 'prop-types'
+import Tab from '@material-ui/core/Tab'
+import Tabs from '@material-ui/core/Tabs'
+import Typography from '@material-ui/core/Typography'
+import { connect } from 'react-redux'
+import formateNumber from '../../../util/formateNumber'
+import textingImage from '../../../../assets/notifications/texting.svg'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
   default_tab: {
@@ -67,19 +64,30 @@ class Notifications extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      value: 1,
+      value: 0,
       type: 'all',
+      notificationsCount: this.props.notificationsCount,
+      // limit: 0,
+      // notifications: []
     }
   }
 
   async componentDidMount() {
     if (this.props.user) {
-      await this.props.getNotificationsCount(this.props.user._id)
-      await this.props.getNotifications(
-        this.props.user._id,
-        this.state.type,
-        10,
-      )
+      await this.props.getNotificationsCount(this.props.user._id).then(res => {
+        this.setState({
+          notificationsCount: res.data,
+        })
+      })
+      // await this.props.getNotifications(
+      //   this.props.user._id,
+      //   this.state.type,
+      //   this.state.limit,
+      // ).then(res => {
+      //   this.setState({
+      //     notifications: res.data
+      //   });
+      // })
     }
   }
 
@@ -111,29 +119,40 @@ class Notifications extends Component {
       value: index,
       type,
     })
-    // this.props.user ? await this.props.getNotifications(this.props.user._id, type): null;
   }
 
-  getStyle(isActive) {
-    const { classes } = this.props
-    return isActive
-      ? {
-          color: '#fff',
-          background:
-            'linear-gradient(45deg, #2a7fff 1%, #00ff43 80%, #2a7fff 96%, #37ff2a 100%) 0% 0% / 150% 150%',
+  updatenotificationsCount = (notification, type) => {
+    const notificationsCount = this.state.notificationsCount
+    switch (type.toLowerCase()) {
+      case 'mark_read':
+        notificationsCount.readCount += 1
+        notificationsCount.unReadCount -= 1
+        break
+      case 'delete':
+        if (notification.read) {
+          notificationsCount.readCount -= 1
         }
-      : {}
+        if (!notification.read) {
+          notificationsCount.unReadCount -= 1
+        }
+        notificationsCount.total -= 1
+        break
+      default:
+        break
+    }
+    this.setState({
+      notificationsCount,
+    })
   }
 
   render() {
     const {
       classes,
-      notificationsCount,
       notificationsCountLoading,
       user,
       notificationsCountError,
     } = this.props
-    const { value, type } = this.state
+    const { value, type, notifications, notificationsCount } = this.state
     return (
       <React.Fragment>
         <h2 className="text-center">Notifications</h2>
@@ -141,65 +160,69 @@ class Notifications extends Component {
           notificationsCount &&
           notificationsCount.total > 0 && (
             <>
-              <AppBar position="static">
-                <Tabs
-                  textColor="primary"
-                  value={value}
-                  aria-label="scrollable prevent tabs example"
-                  fullWidth={true}
-                  centered
-                >
-                  <Tab
-                    onClick={() => this.handleChange(1, 'all')}
-                    style={this.getStyle(value === 1)}
-                    value={value}
-                    label={this.getNotificationsCountText(
-                      'All',
-                      formateNumber(notificationsCount.total),
-                    )}
-                    aria-label="phone"
-                    className="text-capitalize"
-                  />
-                  <Tab
-                    onClick={() => this.handleChange(2, 'read')}
-                    style={this.getStyle(value === 2)}
-                    value={value}
-                    label={this.getNotificationsCountText(
-                      'Read',
-                      formateNumber(notificationsCount.readCount),
-                    )}
-                    aria-label="phone"
-                    className="text-capitalize"
-                  />
-                  <Tab
-                    onClick={() => this.handleChange(3, 'unread')}
-                    style={this.getStyle(value === 3)}
-                    value={value}
-                    label={this.getNotificationsCountText(
-                      'Un Read',
-                      formateNumber(notificationsCount.unReadCount),
-                    )}
-                    aria-label="favorite"
-                    className="text-capitalize"
-                  />
-                </Tabs>
-              </AppBar>
+              <Tabs
+                textColor="primary"
+                value={value}
+                aria-label="scrollable prevent tabs example"
+                fullWidth={true}
+                indicatorColor="primary"
+                centered
+              >
+                <Tab
+                  onClick={() => this.handleChange(0, 'all')}
+                  value={0}
+                  label={this.getNotificationsCountText(
+                    'All',
+                    formateNumber(notificationsCount.total),
+                  )}
+                  aria-label="phone"
+                  className="text-capitalize"
+                />
+                <Tab
+                  onClick={() => this.handleChange(1, 'read')}
+                  value={1}
+                  label={this.getNotificationsCountText(
+                    'Read',
+                    formateNumber(notificationsCount.readCount),
+                  )}
+                  aria-label="phone"
+                  className="text-capitalize"
+                />
+                <Tab
+                  onClick={() => this.handleChange(2, 'unread')}
+                  value={2}
+                  label={this.getNotificationsCountText(
+                    'Un Read',
+                    formateNumber(notificationsCount.unReadCount),
+                  )}
+                  aria-label="favorite"
+                  className="text-capitalize"
+                />
+              </Tabs>
+              <TabPanel className="mt-10" value={value} index={0}>
+                <NotificationsList
+                  type={type}
+                  updatenotificationsCount={this.updatenotificationsCount}
+                />
+              </TabPanel>
               <TabPanel className="mt-10" value={value} index={1}>
-                <NotificationsList type={type} />
+                <NotificationsList
+                  type={type}
+                  updatenotificationsCount={this.updatenotificationsCount}
+                />
               </TabPanel>
               <TabPanel className="mt-10" value={value} index={2}>
-                <NotificationsList type={type} />
-              </TabPanel>
-              <TabPanel className="mt-10" value={value} index={3}>
-                <NotificationsList type={type} />
+                <NotificationsList
+                  type={type}
+                  updatenotificationsCount={this.updatenotificationsCount}
+                />
               </TabPanel>
             </>
           )}
         {!notificationsCountLoading &&
           notificationsCount &&
           !notificationsCount.total && (
-            <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-              <h2 className="text-center">No records found</h2>
+            <div className="text-center col-lg-12 col-md-12 col-sm-12 col-xs-12">
               <img src={textingImage} />
             </div>
           )}

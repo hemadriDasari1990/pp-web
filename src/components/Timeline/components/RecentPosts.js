@@ -1,26 +1,31 @@
+import * as actions from '../actions'
+
+import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
-import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
-import CardContent from '@material-ui/core/CardContent'
-import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
+import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+
 import Avatar from '@material-ui/core/Avatar'
-import ListItemText from '@material-ui/core/ListItemText'
-import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import CardHeader from '@material-ui/core/CardHeader'
+import IconButton from '@material-ui/core/IconButton'
+import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../Loader/components/Loader'
-import * as actions from '../actions'
-import { Map, fromJS } from 'immutable'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import getReaction from '../../../util/getReaction'
-import renderUserNames from '../../../util/renderUserNames'
-import AvatarGroup from '@material-ui/lab/AvatarGroup'
-import { withStyles } from '@material-ui/core/styles'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import PropTypes from 'prop-types'
-import formateNumber from '../../../util/formateNumber'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
+import { connect } from 'react-redux'
+import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
+import getPastTime from '../../../util/getPastTime'
+import { withStyles } from '@material-ui/core/styles'
+import Slide from '@material-ui/core/Slide'
+import Zoom from '@material-ui/core/Zoom'
 
 const styles = {
   smallAvatar: {
@@ -32,7 +37,7 @@ const styles = {
 
 class RecentPosts extends Component {
   componentDidMount() {
-    if (!this.props.match.params.id) {
+    if (!this.props.match.params.id && this.props.user) {
       this.props.getRecentPosts(this.props.user._id)
     }
     if (this.props.match.params.id) {
@@ -44,6 +49,12 @@ class RecentPosts extends Component {
     //this.props.getIncomingPosts(this.props.user._id)
   }
 
+  viewPost = postId => {
+    this.props.history.push(`/post/${postId}/details`)
+  }
+
+  handleCommentMenu = () => {}
+
   render() {
     const {
       classes,
@@ -54,14 +65,10 @@ class RecentPosts extends Component {
     } = this.props
     return (
       <React.Fragment>
-        <Card style={{ width: '100%', maxWidth: '100%' }}>
+        <Card>
           <CardHeader
             title="Most Recent Posts"
-            action={
-              <a>
-                Shown upto <b>5</b> posts
-              </a>
-            }
+            action={<a>View All</a>}
           ></CardHeader>
           <CardContent>
             <List>
@@ -87,13 +94,11 @@ class RecentPosts extends Component {
                       </ListItemAvatar>
                       <Tooltip
                         title={
-                          post.approved
-                            ? 'Accepted'
-                            : post.rejected
-                            ? 'Rejected'
-                            : 'Pending'
+                          post.isAnonymous
+                            ? 'Annonymous User'
+                            : post.postedBy.userName
                         }
-                        placement="right-end"
+                        placement="top"
                       >
                         <ListItemText
                           primary={
@@ -105,31 +110,12 @@ class RecentPosts extends Component {
                                 >
                                   {user && user._id === post.postedBy._id
                                     ? 'You'
-                                    : post.postedBy.userName}
+                                    : post.postedBy.userName.substring(0, 15) +
+                                      '...'}
                                 </Link>
-                                <span
-                                  className={
-                                    post.approved
-                                      ? 'status approved ml-7'
-                                      : post.rejected
-                                      ? 'status rejected ml-7'
-                                      : 'status pending ml-7'
-                                  }
-                                ></span>
                               </>
                             ) : (
-                              <b className="hyperlink">
-                                Annonymous User{' '}
-                                <span
-                                  className={
-                                    post.approved
-                                      ? 'status approved'
-                                      : post.rejected
-                                      ? 'status rejected'
-                                      : 'status pending'
-                                  }
-                                ></span>
-                              </b>
+                              <b className="hyperlink">Annonymous ... </b>
                             )
                           }
                           secondary={
@@ -139,60 +125,59 @@ class RecentPosts extends Component {
                                 variant="body2"
                                 color="textPrimary"
                               >
-                                {post.pros.length > 40
-                                  ? post.pros.substring(0, 40) + '...'
-                                  : post.pros}
+                                {post.type === 'Generic'
+                                  ? post.message.substring(0, 45) + '...'
+                                  : ''}
+                                {post.type === 'Opinion' ? (
+                                  <>
+                                    <b>Pros&nbsp;-&nbsp;</b>{' '}
+                                    {post.pros.substring(0, 45)} + '...'
+                                  </>
+                                ) : (
+                                  ''
+                                )}
                               </Typography>
+                              <br />
                             </React.Fragment>
                           }
                         />
                       </Tooltip>
-                      <div className="row">
-                        <AvatarGroup style={{ marginTop: 6 }}>
-                          {post.reactions.length > 0
-                            ? post.reactions.slice(0, 3).map(react => (
-                                <Tooltip
-                                  title={renderUserNames(post.reactions)}
-                                  placement="bottom"
-                                >
-                                  <Avatar
-                                    className={classes.smallAvatar}
-                                    key={react._id}
-                                    alt={react.type}
-                                    src={getReaction(react ? react.type : '')}
-                                  />
-                                </Tooltip>
-                              ))
-                            : ''}
-                        </AvatarGroup>
-                        {post.reactions.length > 0 ? (
-                          <>
-                            <Tooltip
-                              title={renderUserNames(post.reactions)}
-                              placement="bottom"
-                            >
-                              <Link
-                                style={{ marginTop: 6 }}
-                                className="mr-20"
-                                to={`/post/${post._id}/reactions`}
-                                className="actions-text"
-                              >
-                                <span>
-                                  {formateNumber(post.reactions.length)}
-                                </span>
-                              </Link>
-                            </Tooltip>
-                          </>
-                        ) : null}
-                      </div>
+                      <ListItemSecondaryAction style={{ top: '28%' }}>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          className={
+                            post.approved
+                              ? 'status accepted ' + 'mr-10'
+                              : post.rejected
+                              ? 'status rejected ' + 'mr-10'
+                              : 'status pending ' + 'mr-10'
+                          }
+                        >
+                          {getCardSubHeaderStatus(post)}
+                        </Typography>
+                        <small className="grey-color">
+                          {getPastTime(post.createdAt)}
+                        </small>
+                        <Tooltip title="Action">
+                          <IconButton
+                            aria-label="settings"
+                            onClick={this.handleCommentMenu}
+                          >
+                            <MoreHorizIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </ListItemSecondaryAction>
                     </ListItem>
                   ))
                 : null}
 
               {!recentPostsLoading && !recentPosts.length && (
-                <Typography variant="h4" className="text-center">
-                  No Recent Posts
-                </Typography>
+                <Zoom in={true} timeout={2000}>
+                  <Typography variant="h4" className="text-center">
+                    No Recent Posts
+                  </Typography>
+                </Zoom>
               )}
 
               {recentPostsLoading && !recentPosts.length && <Loader />}
@@ -209,6 +194,7 @@ RecentPosts.propTypes = {
 }
 
 const mapStateToProps = state => {
+  const user = state.getIn(['user', 'data'])
   const recentPosts = state.getIn(['Timeline', 'recent', 'success'], Map())
   const recentPostsLoading = state.getIn(
     ['Timeline', 'recent', 'loading'],
@@ -216,6 +202,7 @@ const mapStateToProps = state => {
   )
   const recentPostsError = state.getIn(['Timeline', 'recent', 'errors'], Map())
   return {
+    user,
     recentPosts,
     recentPostsError,
     recentPostsLoading,

@@ -14,7 +14,7 @@ export const UserProfile = (state = Map(), action) => {
         .setIn(['reaction', 'create', 'success'], action.data)
         .setIn(['reaction', 'create', 'loading'], false)
 
-    case actions.CREATE_OR_UPDATE_REACTION_FAILURE:
+    case actions.CREATE_OR_UPDATE_REACTION_ERROR:
       return state
         .setIn(['reaction', 'create', 'errors'], action.errors)
         .setIn(['reaction', 'create', 'loading'], false)
@@ -30,7 +30,7 @@ export const UserProfile = (state = Map(), action) => {
         .setIn(['userlike', 'create', 'success'], action.data)
         .setIn(['userlike', 'create', 'loading'], false)
 
-    case actions.CREATE_OR_UPDATE_PROFILE_REACTION_FAILURE:
+    case actions.CREATE_OR_UPDATE_PROFILE_REACTION_ERROR:
       return state
         .setIn(['userlike', 'create', 'errors'], action.errors)
         .setIn(['userlike', 'create', 'loading'], false)
@@ -45,7 +45,7 @@ export const UserProfile = (state = Map(), action) => {
         .setIn(['userlike', 'get', 'success'], action.data)
         .setIn(['userlike', 'get', 'loading'], false)
 
-    case actions.GET_USER_REACTION_FAILURE:
+    case actions.GET_USER_REACTION_ERROR:
       return state
         .setIn(['userlike', 'get', 'errors'], action.errors)
         .setIn(['userlike', 'get', 'loading'], false)
@@ -61,7 +61,7 @@ export const UserProfile = (state = Map(), action) => {
         .setIn(['follower', 'create', 'success'], action.data)
         .setIn(['follower', 'create', 'loading'], false)
 
-    case actions.CREATE_OR_UPDATE_PROFILE_FOLLOWER_FAILURE:
+    case actions.CREATE_OR_UPDATE_PROFILE_FOLLOWER_ERROR:
       return state
         .setIn(['follower', 'create', 'errors'], action.errors)
         .setIn(['follower', 'create', 'loading'], false)
@@ -76,7 +76,7 @@ export const UserProfile = (state = Map(), action) => {
         .setIn(['follower', 'get', 'success'], action.data)
         .setIn(['follower', 'get', 'loading'], false)
 
-    case actions.GET_USER_FOLLOWER_FAILURE:
+    case actions.GET_USER_FOLLOWER_ERROR:
       return state
         .setIn(['follower', 'get', 'errors'], action.errors)
         .setIn(['follower', 'get', 'loading'], false)

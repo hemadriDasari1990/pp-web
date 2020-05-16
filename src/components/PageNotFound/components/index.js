@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 
 export default class PageNotFound extends Component {
-	render(){
-		return (
-			<>
-				<h1 className="page-not-found">404</h1>
-				<h1 className="page-not-found-text">Page not found</h1>
-			</>
-		)
-	}
+  render() {
+    return (
+      <div className="offset-3 col-md-6">
+        <h2>Page Not Found</h2>
+      </div>
+    )
+  }
 }

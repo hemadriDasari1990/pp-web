@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
-import Button from '@material-ui/core/Button'
-import PropTypes from 'prop-types'
-import withStyles from '@material-ui/core/styles/withStyles'
+
 import Paper from '@material-ui/core/Paper'
+import PropTypes from 'prop-types'
 import Typography from '@material-ui/core/Typography'
-import GridList from '@material-ui/core/GridList'
-import GridListTile from '@material-ui/core/GridListTile'
+import withStyles from '@material-ui/core/styles/withStyles'
 
 const styles = theme => ({
   root: {

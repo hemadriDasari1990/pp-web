@@ -1,22 +1,22 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
-import { withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import Summary from '../../Dashboard/components/Summary'
-import RecentPosts from '../../Timeline/components/RecentPosts'
-import TopPosts from '../../Timeline/components/TopPosts'
 import * as globalActions from '../../../actions/index'
-import Profile from './Profile'
-import Reactions from './Reactions'
-import Incoming from '../../Timeline/components/Incoming'
+
+import React, { Component } from 'react'
+
 import Loader from '../../Loader/components/Loader'
-import Followers from './Followers'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import Container from '@material-ui/core/Container'
+import LeftGrid from './LeftGrid'
+import CenterGrid from './CenterGrid'
+import RightGrid from './RightGrid'
+import Grid from '@material-ui/core/Grid'
 
 class Dashboard extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      user: undefined,
+      profile: undefined,
     }
   }
 
@@ -24,39 +24,26 @@ class Dashboard extends Component {
     this.props.match.params.id
       ? await this.props.getUser(this.props.match.params.id).then(res => {
           this.setState({
-            user: res.data ? res.data.user : {},
+            profile: res.data ? res.data.user : {},
           })
         })
       : null
   }
 
   render() {
-    const { classes, loggedInUser } = this.props
-    const { user } = this.state
+    const { classes, path } = this.props
+    const { profile } = this.state
     return (
-      <React.Fragment>
-        <div className="row">
-          {loggedInUser && (
-            <>
-              <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
-                {user && <Profile profileUser={user} />}
-                {user && <Reactions />}
-                {user && <Followers />}
-              </div>
-              <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
-                {user && <Incoming user={user} type="profile" />}
-              </div>
-              <div className="col-lg-4 col-md-12 col-sm-12 col-xs-12">
-                {user && <Summary type="incoming" title="Incoming Summary" />}
-                {user && <Summary type="outgoing" title="Outgoing Summary" />}
-                {user && <RecentPosts user={user} />}
-                {user && <TopPosts user={user} />}
-              </div>
-            </>
-          )}
-          {!loggedInUser || (!user && <Loader />)}
-        </div>
-      </React.Fragment>
+      <>
+        {profile && (
+          <Grid container spacing={1} className="of-h">
+            <LeftGrid profile={profile} path={path} />
+            <CenterGrid profile={profile} path={path} />
+            <RightGrid profile={profile} path={path} />
+          </Grid>
+        )}
+        {!profile && <Loader />}
+      </>
     )
   }
 }

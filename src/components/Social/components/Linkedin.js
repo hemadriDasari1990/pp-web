@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import linkedin from '../../../../assets/social/linkedin.svg'
-import Tooltip from '@material-ui/core/Tooltip'
-import Avatar from '@material-ui/core/Avatar'
+
 import Fab from '@material-ui/core/Fab'
-import { withStyles } from '@material-ui/core/styles'
+import LinkedInIcon from '@material-ui/icons/LinkedIn'
 import PropTypes from 'prop-types'
+import Tooltip from '@material-ui/core/Tooltip'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({
   avatar: {},
@@ -33,8 +33,8 @@ class Linkedin extends Component {
             aria-label="add"
             variant="extended"
           >
-            <Avatar src={linkedin} className={classes.small} />
-            Sign In with Linkedin
+            <LinkedInIcon color="secondary" />
+            &nbsp; Sign In with Linkedin
           </Fab>
         </Tooltip>
         {/*<Button onClick={() => this.auth()} variant="contained" size="small">

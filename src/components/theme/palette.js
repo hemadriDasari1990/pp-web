@@ -1,7 +1,7 @@
 import { colors } from '@material-ui/core'
 
 const white = '#FFFFFF'
-const black = '#333'
+const black = '#606770'
 
 export default {
   black,

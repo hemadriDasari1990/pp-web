@@ -1,15 +1,16 @@
-import React, { Component } from 'react'
-import { withStyles } from '@material-ui/core/styles'
-import PropTypes from 'prop-types'
 import * as actions from '../../../actions/index'
-import { Map } from 'immutable'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import firebase from '../../../firebase'
-import twitter from '../../../../assets/social/twitter.svg'
-import Tooltip from '@material-ui/core/Tooltip'
-import Avatar from '@material-ui/core/Avatar'
+
+import React, { Component } from 'react'
+
 import Fab from '@material-ui/core/Fab'
+import { Map } from 'immutable'
+import PropTypes from 'prop-types'
+import Tooltip from '@material-ui/core/Tooltip'
+import TwitterIcon from '@material-ui/icons/Twitter'
+import { connect } from 'react-redux'
+import firebase from '../../../firebase'
+import { withRouter } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({
   avatar: {},
@@ -26,22 +27,31 @@ const styles = theme => ({
 })
 
 class Twitter extends Component {
-  auth = () => {
-    new firebase.auth()
+  auth = async e => {
+    e.preventDefault()
+    await new firebase.auth()
       .signInWithPopup(new firebase.auth.TwitterAuthProvider())
       .then(async (user, error) => {
-        if (error) {
+        if (!error) {
+          const data = user.user.providerData[0]
+          await this.props
+            .createOrUpdateUser({
+              email: user.additionalUserInfo.profile.email,
+              userName: data.displayName,
+              photoURL: data.photoURL,
+              uid: data.uid,
+              phoneNumber: data.phoneNumber,
+              providerId: data.providerId,
+              lastActiveTime: Date.now(),
+            })
+            .then(user => {
+              if (user && user.data.user) {
+                this.props.storeUser(user.data.user)
+                this.props.history.push('/dashboard')
+              }
+            })
         } else {
-          const data = await user.user.providerData[0]
-          await this.props.createUser({
-            email: data.email,
-            userName: data.displayName,
-            photoURL: data.photoURL,
-            uid: data.uid,
-            phoneNumber: data.phoneNumber,
-            providerId: data.providerId,
-          })
-          this.props.storeUser(data)
+          this.props.history.push('/')
         }
       })
   }
@@ -59,8 +69,8 @@ class Twitter extends Component {
             aria-label="add"
             variant="extended"
           >
-            <Avatar src={twitter} className={classes.small} />
-            Sign In with Twitter
+            <TwitterIcon color="secondary" />
+            &nbsp; Sign In with Twitter
           </Fab>
         </Tooltip>
       </React.Fragment>
@@ -82,6 +92,7 @@ const mapStateToProps = state => {
 
 const actionsToProps = {
   storeUser: actions.storeUser,
+  createOrUpdateUser: actions.createOrUpdateUser,
 }
 
 export default withRouter(

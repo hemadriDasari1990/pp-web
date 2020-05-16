@@ -1,22 +1,23 @@
-import React, { Component } from 'react'
-import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
 import * as actions from '../actions'
-import { Map } from 'immutable'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+
+import React, { Component } from 'react'
+
 import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
-import Badge from '@material-ui/core/Badge'
+import Fab from '@material-ui/core/Fab'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Grid from '@material-ui/core/Grid'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
-import Fab from '@material-ui/core/Fab'
-import Typography from '@material-ui/core/Typography'
-import Grid from '@material-ui/core/Grid'
-import PropTypes from 'prop-types'
 import Loader from '../../Loader/components/Loader'
+import { Map } from 'immutable'
+import PropTypes from 'prop-types'
+import Radio from '@material-ui/core/Radio'
+import RadioGroup from '@material-ui/core/RadioGroup'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import Container from '@material-ui/core/Container'
 
 class Preferences extends Component {
   constructor(props) {
@@ -33,6 +34,7 @@ class Preferences extends Component {
       id: '',
       data: {},
     }
+    this.timeout
   }
 
   async componentDidMount() {
@@ -95,9 +97,7 @@ class Preferences extends Component {
             user: user._id,
             id: id,
           })
-          setTimeout(() => {
-            this.props.history.push('/dashboard')
-          }, 1000)
+          this.redirectToDashboard()
         }
       } else {
         await this.props.savePreferences({
@@ -107,10 +107,20 @@ class Preferences extends Component {
           user: user._id,
           count: 1,
         })
-        setTimeout(() => {
-          this.props.history.push('/dashboard')
-        }, 1000)
+        this.redirectToDashboard()
       }
+    }
+  }
+
+  redirectToDashboard = () => {
+    this.timeout = setTimeout(() => {
+      this.props.history.push('/dashboard')
+    }, 2000)
+  }
+
+  componentWillUnmount() {
+    if (this.timeout) {
+      clearTimeout(this.timeout)
     }
   }
 
@@ -135,7 +145,7 @@ class Preferences extends Component {
       count,
     } = this.state
     return (
-      <React.Fragment>
+      <Container fixed>
         <div className="col-lg-8 col-md-6 col-sm-6 col-xs-6">
           <h1>Preferences</h1>
           <p>
@@ -259,23 +269,17 @@ class Preferences extends Component {
             </Fab>
           </div>
         </div>
-        {/* {!savePreferencesLoading && savePreferencesSuccess ? (
-          <CustomizedSnackbars
-            open={true}
-            message="Preferences are updated successfully"
-            status="success"
-          />
-        ) : null} */}
         {/* {savePreferencesError ? <CustomizedSnackbars open={open} message="Cannot save preferences. Please try again" status={status} />: null}
         {updatePreferencesError ? <CustomizedSnackbars open={open} message="Cannot save preferences. Please try again" status={status} />: null} */}
-        {!updatePreferencesLoading && updatePreferencesSuccess ? (
+        {!updatePreferencesLoading &&
+        (updatePreferencesSuccess.size || savePreferencesSuccess.size) ? (
           <CustomizedSnackbars
             open={true}
             message="Preferences are updated successfully"
             status="success"
           />
         ) : null}
-      </React.Fragment>
+      </Container>
     )
   }
 }

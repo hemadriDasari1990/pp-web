@@ -1,58 +1,79 @@
+import * as actions from '../actions'
+import * as postActions from '../../Post/actions'
+import * as profileActions from '../../UserProfile/actions'
+
+import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
+import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+
+import Avatar from '@material-ui/core/Avatar'
+import AvatarGroup from '@material-ui/lab/AvatarGroup'
+import Button from '@material-ui/core/Button'
+import CancelPresentationIcon from '@material-ui/icons/CancelPresentation'
 import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import CardHeader from '@material-ui/core/CardHeader'
+import CommentIcon from '@material-ui/icons/ChatBubbleOutline'
+import CommentsList from './comments/List'
+import CreateComment from './comments/CreateComment'
+import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
+import DisLikeIcon from '@material-ui/icons/ThumbDownAlt'
+import Divider from '@material-ui/core/Divider'
+import Fab from '@material-ui/core/Fab'
+import Fade from '@material-ui/core/Fade'
 import IconButton from '@material-ui/core/IconButton'
-import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
-import Avatar from '@material-ui/core/Avatar'
-import moment from 'moment'
+import LikeIcon from '@material-ui/icons/ThumbUpAlt'
+import LikeOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined'
+import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import formateNumber from '../../../util/formateNumber'
-import Menu from '@material-ui/core/Menu'
-import * as actions from '../actions'
-import { Map, fromJS } from 'immutable'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
+import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../Loader/components/Loader'
-import { Link } from 'react-router-dom'
-import AvatarGroup from '@material-ui/lab/AvatarGroup'
-import { withStyles } from '@material-ui/core/styles'
+import LoveIcon from '@material-ui/icons/Favorite'
+import Menu from '@material-ui/core/Menu'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import NoRecords from '../../NoRecords/components/NoRecords'
 import PropTypes from 'prop-types'
+import ScheduleIcon from '@material-ui/icons/Schedule'
+import Tooltip from '@material-ui/core/Tooltip'
+import Typography from '@material-ui/core/Typography'
 import advice from '../../../../assets/advice.svg'
-import pros from '../../../../assets/pros.svg'
+import { connect } from 'react-redux'
 import cons from '../../../../assets/cons.svg'
+import formateNumber from '../../../util/formateNumber'
+import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
+import getCardSubHeaderText from '../../../util/getCardSubHeaderText'
 import getReaction from '../../../util/getReaction'
-import renderUserNames from '../../../util/renderUserNames'
-import renderColor from '../../../util/renderColor'
-import * as profileActions from '../../UserProfile/actions'
-import Button from '@material-ui/core/Button'
-import like from '../../../../assets/emojis/like.svg'
-import angry from '../../../../assets/emojis/angry.svg'
-import love from '../../../../assets/emojis/love.svg'
-import silly from '../../../../assets/emojis/silly.svg'
-import smiley from '../../../../assets/emojis/smiley.svg'
-import wow from '../../../../assets/emojis/surprise.svg'
-import sad from '../../../../assets/emojis/sad.svg'
-import Divider from '@material-ui/core/Divider'
 import getReactionsText from '../../../util/getReactionsText'
+import perfect from '../../../../assets/emojis/perfect.svg'
+import pros from '../../../../assets/pros.svg'
+import renderColor from '../../../util/renderColor'
+import renderUserNames from '../../../util/renderUserNames'
+import thinking from '../../../../assets/emojis/thinking.svg'
+import tounghout from '../../../../assets/emojis/tounghout.svg'
+import { withStyles } from '@material-ui/core/styles'
+import getProvider from '../../../util/getProvider'
+import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
+import Slide from '@material-ui/core/Slide'
+import Zoom from '@material-ui/core/Zoom'
 
 const styles = {
   smallAvatar: {
-    width: 20,
-    height: 20,
+    width: 22,
+    height: 22,
     borderColor: '#fff',
   },
-  avatar: {
-    marginTop: 0,
-    width: '100%',
-    textAlign: 'center',
+  reactionAvatar: {
+    width: 25,
+    height: 25,
+  },
+  emojiAvatar: {
+    marginRight: 11,
+    width: 40,
+    height: 40,
   },
   button: {
     width: '150px !important',
@@ -60,6 +81,15 @@ const styles = {
   },
   rightButton: {
     marginLeft: 'auto',
+  },
+  comment: {
+    marginLeft: 'auto',
+    width: '150px !important',
+    height: '35px !important',
+  },
+  reactionAvatar: {
+    width: 30,
+    height: 30,
   },
 }
 
@@ -70,11 +100,21 @@ class Incoming extends Component {
       open: false,
       anchorEl: undefined,
       showEmojis: false,
+      showCommentInput: false,
+      postId: null,
     }
   }
 
-  componentDidMount() {
-    this.props.getIncomingPosts(this.props.user._id, '')
+  async componentDidMount() {
+    await this.getPosts()
+  }
+
+  getPosts = async () => {
+    if (this.props.match.params.id) {
+      await this.props.getIncomingPosts(this.props.match.params.id, '')
+    } else {
+      await this.props.getIncomingPosts(this.props.user._id, '')
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -105,13 +145,26 @@ class Incoming extends Component {
   }
 
   toggleShow = flag => {
-    this.setState({
-      showEmojis: flag,
-    })
+    if (flag) {
+      this.buttonPressTimer = setTimeout(
+        () =>
+          this.setState({
+            showEmojis: flag,
+          }),
+        500,
+      )
+    }
+    if (!flag) {
+      clearTimeout(this.buttonPressTimer)
+    }
   }
 
   renderHint = () => {
-    const hintArray = ['Be the first to like', 'Be the first to react']
+    const hintArray = [
+      'Be the first to like',
+      'Be the first to react',
+      'Be the first to comment on this',
+    ]
     let index = 0
     setInterval(() => {
       this.setState({
@@ -125,8 +178,110 @@ class Incoming extends Component {
     await this.props
       .createOrUpdateReaction(userId, postId, reaction)
       .then(async data => {
-        await this.props.getIncomingPosts(this.props.user._id, '')
+        await this.getPosts()
       })
+  }
+
+  showCommentInput = () => {
+    this.setState({
+      showCommentInput: !this.state.showCommentInput,
+    })
+  }
+
+  hideComment = postId => {
+    this.setState({
+      showCommentInput: !this.state.showCommentInput,
+    })
+    this.props.getComments(postId)
+  }
+
+  renderMenu = post => {
+    return (
+      <Menu
+        id="fade-menu"
+        open={this.state.open}
+        onClose={this.handleClose}
+        anchorEl={this.state.anchorEl}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        keepMounted
+        getContentAnchorEl={null}
+        TransitionComponent={Zoom}
+      >
+        <ListItem
+          className="cursor pt-0 pb-0 pl-2 pr-2 menu-item"
+          onClick={() => this.handleMenuItem('delete', post._id)}
+        >
+          <ListItemAvatar style={{ minWidth: 35 }}>
+            <DeleteOutlineIcon />
+          </ListItemAvatar>
+          <ListItemText
+            primary="Delete Post"
+            secondary={
+              <React.Fragment>
+                <Typography
+                  component="p"
+                  variant="body2"
+                  color="textPrimary"
+                  className="menu-item-text"
+                >
+                  Once deleted and will be deleted
+                </Typography>
+              </React.Fragment>
+            }
+          />
+        </ListItem>
+        <ListItem className="cursor pt-0 pb-0 pl-2 pr-2 menu-item">
+          <ListItemAvatar style={{ minWidth: 35 }}>
+            <CancelPresentationIcon />
+          </ListItemAvatar>
+          <ListItemText
+            primary="Hide Post"
+            secondary={
+              <React.Fragment>
+                <Typography
+                  component="p"
+                  variant="body2"
+                  color="textPrimary"
+                  className="menu-item-text"
+                >
+                  See fewer posts like this
+                </Typography>
+              </React.Fragment>
+            }
+          />
+        </ListItem>
+        {!post.isAnonymous && (
+          <ListItem className="cursor pt-0 pb-0 pl-2 pr-2 menu-item">
+            <ListItemAvatar style={{ minWidth: 35 }}>
+              <ScheduleIcon />
+            </ListItemAvatar>
+            <ListItemText
+              className="menu-item-text"
+              primary={`Snooz posts `}
+              secondary={
+                <React.Fragment>
+                  <Typography
+                    component="p"
+                    variant="body2"
+                    color="textPrimary"
+                    className="menu-item-text"
+                  >
+                    Temporarily stop seeing posts
+                  </Typography>
+                </React.Fragment>
+              }
+            />
+          </ListItem>
+        )}
+      </Menu>
+    )
+  }
+
+  showComments = postId => {
+    this.setState({
+      postId,
+    })
   }
 
   render() {
@@ -140,8 +295,9 @@ class Incoming extends Component {
       classes,
       user,
       type,
+      commentsCount,
     } = this.props
-    const { open, anchorEl, showEmojis } = this.state
+    const { open, anchorEl, showEmojis, showCommentInput, postId } = this.state
     return (
       <React.Fragment>
         {incomingPostsLoading && incomingPosts && !incomingPosts.length ? (
@@ -152,11 +308,9 @@ class Incoming extends Component {
               <Card key={post._id}>
                 <CardHeader
                   avatar={
+                    (post.isAnonymous && post.postedBy._id == user._id) ||
                     !post.isAnonymous ? (
-                      <Avatar
-                        alt={post.postedBy.userName}
-                        src={post.postedBy.photoURL}
-                      />
+                      <AvatarOnline user={post.postedBy} />
                     ) : (
                       <Avatar
                         style={{ color: '#ffffff', backgroundColor: '#2a7fff' }}
@@ -167,179 +321,240 @@ class Incoming extends Component {
                   }
                   action={
                     <>
-                      <Tooltip
-                        title={
-                          post.rejected
-                            ? 'Rejected'
-                            : post.approved
-                            ? 'Accepted'
-                            : 'Pending'
-                        }
-                      >
-                        <span
-                          className={
-                            post.approved
-                              ? 'status approved'
-                              : post.rejected
-                              ? 'status rejected'
-                              : 'status pending'
-                          }
-                        ></span>
-                      </Tooltip>
                       <Tooltip title="Update">
                         <IconButton
                           aria-label="settings"
                           onClick={this.handleButton}
                         >
-                          <MoreHorizIcon />
+                          <Zoom in={true} timeout={2000}>
+                            <MoreHorizIcon />
+                          </Zoom>
                         </IconButton>
                       </Tooltip>
-                      <Menu
-                        open={open}
-                        onClose={this.handleClose}
-                        anchorEl={anchorEl}
-                        anchorOrigin={{
-                          vertical: 'bottom',
-                          horizontal: 'bottom',
-                        }}
-                        getContentAnchorEl={null}
-                      >
-                        <ListItem
-                          onClick={() =>
-                            this.handleMenuItem('delete', post._id)
-                          }
-                        >
-                          Delete
-                        </ListItem>
-                      </Menu>
+                      {this.renderMenu(post)}
                     </>
                   }
                   title={
+                    (post.isAnonymous && post.postedBy._id === user._id) ||
                     !post.isAnonymous ? (
                       <>
                         <Link
                           className="hyperlink"
                           to={`/profile/${post.postedBy._id}`}
                         >
-                          {post.postedBy.userName}
+                          {post.isAnonymous && post.postedBy._id === user._id
+                            ? 'You'
+                            : post.postedBy.userName}
                         </Link>
+                        &nbsp;
+                        {getProvider(post.postedBy.providerId)}
                       </>
                     ) : (
                       <b className="hyperlink">Annonymous User</b>
                     )
                   }
-                  subheader={moment(post.createdAt).fromNow()}
+                  subheader={
+                    <>
+                      {getCardSubHeaderText(post.createdAt)}&nbsp;&nbsp;
+                      {!post.isAnonymous && (
+                        <>
+                          <span>
+                            <b>
+                              {formateNumber(post.postedBy.total_followers)}
+                            </b>
+                            &nbsp;Followers&nbsp;
+                          </span>
+                        </>
+                      )}
+                    </>
+                  }
                 />
-                <CardContent style={{ minHeight: '300px !important' }}>
-                  <List>
-                    <ListItem alignItems="flex-start">
-                      <ListItemAvatar>
-                        <Avatar src={pros} className="avatar" />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary="Pros"
-                        secondary={
-                          <React.Fragment>
-                            <Typography
-                              component="p"
-                              variant="body2"
-                              color="textPrimary"
-                            >
-                              {post.pros ? post.pros : 'No comments added'}
-                            </Typography>
-                          </React.Fragment>
-                        }
-                      />
-                    </ListItem>
-                    <ListItem alignItems="flex-start">
-                      <ListItemAvatar>
-                        <Avatar src={cons} className="avatar" />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary="Cons"
-                        secondary={
-                          <React.Fragment>
-                            <Typography
-                              component="p"
-                              variant="body2"
-                              color="textPrimary"
-                            >
-                              {post.cons ? post.cons : 'No comments added'}
-                            </Typography>
-                          </React.Fragment>
-                        }
-                      />
-                    </ListItem>
-                    <ListItem alignItems="flex-start">
-                      <ListItemAvatar>
-                        <Avatar src={advice} className="avatar" />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary="Advice"
-                        secondary={
-                          <React.Fragment>
-                            <Typography
-                              component="p"
-                              variant="body2"
-                              color="textPrimary"
-                            >
-                              {post.advice ? post.advice : 'No comments added'}
-                            </Typography>
-                          </React.Fragment>
-                        }
-                      />
-                    </ListItem>
-                  </List>
-                  <div className="actions-align">
-                    <AvatarGroup>
-                      {post.reactions.length > 0
-                        ? post.reactions.slice(0, 3).map(react => (
-                            <Tooltip
-                              title={renderUserNames(post.reactions)}
-                              placement="bottom"
-                            >
-                              <Avatar
-                                className={classes.smallAvatar}
+                <CardContent className="p-0">
+                  {post.type === 'Generic' && (
+                    <>
+                      <List>
+                        <ListItem alignItems="flex-start">
+                          <Zoom in={true} timeout={2000}>
+                            <ListItemText
+                              secondary={
+                                <React.Fragment>
+                                  <Typography
+                                    component="p"
+                                    variant="body2"
+                                    color="textPrimary"
+                                  >
+                                    {post.message}
+                                  </Typography>
+                                </React.Fragment>
+                              }
+                            />
+                          </Zoom>
+                        </ListItem>
+                      </List>
+                    </>
+                  )}
+                  {post.type === 'Opinion' && (
+                    <>
+                      <List>
+                        <Slide
+                          direction="right"
+                          in={true}
+                          timeout={1500}
+                          mountOnEnter
+                          unmountOnExit
+                        >
+                          <ListItem alignItems="flex-start">
+                            <ListItemAvatar>
+                              <Avatar src={pros} className="avatar" />
+                            </ListItemAvatar>
+                            <ListItemText
+                              primary="Pros"
+                              secondary={
+                                <React.Fragment>
+                                  <Typography
+                                    component="p"
+                                    variant="body2"
+                                    color="textPrimary"
+                                  >
+                                    {post.pros
+                                      ? post.pros
+                                      : 'No comments added'}
+                                  </Typography>
+                                </React.Fragment>
+                              }
+                            />
+                          </ListItem>
+                        </Slide>
+                        <Slide
+                          direction="left"
+                          in={true}
+                          timeout={1500}
+                          mountOnEnter
+                          unmountOnExit
+                        >
+                          <ListItem alignItems="flex-start">
+                            <ListItemAvatar>
+                              <Avatar src={cons} className="avatar" />
+                            </ListItemAvatar>
+                            <ListItemText
+                              primary="Cons"
+                              secondary={
+                                <React.Fragment>
+                                  <Typography
+                                    component="p"
+                                    variant="body2"
+                                    color="textPrimary"
+                                  >
+                                    {post.cons
+                                      ? post.cons
+                                      : 'No comments added'}
+                                  </Typography>
+                                </React.Fragment>
+                              }
+                            />
+                          </ListItem>
+                        </Slide>
+                        <Slide
+                          direction="right"
+                          in={true}
+                          timeout={1500}
+                          mountOnEnter
+                          unmountOnExit
+                        >
+                          <ListItem alignItems="flex-start">
+                            <ListItemAvatar>
+                              <Avatar src={advice} className="avatar" />
+                            </ListItemAvatar>
+                            <ListItemText
+                              primary="Advice"
+                              secondary={
+                                <React.Fragment>
+                                  <Typography
+                                    component="p"
+                                    variant="body2"
+                                    color="textPrimary"
+                                  >
+                                    {post.advice
+                                      ? post.advice
+                                      : 'No comments added'}
+                                  </Typography>
+                                </React.Fragment>
+                              }
+                            />
+                          </ListItem>
+                        </Slide>
+                      </List>
+                    </>
+                  )}
+                  <Slide
+                    direction="right"
+                    in={true}
+                    timeout={1500}
+                    mountOnEnter
+                    unmountOnExit
+                  >
+                    <div className="row ml-15 mr-15">
+                      <AvatarGroup max={3} className="v-align-middle">
+                        {post.reactions.length > 0
+                          ? post.reactions.slice(0, 3).map(react => (
+                              <Tooltip
+                                title={renderUserNames(post.reactions)}
+                                placement="bottom"
                                 key={react._id}
-                                alt="Image Not Available"
-                                src={getReaction(react ? react.type : '')}
-                              />
-                            </Tooltip>
-                          ))
-                        : 'No Reactions'}
-                    </AvatarGroup>
-                    <Tooltip
-                      title={renderUserNames(post.reactions)}
-                      placement="bottom"
-                    >
-                      <Link
-                        to={`/post/${post._id}/reactions`}
-                        className="actions-text"
+                              >
+                                <Avatar
+                                  className={classes.smallAvatar}
+                                  key={react._id}
+                                  alt="Image Not Available"
+                                  style={{
+                                    backgroundColor:
+                                      react.type.toLowerCase() === 'love'
+                                        ? '#ff0016c7'
+                                        : '',
+                                  }}
+                                >
+                                  {getReaction(react ? react.type : '')}
+                                </Avatar>
+                              </Tooltip>
+                            ))
+                          : 'No Reactions'}
+                      </AvatarGroup>
+                      <span className="cursor actions-text v-align-middle grey-color ">
+                        <Tooltip
+                          title={renderUserNames(post.reactions)}
+                          placement="bottom"
+                        >
+                          <Link to={`/post/${post._id}/reactions`}>
+                            {formateNumber(post.reactions.length) + ' - '}
+                          </Link>
+                        </Tooltip>
+                      </span>
+                      <span
+                        onClick={() => this.showComments(post._id)}
+                        className="cursor actions-text v-align-middle grey-color"
                       >
-                        <span>
-                          {post.reactions.length
-                            ? formateNumber(post.reactions.length)
-                            : 'No Reactions'}
-                        </span>
-                      </Link>
-                    </Tooltip>
-                  </div>
+                        {formateNumber(post.comments.length) + ' Comments'}
+                      </span>
+                    </div>
+                  </Slide>
                   <Divider />
                 </CardContent>
-                <CardActions disableSpacing>
-                  <Tooltip title={getReactionsText(user._id, post.reactions)}>
+                <CardActions className="card-actions p-0" disableSpacing>
+                  <Tooltip
+                    title={getReactionsText(user._id, post.reactions)}
+                    placement="bottom"
+                  >
                     <div
                       className="feed"
-                      onMouseEnter={() => this.toggleShow(true)}
+                      onTouchStart={() => this.toggleShow(true)}
+                      onTouchEnd={() => this.toggleShow(false)}
+                      onMouseDown={() => this.toggleShow(false)}
+                      onMouseUp={() => this.toggleShow(true)}
                       onMouseLeave={() => this.toggleShow(false)}
+                      onMouseEnter={() => this.toggleShow(true)}
                     >
                       <a className="like-btn">
                         <Button
-                          style={{
-                            color: renderColor(
-                              getReactionsText(user._id, post.reactions),
-                            ),
-                          }}
                           className={classes.button}
                           onClick={() =>
                             this.createOrUpdateReaction(
@@ -349,20 +564,56 @@ class Incoming extends Component {
                             )
                           }
                         >
-                          <Avatar
-                            className={classes.smallAvatar}
-                            src={getReaction(
-                              getReactionsText(user._id, post.reactions),
-                            )}
-                          />
-                          <span style={{ marginLeft: 7 }}>
-                            {getReactionsText(user._id, post.reactions)}
-                          </span>
+                          <Zoom in={true} timeout={2000}>
+                            <div className="card-button-text">
+                              {post.reactions.filter(
+                                r => r.user._id === user._id,
+                              ).length ? (
+                                <Avatar
+                                  className={classes.smallAvatar}
+                                  alt="Image Not Available"
+                                  style={{
+                                    backgroundColor:
+                                      getReactionsText(
+                                        user._id,
+                                        post.reactions,
+                                      ).toLowerCase() === 'love'
+                                        ? '#ff0016c7'
+                                        : '',
+                                  }}
+                                >
+                                  {getReaction(
+                                    getReactionsText(user._id, post.reactions),
+                                  )}
+                                </Avatar>
+                              ) : (
+                                <LikeOutlinedIcon
+                                  style={{ fontSize: 20, color: '#606770' }}
+                                />
+                              )}
+                              <span
+                                className="ml-7"
+                                style={{
+                                  color: renderColor(
+                                    post.reactions.length
+                                      ? getReactionsText(
+                                          user._id,
+                                          post.reactions,
+                                        )
+                                      : '',
+                                  ),
+                                }}
+                              >
+                                {getReactionsText(user._id, post.reactions) ||
+                                  'Like'}
+                              </span>
+                            </div>
+                          </Zoom>
                         </Button>
                         {showEmojis && (
                           <div className="reaction-box">
                             <div
-                              className="reaction-icon"
+                              className="v-align-middle reaction-icon"
                               onClick={() =>
                                 this.createOrUpdateReaction(
                                   user._id,
@@ -372,11 +623,33 @@ class Incoming extends Component {
                               }
                             >
                               <Tooltip title="Like" placement="top">
-                                <img src={like} width={43} height={38} />
+                                <Avatar className={classes.emojiAvatar}>
+                                  <Zoom in={showEmojis} timeout={2000}>
+                                    <LikeIcon color="secondary" />
+                                  </Zoom>
+                                </Avatar>
                               </Tooltip>
                             </div>
                             <div
-                              className="reaction-icon"
+                              className="v-align-middle reaction-icon"
+                              onClick={() =>
+                                this.createOrUpdateReaction(
+                                  user._id,
+                                  post._id,
+                                  'dislike',
+                                )
+                              }
+                            >
+                              <Tooltip title="Dis Like" placement="top">
+                                <Avatar className={classes.emojiAvatar}>
+                                  <Zoom in={showEmojis} timeout={2000}>
+                                    <DisLikeIcon color="secondary" />
+                                  </Zoom>
+                                </Avatar>
+                              </Tooltip>
+                            </div>
+                            <div
+                              className="v-align-middle reaction-icon"
                               onClick={() =>
                                 this.createOrUpdateReaction(
                                   user._id,
@@ -386,77 +659,68 @@ class Incoming extends Component {
                               }
                             >
                               <Tooltip title="Love" placement="top">
-                                <img src={love} width={40} height={40} />
+                                <Avatar
+                                  className={classes.emojiAvatar}
+                                  style={{ backgroundColor: '#ff0016c7' }}
+                                >
+                                  <Zoom in={showEmojis} timeout={2000}>
+                                    <LoveIcon color="secondary" />
+                                  </Zoom>
+                                </Avatar>
                               </Tooltip>
                             </div>
                             <div
-                              className="reaction-icon"
+                              className="v-align-middle reaction-icon"
                               onClick={() =>
                                 this.createOrUpdateReaction(
                                   user._id,
                                   post._id,
-                                  'angry',
+                                  'perfect',
                                 )
                               }
                             >
-                              <Tooltip title="Angry" placement="top">
-                                <img src={angry} width={40} height={40} />
+                              <Tooltip title="Perfect" placement="top">
+                                <Avatar className={classes.emojiAvatar}>
+                                  <Zoom in={showEmojis} timeout={2000}>
+                                    <img src={perfect} />
+                                  </Zoom>
+                                </Avatar>
                               </Tooltip>
                             </div>
                             <div
-                              className="reaction-icon"
+                              className="v-align-middle reaction-icon"
                               onClick={() =>
                                 this.createOrUpdateReaction(
                                   user._id,
                                   post._id,
-                                  'silly',
+                                  'tounghout',
                                 )
                               }
                             >
-                              <Tooltip title="Silly" placement="top">
-                                <img src={silly} width={40} height={40} />
+                              <Tooltip title="Toungh Out" placement="top">
+                                <Avatar className={classes.emojiAvatar}>
+                                  <Zoom in={showEmojis} timeout={2000}>
+                                    <img src={tounghout} />
+                                  </Zoom>
+                                </Avatar>
                               </Tooltip>
                             </div>
                             <div
-                              className="reaction-icon"
+                              className="v-align-middle reaction-icon"
                               onClick={() =>
                                 this.createOrUpdateReaction(
                                   user._id,
                                   post._id,
-                                  'smiley',
+                                  'thinking',
                                 )
                               }
                             >
-                              <Tooltip title="Smiley" placement="top">
-                                <img src={smiley} width={40} height={40} />
-                              </Tooltip>
-                            </div>
-                            <div
-                              className="reaction-icon"
-                              onClick={() =>
-                                this.createOrUpdateReaction(
-                                  user._id,
-                                  post._id,
-                                  'wow',
-                                )
-                              }
-                            >
-                              <Tooltip title="Wow" placement="top">
-                                <img src={wow} width={40} height={40} />
-                              </Tooltip>
-                            </div>
-                            <div
-                              className="reaction-icon"
-                              onClick={() =>
-                                this.createOrUpdateReaction(
-                                  user._id,
-                                  post._id,
-                                  'sad',
-                                )
-                              }
-                            >
-                              <Tooltip title="Sad" placement="top">
-                                <img src={sad} width={40} height={40} />
+                              <Tooltip title="Thinking" placement="top">
+                                <Avatar className={classes.emojiAvatar}>
+                                  <Zoom in={showEmojis} timeout={2000}>
+                                    <img src={thinking} />
+                                  </Zoom>
+                                </Avatar>
                               </Tooltip>
                             </div>
                           </div>
@@ -464,14 +728,54 @@ class Incoming extends Component {
                       </a>
                     </div>
                   </Tooltip>
+                  <Tooltip title="Comment">
+                    <Button
+                      className={classes.comment}
+                      onClick={() => this.showCommentInput()}
+                    >
+                      <Zoom in={true} timeout={2000}>
+                        <div className="card-button-text">
+                          <CommentIcon
+                            style={{ color: '#606770' }}
+                            style={{ fontSize: 20 }}
+                          />
+                          <span className="ml-7">Comment</span>
+                        </div>
+                      </Zoom>
+                    </Button>
+                  </Tooltip>
+                </CardActions>
+                {showCommentInput ||
+                (post.comments.length && postId !== post._id) ? (
+                  <Divider />
+                ) : null}
+                {showCommentInput && (
+                  <CardActions disableSpacing className="p-0">
+                    <CreateComment
+                      type="parent"
+                      post={post}
+                      showCommentInput={showCommentInput}
+                      hideComment={this.hideComment}
+                    />
+                  </CardActions>
+                )}
+                <CardActions disableSpacing style={{ paddingTop: 0 }}>
+                  {postId !== post._id && (
+                    <CommentsList type="parent" post={post} />
+                  )}
                 </CardActions>
               </Card>
             ))
           : null}
         {!incomingPostsLoading && !incomingPosts.length ? (
-          <Typography variant="h5" className="text-center">
-            You don't have accepted or rejected posts
-          </Typography>
+          <NoRecords
+            title={type === 'profile' ? 'No Posts' : 'No Incoming Posts'}
+            message={
+              type === 'profile'
+                ? 'There are no posts to show'
+                : 'You have not received posts'
+            }
+          />
         ) : null}
         {incomingPostsError && incomingPostsError.size > 0 ? (
           <CustomizedSnackbars
@@ -518,6 +822,8 @@ const mapStateToProps = state => {
     ['Timeline', 'incoming', 'errors'],
     Map(),
   )
+  const commentsCount = state.getIn(['Post', 'comments', 'count', 'success'])
+  const user = state.getIn(['user', 'data'])
   return {
     incomingPosts,
     incomingPostsError,
@@ -525,6 +831,8 @@ const mapStateToProps = state => {
     deletePostSuccess,
     deletePostError,
     deletePostLoading,
+    commentsCount,
+    user,
   }
 }
 
@@ -533,6 +841,8 @@ const actionsToProps = {
   deletePost: actions.deletePost,
   createOrUpdateReaction: profileActions.createOrUpdateReaction,
   getRecentPosts: actions.getRecentPosts,
+  getCommentsCount: postActions.getCommentsCount,
+  getComments: postActions.getComments,
 }
 
 export default withRouter(

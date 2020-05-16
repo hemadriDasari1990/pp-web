@@ -98,6 +98,55 @@ export const Post = (state = Map(), action) => {
       return state
         .setIn(['reactions', 'count', 'errors'], action.errors)
         .setIn(['reactions', 'count', 'loading'], false)
+
+    case actions.GET_COMMENTS_REQUEST:
+      return state
+        .setIn(['comments', 'loading'], true)
+        .deleteIn(['comments', 'errors'])
+        .deleteIn(['comments', 'success'])
+
+    case actions.GET_COMMENTS_SUCCESS:
+      return state
+        .setIn(['comments', 'success'], action.data)
+        .setIn(['comments', 'loading'], false)
+
+    case actions.GET_COMMENTS_ERROR:
+      return state
+        .setIn(['comments', 'errors'], action.errors)
+        .setIn(['comments', 'loading'], false)
+
+    case actions.GET_COMMENTS_COUNT_REQUEST:
+      return state
+        .setIn(['comments', 'count', 'loading'], true)
+        .deleteIn(['comments', 'count', 'errors'])
+        .deleteIn(['comments', 'count', 'success'])
+
+    case actions.GET_COMMENTS_COUNT_SUCCESS:
+      return state
+        .setIn(['comments', 'count', 'success'], action.data)
+        .setIn(['comments', 'count', 'loading'], false)
+
+    case actions.GET_COMMENTS_COUNT_ERROR:
+      return state
+        .setIn(['comments', 'count', 'errors'], action.errors)
+        .setIn(['comments', 'count', 'loading'], false)
+
+    case actions.CREATE_OR_UPDATE_COMMENT_REACTION_REQUEST:
+      return state
+        .setIn(['comment', 'reaction', 'create', 'loading'], true)
+        .deleteIn(['comment', 'reaction', 'create', 'errors'])
+        .deleteIn(['comment', 'reaction', 'create', 'success'])
+
+    case actions.CREATE_OR_UPDATE_COMMENT_REACTION_SUCCESS:
+      return state
+        .setIn(['comment', 'reaction', 'create', 'success'], action.data)
+        .setIn(['comment', 'reaction', 'create', 'loading'], false)
+
+    case actions.CREATE_OR_UPDATE_COMMENT_REACTION_ERROR:
+      return state
+        .setIn(['comment', 'reaction', 'create', 'errors'], action.errors)
+        .setIn(['comment', 'reaction', 'create', 'loading'], false)
+
     default:
       return state
   }

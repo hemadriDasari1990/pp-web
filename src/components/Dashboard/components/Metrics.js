@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
-import Card from '@material-ui/core/Card'
-import Divider from '@material-ui/core/Divider'
-import CardContent from '@material-ui/core/CardContent'
-import Typography from '@material-ui/core/Typography'
-import formateNumber from '../../../util/formateNumber'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { Map, fromJS } from 'immutable'
-import Loader from '../../Loader/components/Loader'
-import Avatar from '@material-ui/core/Avatar'
+
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import Divider from '@material-ui/core/Divider'
 import Fab from '@material-ui/core/Fab'
+import { connect } from 'react-redux'
+import formateNumber from '../../../util/formateNumber'
+import Grow from '@material-ui/core/Grow'
+import Slide from '@material-ui/core/Slide'
 
 class Metrics extends Component {
   constructor(props) {
@@ -20,27 +19,30 @@ class Metrics extends Component {
     const { classes, user, title, icon, name, count } = this.props
     return (
       <Card>
-        <CardContent className="container metrics-card-padding">
+        <CardContent>
           <div className="row">
             <div className="col align-self-start text-center">
-              <Fab
-                color="inherit"
-                size="small"
-                aria-label={name}
-                color="primary"
-                style={{
-                  margin: '15% 30% 5% 30%',
-                  backgroundColor: '#2a7fff',
-                }}
-              >
-                {icon}
-              </Fab>
+              <Grow in={true} timeout={2000}>
+                <Fab
+                  size="small"
+                  color="primary"
+                  style={{
+                    margin: '10% 30% 5% 30%',
+                  }}
+                >
+                  {icon}
+                </Fab>
+              </Grow>
               <span className="text-center p-10">{name}</span>
             </div>
             <Divider orientation="vertical" flexItem />
             <div className="col text-center metrics-card-title">
               <span>{title}</span>
-              <h3 className="f-w-600">{formateNumber(count)}</h3>
+              <Grow in={true} timeout={2000}>
+                <h3 className="f-w-600">
+                  {count > 0 ? formateNumber(count) : 0}
+                </h3>
+              </Grow>
             </div>
           </div>
         </CardContent>

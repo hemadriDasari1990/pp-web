@@ -26,6 +26,10 @@ import MuiList from './MuiList'
 import MuiTab from './MuiTab'
 import MuiTabs from './MuiTabs'
 import MuiButtonBase from './MuiButtonBase'
+import MuiSvgIcon from './MuiSvgIcon'
+import MuiTextField from './MuiTextField'
+import MuiListItemSecondaryAction from './MuiListItemSecondaryAction'
+import MuiMenu from './MuiMenu'
 
 export default {
   MuiButton,
@@ -56,4 +60,8 @@ export default {
   MuiTab,
   MuiTabs,
   MuiButtonBase,
+  MuiSvgIcon,
+  MuiTextField,
+  MuiListItemSecondaryAction,
+  MuiMenu,
 }

@@ -7,7 +7,10 @@ export default {
     fontFamily: 'inherit',
   },
   primary: {
-    fontSize: '0.8rem',
-    fontWeight: 500,
+    fontSize: '0.7rem',
+    fontWeight: 600,
+  },
+  secondary: {
+    fontSize: '0.7rem',
   },
 }

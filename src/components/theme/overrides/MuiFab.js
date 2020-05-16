@@ -5,9 +5,9 @@ export default {
     marginLeft: 10,
   },
   label: {
+    color: '#fff',
     textTransform: 'capitalize',
     fontWeight: 600,
-    color: '#fff',
   },
   extended: {
     '&$sizeSmall': {

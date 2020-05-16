@@ -1,18 +1,18 @@
-import React from 'react'
+import React, { Component } from 'react'
+
+import Avatar from '@material-ui/core/Avatar'
 import Card from '@material-ui/core/Card'
 import CardActionArea from '@material-ui/core/CardActionArea'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
-import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
-import { withStyles } from '@material-ui/core/styles'
+import Fab from '@material-ui/core/Fab'
 import PropTypes from 'prop-types'
+import Typography from '@material-ui/core/Typography'
+import arrowIcon from '../../../../assets/arrow.svg'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import Fab from '@material-ui/core/Fab'
-import Avatar from '@material-ui/core/Avatar'
-import arrowIcon from '../../../../assets/arrow.svg'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({
   card: {
@@ -48,7 +48,7 @@ const styles = theme => ({
   },
 })
 
-class ProfileCard extends React.Component {
+class ProfileCard extends Component {
   handleButton = path => {
     this.props.history.push(path)
   }
@@ -79,7 +79,7 @@ class ProfileCard extends React.Component {
           />
           <CardContent className={classes.content}>
             <Typography gutterBottom variant="h5" component="h2">
-              <h2>{title}</h2>
+              {title}
             </Typography>
             <Typography gutterBottom variant="h5" component="h4">
               {subTitle}

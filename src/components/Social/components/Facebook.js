@@ -1,15 +1,16 @@
-import React, { Component } from 'react'
 import * as actions from '../../../actions/index'
-import { Map } from 'immutable'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
-import firebase from '../../../firebase'
-import facebook from '../../../../assets/social/facebook.svg'
-import Tooltip from '@material-ui/core/Tooltip'
-import Avatar from '@material-ui/core/Avatar'
+
+import React, { Component } from 'react'
+
 import Fab from '@material-ui/core/Fab'
-import { withStyles } from '@material-ui/core/styles'
+import FacebookIcon from '@material-ui/icons/Facebook'
+import { Map } from 'immutable'
 import PropTypes from 'prop-types'
+import Tooltip from '@material-ui/core/Tooltip'
+import { connect } from 'react-redux'
+import firebase from '../../../firebase'
+import { withRouter } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({
   avatar: {},
@@ -28,36 +29,29 @@ const styles = theme => ({
 class Facebook extends Component {
   auth = async e => {
     e.preventDefault()
+    const provider = new firebase.auth.FacebookAuthProvider()
+    provider.addScope('email')
     await new firebase.auth()
-      .signInWithPopup(new firebase.auth.FacebookAuthProvider())
-      .then((user, error) => {
-        if (error) {
-          this.props.history.push('/')
-        }
+      .signInWithPopup(provider)
+      .then(async (user, error) => {
         if (!error) {
           const data = user.user.providerData[0]
-          this.props.getUser(data.uid).then(u => {
-            if (!u || (u && u.data && !u.data.user)) {
-              this.props
-                .createUser({
-                  email: data.email,
-                  userName: data.displayName,
-                  photoURL: data.photoURL,
-                  uid: data.uid,
-                  phoneNumber: data.phoneNumber,
-                  providerId: data.providerId,
-                })
-                .then(user => {
-                  if (user && user.data.user) {
-                    this.props.storeUser(user.data.user)
-                    this.props.history.push('/dashboard')
-                  }
-                })
-            } else {
-              this.props.storeUser(u.data.user)
-              this.props.history.push('/dashboard')
-            }
-          })
+          await this.props
+            .createOrUpdateUser({
+              email: data.email,
+              userName: data.displayName,
+              photoURL: data.photoURL,
+              uid: data.uid,
+              phoneNumber: data.phoneNumber,
+              providerId: data.providerId,
+              lastActiveTime: Date.now(),
+            })
+            .then(user => {
+              if (user && user.data.user) {
+                this.props.storeUser(user.data.user)
+                this.props.history.push('/dashboard')
+              }
+            })
         } else {
           this.props.history.push('/')
         }
@@ -77,8 +71,8 @@ class Facebook extends Component {
             aria-label="add"
             variant="extended"
           >
-            <Avatar src={facebook} className={classes.small} />
-            Sign In with Facebook
+            <FacebookIcon color="secondary" />
+            &nbsp; Sign In with Facebook
           </Fab>
         </Tooltip>
       </>
@@ -99,8 +93,7 @@ const mapStateToProps = state => {
 
 const actionsToProps = {
   storeUser: actions.storeUser,
-  createUser: actions.createUser,
-  getUser: actions.getUser,
+  createOrUpdateUser: actions.createOrUpdateUser,
 }
 
 export default withRouter(

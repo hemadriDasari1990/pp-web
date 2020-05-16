@@ -1,19 +1,27 @@
+import * as actions from '../../../actions/index'
+import * as postActions from '../../Post/actions'
+
 import React, { Component } from 'react'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import * as actions from '../../../actions/index'
-import Summary from './Summary'
-import arrowIcon from '../../../../assets/arrow.svg'
-import { withStyles } from '@material-ui/core/styles'
-import Fab from '@material-ui/core/Fab'
+
 import Avatar from '@material-ui/core/Avatar'
-import Metrics from './Metrics'
-import LoveIcon from '../../SvgIcons/components/Love'
-import LikeIcon from '../../SvgIcons/components/Like'
-import PreferencesIcon from '../../SvgIcons/components/Preferences'
-import * as postActions from '../../Post/actions'
+import Fab from '@material-ui/core/Fab'
+import LikeIcon from '@material-ui/icons/ThumbUpAlt'
 import Loader from '../../Loader/components/Loader'
-import FollowingIcon from '../../SvgIcons/components/Following'
+import LoveIcon from '@material-ui/icons/Favorite'
+import Metrics from './Metrics'
+import PreferencesIcon from '../../SvgIcons/components/Preferences'
+import ProfileReactionsCarousel from './ProfileReactionsCarousel'
+import RssFeedOutlinedIcon from '@material-ui/icons/RssFeedOutlined'
+import Summary from './Summary'
+import WelcomeProfile from './WelcomeProfile'
+import arrowIcon from '../../../../assets/arrow.svg'
+import { connect } from 'react-redux'
+import { withStyles } from '@material-ui/core/styles'
+import Grid from '@material-ui/core/Grid'
+import Container from '@material-ui/core/Container'
+import Slide from '@material-ui/core/Slide'
+import Zoom from '@material-ui/core/Zoom'
 
 const styles = theme => ({})
 
@@ -31,93 +39,94 @@ class DashBoard extends Component {
   }
 
   handleTimeline = event => {
-    this.props.history.push('/incoming')
+    this.props.history.push('/timeline/incoming')
   }
 
   render() {
     const {} = this.state
     const { user, classes, userPreferences } = this.props
     return (
-      <React.Fragment>
+      <>
         {user && userPreferences ? (
           <>
             <div className="row">
-              <div className="text-center col-lg-3 col-md-2 col-sm-12 col-xs-12">
-                <h5>Hi, {user ? user.userName : ''}!</h5>
-                <p>Welcome to your social platform</p>
-                <Fab
-                  onClick={() => this.handleTimeline()}
-                  size="small"
-                  color="primary"
-                  aria-label="add"
-                  variant="extended"
-                  className="align-items-center mb-10"
+              <Grid container spacing={1} className="of-h">
+                <Grid
+                  item
+                  lg={3}
+                  md={3}
+                  xs={12}
+                  sm={9}
+                  className="middle-content"
                 >
-                  View Timeline{' '}
-                  <Avatar src={arrowIcon} className="b-s b-w-arrow" />
-                </Fab>
-              </div>
-              <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
-                <Summary type="incoming" title="Incoming Summary" />
-              </div>
-              <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12">
-                <Summary type="outgoing" title="Outgoing Summary" />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-lg-3 col-md-2 col-sm-12 col-xs-12"></div>
-              <div className="col-lg-3 col-md-3 col-sm col-xs-12">
-                <Metrics
-                  icon={
-                    <LikeIcon style={{ width: 35, height: 35 }} color="#fff" />
-                  }
-                  title="Likes"
-                  name="Like"
-                  count={user.no_of_likes}
-                />
-              </div>
-              <div className="col-lg-3 col-md-3 col-sm col-xs-12">
-                <Metrics
-                  icon={<LoveIcon className="icon-display" color="#fff" />}
-                  title="Love"
-                  name="Love"
-                  count={user.no_of_loves}
-                />
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-lg-3 col-md-2 col-sm-12 col-xs-12"></div>
-              <div className="col-lg-3 col-md-3 col-sm col-xs-12">
-                <Metrics
-                  icon={<FollowingIcon className="icon-display" color="#fff" />}
-                  title="Followers"
-                  name="Followers"
-                  count={user.no_of_followers}
-                />
-              </div>
-              <div className="col-lg-3 col-md-3 col-sm col-xs-12">
-                <Metrics
-                  icon={
-                    <PreferencesIcon
-                      style={{ width: 40, height: 40 }}
-                      color="#fff"
-                    />
-                  }
-                  title="Times Updated"
-                  name="Preferences"
-                  count={
-                    userPreferences && userPreferences.pref
-                      ? userPreferences.pref.count
-                      : 0
-                  }
-                />
-              </div>
+                  <WelcomeProfile />
+                  {/* <ProfileReactionsCarousel /> */}
+                </Grid>
+                <Grid
+                  item
+                  lg={3}
+                  md={6}
+                  xs={12}
+                  sm={9}
+                  className="middle-content"
+                >
+                  <Summary type="incoming" title="Incoming Summary" />
+                  <Metrics
+                    icon={<LikeIcon />}
+                    title="Likes"
+                    name="Like"
+                    count={user.no_of_likes}
+                  />
+                  <Metrics
+                    icon={
+                      <RssFeedOutlinedIcon
+                        className="icon-display"
+                        color="#fff"
+                      />
+                    }
+                    title="Followers"
+                    name="Followers"
+                    count={user.no_of_followers}
+                  />
+                </Grid>
+                <Grid
+                  item
+                  lg={3}
+                  md={6}
+                  xs={12}
+                  sm={9}
+                  className="middle-content"
+                >
+                  <Summary type="outgoing" title="Outgoing Summary" />
+                  <Metrics
+                    icon={<LoveIcon />}
+                    title="Love"
+                    name="Love"
+                    count={user.no_of_loves}
+                  />
+                  <Metrics
+                    icon={
+                      <PreferencesIcon
+                        style={{ width: 40, height: 40 }}
+                        color="#fff"
+                      />
+                    }
+                    title="Times Updated"
+                    name="Preferences"
+                    count={
+                      userPreferences && userPreferences.pref
+                        ? userPreferences.pref.count
+                        : 0
+                    }
+                  />
+                </Grid>
+              </Grid>
             </div>
           </>
         ) : (
           <Loader />
         )}
-      </React.Fragment>
+      </>
     )
   }
 }

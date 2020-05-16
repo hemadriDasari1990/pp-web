@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
+
 import PropTypes from 'prop-types'
-import { withStyles } from '@material-ui/core/styles'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import loader from '../../../../assets/loader/loader.svg'
-import Avatar from '@material-ui/core/Avatar'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({
   progress: {
@@ -40,7 +39,7 @@ class Loader extends Component {
   }
 
   render() {
-    const { classes, authenticated } = this.props
+    const { classes } = this.props
     const { completed, showLoader } = this.state
     return (
       <div className="content">

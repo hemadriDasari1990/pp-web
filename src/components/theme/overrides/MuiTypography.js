@@ -74,7 +74,7 @@ export default {
   },
   body2: {
     color: palette.text.secondary,
-    fontSize: 12,
+    fontSize: 13,
     letterSpacing: '-0.04px',
     lineHeight: '18px',
     // marginTop: 10,

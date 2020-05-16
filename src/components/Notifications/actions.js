@@ -18,7 +18,7 @@ export const getNotificationsSuccess = data => {
 
 export const getNotificationsError = errors => {
   return {
-    type: action.GET_NOTIFICATIONS_FAILURE,
+    type: action.GET_NOTIFICATIONS_ERROR,
     loading: false,
     errors: errors,
   }
@@ -58,7 +58,7 @@ export const markReadSuccess = res => {
 
 export const markReadError = errors => {
   return {
-    type: action.MARK_NOTIFICATION_READ_FAILURE,
+    type: action.MARK_NOTIFICATION_READ_ERROR,
     loading: false,
     errors: errors,
   }
@@ -80,6 +80,48 @@ export const markRead = notificationId => {
       .then(data => dispatch(markReadSuccess(data)))
       .catch(errors => {
         dispatch(markReadError(errors))
+      })
+  }
+}
+
+export const deleteNotificationRequest = () => {
+  return {
+    type: action.DELETE_NOTIFICATION_REQUEST,
+    loading: true,
+  }
+}
+
+export const deleteNotificationSuccess = res => {
+  return {
+    type: action.DELETE_NOTIFICATION_SUCCESS,
+    loading: false,
+    data: res,
+  }
+}
+
+export const deleteNotificationError = errors => {
+  return {
+    type: action.DELETE_NOTIFICATION_ERROR,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const deleteNotification = notificationId => {
+  const options = {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  return dispatch => {
+    dispatch(deleteNotificationRequest())
+    return fetch(
+      config.URL_PREFIX + `/notifications/${notificationId}/delete`,
+      options,
+    )
+      .then(response => response.json())
+      .then(data => dispatch(deleteNotificationSuccess(data)))
+      .catch(errors => {
+        dispatch(deleteNotificationError(errors))
       })
   }
 }

@@ -1,16 +1,16 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import classNames from 'classnames'
+import React, { Component } from 'react'
+
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
-import ErrorIcon from '@material-ui/icons/Error'
-import InfoIcon from '@material-ui/icons/Info'
 import CloseIcon from '@material-ui/icons/Close'
-import green from '@material-ui/core/colors/green'
-import amber from '@material-ui/core/colors/amber'
+import ErrorIcon from '@material-ui/icons/Error'
 import IconButton from '@material-ui/core/IconButton'
+import InfoIcon from '@material-ui/icons/Info'
+import PropTypes from 'prop-types'
 import Snackbar from '@material-ui/core/Snackbar'
 import SnackbarContent from '@material-ui/core/SnackbarContent'
 import WarningIcon from '@material-ui/icons/Warning'
+import amber from '@material-ui/core/colors/amber'
+import classNames from 'classnames'
 import { withStyles } from '@material-ui/core/styles'
 
 const variantIcon = {
@@ -22,7 +22,7 @@ const variantIcon = {
 
 const styles1 = theme => ({
   success: {
-    backgroundColor: '#14f105a6',
+    backgroundColor: '#2eff2b',
   },
   error: {
     backgroundColor: '#f10505a6',
@@ -43,6 +43,7 @@ const styles1 = theme => ({
   message: {
     display: 'flex',
     alignItems: 'center',
+    fontWeight: 600,
   },
 })
 
@@ -93,7 +94,7 @@ const styles2 = theme => ({
   },
 })
 
-class CustomizedSnackbars extends React.Component {
+class CustomizedSnackbars extends Component {
   state = {
     open: this.props.open,
   }
@@ -112,11 +113,11 @@ class CustomizedSnackbars extends React.Component {
       <React.Fragment>
         <Snackbar
           anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
+            vertical: 'top',
+            horizontal: 'center',
           }}
           open={this.state.open}
-          autoHideDuration={3000}
+          autoHideDuration={4000}
           onClose={this.handleClose}
         >
           <MySnackbarContentWrapper
