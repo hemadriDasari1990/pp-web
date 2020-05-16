@@ -83,3 +83,45 @@ export const markRead = notificationId => {
       })
   }
 }
+
+export const deleteNotificationRequest = () => {
+  return {
+    type: action.DELETE_NOTIFICATION_REQUEST,
+    loading: true,
+  }
+}
+
+export const deleteNotificationSuccess = res => {
+  return {
+    type: action.DELETE_NOTIFICATION_SUCCESS,
+    loading: false,
+    data: res,
+  }
+}
+
+export const deleteNotificationError = errors => {
+  return {
+    type: action.DELETE_NOTIFICATION_ERROR,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const deleteNotification = notificationId => {
+  const options = {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  return dispatch => {
+    dispatch(deleteNotificationRequest())
+    return fetch(
+      config.URL_PREFIX + `/notifications/${notificationId}/delete`,
+      options,
+    )
+      .then(response => response.json())
+      .then(data => dispatch(deleteNotificationSuccess(data)))
+      .catch(errors => {
+        dispatch(deleteNotificationError(errors))
+      })
+  }
+}

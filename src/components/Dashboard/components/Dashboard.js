@@ -20,6 +20,8 @@ import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
 import Grid from '@material-ui/core/Grid'
 import Container from '@material-ui/core/Container'
+import Slide from '@material-ui/core/Slide'
+import Zoom from '@material-ui/core/Zoom'
 
 const styles = theme => ({})
 
@@ -37,14 +39,14 @@ class DashBoard extends Component {
   }
 
   handleTimeline = event => {
-    this.props.history.push('/incoming')
+    this.props.history.push('/timeline/incoming')
   }
 
   render() {
     const {} = this.state
     const { user, classes, userPreferences } = this.props
     return (
-      <Container fixed>
+      <>
         {user && userPreferences ? (
           <>
             <div className="row">
@@ -124,7 +126,7 @@ class DashBoard extends Component {
         ) : (
           <Loader />
         )}
-      </Container>
+      </>
     )
   }
 }

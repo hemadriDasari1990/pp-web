@@ -30,6 +30,22 @@ export const Notifications = (state = Map(), action) => {
       return state
         .setIn(['markRead', 'errors'], action.errors)
         .setIn(['markRead', 'loading'], false)
+
+    case actions.DELETE_NOTIFICATION_REQUEST:
+      return state
+        .setIn(['delete', 'loading'], true)
+        .deleteIn(['delete', 'errors'])
+        .deleteIn(['delete', 'success'])
+
+    case actions.DELETE_NOTIFICATION_SUCCESS:
+      return state
+        .setIn(['delete', 'success'], action.data)
+        .setIn(['delete', 'loading'], false)
+
+    case actions.DELETE_NOTIFICATION_ERROR:
+      return state
+        .setIn(['delete', 'errors'], action.errors)
+        .setIn(['delete', 'loading'], false)
     default:
       return state
   }

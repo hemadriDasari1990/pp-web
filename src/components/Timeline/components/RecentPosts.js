@@ -24,6 +24,8 @@ import { connect } from 'react-redux'
 import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
 import getPastTime from '../../../util/getPastTime'
 import { withStyles } from '@material-ui/core/styles'
+import Slide from '@material-ui/core/Slide'
+import Zoom from '@material-ui/core/Zoom'
 
 const styles = {
   smallAvatar: {
@@ -35,7 +37,7 @@ const styles = {
 
 class RecentPosts extends Component {
   componentDidMount() {
-    if (!this.props.match.params.id) {
+    if (!this.props.match.params.id && this.props.user) {
       this.props.getRecentPosts(this.props.user._id)
     }
     if (this.props.match.params.id) {
@@ -171,9 +173,11 @@ class RecentPosts extends Component {
                 : null}
 
               {!recentPostsLoading && !recentPosts.length && (
-                <Typography variant="h4" className="text-center">
-                  No Recent Posts
-                </Typography>
+                <Zoom in={true} timeout={2000}>
+                  <Typography variant="h4" className="text-center">
+                    No Recent Posts
+                  </Typography>
+                </Zoom>
               )}
 
               {recentPostsLoading && !recentPosts.length && <Loader />}
@@ -190,6 +194,7 @@ RecentPosts.propTypes = {
 }
 
 const mapStateToProps = state => {
+  const user = state.getIn(['user', 'data'])
   const recentPosts = state.getIn(['Timeline', 'recent', 'success'], Map())
   const recentPostsLoading = state.getIn(
     ['Timeline', 'recent', 'loading'],
@@ -197,6 +202,7 @@ const mapStateToProps = state => {
   )
   const recentPostsError = state.getIn(['Timeline', 'recent', 'errors'], Map())
   return {
+    user,
     recentPosts,
     recentPostsError,
     recentPostsLoading,

@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
+import Slide from '@material-ui/core/Slide'
+import Zoom from '@material-ui/core/Zoom'
 
 const styles = theme => ({
   root: {
@@ -30,11 +32,27 @@ class FeedbackList extends Component {
       <>
         {!feedbacksLoading && feedbacks && (
           <div className="col-lg-12">
-            <h2>Feedbacks from our people</h2>
-            <p className="margin-bottom">
-              We are really thankful to them who are helping us to improve the
-              system.
-            </p>
+            <Slide
+              direction="right"
+              in={true}
+              timeout={1500}
+              mountOnEnter
+              unmountOnExit
+            >
+              <h2>Feedbacks from our people</h2>
+            </Slide>
+            <Slide
+              direction="left"
+              in={true}
+              timeout={1500}
+              mountOnEnter
+              unmountOnExit
+            >
+              <p className="margin-bottom">
+                We are really thankful to them who are helping us to improve the
+                system.
+              </p>
+            </Slide>
           </div>
         )}
         <List className={classes.root}>

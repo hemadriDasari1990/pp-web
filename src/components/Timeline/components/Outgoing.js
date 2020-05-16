@@ -56,6 +56,8 @@ import thinking from '../../../../assets/emojis/thinking.svg'
 import tounghout from '../../../../assets/emojis/tounghout.svg'
 import { withStyles } from '@material-ui/core/styles'
 import getProvider from '../../../util/getProvider'
+import Slide from '@material-ui/core/Slide'
+import Zoom from '@material-ui/core/Zoom'
 
 const styles = {
   smallAvatar: {
@@ -320,7 +322,9 @@ class Outgoing extends Component {
                           aria-label="settings"
                           onClick={this.handleButton}
                         >
-                          <MoreHorizIcon />
+                          <Zoom in={true} timeout={2000}>
+                            <MoreHorizIcon />
+                          </Zoom>
                         </IconButton>
                       </Tooltip>
                       {this.renderMenu(post)}
@@ -359,109 +363,143 @@ class Outgoing extends Component {
                 />
                 <CardContent className="p-0">
                   <List>
-                    <ListItem alignItems="flex-start">
-                      <ListItemAvatar>
-                        <Avatar src={pros} className="avatar" />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary="Pros"
-                        secondary={
-                          <React.Fragment>
-                            <Typography
-                              component="p"
-                              variant="body2"
-                              color="textPrimary"
-                            >
-                              {post.pros ? post.pros : 'No comments added'}
-                            </Typography>
-                          </React.Fragment>
-                        }
-                      />
-                    </ListItem>
-                    <ListItem alignItems="flex-start">
-                      <ListItemAvatar>
-                        <Avatar src={cons} className="avatar" />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary="Cons"
-                        secondary={
-                          <React.Fragment>
-                            <Typography
-                              component="p"
-                              variant="body2"
-                              color="textPrimary"
-                            >
-                              {post.cons ? post.cons : 'No comments added'}
-                            </Typography>
-                          </React.Fragment>
-                        }
-                      />
-                    </ListItem>
-                    <ListItem alignItems="flex-start">
-                      <ListItemAvatar>
-                        <Avatar src={advice} className="avatar" />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary="Advice"
-                        secondary={
-                          <React.Fragment>
-                            <Typography
-                              component="p"
-                              variant="body2"
-                              color="textPrimary"
-                            >
-                              {post.advice ? post.advice : 'No comments added'}
-                            </Typography>
-                          </React.Fragment>
-                        }
-                      />
-                    </ListItem>
+                    <Slide
+                      direction="right"
+                      in={true}
+                      timeout={1500}
+                      mountOnEnter
+                      unmountOnExit
+                    >
+                      <ListItem alignItems="flex-start">
+                        <ListItemAvatar>
+                          <Avatar src={pros} className="avatar" />
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary="Pros"
+                          secondary={
+                            <React.Fragment>
+                              <Typography
+                                component="p"
+                                variant="body2"
+                                color="textPrimary"
+                              >
+                                {post.pros ? post.pros : 'No comments added'}
+                              </Typography>
+                            </React.Fragment>
+                          }
+                        />
+                      </ListItem>
+                    </Slide>
+                    <Slide
+                      direction="left"
+                      in={true}
+                      timeout={1500}
+                      mountOnEnter
+                      unmountOnExit
+                    >
+                      <ListItem alignItems="flex-start">
+                        <ListItemAvatar>
+                          <Avatar src={cons} className="avatar" />
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary="Cons"
+                          secondary={
+                            <React.Fragment>
+                              <Typography
+                                component="p"
+                                variant="body2"
+                                color="textPrimary"
+                              >
+                                {post.cons ? post.cons : 'No comments added'}
+                              </Typography>
+                            </React.Fragment>
+                          }
+                        />
+                      </ListItem>
+                    </Slide>
+                    <Slide
+                      direction="right"
+                      in={true}
+                      timeout={1500}
+                      mountOnEnter
+                      unmountOnExit
+                    >
+                      <ListItem alignItems="flex-start">
+                        <ListItemAvatar>
+                          <Avatar src={advice} className="avatar" />
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary="Advice"
+                          secondary={
+                            <React.Fragment>
+                              <Typography
+                                component="p"
+                                variant="body2"
+                                color="textPrimary"
+                              >
+                                {post.advice
+                                  ? post.advice
+                                  : 'No comments added'}
+                              </Typography>
+                            </React.Fragment>
+                          }
+                        />
+                      </ListItem>
+                    </Slide>
                   </List>
                   {post.approved ? (
                     <>
-                      <div className="row ml-15 mr-15">
-                        <AvatarGroup max={3} className="v-align-middle">
-                          {post.reactions.length > 0
-                            ? post.reactions.slice(0, 3).map(react => (
-                                <Tooltip
-                                  title={renderUserNames(post.reactions)}
-                                  placement="bottom"
-                                  key={react._id}
-                                >
-                                  <Avatar
-                                    className={classes.reactionAvatar}
+                      <Slide
+                        direction="right"
+                        in={true}
+                        timeout={1500}
+                        mountOnEnter
+                        unmountOnExit
+                      >
+                        <div className="row ml-15 mr-15">
+                          <AvatarGroup max={3} className="v-align-middle">
+                            {post.reactions.length > 0
+                              ? post.reactions.slice(0, 3).map(react => (
+                                  <Tooltip
+                                    title={renderUserNames(post.reactions)}
+                                    placement="bottom"
                                     key={react._id}
-                                    alt="Image Not Available"
-                                    style={{
-                                      backgroundColor:
-                                        react.type.toLowerCase() === 'love'
-                                          ? '#ff0016c7'
-                                          : '',
-                                    }}
                                   >
-                                    {getReaction(react ? react.type : '')}
-                                  </Avatar>
-                                </Tooltip>
-                              ))
-                            : 'No Reactions'}
-                        </AvatarGroup>
-                        <span className="cursor actions-text v-align-middle grey-color ">
-                          <Tooltip
-                            title={renderUserNames(post.reactions)}
-                            placement="bottom"
+                                    <Avatar
+                                      className={classes.reactionAvatar}
+                                      key={react._id}
+                                      alt="Image Not Available"
+                                      style={{
+                                        backgroundColor:
+                                          react.type.toLowerCase() === 'love'
+                                            ? '#ff0016c7'
+                                            : '',
+                                      }}
+                                    >
+                                      {getReaction(react ? react.type : '')}
+                                    </Avatar>
+                                  </Tooltip>
+                                ))
+                              : 'No Reactions'}
+                          </AvatarGroup>
+                          <span className="cursor actions-text v-align-middle grey-color ">
+                            <Tooltip
+                              title={renderUserNames(post.reactions)}
+                              placement="bottom"
+                            >
+                              <Link to={`/post/${post._id}/reactions`}>
+                                {formateNumber(post.reactions.length) + ' - '}
+                              </Link>
+                            </Tooltip>
+                          </span>
+                          <span
+                            onClick={() => this.showComments(post._id)}
+                            className="cursor actions-text v-align-middle grey-color "
                           >
-                            <Link to={`/post/${post._id}/reactions`}>
-                              {formateNumber(post.reactions.length) + ' - '}
-                            </Link>
-                          </Tooltip>
-                        </span>
-                        <span
-                          onClick={() => this.showComments(post._id)}
-                          className="cursor actions-text v-align-middle grey-color "
-                        >
-                          {formateNumber(post.comments.length) + ' Comments'}
-                        </span>
-                      </div>
+                            {formateNumber(post.comments.length) + ' Comments'}
+                          </span>
+                        </div>
+                      </Slide>
                       <Divider />
                     </>
                   ) : null}
@@ -488,49 +526,54 @@ class Outgoing extends Component {
                               )
                             }
                           >
-                            <div className="card-button-text">
-                              {post.reactions.filter(
-                                r => r.user._id === user._id,
-                              ).length ? (
-                                <Avatar
-                                  className={classes.smallAvatar}
-                                  alt="Image Not Available"
-                                  style={{
-                                    backgroundColor:
+                            <Zoom in={true} timeout={2000}>
+                              <div className="card-button-text">
+                                {post.reactions.filter(
+                                  r => r.user._id === user._id,
+                                ).length ? (
+                                  <Avatar
+                                    className={classes.smallAvatar}
+                                    alt="Image Not Available"
+                                    style={{
+                                      backgroundColor:
+                                        getReactionsText(
+                                          user._id,
+                                          post.reactions,
+                                        ).toLowerCase() === 'love'
+                                          ? '#ff0016c7'
+                                          : '',
+                                    }}
+                                  >
+                                    {getReaction(
                                       getReactionsText(
                                         user._id,
                                         post.reactions,
-                                      ).toLowerCase() === 'love'
-                                        ? '#ff0016c7'
+                                      ),
+                                    )}
+                                  </Avatar>
+                                ) : (
+                                  <LikeOutlinedIcon
+                                    style={{ fontSize: 20, color: '#606770' }}
+                                  />
+                                )}
+                                <span
+                                  className="ml-7"
+                                  style={{
+                                    color: renderColor(
+                                      post.reactions.length
+                                        ? getReactionsText(
+                                            user._id,
+                                            post.reactions,
+                                          )
                                         : '',
+                                    ),
                                   }}
                                 >
-                                  {getReaction(
-                                    getReactionsText(user._id, post.reactions),
-                                  )}
-                                </Avatar>
-                              ) : (
-                                <LikeOutlinedIcon
-                                  style={{ fontSize: 20, color: '#606770' }}
-                                />
-                              )}
-                              <span
-                                className="ml-7"
-                                style={{
-                                  color: renderColor(
-                                    post.reactions.length
-                                      ? getReactionsText(
-                                          user._id,
-                                          post.reactions,
-                                        )
-                                      : '',
-                                  ),
-                                }}
-                              >
-                                {getReactionsText(user._id, post.reactions) ||
-                                  'Like'}
-                              </span>
-                            </div>
+                                  {getReactionsText(user._id, post.reactions) ||
+                                    'Like'}
+                                </span>
+                              </div>
+                            </Zoom>
                           </Button>
                           {showEmojis && (
                             <div className="reaction-box">
@@ -649,13 +692,15 @@ class Outgoing extends Component {
                         className={classes.comment}
                         onClick={() => this.showCommentInput()}
                       >
-                        <div className="card-button-text">
-                          <CommentIcon
-                            style={{ color: '#606770' }}
-                            style={{ fontSize: 20 }}
-                          />
-                          <span className="ml-7">Comment</span>
-                        </div>
+                        <Zoom in={true} timeout={2000}>
+                          <div className="card-button-text">
+                            <CommentIcon
+                              style={{ color: '#606770' }}
+                              style={{ fontSize: 20 }}
+                            />
+                            <span className="ml-7">Comment</span>
+                          </div>
+                        </Zoom>
                       </Button>
                     </Tooltip>
                   </CardActions>

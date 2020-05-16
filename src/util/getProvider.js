@@ -2,6 +2,7 @@ import React from 'react'
 import FacebookIcon from '@material-ui/icons/Facebook'
 import TwitterIcon from '@material-ui/icons/Twitter'
 import googleIcon from '../../assets/social/google.png'
+import Zoom from '@material-ui/core/Zoom'
 
 export default function getProvider(provider) {
   if (!provider) {
@@ -11,22 +12,34 @@ export default function getProvider(provider) {
   switch (provider.toLowerCase()) {
     case 'google.com':
       icon = (
-        <img
-          src={googleIcon}
-          style={{ marginTop: -3 }}
-          width={15}
-          height={15}
-        />
+        <Zoom in={true} timeout={2000}>
+          <img
+            src={googleIcon}
+            style={{ marginTop: -3 }}
+            width={15}
+            height={15}
+          />
+        </Zoom>
       )
       break
     case 'twitter.com':
       icon = (
-        <TwitterIcon style={{ fontSize: 15, marginTop: -3 }} color="primary" />
+        <Zoom in={true} timeout={2000}>
+          <TwitterIcon
+            style={{ fontSize: 15, marginTop: -3 }}
+            color="primary"
+          />
+        </Zoom>
       )
       break
     case 'facebook.com':
       icon = (
-        <FacebookIcon style={{ fontSize: 15, marginTop: -3 }} color="primary" />
+        <Zoom in={true} timeout={2000}>
+          <FacebookIcon
+            style={{ fontSize: 15, marginTop: -3 }}
+            color="primary"
+          />
+        </Zoom>
       )
       break
     default:

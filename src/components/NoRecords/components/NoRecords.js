@@ -7,6 +7,8 @@ import CardHeader from '@material-ui/core/CardHeader'
 import PropTypes from 'prop-types'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/core/styles'
+import Slide from '@material-ui/core/Slide'
+import Zoom from '@material-ui/core/Zoom'
 
 const styles = theme => ({})
 
@@ -22,17 +24,23 @@ class NoRecords extends Component {
         <Card>
           <CardHeader
             avatar={
-              <Avatar style={{ color: '#ffffff', backgroundColor: '#2a7fff' }}>
-                NR
-              </Avatar>
+              <Zoom in={true} timeout={2000}>
+                <Avatar
+                  style={{ color: '#ffffff', backgroundColor: '#2a7fff' }}
+                >
+                  NR
+                </Avatar>
+              </Zoom>
             }
             title={title}
             subheader="0m"
           />
           <CardContent style={{ minHeight: '300px !important' }}>
-            <Typography variant="h4" className="text-center">
-              {message}
-            </Typography>
+            <Zoom in={true} timeout={2000}>
+              <Typography variant="h4" className="text-center">
+                {message}
+              </Typography>
+            </Zoom>
           </CardContent>
         </Card>
       </div>

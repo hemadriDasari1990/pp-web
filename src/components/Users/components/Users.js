@@ -6,7 +6,6 @@ import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
 import Grid from '@material-ui/core/Grid'
-import IconButton from '@material-ui/core/IconButton'
 import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -27,19 +26,41 @@ import FollowIcon from '@material-ui/icons/RssFeedOutlined'
 import AskedIcon from '@material-ui/icons/PlaylistAddCheckRounded'
 import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
 import Fab from '@material-ui/core/Fab'
+import CustomTooltip from '../../CustomTooltip/components/Tooltip'
+import Zoom from '@material-ui/core/Zoom'
+import Slide from '@material-ui/core/Slide'
+import IconButton from '@material-ui/core/IconButton'
+import TextField from '@material-ui/core/TextField'
+import { withStyles } from '@material-ui/core/styles'
+import SearchIcon from '@material-ui/icons/Search'
+
+const styles = theme => ({
+  input: {
+    '&::placeholder': {
+      textOverflow: 'ellipsis !important',
+      // color: '#2a7fff'
+    },
+  },
+})
 
 class Users extends Component {
   constructor(props) {
     super(props)
     this.state = {
       users: [],
+      filteredUsers: [],
     }
   }
 
   async componentDidMount() {
+    await this.fetchUsers()
+  }
+
+  fetchUsers = async () => {
     await this.props.getUsers(this.props.user._id, '').then(res => {
       this.setState({
         users: res.data,
+        filteredUsers: res.data,
       })
     })
   }
@@ -96,14 +117,57 @@ class Users extends Component {
 
   handleMenu = () => {}
 
+  handleInput = e => {
+    const query = event.target.value
+    query !== ''
+      ? this.setState(prevState => {
+          const filteredUsers = prevState.users.filter(element => {
+            return element.userName.toLowerCase().includes(query.toLowerCase())
+          })
+
+          return {
+            filteredUsers,
+          }
+        })
+      : null
+  }
   render() {
     const { classes, usersLoading } = this.props
-    const { open, anchorEl, users } = this.state
+    const { open, anchorEl, filteredUsers, users } = this.state
     return (
       <div>
+        <Grid item lg={12} md={12} xs={12} sm={12}>
+          <div
+            style={{
+              flex: 1,
+              display: 'flex',
+              borderRadius: 10,
+              // height: 40,
+              // width: 270,
+              boxShadow: '0 14px 28px rgba(145, 148, 170, 0.25)',
+            }}
+          >
+            <IconButton
+              style={{ padding: '2px 2px 0px 2px', marginLeft: 7 }}
+              type="submit"
+              aria-label="Search people by name"
+            >
+              <SearchIcon />
+            </IconButton>
+            <TextField
+              onChange={e => this.handleInput(e)}
+              fullWidth
+              InputProps={{
+                disableUnderline: true,
+                classes: { input: this.props.classes['input'] },
+              }}
+              placeholder="Search people by name"
+            />
+          </div>
+        </Grid>
         <List>
-          {!usersLoading && users.length ? (
-            users.map((user, index) => (
+          {!usersLoading && filteredUsers.length ? (
+            filteredUsers.map((user, index) => (
               <Grid item lg={12} md={12} xs={12} sm={12}>
                 <ListItem
                   key={user._id}
@@ -111,9 +175,17 @@ class Users extends Component {
                   className="shadow b-r-15 mt-10"
                 >
                   <ListItemAvatar>
-                    <AvatarOnline user={user} />
+                    <Slide
+                      direction="right"
+                      in={true}
+                      timeout={1500}
+                      mountOnEnter
+                      unmountOnExit
+                    >
+                      <AvatarOnline user={user} />
+                    </Slide>
                   </ListItemAvatar>
-                  <Tooltip title={user.userName} placement="right-end">
+                  <Tooltip title={user.userName} placement="bottom-start">
                     <ListItemText
                       primary={
                         <>
@@ -144,7 +216,9 @@ class Users extends Component {
                     <ListItemSecondaryAction className="r-5">
                       <Tooltip title="Ask For Opinion" placement="right-end">
                         <IconButton>
-                          <AskIcon />
+                          <Zoom in={true} timeout={2000}>
+                            <AskIcon />
+                          </Zoom>
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Follow User" placement="right-end">
@@ -152,7 +226,9 @@ class Users extends Component {
                           onClick={() => this.handleFollow(user, index)}
                           color={this.renderFollowerColor(user.followers)}
                         >
-                          <FollowIcon />
+                          <Zoom in={true} timeout={2000}>
+                            <FollowIcon />
+                          </Zoom>
                         </IconButton>
                       </Tooltip>
                     </ListItemSecondaryAction>
@@ -161,8 +237,8 @@ class Users extends Component {
               </Grid>
             ))
           ) : (
-            <Typography variant="h4" className="text-center">
-              No profiles found to list
+            <Typography variant="h4" className="m-10 text-center">
+              No users found
             </Typography>
           )}
         </List>
@@ -193,4 +269,6 @@ const actionsToProps = {
   getProfileFollower: profileActions.getProfileFollower,
 }
 
-export default withRouter(connect(mapStateToProps, actionsToProps)(Users))
+export default withRouter(
+  connect(mapStateToProps, actionsToProps)(withStyles(styles)(Users)),
+)

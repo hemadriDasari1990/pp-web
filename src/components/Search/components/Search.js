@@ -184,6 +184,7 @@ class Search extends Component {
       <>
         {users && (
           <Autocomplete
+            filterSelectedOptions
             options={users}
             getOptionLabel={option => this.getOptionLabel(option)}
             id="user-search"

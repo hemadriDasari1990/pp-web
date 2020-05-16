@@ -10,6 +10,8 @@ import TwitterIcon from '@material-ui/icons/Twitter'
 import YouTubeIcon from '@material-ui/icons/YouTube'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
+import Slide from '@material-ui/core/Slide'
+import Zoom from '@material-ui/core/Zoom'
 
 const styles = theme => ({
   root: {
@@ -44,27 +46,6 @@ class Footer extends Component {
       this.props.history.push('/developers')
     }
     this.setState({ value })
-    // {!authenticated && <React.Fragment>
-    //       <BottomNavigation
-    //       value={value}
-    //       onChange={this.handleChange}
-    //       showLabels
-    //       className={classes.root}
-    //     >
-    //       <BottomNavigationAction label="About" value="about" icon={<Info color="primary"/>} />
-    //       <BottomNavigationAction label="Contact" value="contact" icon={<ContactMail color="primary"/>} />
-    //       <BottomNavigationAction label="Location" value="location" icon={<LocationOnIcon color="primary"/>} />
-    //       <BottomNavigationAction label="Developers" value="developers" icon={<GroupWorkIcon color="primary"/>} />
-    //     </BottomNavigation>
-    //     </React.Fragment>}
-    //     {!authenticated && <React.Fragment>
-    //         <Switch>
-    //           <Route path='/about'component={About}/>
-    //           <Route path='/contact' component={Contact}/>
-    //           <Route path='/location' component={Location}/>
-    //           <Route path='/developers' component={Developers}/>
-    //         </Switch>
-    //     </React.Fragment>}
   }
 
   handleAbout = () => {
@@ -108,23 +89,39 @@ class Footer extends Component {
           <section className="primary-bg-color w-full relative">
             <div className="w-max-1200 w-full m-auto relative p-v-80 p-h-20 fl-justify-around fl-items-center fl-wrap">
               <div className="row">
-                <div className="col-lg-8 col-md-2 col-sm-2 col-xs-4">
-                  <h2 className="w-color">Ready to get started?</h2>
-                  <h4 className="w-color">
-                    Login with your social account and start sharing opinions.
-                  </h4>
-                </div>
-                <div className="mt-25 col-lg-4 col-md-2 col-sm-2 col-xs-4">
-                  <Button
-                    onClick={() => this.handleSignin()}
-                    size="small"
-                    variant="outlined"
-                    color="secondary"
-                    className="btn-outlined p-2"
-                  >
-                    login With Social Account
-                  </Button>
-                </div>
+                <Slide
+                  direction="right"
+                  in={true}
+                  timeout={1500}
+                  mountOnEnter
+                  unmountOnExit
+                >
+                  <div className="col-lg-8 col-md-2 col-sm-2 col-xs-4">
+                    <h2 className="w-color">Ready to get started?</h2>
+                    <h4 className="w-color">
+                      Login with your social account and start sharing opinions.
+                    </h4>
+                  </div>
+                </Slide>
+                <Slide
+                  direction="up"
+                  in={true}
+                  timeout={1500}
+                  mountOnEnter
+                  unmountOnExit
+                >
+                  <div className="mt-25 col-lg-4 col-md-2 col-sm-2 col-xs-4">
+                    <Button
+                      onClick={() => this.handleSignin()}
+                      size="small"
+                      variant="outlined"
+                      color="secondary"
+                      className="btn-outlined p-2"
+                    >
+                      login With Social Account
+                    </Button>
+                  </div>
+                </Slide>
               </div>
             </div>
           </section>
@@ -226,31 +223,41 @@ class Footer extends Component {
                   <ul>
                     <li className="m-v-10">
                       <a href="https://www.facebook.com" target="_blank">
-                        <FacebookIcon color="primary" />
+                        <Zoom in={true} timeout={2000}>
+                          <FacebookIcon color="primary" />
+                        </Zoom>
                         &nbsp;Facebook
                       </a>
                     </li>
                     <li className="m-v-10">
                       <a href="https://www.instagram.com" target="_blank">
-                        <TwitterIcon color="primary" />
+                        <Zoom in={true} timeout={2000}>
+                          <TwitterIcon color="primary" />
+                        </Zoom>
                         &nbsp;Twitter
                       </a>
                     </li>
                     <li className="m-v-10">
                       <a href="https://www.twitter.com/" target="_blank">
-                        <InstagramIcon color="primary" />
+                        <Zoom in={true} timeout={2000}>
+                          <InstagramIcon color="primary" />
+                        </Zoom>
                         &nbsp;Instagram
                       </a>
                     </li>
                     <li className="m-v-10">
                       <a href="https://www.youtube.com" target="_blank">
-                        <YouTubeIcon color="primary" />
+                        <Zoom in={true} timeout={2000}>
+                          <YouTubeIcon color="primary" />
+                        </Zoom>
                         &nbsp;Youtube
                       </a>
                     </li>
                     <li className="m-v-10">
                       <a href="https://www.instagram.com" target="_blank">
-                        <LinkedInIcon color="primary" />
+                        <Zoom in={true} timeout={2000}>
+                          <LinkedInIcon color="primary" />
+                        </Zoom>
                         &nbsp;Linkedin
                       </a>
                     </li>

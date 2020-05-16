@@ -30,29 +30,31 @@ class Google extends Component {
     e.preventDefault()
     const provider = new firebase.auth.GoogleAuthProvider()
     provider.addScope('email')
-    await new firebase.auth().signInWithPopup(provider).then((user, error) => {
-      if (!error) {
-        const data = user.user.providerData[0]
-        this.props
-          .createOrUpdateUser({
-            email: data.email,
-            userName: data.displayName,
-            photoURL: data.photoURL,
-            uid: data.uid,
-            phoneNumber: data.phoneNumber,
-            providerId: data.providerId,
-            lastActiveTime: Date.now(),
-          })
-          .then(user => {
-            if (user && user.data.user) {
-              this.props.storeUser(user.data.user)
-              this.props.history.push('/dashboard')
-            }
-          })
-      } else {
-        this.props.history.push('/')
-      }
-    })
+    await new firebase.auth()
+      .signInWithPopup(provider)
+      .then(async (user, error) => {
+        if (!error) {
+          const data = user.user.providerData[0]
+          await this.props
+            .createOrUpdateUser({
+              email: data.email,
+              userName: data.displayName,
+              photoURL: data.photoURL,
+              uid: data.uid,
+              phoneNumber: data.phoneNumber,
+              providerId: data.providerId,
+              lastActiveTime: Date.now(),
+            })
+            .then(user => {
+              if (user && user.data.user) {
+                this.props.storeUser(user.data.user)
+                this.props.history.push('/dashboard')
+              }
+            })
+        } else {
+          this.props.history.push('/')
+        }
+      })
   }
 
   render() {

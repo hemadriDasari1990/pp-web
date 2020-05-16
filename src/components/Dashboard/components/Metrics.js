@@ -7,6 +7,8 @@ import Divider from '@material-ui/core/Divider'
 import Fab from '@material-ui/core/Fab'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
+import Grow from '@material-ui/core/Grow'
+import Slide from '@material-ui/core/Slide'
 
 class Metrics extends Component {
   constructor(props) {
@@ -20,23 +22,27 @@ class Metrics extends Component {
         <CardContent>
           <div className="row">
             <div className="col align-self-start text-center">
-              <Fab
-                size="small"
-                color="primary"
-                style={{
-                  margin: '10% 30% 5% 30%',
-                }}
-              >
-                {icon}
-              </Fab>
+              <Grow in={true} timeout={2000}>
+                <Fab
+                  size="small"
+                  color="primary"
+                  style={{
+                    margin: '10% 30% 5% 30%',
+                  }}
+                >
+                  {icon}
+                </Fab>
+              </Grow>
               <span className="text-center p-10">{name}</span>
             </div>
             <Divider orientation="vertical" flexItem />
             <div className="col text-center metrics-card-title">
               <span>{title}</span>
-              <h3 className="f-w-600">
-                {count > 0 ? formateNumber(count) : 0}
-              </h3>
+              <Grow in={true} timeout={2000}>
+                <h3 className="f-w-600">
+                  {count > 0 ? formateNumber(count) : 0}
+                </h3>
+              </Grow>
             </div>
           </div>
         </CardContent>

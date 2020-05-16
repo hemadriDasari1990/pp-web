@@ -5,6 +5,8 @@ import Lokesh from '../../../../assets/lokesh.jpg'
 import ProfileCard from '../../Home/components/card'
 import Rajesh from '../../../../assets/rajesh.jpg'
 import { withRouter } from 'react-router-dom'
+import Slide from '@material-ui/core/Slide'
+import Zoom from '@material-ui/core/Zoom'
 
 class About extends Component {
   constructor(props) {
@@ -24,54 +26,60 @@ class About extends Component {
         </p>
         <h2 className="h2-header">The founders</h2>
         <div className="row">
-          <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-            <ProfileCard
-              path={Hemadri}
-              title="Hemadri Dasari"
-              subTitle="Founder"
-              fbPath={'https://www.facebook.com/Hemadri.Dasari.1990'}
-              linkedinPath={
-                'https://www.linkedin.com/in/hemadri-dasari-15051990/'
-              }
-              button={true}
-              buttonName="Facebook"
-              buttonOneName="Linekdin"
-              content="Full Stack Developer at Emirates NBD, Dubai"
-              type=""
-            />
-          </div>
-          <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-            <ProfileCard
-              path={Rajesh}
-              title="Rajesh Pemmasani"
-              subTitle="Co-Founder"
-              fbPath={'https://www.facebook.com/rajesh.pemmasani'}
-              linkedinPath={
-                'https://www.linkedin.com/in/rajesh-pemmasani-56673170/'
-              }
-              button={true}
-              buttonName="Facebook"
-              buttonOneName="Linekdin"
-              content="AVP at JP Morgan & Co, Singapore"
-              type=""
-            />
-          </div>
-          <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-            <ProfileCard
-              path={Lokesh}
-              title="Lokesh Pemmasani"
-              subTitle="Co-Founder"
-              fbPath={'https://www.facebook.com/lokesh.pemmasani'}
-              linkedinPath={
-                'https://www.linkedin.com/in/lokesh-pemmasani-39145a4a/'
-              }
-              button={true}
-              buttonName="Facebook"
-              buttonOneName="Linekdin"
-              content="Solution Architect II at Ericsson, USA"
-              type=""
-            />
-          </div>
+          <Zoom in={true} timeout={2000}>
+            <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <ProfileCard
+                path={Hemadri}
+                title="Hemadri Dasari"
+                subTitle="Founder"
+                fbPath={'https://www.facebook.com/Hemadri.Dasari.1990'}
+                linkedinPath={
+                  'https://www.linkedin.com/in/hemadri-dasari-15051990/'
+                }
+                button={true}
+                buttonName="Facebook"
+                buttonOneName="Linekdin"
+                content="Full Stack Developer at Emirates NBD, Dubai"
+                type=""
+              />
+            </div>
+          </Zoom>
+          <Zoom in={true} timeout={2000}>
+            <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <ProfileCard
+                path={Rajesh}
+                title="Rajesh Pemmasani"
+                subTitle="Co-Founder"
+                fbPath={'https://www.facebook.com/rajesh.pemmasani'}
+                linkedinPath={
+                  'https://www.linkedin.com/in/rajesh-pemmasani-56673170/'
+                }
+                button={true}
+                buttonName="Facebook"
+                buttonOneName="Linekdin"
+                content="AVP at JP Morgan & Co, Singapore"
+                type=""
+              />
+            </div>
+          </Zoom>
+          <Zoom in={true} timeout={2000}>
+            <div className="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+              <ProfileCard
+                path={Lokesh}
+                title="Lokesh Pemmasani"
+                subTitle="Co-Founder"
+                fbPath={'https://www.facebook.com/lokesh.pemmasani'}
+                linkedinPath={
+                  'https://www.linkedin.com/in/lokesh-pemmasani-39145a4a/'
+                }
+                button={true}
+                buttonName="Facebook"
+                buttonOneName="Linekdin"
+                content="Solution Architect II at Ericsson, USA"
+                type=""
+              />
+            </div>
+          </Zoom>
         </div>
       </React.Fragment>
     )

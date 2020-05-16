@@ -6,20 +6,14 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
-import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
-import Divider from '@material-ui/core/Divider'
 import Fab from '@material-ui/core/Fab'
-import IconButton from '@material-ui/core/IconButton'
-import LikeIcon from '@material-ui/icons/ThumbUpAlt'
-import LoveIcon from '@material-ui/icons/Favorite'
-import RssFeedOutlinedIcon from '@material-ui/icons/RssFeedOutlined'
 import Tooltip from '@material-ui/core/Tooltip'
 import arrowIcon from '../../../../assets/arrow.svg'
 import { connect } from 'react-redux'
-import formateNumber from '../../../util/formateNumber'
+import Slide from '@material-ui/core/Slide'
+import Zoom from '@material-ui/core/Zoom'
 
 class WelcomeProfile extends Component {
   constructor(props) {
@@ -30,7 +24,7 @@ class WelcomeProfile extends Component {
   componentDidMount() {}
 
   handleTimeline = event => {
-    this.props.history.push('/incoming')
+    this.props.history.push('/timeline/incoming')
   }
 
   render() {
@@ -40,28 +34,46 @@ class WelcomeProfile extends Component {
       <>
         <Card>
           <CardContent className="text-center">
-            <Avatar
-              className="profile"
-              alt={user.userName}
-              src={user.photoURL}
-            />
-            <h5>{user.userName}</h5>
+            <Zoom in={true} timeout={2000}>
+              <Avatar
+                className="profile"
+                alt={user.userName}
+                src={user.photoURL}
+              />
+            </Zoom>
+            <Slide
+              direction="left"
+              in={true}
+              timeout={1500}
+              mountOnEnter
+              unmountOnExit
+            >
+              <h5>{user.userName}</h5>
+            </Slide>
             <span className="mt-25">Welcome to your social platform</span>
-            <div className="mt-25">
-              <Tooltip title="View Timeline">
-                <Fab
-                  onClick={() => this.handleTimeline()}
-                  size="small"
-                  color="primary"
-                  aria-label="add"
-                  variant="extended"
-                  className="align-items-center mb-10"
-                >
-                  View Timeline{' '}
-                  <Avatar src={arrowIcon} className="b-s b-w-arrow" />
-                </Fab>
-              </Tooltip>
-            </div>
+            <Slide
+              direction="right"
+              in={true}
+              timeout={2000}
+              mountOnEnter
+              unmountOnExit
+            >
+              <div className="mt-25">
+                <Tooltip title="View Timeline">
+                  <Fab
+                    onClick={() => this.handleTimeline()}
+                    size="small"
+                    color="primary"
+                    aria-label="add"
+                    variant="extended"
+                    className="align-items-center mb-10"
+                  >
+                    View Timeline{' '}
+                    <Avatar src={arrowIcon} className="b-s b-w-arrow" />
+                  </Fab>
+                </Tooltip>
+              </div>
+            </Slide>
           </CardContent>
         </Card>
       </>

@@ -23,18 +23,13 @@ body {
 // }
 
 body {   
-  // font-family: "Apercu","Helvetica Neue",Helvetica,"Calibri","Roboto",Arial,sans-serif;
-  // // font-family: Helvetica, Arial, sans-serif;
-  // color: #000;
-  // -webkit-text-size-adjust: 100%;
-  // -webkit-font-smoothing: antialiased;
-  // -moz-osx-font-smoothing: grayscale;
-  // text-rendering: optimizeLegibility;
-  // font-weight: 400;
-  // font-size: 1rem;
-  // line-height: 1.618;
-  // margin-top:65px;  
-  // // min-height: 500px;
+  @extend html;
+  -webkit-user-select: none;
+  /* safari */
+  -ms-user-select: none;
+  /* IE 10+ and Edge */
+  user-select: none;
+
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -620,6 +615,10 @@ $blue: #2b7eff;
   margin-top: -2px !important;
 }
 
+.mt-minus-18 {
+  margin-top: -18px !important;
+}
+
 .profile-title {
   color: #2a7fff;
   width: 140px;
@@ -883,19 +882,23 @@ small {
   padding-top: 3px;
 }
 
+.lb-bg-color {
+  background-color: #ebf0ff;
+}
+
 .notification-item {
   &:hover {
     background-color: #f0f1f5;
   }
 }
 
-.body-container {
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  padding-left: calc(50vw - 50%);
-  padding-right: calc(50vw - 50%);
-  width: auto;
-}
+// .body-container {
+//   margin-left: calc(50% - 50vw);
+//   margin-right: calc(50% - 50vw);
+//   padding-left: calc(50vw - 50%);
+//   padding-right: calc(50vw - 50%);
+//   width: auto;
+// }
 
 .body-section {
   padding: 80px 0;

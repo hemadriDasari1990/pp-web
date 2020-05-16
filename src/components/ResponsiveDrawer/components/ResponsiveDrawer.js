@@ -28,6 +28,8 @@ import formateNumber from '../../../util/formateNumber'
 import libIcon from '../../../../assets/lib.svg'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
+import Container from '@material-ui/core/Container'
+import Loader from '../../Loader/components/Loader'
 
 const drawerWidth = 110
 
@@ -225,11 +227,10 @@ class ResponsiveDrawer extends React.Component {
       classes,
       authenticated,
       user,
-      createOrUpdateUserSuccess,
-      createOrUpdateUserErrors,
       notificationsCount,
       container,
       theme,
+      loading,
     } = this.props
     const { showNotification, logout, isMobileMenuOpen } = this.state
     const mobileMenuId = 'primary-search-account-menu-mobile'
@@ -242,7 +243,7 @@ class ResponsiveDrawer extends React.Component {
               <IconButton
                 color="primary"
                 aria-label="open drawer"
-                onClick={this.handleDrawerToggle}
+                onClick={() => this.handleDrawerToggle()}
                 className={classes.navIconHide}
               >
                 <MenuIcon />
@@ -326,24 +327,6 @@ class ResponsiveDrawer extends React.Component {
               </div>
             )} */}
             {/* {showNotification && <Notifications openMenu={showNotification} />} */}
-            {createOrUpdateUserSuccess &&
-              createOrUpdateUserSuccess.size > 0 &&
-              createOrUpdateUserSuccess.get('message') && (
-                <CustomizedSnackbars
-                  open={true}
-                  message={createOrUpdateUserSuccess.get('message')}
-                  status={'success'}
-                />
-              )}
-            {createOrUpdateUserErrors &&
-              createOrUpdateUserErrors.size > 0 &&
-              createOrUpdateUserErrors.get('message') && (
-                <CustomizedSnackbars
-                  open={true}
-                  message={createOrUpdateUserErrors.get('message')}
-                  status={'error'}
-                />
-              )}
             {logout && (
               <CustomizedSnackbars
                 open={true}
@@ -357,11 +340,11 @@ class ResponsiveDrawer extends React.Component {
           <nav className={classes.drawer} aria-label="mailbox folders">
             <Hidden mdUp>
               <Drawer
-                containerStyle={{ transform: 'none' }}
+                containerstyle={{ transform: 'none' }}
                 variant="temporary"
                 anchor="left"
                 open={this.state.mobileOpen}
-                onClose={this.handleDrawerToggle}
+                onClose={() => this.handleDrawerToggle()}
                 classes={{
                   paper: classes.drawerPaper,
                 }}
@@ -377,12 +360,14 @@ class ResponsiveDrawer extends React.Component {
                   }}
                   className={classes.dragger}
                 />
-                <DrawerComponent toggleDrawer={this.handleDrawerToggle} />
+                <DrawerComponent
+                  toggleDrawer={() => this.handleDrawerToggle()}
+                />
               </Drawer>
             </Hidden>
             <Hidden xsDown implementation="css">
               <Drawer
-                containerStyle={{ transform: 'none' }}
+                containerstyle={{ transform: 'none' }}
                 variant="permanent"
                 open
                 anchor={'left'}
@@ -404,9 +389,9 @@ class ResponsiveDrawer extends React.Component {
           </nav>
         )}
         <main className={classes.appContent}>
-          <section className="body-container" style={{ minHeight: '100vh' }}>
-            <Routes authenticated={authenticated} />
-          </section>
+          <Container fixed className="pl-0 pr-0" style={{ minHeight: 300 }}>
+            {loading ? <Loader /> : <Routes authenticated={authenticated} />}
+          </Container>
           <section className="body-section">
             <Footer authenticated={authenticated} />
           </section>
@@ -425,18 +410,6 @@ ResponsiveDrawer.propTypes = {
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'])
   const usersLoading = state.getIn(['user', 'all', 'loading'], false)
-  const createOrUpdateUserSuccess = state.getIn(
-    ['user', 'create-or-update', 'success'],
-    Map(),
-  )
-  const createOrUpdateUserLoading = state.getIn(
-    ['user', 'create-or-update', 'loading'],
-    false,
-  )
-  const createOrUpdateUserErrors = state.getIn(
-    ['user', 'create-or-update', 'errors'],
-    Map(),
-  )
   const notificationsCount = state.getIn([
     'Timeline',
     'notifications',
@@ -447,9 +420,6 @@ const mapStateToProps = state => {
   return {
     user,
     usersLoading,
-    createOrUpdateUserSuccess,
-    createOrUpdateUserLoading,
-    createOrUpdateUserErrors,
     notificationsCount,
   }
 }

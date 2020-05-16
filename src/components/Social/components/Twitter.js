@@ -31,10 +31,10 @@ class Twitter extends Component {
     e.preventDefault()
     await new firebase.auth()
       .signInWithPopup(new firebase.auth.TwitterAuthProvider())
-      .then((user, error) => {
+      .then(async (user, error) => {
         if (!error) {
           const data = user.user.providerData[0]
-          this.props
+          await this.props
             .createOrUpdateUser({
               email: user.additionalUserInfo.profile.email,
               userName: data.displayName,

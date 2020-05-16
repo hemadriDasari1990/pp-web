@@ -17,6 +17,8 @@ import { connect } from 'react-redux'
 import firebase from '../firebase/index'
 import theme from './theme'
 import { withStyles } from '@material-ui/core/styles'
+import { Map } from 'immutable'
+import Loader from './Loader/components/Loader'
 
 const styles = theme => ({})
 
@@ -26,6 +28,8 @@ class App extends Component {
     this.state = {
       loading: true,
       isDisconnected: false,
+      showSnackbar: false,
+      error: false,
     }
   }
 
@@ -34,28 +38,48 @@ class App extends Component {
     this.handleConnectionChange()
     window.addEventListener('online', this.handleConnectionChange)
     window.addEventListener('offline', this.handleConnectionChange)
-    await new firebase.auth().onAuthStateChanged(async user => {
-      this.setState({
-        loading: true,
-      })
+    await new firebase.auth().onAuthStateChanged(async (user, err) => {
       if (user) {
-        await this.props.getUser(user.providerData[0].uid).then(async u => {
-          if (u && u.data && u.data.user) {
-            await this.props.updateUser(u.data.user._id, {
-              lastActiveTime: Date.now(),
+        await this.props
+          .getUser(user.providerData[0].uid)
+          .then(async u => {
+            if (u && u.data && u.data.user) {
+              await this.props.updateUser(u.data.user._id, {
+                lastActiveTime: Date.now(),
+              })
+              this.props.storeUser(u.data.user)
+              this.props.getUsers(u.data.user._id, '')
+              this.setState({
+                showSnackbar: !this.state.showSnackbar,
+                error: false,
+                loading: false,
+              })
+              this.timer = setTimeout(() => {
+                this.props.history.push('/dashboard')
+              }, 1000)
+            } else {
+              this.props.storeUser(null)
+              this.props.history.push('/')
+            }
+          })
+          .catch(err => {
+            this.setState({
+              loading: false,
+              error: !this.state.error,
+              showSnackbar: !this.state.showSnackbar,
             })
-            this.props.storeUser(u.data.user)
-            this.props.getUsers(u.data.user._id, '')
-            this.props.history.push('/dashboard')
-          } else {
-            this.props.storeUser(null)
-            this.props.history.push('/')
-          }
+          })
+      }
+      if (err) {
+        this.setState({
+          loading: false,
+          error: !this.state.error,
+          showSnackbar: !this.state.showSnackbar,
         })
       }
-      this.setState({
-        loading: false,
-      })
+    })
+    this.setState({
+      loading: false,
     })
   }
 
@@ -76,15 +100,20 @@ class App extends Component {
     const condition = navigator.onLine ? 'online' : 'offline'
     if (condition === 'online') {
       this.setState({ isDisconnected: false }, () => {})
-      return
+    } else {
+      this.setState({ isDisconnected: true })
     }
-
-    return this.setState({ isDisconnected: true })
   }
 
   render() {
-    const { loading, isDisconnected } = this.state
-    const { user, classes } = this.props
+    const { loading, isDisconnected, showSnackbar, error } = this.state
+    const {
+      user,
+      classes,
+      createOrUpdateUserSuccess,
+      createOrUpdateUserLoading,
+      createOrUpdateUserErrors,
+    } = this.props
     const authenticated = user ? true : false
     return (
       <React.Fragment>
@@ -97,7 +126,36 @@ class App extends Component {
               status="warning"
             />
           )}
+          {!error &&
+            createOrUpdateUserSuccess &&
+            createOrUpdateUserSuccess.size > 0 &&
+            createOrUpdateUserSuccess.get('message') && (
+              <CustomizedSnackbars
+                open={showSnackbar}
+                message={createOrUpdateUserSuccess.get('message')}
+                status={'success'}
+              />
+            )}
+          {!error &&
+            createOrUpdateUserErrors &&
+            createOrUpdateUserErrors.size > 0 &&
+            createOrUpdateUserErrors.get('message') && (
+              <CustomizedSnackbars
+                open={showSnackbar}
+                message={createOrUpdateUserErrors.get('message')}
+                status={'error'}
+              />
+            )}
+          {error && (
+            <CustomizedSnackbars
+              open={showSnackbar}
+              message="A network error (such as timeout, interrupted connection or unreachable host) has occurred. Please try again"
+              status={'error'}
+            />
+          )}
+
           <ResponsiveDrawer
+            loading={loading}
             authenticated={authenticated}
             theme={{ direction: 'rtl' }}
           />
@@ -109,8 +167,23 @@ class App extends Component {
 
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'])
+  const createOrUpdateUserSuccess = state.getIn(
+    ['user', 'create-or-update', 'success'],
+    Map(),
+  )
+  const createOrUpdateUserLoading = state.getIn(
+    ['user', 'create-or-update', 'loading'],
+    false,
+  )
+  const createOrUpdateUserErrors = state.getIn(
+    ['user', 'create-or-update', 'errors'],
+    Map(),
+  )
   return {
     user,
+    createOrUpdateUserSuccess,
+    createOrUpdateUserLoading,
+    createOrUpdateUserErrors,
   }
 }
 

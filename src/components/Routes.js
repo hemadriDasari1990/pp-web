@@ -1,10 +1,4 @@
-import {
-  BrowserRouter,
-  Redirect,
-  Route,
-  Switch,
-  withRouter,
-} from 'react-router-dom'
+import { Redirect, Route, Switch, withRouter } from 'react-router-dom'
 import React, { Component } from 'react'
 
 import About from './Footer/components/About'
@@ -59,7 +53,7 @@ class Routes extends Component {
           <Route path="/" exact component={Home} />
           <PrivateRoute
             authenticated={authenticated}
-            path="/incoming"
+            path="/timeline"
             component={() => <Timeline />}
           />
           <PrivateRoute
@@ -67,25 +61,11 @@ class Routes extends Component {
             path="/dashboard"
             component={() => <Dashboard />}
           />
-          <PrivateRoute
-            authenticated={authenticated}
-            path="/outgoing"
-            component={() => <Timeline />}
-          />
+
           <PrivateRoute
             authenticated={authenticated}
             path="/profile/:id"
-            component={() => <UserProfile />}
-          />
-          <PrivateRoute
-            authenticated={authenticated}
-            path="/user/reactions"
-            component={() => <Timeline />}
-          />
-          <PrivateRoute
-            authenticated={authenticated}
-            path="/user/followers"
-            component={() => <Timeline />}
+            component={() => <UserProfile path="profile" />}
           />
           <PrivateRoute
             authenticated={authenticated}
@@ -101,11 +81,6 @@ class Routes extends Component {
             authenticated={authenticated}
             path="/post/:id/details"
             component={() => <PostDetails />}
-          />
-          <PrivateRoute
-            authenticated={authenticated}
-            path="/users"
-            component={() => <Timeline />}
           />
           <PrivateRoute
             authenticated={authenticated}

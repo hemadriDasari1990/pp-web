@@ -66,6 +66,7 @@ class Notifications extends Component {
     this.state = {
       value: 0,
       type: 'all',
+      notificationsCount: this.props.notificationsCount,
       // limit: 0,
       // notifications: []
     }
@@ -73,7 +74,11 @@ class Notifications extends Component {
 
   async componentDidMount() {
     if (this.props.user) {
-      await this.props.getNotificationsCount(this.props.user._id)
+      await this.props.getNotificationsCount(this.props.user._id).then(res => {
+        this.setState({
+          notificationsCount: res.data,
+        })
+      })
       // await this.props.getNotifications(
       //   this.props.user._id,
       //   this.state.type,
@@ -114,30 +119,41 @@ class Notifications extends Component {
       value: index,
       type,
     })
-    // this.props.user
-    //   ? await this.props.getNotifications(
-    //       this.props.user._id,
-    //       type,
-    //       this.state.limit,
-    //     ).then(res => {
-    //       const notifiations = [...this.state.notifications];
-    //       notifications.push(res.data);
-    //       this.setState({
-    //         notifiations
-    //       });
-    //     })
-    //   : null
+  }
+
+  updatenotificationsCount = (notification, type) => {
+    const notificationsCount = this.state.notificationsCount
+    switch (type.toLowerCase()) {
+      case 'mark_read':
+        notificationsCount.readCount += 1
+        notificationsCount.unReadCount -= 1
+        break
+      case 'delete':
+        console.log('check data', notification)
+        if (notification.read) {
+          notificationsCount.readCount -= 1
+        }
+        if (!notification.read) {
+          notificationsCount.unReadCount -= 1
+        }
+        notificationsCount.total -= 1
+        break
+      default:
+        break
+    }
+    this.setState({
+      notificationsCount,
+    })
   }
 
   render() {
     const {
       classes,
-      notificationsCount,
       notificationsCountLoading,
       user,
       notificationsCountError,
     } = this.props
-    const { value, type, notifications } = this.state
+    const { value, type, notifications, notificationsCount } = this.state
     return (
       <React.Fragment>
         <h2 className="text-center">Notifications</h2>
@@ -185,13 +201,22 @@ class Notifications extends Component {
                 />
               </Tabs>
               <TabPanel className="mt-10" value={value} index={0}>
-                <NotificationsList type={type} />
+                <NotificationsList
+                  type={type}
+                  updatenotificationsCount={this.updatenotificationsCount}
+                />
               </TabPanel>
               <TabPanel className="mt-10" value={value} index={1}>
-                <NotificationsList type={type} />
+                <NotificationsList
+                  type={type}
+                  updatenotificationsCount={this.updatenotificationsCount}
+                />
               </TabPanel>
               <TabPanel className="mt-10" value={value} index={2}>
-                <NotificationsList type={type} />
+                <NotificationsList
+                  type={type}
+                  updatenotificationsCount={this.updatenotificationsCount}
+                />
               </TabPanel>
             </>
           )}

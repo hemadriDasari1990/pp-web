@@ -1,11 +1,19 @@
 import * as actions from '../../../actions/index'
 
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Grid from '@material-ui/core/Grid'
 import Incoming from '../../Timeline/components/Incoming'
 import { connect } from 'react-redux'
+import ProfileReactionsView from './ReactionsView'
+import ProfileFollowersView from './FollowersView'
+import {
+  BrowserRouter,
+  Redirect,
+  Route,
+  Switch,
+  withRouter,
+} from 'react-router-dom'
 
 class CenterGrid extends Component {
   constructor(props) {
@@ -17,11 +25,35 @@ class CenterGrid extends Component {
 
   render() {
     const {} = this.state
-    const { profile } = this.props
+    const { profile, path } = this.props
     return (
       <>
         <Grid item lg={5} md={6} xs={12} sm={9} className="middle-content">
-          <Incoming user={profile} type="profile" />
+          <Route
+            path="/profile/:id"
+            exact
+            component={() => <Incoming user={profile} type="profile" />}
+          />
+          <Route
+            path="/profile/:id/reactions"
+            exact
+            component={() => (
+              <ProfileReactionsView
+                fallBackTo={'/timeline/incoming'}
+                view="list"
+              />
+            )}
+          />
+          <Route
+            path="/profile/:id/followers"
+            exact
+            component={() => (
+              <ProfileFollowersView
+                fallBackTo={'/timeline/incoming'}
+                view="list"
+              />
+            )}
+          />
         </Grid>
       </>
     )

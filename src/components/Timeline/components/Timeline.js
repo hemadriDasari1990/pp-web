@@ -56,13 +56,13 @@ class Timeline extends Component {
     const { user } = this.state
     const {} = this.props
     return (
-      <Container fixed>
+      <>
         <Grid container spacing={1} className="of-h">
           <LeftGrid />
           <CenterGrid />
           <RightGrid />
         </Grid>
-      </Container>
+      </>
     )
   }
 }

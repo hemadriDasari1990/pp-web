@@ -38,6 +38,10 @@ class Reactions extends Component {
     await this.props.getUser(this.props.match.params.id)
   }
 
+  viewAll = path => {
+    this.props.history.push(path)
+  }
+
   render() {
     const {
       classes,
@@ -45,6 +49,7 @@ class Reactions extends Component {
       profileUserError,
       profileUserLoading,
       user,
+      path,
     } = this.props
     const { fallBackTo } = this.state
     const hasReactions =
@@ -53,25 +58,31 @@ class Reactions extends Component {
       !profileUser
         ? false
         : true
-    const viewPath = profileUser ? `/user/reactions` : '#'
+    const viewPath = profileUser ? `/${path}/${profileUser._id}/reactions` : '#'
     return (
       <React.Fragment>
         <Card>
           <CardHeader
             title="Profile Reactions"
             action={
-              <Link className="hyperlink" to={viewPath}>
-                View All{' '}
-                <b>
-                  {formateNumber(
-                    profileUser ? profileUser.reactions.length : 0,
-                  )}
-                </b>
-              </Link>
+              profileUser && profileUser.reactions.length > 0 ? (
+                <Link
+                  className="hyperlink"
+                  to="#"
+                  onClick={() => this.viewAll(viewPath)}
+                >
+                  View All{' '}
+                  <b>
+                    {formateNumber(
+                      profileUser ? profileUser.reactions.length : 0,
+                    )}
+                  </b>
+                </Link>
+              ) : null
             }
           ></CardHeader>
           <CardContent className={!hasReactions ? '' : 'p-0'}>
-            <ReactionsView view="card" fallBackTo={'/incoming'} />
+            <ReactionsView view="card" fallBackTo={'/timeline/incoming'} />
           </CardContent>
         </Card>
       </React.Fragment>

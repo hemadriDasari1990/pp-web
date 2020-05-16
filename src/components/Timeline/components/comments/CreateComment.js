@@ -12,6 +12,8 @@ import PropTypes from 'prop-types'
 import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux'
 import { withStyles } from '@material-ui/core/styles'
+import Zoom from '@material-ui/core/Zoom'
+import Slide from '@material-ui/core/Slide'
 
 const styles = {}
 
@@ -54,43 +56,56 @@ class CreateComment extends Component {
     return (
       <>
         {showCommentInput && (
-          <Grid container spacing={1} alignItems="flex-end">
+          <Grid container spacing={1} alignItems="flex-start">
             <Grid item>
-              <Avatar
-                size="small"
-                src={post.postedBy.photoURL}
-                className="m-l-10"
-              />
-            </Grid>
-            <Grid lg={8} md={8} item>
-              <TextField
-                className="m-0"
-                key="comment"
-                margin="normal"
-                type="string"
-                size="small"
-                variant="outlined"
-                label="Write a comment"
-                placeholder="Type here"
-                value={comment}
-                multiline
-                onChange={e => this.handleComment(e)}
-                rowsMax={Infinity}
-                fullWidth
-                required
-              />
-            </Grid>
-            <Grid lg={1} md={1} item>
-              <Button
-                disabled={comment ? false : true}
-                onClick={() => this.createComment(post._id)}
-                variant="outlined"
-                size="medium"
-                color="primary"
+              <Slide
+                direction="right"
+                in={true}
+                timeout={1500}
+                mountOnEnter
+                unmountOnExit
               >
-                Save
-              </Button>
+                <Avatar
+                  size="small"
+                  src={post.postedBy.photoURL}
+                  className="m-l-10"
+                />
+              </Slide>
             </Grid>
+            <Grid lg={comment ? 9 : 10} md={comment ? 9 : 10} item>
+              <Zoom in={true} timeout={2000}>
+                <TextField
+                  className="m-0"
+                  key="comment"
+                  margin="normal"
+                  type="string"
+                  size="small"
+                  variant="outlined"
+                  label="Write a comment"
+                  placeholder="Type here"
+                  value={comment}
+                  multiline
+                  onChange={e => this.handleComment(e)}
+                  rowsMax={Infinity}
+                  fullWidth
+                  required
+                />
+              </Zoom>
+            </Grid>
+            {comment ? (
+              <Grid lg={1} md={1} item>
+                <Zoom in={comment ? true : false} timeout={2000}>
+                  <Button
+                    onClick={() => this.createComment(post._id)}
+                    variant="outlined"
+                    size="medium"
+                    color="primary"
+                  >
+                    Save
+                  </Button>
+                </Zoom>
+              </Grid>
+            ) : null}
           </Grid>
         )}
       </>

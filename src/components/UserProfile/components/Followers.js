@@ -38,6 +38,7 @@ class Followers extends Component {
       profileUserError,
       profileUserLoading,
       user,
+      path,
     } = this.props
     const hasFollowers =
       (!profileUserLoading && profileUser && !profileUser.followers.length) ||
@@ -45,25 +46,27 @@ class Followers extends Component {
       !profileUser
         ? false
         : true
-    const viewPath = profileUser ? `/user/followers` : '#'
+    const viewPath = profileUser ? `/${path}/${profileUser._id}/followers` : '#'
     return (
       <React.Fragment>
         <Card>
           <CardHeader
             title="Followers"
             action={
-              <Link className="hyperlink" to={viewPath}>
-                View All{' '}
-                <b>
-                  {formateNumber(
-                    profileUser ? profileUser.followers.length : 0,
-                  )}
-                </b>
-              </Link>
+              profileUser && profileUser.followers.length > 0 ? (
+                <Link className="hyperlink" to={viewPath}>
+                  View All{' '}
+                  <b>
+                    {formateNumber(
+                      profileUser ? profileUser.followers.length : 0,
+                    )}
+                  </b>
+                </Link>
+              ) : null
             }
           ></CardHeader>
           <CardContent className={!hasFollowers ? '' : 'p-0'}>
-            <FollowersView view="card" fallBackTo={'/incoming'} />
+            <FollowersView view="card" fallBackTo={'/timeline/incoming'} />
           </CardContent>
         </Card>
       </React.Fragment>

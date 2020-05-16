@@ -37,8 +37,8 @@ class LeftGrid extends Component {
       <>
         <Grid item lg={3} md={3} xs={12} sm={9} className="middle-content">
           {user && <Profile profileUser={user} />}
-          <Reactions />
-          <Followers />
+          <Reactions path="timeline" />
+          <Followers path="timeline" />
         </Grid>
       </>
     )

@@ -79,7 +79,7 @@ class ProfileCard extends Component {
           />
           <CardContent className={classes.content}>
             <Typography gutterBottom variant="h5" component="h2">
-              <h2>{title}</h2>
+              {title}
             </Typography>
             <Typography gutterBottom variant="h5" component="h4">
               {subTitle}

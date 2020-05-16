@@ -1,7 +1,6 @@
 import * as actions from '../../../actions/index'
 
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Followers from '../../UserProfile/components/Followers'
 import Grid from '@material-ui/core/Grid'
@@ -18,6 +17,13 @@ import Summary from '../../Dashboard/components/Summary'
 import Users from '../../Users/components/Users'
 import { connect } from 'react-redux'
 import firebase from '../../../firebase'
+import {
+  BrowserRouter,
+  Redirect,
+  Route,
+  Switch,
+  withRouter,
+} from 'react-router-dom'
 
 class CenterGrid extends Component {
   constructor(props) {
@@ -33,32 +39,62 @@ class CenterGrid extends Component {
 
   render() {
     const {} = this.state
-    const { user } = this.props
+    const { user, path, match } = this.props
     const locationPath = this.props.location.pathname
     return (
       <>
         <Grid item lg={5} md={6} xs={12} sm={9} className="middle-content">
           {locationPath.includes('/post') && <Reactions />}
-          {user && locationPath == '/users' && (
-            <>
-              <Search />
-              <br />
-              <Users />
-            </>
-          )}
-          {locationPath == '/user/reactions' ? (
-            <ProfileReactionsView fallBackTo={'/incoming'} view="list" />
-          ) : null}
-          {locationPath == '/user/followers' ? (
-            <ProfileFollowersView fallBackTo={'/incoming'} view="list" />
-          ) : null}
-          {locationPath == '/incoming' || locationPath == '/outgoing' ? (
-            <Post />
-          ) : null}
-          {user && locationPath == '/incoming' && (
-            <Incoming user={user} type="timeline" />
-          )}
-          {user && locationPath == '/outgoing' && <Outgoing user={user} />}
+          <Route
+            exact
+            path={'/timeline/users'}
+            exact
+            component={() => (
+              <>
+                <Users user={user} />
+              </>
+            )}
+          />
+          <Route
+            path={'/timeline/incoming'}
+            exact
+            component={() => (
+              <>
+                <Post />
+                <Incoming user={user} />
+              </>
+            )}
+          />
+          <Route
+            path="/timeline/outgoing"
+            exact
+            component={() => (
+              <>
+                <Post />
+                <Outgoing user={user} />
+              </>
+            )}
+          />
+          <Route
+            path="/timeline/:id/reactions"
+            exact
+            component={() => (
+              <ProfileReactionsView
+                fallBackTo={'/timeline/incoming'}
+                view="list"
+              />
+            )}
+          />
+          <Route
+            path="/timeline/:id/followers"
+            exact
+            component={() => (
+              <ProfileFollowersView
+                fallBackTo={'/timeline/incoming'}
+                view="list"
+              />
+            )}
+          />
         </Grid>
       </>
     )

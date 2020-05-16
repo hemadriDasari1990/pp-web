@@ -22,6 +22,8 @@ import formateNumber from '../../../util/formateNumber'
 import getPastTime from '../../../util/getPastTime'
 import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
 import { withStyles } from '@material-ui/core/styles'
+import Slide from '@material-ui/core/Slide'
+import Zoom from '@material-ui/core/Zoom'
 
 const styles = {
   followIcon: {
@@ -139,25 +141,37 @@ class Profile extends Component {
                 </Tooltip>
               </div>
             )}
-            <Avatar
-              className="profile"
-              alt={profileUser.userName}
-              src={profileUser.photoURL}
-            />
-            <h5 className="text-center">{profileUser.userName}</h5>
-            <div className="text-center">
-              {showlastSeen ? (
-                <small>
-                  {' Last Active '}
-                  <b style={{ color: '#2b7eff' }}>
-                    {getPastTime(profileUser.lastActiveTime)}
-                  </b>{' '}
-                  {' ago'}
-                </small>
-              ) : (
-                <b style={{ color: '#1ad01a' }}>Active Now</b>
-              )}
-            </div>
+            <Zoom in={true} timeout={2000}>
+              <Avatar
+                className="profile"
+                alt={profileUser.userName}
+                src={profileUser.photoURL}
+              />
+            </Zoom>
+            <Slide
+              direction="left"
+              in={true}
+              timeout={1500}
+              mountOnEnter
+              unmountOnExit
+            >
+              <h5 className="text-center">{profileUser.userName}</h5>
+            </Slide>
+            <Zoom in={true} timeout={2000}>
+              <div className="text-center">
+                {showlastSeen ? (
+                  <small>
+                    {' Last Active '}
+                    <b style={{ color: '#2b7eff' }}>
+                      {getPastTime(profileUser.lastActiveTime)}
+                    </b>{' '}
+                    {' ago'}
+                  </small>
+                ) : (
+                  <b style={{ color: '#1ad01a' }}>Active Now</b>
+                )}
+              </div>
+            </Zoom>
             {profileUser && user && profileUser._id != user._id && (
               <div className="mt-25 text-center">
                 <Tooltip title={following ? 'Following' : 'Follow'}>
@@ -187,9 +201,17 @@ class Profile extends Component {
                     <LikeIcon />
                   </Fab>
                 </Tooltip>
-                <p className="title">
-                  {formateNumber(profileUser.no_of_likes)}
-                </p>
+                <Slide
+                  direction="right"
+                  in={true}
+                  timeout={1500}
+                  mountOnEnter
+                  unmountOnExit
+                >
+                  <p className="title">
+                    {formateNumber(profileUser.no_of_likes)}
+                  </p>
+                </Slide>
                 <div className="followers">Likes</div>
               </div>
               <div className="col align-self-center text-center">
@@ -198,9 +220,11 @@ class Profile extends Component {
                     <LoveIcon />
                   </Fab>
                 </Tooltip>
-                <p className="title">
-                  {formateNumber(profileUser.no_of_loves)}
-                </p>
+                <Zoom in={true} timeout={2000}>
+                  <p className="title">
+                    {formateNumber(profileUser.no_of_loves)}
+                  </p>
+                </Zoom>
                 <div className="followers">Loved</div>
               </div>
               <div className="col align-self-end text-center">
@@ -209,9 +233,17 @@ class Profile extends Component {
                     <FollowIcon color="#fff" />
                   </Fab>
                 </Tooltip>
-                <p className="title">
-                  {formateNumber(profileUser.no_of_followers)}
-                </p>
+                <Slide
+                  direction="left"
+                  in={true}
+                  timeout={1500}
+                  mountOnEnter
+                  unmountOnExit
+                >
+                  <p className="title">
+                    {formateNumber(profileUser.no_of_followers)}
+                  </p>
+                </Slide>
                 <div className="followers">Followers</div>
               </div>
             </div>

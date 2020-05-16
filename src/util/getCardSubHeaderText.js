@@ -3,6 +3,7 @@ import getPastTime from './getPastTime'
 import PublicIcon from '@material-ui/icons/Public'
 import formateNumber from './formateNumber'
 import getReaction from './getReaction'
+import Zoom from '@material-ui/core/Zoom'
 
 export default function getCardSubHeaderText(timestamp) {
   return (
@@ -16,11 +17,11 @@ export default function getCardSubHeaderText(timestamp) {
 export function getCardSubHeaderProfileSummary(user) {
   return (
     <>
-      <span className="grey-color ">
+      <div className="grey-color ">
         <b>{formateNumber(user.no_of_likes) || 0}</b> Likes&nbsp;{' '}
         <b>{formateNumber(user.no_of_loves) || 0}</b> Love &nbsp;{' '}
         <b>{formateNumber(user.no_of_followers) || 0}</b> Followers
-      </span>
+      </div>
     </>
   )
 }

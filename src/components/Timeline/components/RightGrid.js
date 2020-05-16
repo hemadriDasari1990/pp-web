@@ -32,15 +32,13 @@ class RightGrid extends Component {
 
   render() {
     const {} = this.state
-    const { user } = this.props
-    const type =
-      this.props.location.pathname == '/incoming' ? 'incoming' : 'outgoing'
+    const { user, path } = this.props
     return (
       <>
         <Grid item lg={4} md={6} xs={12} sm={9} className="of-h">
-          {user && <Summary type={type} title="Summary" />}
-          {user && <RecentPosts user={user} />}
-          {user && <PopularPosts user={user} type={type} />}
+          {user && <Summary type={path} title="Summary" />}
+          {user && <RecentPosts user={path} />}
+          {user && <PopularPosts user={user} type={path} />}
         </Grid>
       </>
     )

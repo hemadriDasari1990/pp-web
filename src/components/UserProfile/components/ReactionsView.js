@@ -24,6 +24,7 @@ import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderTe
 import ListSubheader from '@material-ui/core/ListSubheader'
 import BackIcon from '@material-ui/icons/ArrowBack'
 import IconButton from '@material-ui/core/IconButton'
+import Zoom from '@material-ui/core/Zoom'
 
 const styles = {
   smallAvatar: {
@@ -50,7 +51,7 @@ class ReactionsView extends Component {
   renderSubHeader = () => {
     const locationPath = this.props.location.pathname
     const { view } = this.props
-    return locationPath === '/user/reactions' && view === 'list' ? (
+    return locationPath.includes('/reactions') && view === 'list' ? (
       <div className="row ml-1">
         <IconButton onClick={() => this.goBack()} color="primary">
           <BackIcon />
@@ -76,84 +77,85 @@ class ReactionsView extends Component {
       !profileUser
         ? false
         : true
-    const viewPath = profileUser ? `/user/reactions` : '#'
     return (
       <React.Fragment>
-        <List disablePadding={true} subheader={this.renderSubHeader()}>
-          {hasReactions
-            ? profileUser.reactions.map(pu => (
-                <ListItem key={pu._id} alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Badge
-                      classes={{ badge: classes.customBadge }}
-                      overlap="circle"
-                      badgeContent={
-                        <Avatar
-                          className={classes.smallAvatar}
-                          key={pu._id}
-                          alt={pu.likedBy ? pu.likedBy.userName : ''}
-                          style={{
-                            backgroundColor:
-                              pu.type.toLowerCase() === 'love' ||
-                              pu.type.toLowerCase() === 'profile-love'
-                                ? '#ff0016c7'
-                                : '',
-                          }}
-                        >
-                          {getReaction(pu ? pu.type : '')}
-                        </Avatar>
-                      }
-                    >
-                      <Avatar
-                        alt={pu.likedBy.userName}
-                        src={pu.likedBy.photoURL}
-                      />
-                    </Badge>
-                  </ListItemAvatar>
-                  <Tooltip title={pu.likedBy.userName} placement="right-end">
-                    <ListItemText
-                      primary={
-                        <>
-                          <Link
-                            className="hyperlink"
-                            to={`/profile/${pu.likedBy._id}`}
+        <Zoom in={true} timeout={2000}>
+          <List disablePadding={true} subheader={this.renderSubHeader()}>
+            {hasReactions
+              ? profileUser.reactions.map(pu => (
+                  <ListItem key={pu._id} alignItems="flex-start">
+                    <ListItemAvatar>
+                      <Badge
+                        classes={{ badge: classes.customBadge }}
+                        overlap="circle"
+                        badgeContent={
+                          <Avatar
+                            className={classes.smallAvatar}
+                            key={pu._id}
+                            alt={pu.likedBy ? pu.likedBy.userName : ''}
+                            style={{
+                              backgroundColor:
+                                pu.type.toLowerCase() === 'love' ||
+                                pu.type.toLowerCase() === 'profile-love'
+                                  ? '#ff0016c7'
+                                  : '',
+                            }}
                           >
-                            {user && user._id === pu.likedBy._id
-                              ? 'You '
-                              : pu.likedBy.userName
-                              ? pu.likedBy.userName.substring(0, 15) + '... '
-                              : ''}
-                          </Link>
-                          {getProvider(pu.likedBy.providerId)}&nbsp;
-                          <small className="grey-color ">
-                            {getPastTime(pu.createdAt)}
-                          </small>
-                        </>
-                      }
-                      secondary={
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          color="textPrimary"
-                        >
-                          {getCardSubHeaderProfileSummary(pu.likedBy)}
-                        </Typography>
-                      }
-                    />
-                  </Tooltip>
-                  <ListItemSecondaryAction></ListItemSecondaryAction>
-                </ListItem>
-              ))
-            : null}
-          {!hasReactions ? (
-            <Typography variant="h4" className="text-center">
-              No reactions
-            </Typography>
-          ) : null}
-          {profileUserLoading &&
-            profileUser &&
-            !profileUser.reactions.length && <Loader />}
-        </List>
+                            {getReaction(pu ? pu.type : '')}
+                          </Avatar>
+                        }
+                      >
+                        <Avatar
+                          alt={pu.likedBy.userName}
+                          src={pu.likedBy.photoURL}
+                        />
+                      </Badge>
+                    </ListItemAvatar>
+                    <Tooltip title={pu.likedBy.userName} placement="right-end">
+                      <ListItemText
+                        primary={
+                          <>
+                            <Link
+                              className="hyperlink"
+                              to={`/profile/${pu.likedBy._id}`}
+                            >
+                              {user && user._id === pu.likedBy._id
+                                ? 'You '
+                                : pu.likedBy.userName
+                                ? pu.likedBy.userName.substring(0, 15) + '... '
+                                : ''}
+                            </Link>
+                            {getProvider(pu.likedBy.providerId)}&nbsp;
+                            <small className="grey-color ">
+                              {getPastTime(pu.createdAt)}
+                            </small>
+                          </>
+                        }
+                        secondary={
+                          <Typography
+                            component="span"
+                            variant="body2"
+                            color="textPrimary"
+                          >
+                            {getCardSubHeaderProfileSummary(pu.likedBy)}
+                          </Typography>
+                        }
+                      />
+                    </Tooltip>
+                    <ListItemSecondaryAction></ListItemSecondaryAction>
+                  </ListItem>
+                ))
+              : null}
+            {!hasReactions ? (
+              <Typography variant="h4" className="text-center">
+                No reactions
+              </Typography>
+            ) : null}
+            {profileUserLoading &&
+              profileUser &&
+              !profileUser.reactions.length && <Loader />}
+          </List>
+        </Zoom>
       </React.Fragment>
     )
   }

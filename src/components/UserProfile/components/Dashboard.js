@@ -31,19 +31,19 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, path } = this.props
     const { profile } = this.state
     return (
-      <Container fixed>
+      <>
         {profile && (
           <Grid container spacing={1} className="of-h">
-            <LeftGrid profile={profile} />
-            <CenterGrid profile={profile} />
-            <RightGrid profile={profile} />
+            <LeftGrid profile={profile} path={path} />
+            <CenterGrid profile={profile} path={path} />
+            <RightGrid profile={profile} path={path} />
           </Grid>
         )}
         {!profile && <Loader />}
-      </Container>
+      </>
     )
   }
 }

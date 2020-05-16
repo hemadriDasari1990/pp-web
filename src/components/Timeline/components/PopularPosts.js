@@ -23,6 +23,8 @@ import { connect } from 'react-redux'
 import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
 import getPastTime from '../../../util/getPastTime'
 import { withStyles } from '@material-ui/core/styles'
+import Slide from '@material-ui/core/Slide'
+import Zoom from '@material-ui/core/Zoom'
 
 const styles = {
   smallAvatar: {
@@ -171,9 +173,11 @@ class PopularPosts extends Component {
                     </ListItem>
                   ))
               ) : (
-                <Typography variant="h4" className="text-center">
-                  No Popular Posts
-                </Typography>
+                <Zoom in={true} timeout={2000}>
+                  <Typography variant="h4" className="text-center">
+                    No Popular Posts
+                  </Typography>
+                </Zoom>
               )}
 
               {popularPostsLoading && !popularPosts.length && <Loader />}

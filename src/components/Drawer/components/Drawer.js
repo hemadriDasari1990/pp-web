@@ -20,6 +20,8 @@ import outgoingIcon from '../../../../assets/outgoing.svg'
 import preferencesIcon from '../../../../assets/preferences.svg'
 import usersIcon from '../../../../assets/users.svg'
 import { withStyles } from '@material-ui/core/styles'
+import Slide from '@material-ui/core/Slide'
+import Zoom from '@material-ui/core/Zoom'
 
 const color = '#2a7fff'
 const styles = {
@@ -54,17 +56,17 @@ class DrawerComponent extends Component {
 
   handleIncoming = () => {
     this.props.toggleDrawer()
-    this.props.history.push('/incoming')
+    this.props.history.push('/timeline/incoming')
   }
 
   handleOutgoing = () => {
     this.props.toggleDrawer()
-    this.props.history.push('/outgoing')
+    this.props.history.push('/timeline/outgoing')
   }
 
   handleUsers = () => {
     this.props.toggleDrawer()
-    this.props.history.push('/users')
+    this.props.history.push('/timeline/users')
   }
 
   handleDashboard = () => {
@@ -100,9 +102,9 @@ class DrawerComponent extends Component {
         })
       }
     })
-    this.refreshTimeout = setTimeout(() => {
-      this.reset()
-    }, 2000)
+    // this.refreshTimeout = setTimeout(() => {
+    //   this.reset()
+    // }, 2000)
   }
 
   reset = () => {
@@ -122,50 +124,60 @@ class DrawerComponent extends Component {
     return (
       <>
         <List>
-          <ListItem button key={1} onClick={() => this.handleDashboard()}>
-            <ListItemIcon>
-              <Avatar className={classes.avatar} src={dashboardIcon} />
-            </ListItemIcon>
-            <ListItemText>Dashboard</ListItemText>
-          </ListItem>
-          <ListItem button key={2} onClick={() => this.handleIncoming()}>
-            <ListItemIcon>
-              <Avatar className={classes.avatar} src={incomingIcon} />
-            </ListItemIcon>
-            <ListItemText>Incoming</ListItemText>
-          </ListItem>
-          <ListItem button key={3} onClick={() => this.handleOutgoing()}>
-            <ListItemIcon>
-              <Avatar className={classes.avatar} src={outgoingIcon} />
-            </ListItemIcon>
-            <ListItemText>Outgoing</ListItemText>
-          </ListItem>
-          <ListItem button key={5} onClick={() => this.handleUsers()}>
-            <ListItemIcon>
-              <Avatar className={classes.avatar} src={usersIcon} />
-            </ListItemIcon>
-            <ListItemText>Users</ListItemText>
-          </ListItem>
-          <ListItem button key={6} onClick={() => this.handlePreferences()}>
-            <ListItemIcon>
-              <Avatar className={classes.avatar1} src={preferencesIcon} />
-            </ListItemIcon>
-            <ListItemText>Preferences</ListItemText>
-          </ListItem>
-          <ListItem button key={7} onClick={() => this.handleLogout()}>
-            <ListItemIcon>
-              <Avatar className={classes.avatar1} src={logoutIcon} />
-            </ListItemIcon>
-            <ListItemText>Signout</ListItemText>
-          </ListItem>
+          <Zoom in={true} timeout={2000}>
+            <ListItem button key={1} onClick={() => this.handleDashboard()}>
+              <ListItemIcon>
+                <Avatar className={classes.avatar} src={dashboardIcon} />
+              </ListItemIcon>
+              <ListItemText>Dashboard</ListItemText>
+            </ListItem>
+          </Zoom>
+          <Zoom in={true} timeout={2000}>
+            <ListItem button key={2} onClick={() => this.handleIncoming()}>
+              <ListItemIcon>
+                <Avatar className={classes.avatar} src={incomingIcon} />
+              </ListItemIcon>
+              <ListItemText>Incoming</ListItemText>
+            </ListItem>
+          </Zoom>
+          <Zoom in={true} timeout={2000}>
+            <ListItem button key={3} onClick={() => this.handleOutgoing()}>
+              <ListItemIcon>
+                <Avatar className={classes.avatar} src={outgoingIcon} />
+              </ListItemIcon>
+              <ListItemText>Outgoing</ListItemText>
+            </ListItem>
+          </Zoom>
+          <Zoom in={true} timeout={2000}>
+            <ListItem button key={5} onClick={() => this.handleUsers()}>
+              <ListItemIcon>
+                <Avatar className={classes.avatar} src={usersIcon} />
+              </ListItemIcon>
+              <ListItemText>Users</ListItemText>
+            </ListItem>
+          </Zoom>
+          <Zoom in={true} timeout={2000}>
+            <ListItem button key={6} onClick={() => this.handlePreferences()}>
+              <ListItemIcon>
+                <Avatar className={classes.avatar1} src={preferencesIcon} />
+              </ListItemIcon>
+              <ListItemText>Preferences</ListItemText>
+            </ListItem>
+          </Zoom>
+          <Zoom in={true} timeout={2000}>
+            <ListItem button key={7} onClick={() => this.handleLogout()}>
+              <ListItemIcon>
+                <Avatar className={classes.avatar1} src={logoutIcon} />
+              </ListItemIcon>
+              <ListItemText>Signout</ListItemText>
+            </ListItem>
+          </Zoom>
         </List>
-        {logout && (
-          <CustomizedSnackbars
-            open={true}
-            message={'Logged out succesfully'}
-            status={'success'}
-          />
-        )}
+        <CustomizedSnackbars
+          open={logout}
+          message={'Logged out succesfully'}
+          status={'success'}
+        />
       </>
     )
   }

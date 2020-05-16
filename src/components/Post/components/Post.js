@@ -24,6 +24,7 @@ import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
+import Zoom from '@material-ui/core/Zoom'
 
 class Post extends Component {
   constructor(props) {
@@ -81,24 +82,28 @@ class Post extends Component {
           </CardContent>
           <Divider />
           <CardActions>
-            <Fab
-              variant="extended"
-              color="primary"
-              size="small"
-              onClick={() => this.handleOpinionAction()}
-              style={{ height: 32 }}
-            >
-              <PostAddOutlinedIcon /> &nbsp;Write to others
-            </Fab>
-            <Fab
-              variant="extended"
-              color="primary"
-              size="small"
-              onClick={() => this.handleAskForOpinion()}
-              style={{ height: 32 }}
-            >
-              <AssistantIcon /> &nbsp;Ask For Opinion
-            </Fab>
+            <Zoom in={true} timeout={1500}>
+              <Fab
+                variant="extended"
+                color="primary"
+                size="small"
+                onClick={() => this.handleOpinionAction()}
+                style={{ height: 32 }}
+              >
+                <PostAddOutlinedIcon /> &nbsp;Write to others
+              </Fab>
+            </Zoom>
+            <Zoom in={true} timeout={1500}>
+              <Fab
+                variant="extended"
+                color="primary"
+                size="small"
+                onClick={() => this.handleAskForOpinion()}
+                style={{ height: 32 }}
+              >
+                <AssistantIcon /> &nbsp;Ask For Opinion
+              </Fab>
+            </Zoom>
           </CardActions>
         </Card>
       </React.Fragment>
