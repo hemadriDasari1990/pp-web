@@ -139,11 +139,13 @@ class FollowersView extends Component {
                   </ListItem>
                 ))
               : null}
-            {!hasFollowers ? (
-              <Typography variant="h4" className="text-center">
-                No Followers
-              </Typography>
-            ) : null}
+            {!profileUserLoading &&
+              profileUser &&
+              !profileUser.followers.length && (
+                <Typography variant="h4" className="text-center">
+                  No Followers
+                </Typography>
+              )}
             {profileUserLoading &&
               profileUser &&
               !profileUser.followers.length && <Loader />}
