@@ -3,6 +3,7 @@ const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const OfflinePlugin = require('offline-plugin')
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = {
   entry: {
@@ -52,21 +53,46 @@ module.exports = {
       },
     ],
   },
-  // optimization: {
-  //   minimizer: [
-  //     // we specify a custom UglifyJsPlugin here to get source maps in production
-  //     new UglifyJsPlugin({
-  //       cache: true,
-  //       parallel: true,
-  //       uglifyOptions: {
-  //         compress: false,
-  //         ecma: 6,
-  //         mangle: true,
-  //       },
-  //       sourceMap: true,
-  //     }),
-  //   ],
-  // },
+  //   optimization: {
+  //     minimize: true,
+  //     runtimeChunk: true,
+  //     splitChunks: {
+  //         chunks: "async",
+  //         minSize: 1000,
+  //         minChunks: 2,
+  //         maxAsyncRequests: 5,
+  //         maxInitialRequests: 3,
+  //         name: true,
+  //         cacheGroups: {
+  //             default: {
+  //                 minChunks: 1,
+  //                 priority: -20,
+  //                 reuseExistingChunk: true,
+  //             },
+  //             vendors: {
+  //                 test: /[\\/]node_modules[\\/]/,
+  //                 priority: -10
+  //             }
+  //           }
+  //       }
+  //   },
+  optimization: {
+    minimizer: [
+      // we specify a custom UglifyJsPlugin here to get source maps in production
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        uglifyOptions: {
+          compress: {
+            drop_console: true,
+          },
+          ecma: 6,
+          mangle: true,
+        },
+        sourceMap: false,
+      }),
+    ],
+  },
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
@@ -74,11 +100,14 @@ module.exports = {
         NODE_ENV: JSON.stringify('production'),
       },
     }),
-    // new webpack.optimize.UglifyJsPlugin(), //minify everything
-    new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
-    new webpack.optimize.CommonsChunkPlugin({
-      names: ['vendor', 'manifest'],
-    }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //   sourceMap: false,
+    //   mangle: false
+    // }), //minify everything
+    // new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
+    // new webpack.optimize.CommonsChunkPlugin({
+    //   names: ['vendor', 'manifest'],
+    // }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       title: 'writenpost',
@@ -87,12 +116,19 @@ module.exports = {
     new PreloadWebpackPlugin({
       rel: 'preload',
       as: 'script',
-      include: 'all',
+      include: ['main', 'vendor'],
     }),
     new OfflinePlugin({
-      ServiceWorker: {
-        navigateFallbackURL: '/',
+      relativePaths: false,
+      publicPath: '/',
+      excludes: ['.htaccess'],
+      caches: {
+        main: [':rest:'],
       },
+      ServiceWorker: {
+        minify: false,
+      },
+      safeToUseOptionalCaches: true,
       AppCache: false,
     }),
   ],
