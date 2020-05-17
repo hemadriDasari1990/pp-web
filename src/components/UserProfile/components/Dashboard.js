@@ -1,15 +1,16 @@
 import * as globalActions from '../../../actions/index'
 
-import React, { Component } from 'react'
+import React, { Component, Suspense, lazy } from 'react'
 
-import CenterGrid from './CenterGrid'
 import Grid from '@material-ui/core/Grid'
-import LeftGrid from './LeftGrid'
 import Loader from '../../Loader/components/Loader'
 import PropTypes from 'prop-types'
-import RightGrid from './RightGrid'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+
+const CenterGrid = lazy(() => import('./CenterGrid'))
+const LeftGrid = lazy(() => import('./LeftGrid'))
+const RightGrid = lazy(() => import('./RightGrid'))
 
 class Dashboard extends Component {
   constructor(props) {
@@ -33,7 +34,7 @@ class Dashboard extends Component {
     const { classes, path } = this.props
     const { profile } = this.state
     return (
-      <>
+      <Suspense fallback={<Loader />}>
         {profile && (
           <Grid container spacing={1} className="of-h">
             <LeftGrid profile={profile} path={path} />
@@ -42,7 +43,7 @@ class Dashboard extends Component {
           </Grid>
         )}
         {!profile && <Loader />}
-      </>
+      </Suspense>
     )
   }
 }

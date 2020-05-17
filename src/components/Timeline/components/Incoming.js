@@ -2,7 +2,7 @@ import * as actions from '../actions'
 import * as postActions from '../../Post/actions'
 import * as profileActions from '../../UserProfile/actions'
 
-import React, { Component } from 'react'
+import React, { Component, Suspense, lazy } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
 import AvatarGroup from '@material-ui/lab/AvatarGroup'
@@ -14,9 +14,6 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import CommentIcon from '@material-ui/icons/ChatBubbleOutline'
-import CommentsList from './comments/List'
-import CreateComment from './comments/CreateComment'
-import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import DisLikeIcon from '@material-ui/icons/ThumbDownAlt'
 import Divider from '@material-ui/core/Divider'
@@ -33,7 +30,6 @@ import LoveIcon from '@material-ui/icons/Favorite'
 import { Map } from 'immutable'
 import Menu from '@material-ui/core/Menu'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import NoRecords from '../../NoRecords/components/NoRecords'
 import PropTypes from 'prop-types'
 import ScheduleIcon from '@material-ui/icons/Schedule'
 import Slide from '@material-ui/core/Slide'
@@ -56,6 +52,13 @@ import thinking from '../../../../assets/emojis/thinking.svg'
 import tounghout from '../../../../assets/emojis/tounghout.svg'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
+
+const CommentsList = lazy(() => import('./comments/List'))
+const CreateComment = lazy(() => import('./comments/CreateComment'))
+const CustomizedSnackbars = lazy(() =>
+  import('../../Snackbar/components/Snackbar'),
+)
+const NoRecords = lazy(() => import('../../NoRecords/components/NoRecords'))
 
 const styles = {
   smallAvatar: {
@@ -296,7 +299,7 @@ class Incoming extends Component {
     } = this.props
     const { open, anchorEl, showEmojis, showCommentInput, postId } = this.state
     return (
-      <React.Fragment>
+      <Suspense fallback={<Loader />}>
         {incomingPostsLoading && incomingPosts && !incomingPosts.length ? (
           <Loader />
         ) : null}
@@ -516,7 +519,7 @@ class Incoming extends Component {
                             ))
                           : 'No Reactions'}
                       </AvatarGroup>
-                      <span className="cursor actions-text v-align-middle grey-color ">
+                      <span className="m-l-5 cursor actions-text v-align-middle grey-color ">
                         <Tooltip
                           title={renderUserNames(post.reactions)}
                           placement="bottom"
@@ -788,7 +791,7 @@ class Incoming extends Component {
             status={'success'}
           />
         ) : null}
-      </React.Fragment>
+      </Suspense>
     )
   }
 }

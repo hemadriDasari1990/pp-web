@@ -1,13 +1,15 @@
 import * as actions from '../../../actions/index'
 
-import React, { Component } from 'react'
+import React, { Component, Suspense, lazy } from 'react'
 
-import Followers from './Followers'
 import Grid from '@material-ui/core/Grid'
-import Profile from './Profile'
-import Reactions from './Reactions'
+import Loader from '../../Loader/components/Loader'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
+
+const Followers = lazy(() => import('./Followers'))
+const Profile = lazy(() => import('./Profile'))
+const Reactions = lazy(() => import('./Reactions'))
 
 class LeftGrid extends Component {
   constructor(props) {
@@ -21,13 +23,13 @@ class LeftGrid extends Component {
     const {} = this.state
     const { profile } = this.props
     return (
-      <>
+      <Suspense fallback={<Loader />}>
         <Grid item lg={3} md={3} xs={12} sm={9} className="middle-content">
           <Profile profileUser={profile} />
           <Reactions path="profile" />
           <Followers path="profile" />
         </Grid>
-      </>
+      </Suspense>
     )
   }
 }

@@ -1,17 +1,19 @@
 import * as globalActions from '../../../actions/index'
 
-import React, { Component } from 'react'
+import React, { Component, Suspense, lazy } from 'react'
 
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
-import FollowersView from './FollowersView'
 import { Link } from 'react-router-dom'
+import Loader from '../../Loader/components/Loader'
 import { Map } from 'immutable'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
+
+const FollowersView = lazy(() => import('./FollowersView'))
 
 const styles = {
   smallAvatar: {
@@ -49,7 +51,7 @@ class Followers extends Component {
       profileUser && profileUser.followers.length > 0 ? true : false
     const viewPath = profileUser ? `/${path}/${profileUser._id}/followers` : '#'
     return (
-      <React.Fragment>
+      <Suspense fallback={<Loader />}>
         <Card>
           <CardHeader
             title="Followers"
@@ -70,7 +72,7 @@ class Followers extends Component {
             <FollowersView view="card" fallBackTo={'/timeline/incoming'} />
           </CardContent>
         </Card>
-      </React.Fragment>
+      </Suspense>
     )
   }
 }

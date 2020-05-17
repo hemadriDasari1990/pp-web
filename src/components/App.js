@@ -59,7 +59,7 @@ class App extends Component {
                 await this.props.updateUser(u.data.user._id, {
                   lastActiveTime: Date.now(),
                 })
-                await this.props.storeUser(u.data.user)
+                this.props.storeUser(u.data.user)
                 await this.props.getUsers(u.data.user._id, '')
                 this.setState({
                   showSnackbar: !this.state.showSnackbar,

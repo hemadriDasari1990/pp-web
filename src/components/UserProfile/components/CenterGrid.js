@@ -1,13 +1,15 @@
 import * as actions from '../../../actions/index'
 
-import React, { Component } from 'react'
+import React, { Component, Suspense, lazy } from 'react'
 import { Route, withRouter } from 'react-router-dom'
 
 import Grid from '@material-ui/core/Grid'
-import Incoming from '../../Timeline/components/Incoming'
-import ProfileFollowersView from './FollowersView'
-import ProfileReactionsView from './ReactionsView'
+import Loader from '../../Loader/components/Loader'
 import { connect } from 'react-redux'
+
+const Incoming = lazy(() => import('../../Timeline/components/Incoming'))
+const ProfileFollowersView = lazy(() => import('./FollowersView'))
+const ProfileReactionsView = lazy(() => import('./ReactionsView'))
 
 class CenterGrid extends Component {
   constructor(props) {
@@ -21,7 +23,7 @@ class CenterGrid extends Component {
     const {} = this.state
     const { profile, path } = this.props
     return (
-      <>
+      <Suspense fallback={<Loader />}>
         <Grid item lg={5} md={6} xs={12} sm={9} className="middle-content">
           <Route
             path="/profile/:id"
@@ -49,7 +51,7 @@ class CenterGrid extends Component {
             )}
           />
         </Grid>
-      </>
+      </Suspense>
     )
   }
 }

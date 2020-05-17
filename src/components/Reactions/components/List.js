@@ -1,9 +1,7 @@
 import * as postActions from '../../Post/actions'
 import * as userProfileActions from '../../UserProfile/actions'
 
-import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import AskIcon from '@material-ui/icons/PlaylistAddRounded'
 import Avatar from '@material-ui/core/Avatar'
@@ -17,12 +15,16 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../Loader/components/Loader'
+import { Map } from 'immutable'
+import Slide from '@material-ui/core/Slide'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
+import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
 import getProvider from '../../../util/getProvider'
 import getReaction from '../../../util/getReaction'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
@@ -136,88 +138,102 @@ class ReactionsList extends Component {
           <div className="row mt-10">
             {!reactionsLoading
               ? reactions.map((r, index) => (
-                  <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <ListItem
-                      key={r._id}
-                      alignItems="flex-start"
-                      className="shadow b-r-15 cursor mb-10"
-                    >
-                      <ListItemAvatar>
-                        <Badge
-                          classes={{ badge: classes.customBadge }}
-                          overlap="circle"
-                          badgeContent={
-                            <Avatar
-                              className={classes.smallAvatar}
-                              key={r._id}
-                              alt={r.user ? r.user.userName : ''}
-                              style={{
-                                backgroundColor:
-                                  r.type.toLowerCase() === 'love' ||
-                                  r.type.toLowerCase() === 'profile-love'
-                                    ? '#ff0016c7'
-                                    : '',
-                              }}
-                            >
-                              {getReaction(r ? r.type : '')}
-                            </Avatar>
-                          }
-                        >
-                          <Avatar
-                            alt={r.user ? r.user.userName.substring(0, 1) : ''}
-                            src={r.user.photoURL}
-                          />
-                        </Badge>
-                      </ListItemAvatar>
-                      <Tooltip title={r.type} placement="top">
-                        <ListItemText
-                          primary={
-                            <>
-                              <Link
-                                className="hyperlink"
-                                to={`/profile/${r.user._id}`}
+                  <Zoom key={r._id} in={true} timeout={2000}>
+                    <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                      <ListItem
+                        key={r._id}
+                        alignItems="flex-start"
+                        className="shadow b-r-15 cursor mb-10"
+                      >
+                        <ListItemAvatar>
+                          <Badge
+                            classes={{ badge: classes.customBadge }}
+                            overlap="circle"
+                            badgeContent={
+                              <Avatar
+                                className={classes.smallAvatar}
+                                key={r._id}
+                                alt={r.user ? r.user.userName : ''}
+                                style={{
+                                  backgroundColor:
+                                    r.type.toLowerCase() === 'love' ||
+                                    r.type.toLowerCase() === 'profile-love'
+                                      ? '#ff0016c7'
+                                      : '',
+                                }}
                               >
-                                {user && user._id === r.user._id
-                                  ? 'You'
-                                  : r.user.userName}
-                              </Link>
-                              &nbsp;
-                              {getProvider(r.user.providerId)}
-                            </>
-                          }
-                          secondary={
-                            <Typography
-                              component="span"
-                              variant="body2"
-                              color="textPrimary"
-                            >
-                              {getCardSubHeaderProfileSummary(r.user)}
-                            </Typography>
-                          }
-                        />
-                      </Tooltip>
-                      {!this.ifSameUser(r) ? (
-                        <ListItemSecondaryAction>
-                          <Tooltip
-                            title="Ask For Opinion"
-                            placement="right-end"
+                                {getReaction(r ? r.type : '')}
+                              </Avatar>
+                            }
                           >
-                            <IconButton>
-                              <AskIcon />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="Follow User" placement="right-end">
-                            <IconButton
-                              onClick={() => this.handleFollow(r.user, index)}
-                              color={this.renderFollowerColor(r.user.followers)}
+                            <Avatar
+                              alt={
+                                r.user ? r.user.userName.substring(0, 1) : ''
+                              }
+                              src={r.user.photoURL}
+                            />
+                          </Badge>
+                        </ListItemAvatar>
+                        <Tooltip title={r.type} placement="top">
+                          <ListItemText
+                            primary={
+                              <>
+                                <Link
+                                  className="hyperlink"
+                                  to={`/profile/${r.user._id}`}
+                                >
+                                  {user && user._id === r.user._id
+                                    ? 'You'
+                                    : r.user.userName}
+                                </Link>
+                                &nbsp;
+                                {getProvider(r.user.providerId)}
+                              </>
+                            }
+                            secondary={
+                              <Typography
+                                component="span"
+                                variant="body2"
+                                color="textPrimary"
+                              >
+                                {getCardSubHeaderProfileSummary(r.user)}
+                              </Typography>
+                            }
+                          />
+                        </Tooltip>
+                        {!this.ifSameUser(r) ? (
+                          <ListItemSecondaryAction>
+                            <Tooltip
+                              title="Ask For Opinion"
+                              placement="right-end"
                             >
-                              <FollowIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </ListItemSecondaryAction>
-                      ) : null}
-                    </ListItem>
-                  </div>
+                              <IconButton>
+                                <AskIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="Follow User" placement="right-end">
+                              <IconButton
+                                onClick={() => this.handleFollow(r.user, index)}
+                                color={this.renderFollowerColor(
+                                  r.user.followers,
+                                )}
+                              >
+                                <Slide
+                                  direction="left"
+                                  in={true}
+                                  timeout={1500}
+                                  mountOnEnter
+                                  unmountOnExit
+                                >
+                                  <FollowIcon />
+                                </Slide>
+                              </IconButton>
+                            </Tooltip>
+                          </ListItemSecondaryAction>
+                        ) : null}
+                      </ListItem>
+                    </div>
+                  </Zoom>
                 ))
               : null}
             {reactionsLoading && !reactions.length && <Loader />}

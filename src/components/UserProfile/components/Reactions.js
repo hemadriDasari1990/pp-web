@@ -1,17 +1,19 @@
 import * as globalActions from '../../../actions/index'
 
-import { Map, fromJS } from 'immutable'
-import React, { Component } from 'react'
+import React, { Component, Suspense, lazy } from 'react'
 
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import { Link } from 'react-router-dom'
-import ReactionsView from './ReactionsView'
+import Loader from '../../Loader/components/Loader'
+import { Map } from 'immutable'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
+
+const ReactionsView = lazy(() => import('./ReactionsView'))
 
 const styles = {
   smallAvatar: {
@@ -44,6 +46,7 @@ class Reactions extends Component {
   }
 
   viewAll = path => {
+    // this.props.saveActionState();
     this.props.history.push(path)
   }
 
@@ -60,8 +63,9 @@ class Reactions extends Component {
     const viewPath = profileUser ? `/${path}/${profileUser._id}/reactions` : '#'
     const hasReactions =
       profileUser && profileUser.reactions.length > 0 ? true : false
+    console.log('profileUser', profileUser)
     return (
-      <React.Fragment>
+      <Suspense fallback={<Loader />}>
         <Card>
           <CardHeader
             title="Profile Reactions"
@@ -86,7 +90,7 @@ class Reactions extends Component {
             <ReactionsView view="card" fallBackTo={'/timeline/incoming'} />
           </CardContent>
         </Card>
-      </React.Fragment>
+      </Suspense>
     )
   }
 }

@@ -81,7 +81,7 @@ class Post extends Component {
                 onClick={() => this.handleOpinionAction()}
                 style={{ height: 32 }}
               >
-                <PostAddOutlinedIcon /> &nbsp;Write to others
+                <PostAddOutlinedIcon /> &nbsp;Write Opinion
               </Fab>
             </Zoom>
             <Zoom in={true} timeout={1500}>

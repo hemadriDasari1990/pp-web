@@ -4,23 +4,32 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const OfflinePlugin = require('offline-plugin')
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+  .BundleAnalyzerPlugin
 
 module.exports = {
+  mode: 'production',
+  devtool: false,
+  stats: 'normal',
   entry: {
     main: resolve(__dirname, '../src'),
-    vendor: [
-      'react',
-      'react-dom',
-      'react-redux',
-      'react-router-dom',
-      'redux',
-      'redux-thunk',
-      'emotion',
-    ],
+    // vendor: [
+    //   'react',
+    //   'react-dom',
+    //   'react-redux',
+    //   'react-router-dom',
+    //   'redux',
+    //   'redux-thunk',
+    //   'emotion',
+    //   'moment',
+    //   'bootstrap',
+    //   'material-ui'
+    // ],
   },
   output: {
-    filename: '[name].[chunkhash].js',
+    filename: '[name].[chunkhash].bundle.js',
     path: resolve(__dirname, '../dist'),
+    chunkFilename: '[name].[chunkhash].bundle.js',
     publicPath: '/',
   },
   module: {
@@ -35,8 +44,19 @@ module.exports = {
         loader: 'style-loader!css-loader',
       },
       {
-        test: /\.(png|jpg|jpeg|gif|woff|woff2|svg)$/,
+        test: /\.(png|jpg|jpe?g|gif|woff|woff2)$/,
         loader: 'url-loader?limit=100000',
+      },
+      {
+        test: /\.svg$/,
+        loader: 'svg-url-loader',
+        options: {
+          // Inline files smaller than 10 kB (10240 bytes)
+          limit: 10 * 1024,
+          // Remove the quotes from the url
+          // (they’re unnecessary in most cases)
+          noquotes: true,
+        },
       },
       {
         test: /\.(eot|ttf)$/,
@@ -53,30 +73,6 @@ module.exports = {
       },
     ],
   },
-  //   optimization: {
-  //     minimize: true,
-  //     runtimeChunk: true,
-  //     splitChunks: {
-  //         chunks: "async",
-  //         minSize: 1000,
-  //         minChunks: 2,
-  //         maxAsyncRequests: 5,
-  //         maxInitialRequests: 3,
-  //         name: true,
-  //         cacheGroups: {
-  //             default: {
-  //                 minChunks: 1,
-  //                 priority: -20,
-  //                 reuseExistingChunk: true,
-  //             },
-  //             vendors: {
-  //                 test: /[\\/]node_modules[\\/]/,
-  //                 priority: -10
-  //             }
-  //           }
-  //       }
-  //   },
-
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
@@ -90,16 +86,9 @@ module.exports = {
       hashDigestLength: 4,
     }),
     new webpack.NoEmitOnErrorsPlugin(),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   sourceMap: false,
-    //   mangle: false
-    // }), //minify everything
-    // new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   names: ['vendor', 'manifest'],
-    // }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
+      chunks: ['home'],
       title: 'writenpost',
       template: 'webpack/template.html',
     }),
@@ -107,6 +96,11 @@ module.exports = {
       rel: 'preload',
       as: 'script',
       include: ['main', 'vendor'],
+    }),
+    // You can remove this if you don't use Moment.js:
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^\.\/locale$/,
+      contextRegExp: /moment$/,
     }),
     new OfflinePlugin({
       relativePaths: false,
@@ -121,8 +115,10 @@ module.exports = {
       safeToUseOptionalCaches: true,
       AppCache: false,
     }),
+    new BundleAnalyzerPlugin(),
   ],
   optimization: {
+    runtimeChunk: 'single',
     namedModules: false,
     namedChunks: false,
     nodeEnv: 'production',
@@ -132,11 +128,18 @@ module.exports = {
     usedExports: true,
     concatenateModules: true,
     splitChunks: {
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
       cacheGroups: {
+        default: false,
         commons: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'vendor',
-          chunks: 'all',
+          chunks: 'initial',
+          name: 'commons',
+          enforce: true,
+          minChunks: 2,
+          reuseExistingChunk: true,
         },
       },
       minSize: 30000,
