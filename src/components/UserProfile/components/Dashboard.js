@@ -1,3 +1,4 @@
+import * as actions from '../actions'
 import * as globalActions from '../../../actions/index'
 
 import React, { Component, Suspense, lazy } from 'react'
@@ -61,6 +62,7 @@ const mapStateToProps = state => {
 
 const actionsToProps = {
   getUser: globalActions.getUser,
+  saveActionState: actions.saveActionState,
 }
 
 export default withRouter(connect(mapStateToProps, actionsToProps)(Dashboard))

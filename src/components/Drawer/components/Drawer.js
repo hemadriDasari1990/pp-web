@@ -1,7 +1,7 @@
 import * as actions from '../../../actions/index'
+import * as userProfileActions from '../../UserProfile/actions'
 
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
 import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
@@ -19,6 +19,7 @@ import logoutIcon from '../../../../assets/logout.svg'
 import outgoingIcon from '../../../../assets/outgoing.svg'
 import preferencesIcon from '../../../../assets/preferences.svg'
 import usersIcon from '../../../../assets/users.svg'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
 const color = '#2a7fff'
@@ -55,16 +56,19 @@ class DrawerComponent extends Component {
   handleIncoming = () => {
     this.props.toggleDrawer()
     this.props.history.push('/timeline/incoming')
+    this.props.saveActionState('incoming')
   }
 
   handleOutgoing = () => {
     this.props.toggleDrawer()
     this.props.history.push('/timeline/outgoing')
+    this.props.saveActionState('outgoing')
   }
 
   handleUsers = () => {
     this.props.toggleDrawer()
     this.props.history.push('/timeline/users')
+    this.props.saveActionState('users')
   }
 
   handleDashboard = () => {
@@ -75,11 +79,6 @@ class DrawerComponent extends Component {
   handleNotifications = () => {
     this.props.toggleDrawer()
     this.props.history.push('/notifications')
-  }
-
-  handlePreferences = () => {
-    this.props.toggleDrawer()
-    this.props.history.push('/preferences')
   }
 
   handlePreferences = () => {
@@ -204,6 +203,7 @@ const mapStateToProps = state => {
 const actionsToProps = {
   userLogout: actions.userLogout,
   updateUser: actions.updateUser,
+  saveActionState: userProfileActions.saveActionState,
 }
 
 export default withRouter(

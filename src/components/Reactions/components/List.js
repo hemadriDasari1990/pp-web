@@ -47,30 +47,13 @@ class ReactionsList extends Component {
     }
   }
   componentDidMount() {
-    if (this.props.match.params.id) {
-      this.props
-        .getReactions(this.props.type, this.props.match.params.id)
-        .then(res => {
-          this.setState({
-            reactions: res.data,
-          })
+    if (this.props.postId) {
+      this.props.getReactions(this.props.type, this.props.postId).then(res => {
+        this.setState({
+          reactions: res.data,
         })
+      })
     }
-  }
-
-  renderUserOrigin = provider => {
-    let name = ''
-    switch (provider.toLowerCase()) {
-      case 'google.com':
-        name = 'Google User'
-        break
-      case 'facebook.com':
-        name = 'facebook.com'
-        break
-      default:
-        break
-    }
-    return name
   }
 
   handleFollow = async (user, index) => {
@@ -255,12 +238,14 @@ const mapStateToProps = state => {
     ['UserProfile', 'follower', 'get', 'success'],
     Map(),
   )
+  const postId = state.getIn(['Timeline', 'post', 'id', 'save'])
   return {
     profileFollower,
     reactions,
     reactionsLoading,
     reactionsError,
     user,
+    postId,
   }
 }
 

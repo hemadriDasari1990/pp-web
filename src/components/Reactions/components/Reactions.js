@@ -51,13 +51,6 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 }
 
-//   function a11yProps(index) {
-//     return {
-//       id: `scrollable-prevent-tab-${index}`,
-//       'aria-controls': `scrollable-prevent-tabpanel-${index}`,
-//     };
-//   }
-
 class Reactions extends Component {
   constructor(props) {
     super(props)
@@ -67,24 +60,9 @@ class Reactions extends Component {
   }
 
   async componentDidMount() {
-    if (this.props.match.params.id) {
-      await this.props.getReactionsCount(this.props.match.params.id)
+    if (this.props.postId) {
+      await this.props.getReactionsCount(this.props.postId)
     }
-  }
-
-  renderUserOrigin = provider => {
-    let name = ''
-    switch (provider.toLowerCase()) {
-      case 'google.com':
-        name = 'Google User'
-        break
-      case 'facebook.com':
-        name = 'facebook.com'
-        break
-      default:
-        break
-    }
-    return name
   }
 
   handleChange = async index => {
@@ -105,7 +83,7 @@ class Reactions extends Component {
   }
 
   render() {
-    const { classes, reactionsCount } = this.props
+    const { classes, reactionsCount, postId } = this.props
     const { value } = this.state
     return (
       <React.Fragment>
@@ -224,8 +202,10 @@ Reactions.propTypes = {}
 
 const mapStateToProps = state => {
   const reactionsCount = state.getIn(['Post', 'reactions', 'count', 'success'])
+  const postId = state.getIn(['Timeline', 'post', 'id', 'save'])
   return {
     reactionsCount,
+    postId,
   }
 }
 

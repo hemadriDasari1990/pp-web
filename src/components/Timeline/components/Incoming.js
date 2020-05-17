@@ -102,11 +102,13 @@ class Incoming extends Component {
       showEmojis: false,
       showCommentInput: false,
       postId: null,
+      hint: '',
     }
   }
 
   async componentDidMount() {
     await this.getPosts()
+    this.renderHint()
   }
 
   getPosts = async () => {
@@ -171,7 +173,7 @@ class Incoming extends Component {
         hint: hintArray[index],
       })
       index = (index + 1) % hintArray.length
-    }, 2000)
+    }, 1500)
   }
 
   createOrUpdateReaction = async (userId, postId, reaction) => {
@@ -284,6 +286,16 @@ class Incoming extends Component {
     })
   }
 
+  viewReactions = (type, postId) => {
+    this.props.savePostId(postId)
+    this.props.saveActionState(type)
+  }
+
+  viewProfile = (type, userId) => {
+    this.props.saveActionState(type)
+    this.props.history.push(`/profile/${userId}`)
+  }
+
   render() {
     const {
       incomingPosts,
@@ -297,7 +309,14 @@ class Incoming extends Component {
       type,
       commentsCount,
     } = this.props
-    const { open, anchorEl, showEmojis, showCommentInput, postId } = this.state
+    const {
+      open,
+      anchorEl,
+      showEmojis,
+      showCommentInput,
+      postId,
+      hint,
+    } = this.state
     return (
       <Suspense fallback={<Loader />}>
         {incomingPostsLoading && incomingPosts && !incomingPosts.length ? (
@@ -340,7 +359,10 @@ class Incoming extends Component {
                       <>
                         <Link
                           className="hyperlink"
-                          to={`/profile/${post.postedBy._id}`}
+                          to="#"
+                          onClick={() =>
+                            this.viewProfile('incoming', post.postedBy._id)
+                          }
                         >
                           {post.isAnonymous && post.postedBy._id === user._id
                             ? 'You'
@@ -524,7 +546,12 @@ class Incoming extends Component {
                           title={renderUserNames(post.reactions)}
                           placement="bottom"
                         >
-                          <Link to={`/post/${post._id}/reactions`}>
+                          <Link
+                            to="#"
+                            onClick={() =>
+                              this.viewReactions('post-reactions', post._id)
+                            }
+                          >
                             {formateNumber(post.reactions.length) + ' - '}
                           </Link>
                         </Tooltip>
@@ -759,6 +786,14 @@ class Incoming extends Component {
                     />
                   </CardActions>
                 )}
+                {post.reactionsCount === 0 && post.commentsCount === 0 ? (
+                  <>
+                    <Divider />
+                    <CardActions disableSpacing style={{ paddingTop: 0 }}>
+                      <span>{hint}</span>
+                    </CardActions>
+                  </>
+                ) : null}
                 <CardActions disableSpacing style={{ paddingTop: 0 }}>
                   {postId !== post._id && (
                     <CommentsList type="parent" post={post} />
@@ -843,6 +878,8 @@ const actionsToProps = {
   getRecentPosts: actions.getRecentPosts,
   getCommentsCount: postActions.getCommentsCount,
   getComments: postActions.getComments,
+  saveActionState: profileActions.saveActionState,
+  savePostId: actions.savePostId,
 }
 
 export default withRouter(

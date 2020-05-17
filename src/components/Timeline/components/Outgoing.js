@@ -271,6 +271,16 @@ class Outgoing extends Component {
     })
   }
 
+  viewReactions = (type, postId) => {
+    this.props.savePostId(postId)
+    this.props.saveActionState(type)
+  }
+
+  viewProfile = (type, userId) => {
+    this.props.saveActionState(type)
+    this.props.history.push(`/profile/${userId}`)
+  }
+
   render() {
     const {
       outgoingPosts,
@@ -337,7 +347,10 @@ class Outgoing extends Component {
                     <>
                       <Link
                         className="hyperlink"
-                        to={`/profile/${post.postedTo._id}`}
+                        to="#"
+                        onClick={() =>
+                          this.viewProfile('incoming', post.postedTo._id)
+                        }
                       >
                         {post.isAnonymous
                           ? post.postedTo.userName + ' (A)'
@@ -490,7 +503,12 @@ class Outgoing extends Component {
                               title={renderUserNames(post.reactions)}
                               placement="bottom"
                             >
-                              <Link to={`/post/${post._id}/reactions`}>
+                              <Link
+                                to="#"
+                                onClick={() =>
+                                  this.viewReactions('post-reactions', post._id)
+                                }
+                              >
                                 {formateNumber(post.reactions.length) + ' - '}
                               </Link>
                             </Tooltip>
@@ -721,6 +739,16 @@ class Outgoing extends Component {
                     />
                   </CardActions>
                 )}
+                {post.reactionsCount === 0 &&
+                post.approved &&
+                post.commentsCount === 0 ? (
+                  <>
+                    <Divider />
+                    <CardActions disableSpacing style={{ paddingTop: 0 }}>
+                      <span>{hint}</span>
+                    </CardActions>
+                  </>
+                ) : null}
                 <CardActions disableSpacing style={{ paddingTop: 0 }}>
                   {postId !== post._id && <CommentsList post={post} />}
                 </CardActions>
@@ -792,6 +820,8 @@ const actionsToProps = {
   createOrUpdateReaction: profileActions.createOrUpdateReaction,
   getRecentPosts: actions.getRecentPosts,
   getCommentsCount: postActions.getCommentsCount,
+  saveActionState: profileActions.saveActionState,
+  savePostId: actions.savePostId,
 }
 
 export default withRouter(

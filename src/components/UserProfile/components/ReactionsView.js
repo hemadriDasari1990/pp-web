@@ -1,3 +1,4 @@
+import * as actions from '../actions'
 import * as globalActions from '../../../actions/index'
 
 import React, { Component } from 'react'
@@ -49,13 +50,37 @@ class ReactionsView extends Component {
   }
 
   goBack = () => {
-    this.props.history.push(this.props.fallBackTo)
+    this.props.saveActionState(this.getPath())
+  }
+
+  viewProfile = (type, userId) => {
+    this.props.saveActionState(type)
+    this.props.history.push(`/profile/${userId}`)
+  }
+
+  getPath = () => {
+    const { pathname } = this.props.location
+    let path
+    switch (pathname) {
+      case '/timeline/incoming':
+        path = 'incoming'
+        break
+      case '/timeline/outgoing':
+        path = 'outgoing'
+        break
+      case '/timeline/users':
+        path = 'users'
+        break
+      default:
+        break
+    }
+    return path
   }
 
   renderSubHeader = () => {
-    const locationPath = this.props.location.pathname
+    // const locationPath = this.props.location.pathname
     const { view } = this.props
-    return locationPath.includes('/reactions') && view === 'list' ? (
+    return view === 'list' ? (
       <div className="row ml-1">
         <IconButton onClick={() => this.goBack()} color="primary">
           <BackIcon />
@@ -117,7 +142,10 @@ class ReactionsView extends Component {
                           <>
                             <Link
                               className="hyperlink"
-                              to={`/profile/${pu.likedBy._id}`}
+                              to="#"
+                              onClick={() =>
+                                this.viewProfile('incoming', pu.likedBy._id)
+                              }
                             >
                               {user && user._id === pu.likedBy._id
                                 ? 'You '
@@ -175,6 +203,7 @@ const mapStateToProps = state => {
 
 const actionsToProps = {
   getUser: globalActions.getUser,
+  saveActionState: actions.saveActionState,
 }
 
 export default withRouter(

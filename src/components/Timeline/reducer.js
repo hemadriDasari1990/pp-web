@@ -164,6 +164,9 @@ export const Timeline = (state = Map(), action) => {
         .setIn(['post', 'comment', 'errors'], fromJS(action.errors))
         .setIn(['post', 'comment', 'loading'], false)
 
+    case actions.SAVE_POST_ID:
+      return state.setIn(['post', 'id', 'save'], action.id)
+
     default:
       return state
   }

@@ -1,3 +1,5 @@
+import * as userProfileActions from '../../UserProfile/actions'
+
 import React, { Component } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
@@ -21,6 +23,7 @@ class WelcomeProfile extends Component {
 
   handleTimeline = event => {
     this.props.history.push('/timeline/incoming')
+    this.props.saveActionState('incoming')
   }
 
   render() {
@@ -86,7 +89,9 @@ const mapStateToProps = state => {
   }
 }
 
-const actionsToProps = {}
+const actionsToProps = {
+  saveActionState: userProfileActions.saveActionState,
+}
 
 export default withRouter(
   connect(mapStateToProps, actionsToProps)(WelcomeProfile),

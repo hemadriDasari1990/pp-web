@@ -32,62 +32,33 @@ class CenterGrid extends Component {
 
   render() {
     const {} = this.state
-    const { user, path, match } = this.props
+    const { user, path, match, actionState } = this.props
     const locationPath = this.props.location.pathname
+
+    console.log('actionState', actionState)
     return (
       <Suspense>
         <Grid item lg={5} md={6} xs={12} sm={9} className="middle-content">
-          {locationPath.includes('/post') && <Reactions />}
-          <Route
-            exact
-            path={'/timeline/users'}
-            exact
-            component={() => (
-              <>
-                <Users user={user} />
-              </>
-            )}
-          />
-          <Route
-            path={'/timeline/incoming'}
-            exact
-            component={() => (
-              <>
-                <Post />
-                <Incoming user={user} />
-              </>
-            )}
-          />
-          <Route
-            path="/timeline/outgoing"
-            exact
-            component={() => (
-              <>
-                <Post />
-                <Outgoing user={user} />
-              </>
-            )}
-          />
-          <Route
-            path="/timeline/:id/reactions"
-            exact
-            component={() => (
-              <ProfileReactionsView
-                fallBackTo={'/timeline/incoming'}
-                view="list"
-              />
-            )}
-          />
-          <Route
-            path="/timeline/:id/followers"
-            exact
-            component={() => (
-              <ProfileFollowersView
-                fallBackTo={'/timeline/incoming'}
-                view="list"
-              />
-            )}
-          />
+          {actionState === 'post-reactions' && <Reactions />}
+          {actionState === 'users' ? <Users user={user} /> : null}
+          {!actionState || actionState === 'incoming' ? (
+            <>
+              <Post />
+              <Incoming user={user} />
+            </>
+          ) : null}
+          {actionState === 'outgoing' ? (
+            <>
+              <Post />
+              <Outgoing user={user} />
+            </>
+          ) : null}
+          {actionState === 'reactions' ? (
+            <ProfileReactionsView view="list" />
+          ) : null}
+          {actionState === 'followers' ? (
+            <ProfileFollowersView view="list" />
+          ) : null}
         </Grid>
       </Suspense>
     )
@@ -98,8 +69,10 @@ CenterGrid.propTypes = {}
 
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'])
+  const actionState = state.getIn(['UserProfile', 'action', 'save'])
   return {
     user,
+    actionState,
   }
 }
 

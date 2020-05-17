@@ -59,10 +59,6 @@ class Users extends Component {
     })
   }
 
-  handleViewProfile = userId => {
-    this.props.history.push(`/profile/${userId}`)
-  }
-
   handleFollow = async (cUser, index) => {
     const data = {
       follower: this.props.user._id,
@@ -125,6 +121,12 @@ class Users extends Component {
         })
       : null
   }
+
+  viewProfile = (type, userId) => {
+    this.props.saveActionState(type)
+    this.props.history.push(`/profile/${userId}`)
+  }
+
   render() {
     const { classes, usersLoading } = this.props
     const { open, anchorEl, filteredUsers, users } = this.state
@@ -185,7 +187,10 @@ class Users extends Component {
                           <>
                             <Link
                               className="hyperlink"
-                              to={`/profile/${user._id}`}
+                              to="#"
+                              onClick={() =>
+                                this.viewProfile('incoming', user._id)
+                              }
                             >
                               {user.userName + ' '}
                             </Link>
@@ -262,6 +267,7 @@ const actionsToProps = {
   createOrUpdateProfileReaction: profileActions.createOrUpdateProfileReaction,
   createOrUpdateProfileFollower: profileActions.createOrUpdateProfileFollower,
   getProfileFollower: profileActions.getProfileFollower,
+  saveActionState: profileActions.saveActionState,
 }
 
 export default withRouter(

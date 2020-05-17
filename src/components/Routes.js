@@ -56,11 +56,6 @@ class Routes extends Component {
           />
           <PrivateRoute
             authenticated={authenticated}
-            path="/post/:id/reactions"
-            component={() => <Timeline />}
-          />
-          <PrivateRoute
-            authenticated={authenticated}
             path="/post/:id/details"
             component={() => <PostDetails />}
           />

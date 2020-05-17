@@ -118,7 +118,7 @@ class PostDetails extends Component {
       <React.Fragment>
         <div className="row">
           <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12"></div>
-          <div className="col-lg-4 col-md-7 col-sm-12 col-xs-12">
+          <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
             {!postDetailsLoading && postDetails ? (
               <Card>
                 <CardHeader

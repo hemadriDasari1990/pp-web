@@ -1,3 +1,4 @@
+import * as actions from '../actions'
 import * as globalActions from '../../../actions/index'
 
 import React, { Component } from 'react'
@@ -43,13 +44,36 @@ class FollowersView extends Component {
   async componentDidMount() {}
 
   goBack = () => {
-    this.props.history.push(this.props.fallBackTo)
+    this.props.saveActionState(this.getPath())
+  }
+
+  getPath = () => {
+    const { pathname } = this.props.location
+    let path
+    switch (pathname) {
+      case '/timeline/incoming':
+        path = 'incoming'
+        break
+      case '/timeline/outgoing':
+        path = 'outgoing'
+        break
+      case '/timeline/users':
+        path = 'users'
+        break
+      default:
+        break
+    }
+    return path
+  }
+
+  viewProfile = (type, userId) => {
+    this.props.saveActionState(type)
+    this.props.history.push(`/profile/${userId}`)
   }
 
   renderSubHeader = () => {
-    const locationPath = this.props.location.pathname
     const { view } = this.props
-    return locationPath.includes('/followers') && view === 'list' ? (
+    return view === 'list' ? (
       <div className="row ml-1">
         <IconButton onClick={() => this.goBack()} color="primary">
           <BackIcon />
@@ -104,7 +128,10 @@ class FollowersView extends Component {
                           <>
                             <Link
                               className="hyperlink"
-                              to={`/profile/${f.follower._id}`}
+                              to="#"
+                              onClick={() =>
+                                this.viewProfile('incoming', f.follower._id)
+                              }
                             >
                               {user && user._id === f.follower._id
                                 ? 'You '
@@ -163,6 +190,7 @@ const mapStateToProps = state => {
 
 const actionsToProps = {
   getUser: globalActions.getUser,
+  saveActionState: actions.saveActionState,
 }
 
 export default withRouter(

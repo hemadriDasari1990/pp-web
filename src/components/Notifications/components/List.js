@@ -69,21 +69,6 @@ class NotificationsList extends Component {
     }
   }
 
-  renderUserOrigin = provider => {
-    let name = ''
-    switch (provider.toLowerCase()) {
-      case 'google.com':
-        name = 'Google User'
-        break
-      case 'facebook.com':
-        name = 'facebook.com'
-        break
-      default:
-        break
-    }
-    return name
-  }
-
   showMoreNotifications = async () => {
     const limit = parseInt(this.state.limit) + 10
     await this.props

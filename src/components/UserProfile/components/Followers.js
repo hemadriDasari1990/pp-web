@@ -1,3 +1,4 @@
+import * as actions from '../actions'
 import * as globalActions from '../../../actions/index'
 
 import React, { Component, Suspense, lazy } from 'react'
@@ -38,6 +39,10 @@ class Followers extends Component {
     }
   }
 
+  viewAll = type => {
+    this.props.saveActionState(type)
+  }
+
   render() {
     const {
       classes,
@@ -49,7 +54,6 @@ class Followers extends Component {
     } = this.props
     const hasFollowers =
       profileUser && profileUser.followers.length > 0 ? true : false
-    const viewPath = profileUser ? `/${path}/${profileUser._id}/followers` : '#'
     return (
       <Suspense fallback={<Loader />}>
         <Card>
@@ -57,7 +61,11 @@ class Followers extends Component {
             title="Followers"
             action={
               hasFollowers ? (
-                <Link className="hyperlink" to={viewPath}>
+                <Link
+                  className="hyperlink"
+                  to="#"
+                  onClick={() => this.viewAll('followers')}
+                >
                   View All{' '}
                   <b>
                     {formateNumber(
@@ -69,7 +77,7 @@ class Followers extends Component {
             }
           ></CardHeader>
           <CardContent className={hasFollowers ? 'p-0' : ''}>
-            <FollowersView view="card" fallBackTo={'/timeline/incoming'} />
+            <FollowersView view="card" />
           </CardContent>
         </Card>
       </Suspense>
@@ -94,6 +102,7 @@ const mapStateToProps = state => {
 
 const actionsToProps = {
   getUser: globalActions.getUser,
+  saveActionState: actions.saveActionState,
 }
 
 export default withRouter(

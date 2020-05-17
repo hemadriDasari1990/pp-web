@@ -1,3 +1,4 @@
+import * as actions from '../actions'
 import * as globalActions from '../../../actions/index'
 
 import React, { Component, Suspense, lazy } from 'react'
@@ -45,10 +46,11 @@ class Reactions extends Component {
     }
   }
 
-  viewAll = path => {
-    // this.props.saveActionState();
-    this.props.history.push(path)
+  viewAll = type => {
+    this.props.saveActionState(type)
   }
+
+  componentWillUnmount() {}
 
   render() {
     const {
@@ -59,11 +61,8 @@ class Reactions extends Component {
       user,
       path,
     } = this.props
-    const { fallBackTo } = this.state
-    const viewPath = profileUser ? `/${path}/${profileUser._id}/reactions` : '#'
     const hasReactions =
       profileUser && profileUser.reactions.length > 0 ? true : false
-    console.log('profileUser', profileUser)
     return (
       <Suspense fallback={<Loader />}>
         <Card>
@@ -74,7 +73,7 @@ class Reactions extends Component {
                 <Link
                   className="hyperlink"
                   to="#"
-                  onClick={() => this.viewAll(viewPath)}
+                  onClick={() => this.viewAll('reactions')}
                 >
                   View All{' '}
                   <b>
@@ -87,7 +86,7 @@ class Reactions extends Component {
             }
           ></CardHeader>
           <CardContent className={hasReactions ? 'p-0' : ''}>
-            <ReactionsView view="card" fallBackTo={'/timeline/incoming'} />
+            <ReactionsView view="card" />
           </CardContent>
         </Card>
       </Suspense>
@@ -112,6 +111,7 @@ const mapStateToProps = state => {
 
 const actionsToProps = {
   getUser: globalActions.getUser,
+  saveActionState: actions.saveActionState,
 }
 
 export default withRouter(
