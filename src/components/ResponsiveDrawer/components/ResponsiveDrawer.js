@@ -1,25 +1,20 @@
 import * as actions from '../../../actions/index'
 import * as dashboardActions from '../../Timeline/actions'
 
-import { List, Map } from 'immutable'
+import React, { Component, Suspense, lazy } from 'react'
 
 import AppBar from '@material-ui/core/AppBar'
 import Avatar from '@material-ui/core/Avatar'
 import Badge from '@material-ui/core/Badge'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import Drawer from '@material-ui/core/Drawer'
-import DrawerComponent from '../../Drawer/components/Drawer'
 import Fab from '@material-ui/core/Fab'
-import Footer from '../../Footer/components/Footer'
 import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
+import Loader from '../../Loader/components/Loader'
 import MenuIcon from '@material-ui/icons/Menu'
 import NotificationsIcon from '@material-ui/icons/Notifications'
 import PropTypes from 'prop-types'
-import React from 'react'
-import Routes from '../../Routes'
-import Search from '../../Search/components/Search'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
 import arrowIcon from '../../../../assets/arrow.svg'
@@ -28,8 +23,13 @@ import formateNumber from '../../../util/formateNumber'
 import libIcon from '../../../../assets/lib.svg'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
-import Loader from '../../Loader/components/Loader'
+
+const CustomizedSnackbars = lazy(() =>
+  import('../../Snackbar/components/Snackbar'),
+)
+const DrawerComponent = lazy(() => import('../../Drawer/components/Drawer'))
+const Routes = lazy(() => import('../../Routes'))
+const Search = lazy(() => import('../../Search/components/Search'))
 
 const drawerWidth = 110
 
@@ -135,7 +135,7 @@ const styles = theme => ({
   },
 })
 
-class ResponsiveDrawer extends React.Component {
+class ResponsiveDrawer extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -235,168 +235,165 @@ class ResponsiveDrawer extends React.Component {
     const { showNotification, logout, isMobileMenuOpen } = this.state
     const mobileMenuId = 'primary-search-account-menu-mobile'
     return (
-      <div className={classes.root}>
-        <CssBaseline />
-        <AppBar className={classes.appBar}>
-          <Toolbar>
-            {authenticated && (
-              <IconButton
-                color="primary"
-                aria-label="open drawer"
-                onClick={() => this.handleDrawerToggle()}
-                className={classes.navIconHide}
-              >
-                <MenuIcon />
-              </IconButton>
-            )}
-            <Tooltip title="The Writenpost" aria-label="writenpost">
-              <a href="/" className="cursor">
-                <img src={libIcon} height={50} width={50} />
-              </a>
-            </Tooltip>
-            <div className="col align-selft-start">
-              <Search type="header" />
-            </div>
-            <div className={classes.grow} />
-            {user && authenticated ? (
-              <div className="row">
-                <div className={classes.sectionDesktop}>
-                  {/* <Tooltip title={user.userName} aria-label="Add">
-                  <div className="row">
+      <Suspense fallback={<Loader />}>
+        <div className={classes.root}>
+          <CssBaseline />
+          <AppBar className={classes.appBar}>
+            <Toolbar>
+              {authenticated && (
+                <IconButton
+                  color="primary"
+                  aria-label="open drawer"
+                  onClick={() => this.handleDrawerToggle()}
+                  className={classes.navIconHide}
+                >
+                  <MenuIcon />
+                </IconButton>
+              )}
+              <Tooltip title="The Writenpost" aria-label="writenpost">
+                <a href="/" className="cursor">
+                  <img src={libIcon} height={50} width={50} />
+                </a>
+              </Tooltip>
+              <div className="col align-selft-start">
+                <Search type="header" />
+              </div>
+              <div className={classes.grow} />
+              {user && authenticated ? (
+                <div className="row">
+                  <div className={classes.sectionDesktop}>
+                    {/* <Tooltip title={user.userName} aria-label="Add">
+                    <div className="row">
+                      <Avatar
+                        aria-haspopup="true"
+                        alt={user.userName}
+                        src={user.photoURL}
+                        className={classes.avatar}
+                      />
+                      <Typography variant="span" className="profile-title">
+                        {user.userName.substring(0, 15) + '...'}
+                      </Typography>
+                    </div>
+                  </Tooltip> */}
+                  </div>
+                  <Tooltip title="Notifications" aria-label="notification">
+                    <Badge
+                      showZero
+                      badgeContent={
+                        notificationsCount
+                          ? formateNumber(notificationsCount.unReadCount)
+                          : 0
+                      }
+                      classes={{ badge: classes.badge }}
+                    >
+                      <NotificationsIcon
+                        className="cursor"
+                        style={{ fontSize: 35, marginTop: 15, marginRight: 10 }}
+                        onClick={() => this.showNotifications()}
+                        color="primary"
+                      />
+                    </Badge>
+                  </Tooltip>
+                  <Tooltip title={user.userName} aria-label="Add">
                     <Avatar
                       aria-haspopup="true"
                       alt={user.userName}
                       src={user.photoURL}
                       className={classes.avatar}
                     />
-                    <Typography variant="span" className="profile-title">
-                      {user.userName.substring(0, 15) + '...'}
-                    </Typography>
-                  </div>
-                </Tooltip> */}
+                  </Tooltip>
                 </div>
-                <Tooltip title="Notifications" aria-label="notification">
-                  <Badge
-                    showZero
-                    badgeContent={
-                      notificationsCount
-                        ? formateNumber(notificationsCount.unReadCount)
-                        : 0
-                    }
-                    classes={{ badge: classes.badge }}
-                  >
-                    <NotificationsIcon
-                      className="cursor"
-                      style={{ fontSize: 35, marginTop: 15, marginRight: 10 }}
-                      onClick={() => this.showNotifications()}
-                      color="primary"
-                    />
-                  </Badge>
-                </Tooltip>
-                <Tooltip title={user.userName} aria-label="Add">
-                  <Avatar
-                    aria-haspopup="true"
-                    alt={user.userName}
-                    src={user.photoURL}
-                    className={classes.avatar}
-                  />
-                </Tooltip>
-              </div>
-            ) : (
-              <Fab
-                onClick={() => this.handleSignin()}
-                size="small"
-                color="primary"
-                aria-label="add"
-                variant="extended"
-              >
-                Sign In <Avatar src={arrowIcon} className="b-s b-w-arrow" />
-              </Fab>
-            )}
-            {/* {user && authenticated && (
-              <div className={classes.sectionMobile}>
-                <IconButton
-                  aria-label="show more"
-                  aria-controls={mobileMenuId}
-                  aria-haspopup="true"
-                  onClick={e => this.handleMobileMenuOpen(e)}
-                  color="inherit"
+              ) : (
+                <Fab
+                  onClick={() => this.handleSignin()}
+                  size="small"
+                  color="primary"
+                  aria-label="add"
+                  variant="extended"
                 >
-                  <MenuIcon color="primary" fontSize="large" />
-                </IconButton>
-              </div>
-            )} */}
-            {/* {showNotification && <Notifications openMenu={showNotification} />} */}
-            {logout && (
-              <CustomizedSnackbars
-                open={true}
-                message={'Logged out succesfully'}
-                status={'success'}
-              />
-            )}
-          </Toolbar>
-        </AppBar>
-        {authenticated && (
-          <nav className={classes.drawer} aria-label="mailbox folders">
-            <Hidden mdUp>
-              <Drawer
-                containerstyle={{ transform: 'none' }}
-                variant="temporary"
-                anchor="left"
-                open={this.state.mobileOpen}
-                onClose={() => this.handleDrawerToggle()}
-                classes={{
-                  paper: classes.drawerPaper,
-                }}
-                ModalProps={{
-                  keepMounted: true, // Better open performance on mobile.
-                }}
-                PaperProps={{ style: this.state.newWidth }}
-              >
-                <div
-                  id="dragger"
-                  onMouseDown={event => {
-                    this.handleMousedown(event)
+                  Sign In <Avatar src={arrowIcon} className="b-s b-w-arrow" />
+                </Fab>
+              )}
+              {/* {user && authenticated && (
+                <div className={classes.sectionMobile}>
+                  <IconButton
+                    aria-label="show more"
+                    aria-controls={mobileMenuId}
+                    aria-haspopup="true"
+                    onClick={e => this.handleMobileMenuOpen(e)}
+                    color="inherit"
+                  >
+                    <MenuIcon color="primary" fontSize="large" />
+                  </IconButton>
+                </div>
+              )} */}
+              {/* {showNotification && <Notifications openMenu={showNotification} />} */}
+              {logout && (
+                <CustomizedSnackbars
+                  open={true}
+                  message={'Logged out succesfully'}
+                  status={'success'}
+                />
+              )}
+            </Toolbar>
+          </AppBar>
+          {authenticated && (
+            <nav className={classes.drawer} aria-label="mailbox folders">
+              <Hidden mdUp>
+                <Drawer
+                  containerstyle={{ transform: 'none' }}
+                  variant="temporary"
+                  anchor="left"
+                  open={this.state.mobileOpen}
+                  onClose={() => this.handleDrawerToggle()}
+                  classes={{
+                    paper: classes.drawerPaper,
                   }}
-                  className={classes.dragger}
-                />
-                <DrawerComponent
-                  toggleDrawer={() => this.handleDrawerToggle()}
-                />
-              </Drawer>
-            </Hidden>
-            <Hidden xsDown implementation="css">
-              <Drawer
-                containerstyle={{ transform: 'none' }}
-                variant="permanent"
-                open
-                anchor={'left'}
-                classes={{
-                  paper: classes.drawerPaper,
-                }}
-                PaperProps={{ style: this.state.newWidth }}
-              >
-                <div
-                  id="dragger"
-                  onMouseDown={event => {
-                    this.handleMousedown(event)
+                  ModalProps={{
+                    keepMounted: true, // Better open performance on mobile.
                   }}
-                  className={classes.dragger}
-                />
-                <DrawerComponent toggleDrawer={this.handleDrawerToggle} />
-              </Drawer>
-            </Hidden>
-          </nav>
-        )}
-        <main className={classes.appContent}>
-          <Container fixed className="pl-0 pr-0" style={{ minHeight: 300 }}>
-            {loading ? <Loader /> : <Routes authenticated={authenticated} />}
-          </Container>
-          <section className="body-section">
-            <Footer authenticated={authenticated} />
-          </section>
-        </main>
-      </div>
+                  PaperProps={{ style: this.state.newWidth }}
+                >
+                  <div
+                    id="dragger"
+                    onMouseDown={event => {
+                      this.handleMousedown(event)
+                    }}
+                    className={classes.dragger}
+                  />
+                  <DrawerComponent
+                    toggleDrawer={() => this.handleDrawerToggle()}
+                  />
+                </Drawer>
+              </Hidden>
+              <Hidden xsDown implementation="css">
+                <Drawer
+                  containerstyle={{ transform: 'none' }}
+                  variant="permanent"
+                  open
+                  anchor={'left'}
+                  classes={{
+                    paper: classes.drawerPaper,
+                  }}
+                  PaperProps={{ style: this.state.newWidth }}
+                >
+                  <div
+                    id="dragger"
+                    onMouseDown={event => {
+                      this.handleMousedown(event)
+                    }}
+                    className={classes.dragger}
+                  />
+                  <DrawerComponent toggleDrawer={this.handleDrawerToggle} />
+                </Drawer>
+              </Hidden>
+            </nav>
+          )}
+          <main className={classes.appContent}>
+            <Routes authenticated={authenticated} />
+          </main>
+        </div>
+      </Suspense>
     )
   }
 }

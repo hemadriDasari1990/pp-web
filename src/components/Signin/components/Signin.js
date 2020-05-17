@@ -2,14 +2,13 @@ import React, { Component } from 'react'
 
 import Facebook from '../../Social/components/Facebook'
 import Google from '../../Social/components/Google'
-import Linkedin from '../../Social/components/Linkedin'
 import PropTypes from 'prop-types'
+import Slide from '@material-ui/core/Slide'
 import Social from '../../../../assets/social.svg'
 import Twitter from '../../Social/components/Twitter'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import withStyles from '@material-ui/core/styles/withStyles'
-import Slide from '@material-ui/core/Slide'
 
 const styles = theme => ({
   button: {},
@@ -73,7 +72,6 @@ class Signin extends Component {
                 <br />
                 <Facebook />
                 <Google />
-                {/* <Linkedin /> */}
                 <Twitter />
               </div>
             </div>

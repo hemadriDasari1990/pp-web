@@ -76,23 +76,7 @@ module.exports = {
   //           }
   //       }
   //   },
-  optimization: {
-    minimizer: [
-      // we specify a custom UglifyJsPlugin here to get source maps in production
-      new UglifyJsPlugin({
-        cache: true,
-        parallel: true,
-        uglifyOptions: {
-          compress: {
-            drop_console: true,
-          },
-          ecma: 6,
-          mangle: true,
-        },
-        sourceMap: false,
-      }),
-    ],
-  },
+
   plugins: [
     new webpack.optimize.ModuleConcatenationPlugin(),
     new webpack.DefinePlugin({
@@ -100,6 +84,12 @@ module.exports = {
         NODE_ENV: JSON.stringify('production'),
       },
     }),
+    new webpack.HashedModuleIdsPlugin({
+      hashFunction: 'sha256',
+      hashDigest: 'hex',
+      hashDigestLength: 4,
+    }),
+    new webpack.NoEmitOnErrorsPlugin(),
     // new webpack.optimize.UglifyJsPlugin({
     //   sourceMap: false,
     //   mangle: false
@@ -132,6 +122,48 @@ module.exports = {
       AppCache: false,
     }),
   ],
+  optimization: {
+    namedModules: false,
+    namedChunks: false,
+    nodeEnv: 'production',
+    flagIncludedChunks: true,
+    occurrenceOrder: true,
+    sideEffects: true,
+    usedExports: true,
+    concatenateModules: true,
+    splitChunks: {
+      cacheGroups: {
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendor',
+          chunks: 'all',
+        },
+      },
+      minSize: 30000,
+      maxAsyncRequests: 5,
+      maxAsyncRequests: 3,
+    },
+    noEmitOnErrors: true,
+    minimize: true,
+    minimizer: [
+      // we specify a custom UglifyJsPlugin here to get source maps in production
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        uglifyOptions: {
+          compress: {
+            drop_console: true,
+          },
+          ecma: 6,
+          mangle: true,
+        },
+        sourceMap: false,
+      }),
+    ],
+    removeAvailableModules: true,
+    removeEmptyChunks: true,
+    mergeDuplicateChunks: true,
+  },
   externals: {
     // require("jquery") is external and available
     //  on the global var jQuery

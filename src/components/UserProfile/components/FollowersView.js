@@ -1,30 +1,30 @@
 import * as globalActions from '../../../actions/index'
 
-import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
+import BackIcon from '@material-ui/icons/ArrowBack'
 import Badge from '@material-ui/core/Badge'
+import IconButton from '@material-ui/core/IconButton'
 import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
+import ListSubheader from '@material-ui/core/ListSubheader'
 import Loader from '../../Loader/components/Loader'
+import { Map } from 'immutable'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
-import { connect } from 'react-redux'
-import getPastTime from '../../../util/getPastTime'
-import getReaction from '../../../util/getReaction'
-import { withStyles } from '@material-ui/core/styles'
-import getProvider from '../../../util/getProvider'
-import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
-import ListSubheader from '@material-ui/core/ListSubheader'
-import BackIcon from '@material-ui/icons/ArrowBack'
-import IconButton from '@material-ui/core/IconButton'
 import Zoom from '@material-ui/core/Zoom'
+import { connect } from 'react-redux'
+import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
+import getPastTime from '../../../util/getPastTime'
+import getProvider from '../../../util/getProvider'
+import getReaction from '../../../util/getReaction'
+import { withRouter } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
   smallAvatar: {
@@ -40,9 +40,7 @@ const styles = {
 }
 
 class FollowersView extends Component {
-  async componentDidMount() {
-    await this.props.getUser(this.props.match.params.id)
-  }
+  async componentDidMount() {}
 
   goBack = () => {
     this.props.history.push(this.props.fallBackTo)
@@ -72,18 +70,14 @@ class FollowersView extends Component {
       user,
     } = this.props
     const hasFollowers =
-      (!profileUserLoading && profileUser && !profileUser.followers.length) ||
-      (!profileUserLoading && !profileUser) ||
-      !profileUser
-        ? false
-        : true
+      profileUser && profileUser.followers.length ? true : false
     return (
       <React.Fragment>
         <Zoom in={true} timeout={2000}>
           <List disablePadding={true} subheader={this.renderSubHeader()}>
             {hasFollowers
               ? profileUser.followers.map(f => (
-                  <ListItem key={f._id} alignItems="flex-start">
+                  <ListItem key={f._id} className="p-1">
                     <ListItemAvatar>
                       <Badge
                         classes={{ badge: classes.customBadge }}
@@ -139,16 +133,12 @@ class FollowersView extends Component {
                   </ListItem>
                 ))
               : null}
-            {!profileUserLoading &&
-              profileUser &&
-              !profileUser.followers.length && (
-                <Typography variant="h4" className="text-center">
-                  No Followers
-                </Typography>
-              )}
-            {profileUserLoading &&
-              profileUser &&
-              !profileUser.followers.length && <Loader />}
+            {profileUser && !profileUser.followers.length && (
+              <Typography variant="h4" className="text-center">
+                No Followers
+              </Typography>
+            )}
+            {profileUser && !profileUser.followers.length && <Loader />}
           </List>
         </Zoom>
       </React.Fragment>

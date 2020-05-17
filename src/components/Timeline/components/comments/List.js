@@ -1,6 +1,5 @@
 import * as postActions from '../../../Post/actions'
 
-import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
@@ -13,6 +12,7 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../../Loader/components/Loader'
+import { Map } from 'immutable'
 import MaterialLink from '@material-ui/core/Link'
 import Tooltip from '@material-ui/core/Tooltip'
 import { connect } from 'react-redux'
@@ -21,7 +21,6 @@ import getPastTime from '../../../../util/getPastTime'
 import isReactedToComment from '../../../../util/isReactedToComment'
 import renderUserNames from '../../../../util/renderUserNames'
 import { withStyles } from '@material-ui/core/styles'
-import AvatarOnline from '../../../AvatarOnline/components/AvatarOnline'
 
 const styles = {
   smallAvatar: {

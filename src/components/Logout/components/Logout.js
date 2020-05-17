@@ -1,13 +1,7 @@
 import * as actions from '../../../actions/index'
 
 import React, { Component } from 'react'
-import {
-  Redirect,
-  Route,
-  BrowserRouter as Router,
-  Switch,
-  withRouter,
-} from 'react-router-dom'
+import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import { connect } from 'react-redux'

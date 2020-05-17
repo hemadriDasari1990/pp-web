@@ -1,13 +1,13 @@
 import * as actions from '../../../actions/index'
 
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
+import Followers from './Followers'
 import Grid from '@material-ui/core/Grid'
-import { connect } from 'react-redux'
 import Profile from './Profile'
 import Reactions from './Reactions'
-import Followers from './Followers'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 class LeftGrid extends Component {
   constructor(props) {

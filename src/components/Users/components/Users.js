@@ -2,10 +2,12 @@ import * as mainActions from '../../../actions/index'
 import * as profileActions from '../../UserProfile/actions'
 
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
-import Avatar from '@material-ui/core/Avatar'
+import AskIcon from '@material-ui/icons/PlaylistAddRounded'
+import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
+import FollowIcon from '@material-ui/icons/RssFeedOutlined'
 import Grid from '@material-ui/core/Grid'
+import IconButton from '@material-ui/core/IconButton'
 import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -14,25 +16,17 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../Loader/components/Loader'
 import { Map } from 'immutable'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import SearchIcon from '@material-ui/icons/Search'
+import Slide from '@material-ui/core/Slide'
+import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
+import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
-import getPastTime from '../../../util/getPastTime'
 import getProvider from '../../../util/getProvider'
-import AskIcon from '@material-ui/icons/PlaylistAddRounded'
-import FollowIcon from '@material-ui/icons/RssFeedOutlined'
-import AskedIcon from '@material-ui/icons/PlaylistAddCheckRounded'
-import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
-import Fab from '@material-ui/core/Fab'
-import CustomTooltip from '../../CustomTooltip/components/Tooltip'
-import Zoom from '@material-ui/core/Zoom'
-import Slide from '@material-ui/core/Slide'
-import IconButton from '@material-ui/core/IconButton'
-import TextField from '@material-ui/core/TextField'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
-import SearchIcon from '@material-ui/icons/Search'
 
 const styles = theme => ({
   input: {
@@ -166,85 +160,85 @@ class Users extends Component {
           </div>
         </Grid>
         <List>
-          {!usersLoading &&
-            filteredUsers.length &&
-            filteredUsers.map((user, index) => (
-              <Grid item lg={12} md={12} xs={12} sm={12}>
-                <ListItem
-                  key={user._id}
-                  alignItems="flex-start"
-                  className="shadow b-r-15 mt-10"
-                >
-                  <ListItemAvatar>
-                    <Slide
-                      direction="right"
-                      in={true}
-                      timeout={1500}
-                      mountOnEnter
-                      unmountOnExit
-                    >
-                      <AvatarOnline user={user} />
-                    </Slide>
-                  </ListItemAvatar>
-                  <Tooltip title={user.userName} placement="bottom-start">
-                    <ListItemText
-                      primary={
-                        <>
-                          <Link
-                            className="hyperlink"
-                            to={`/profile/${user._id}`}
+          {!usersLoading && filteredUsers.length
+            ? filteredUsers.map((user, index) => (
+                <Grid item lg={12} md={12} xs={12} sm={12}>
+                  <ListItem
+                    key={user._id}
+                    alignItems="flex-start"
+                    className="shadow b-r-15 mt-10"
+                  >
+                    <ListItemAvatar>
+                      <Slide
+                        direction="right"
+                        in={true}
+                        timeout={1500}
+                        mountOnEnter
+                        unmountOnExit
+                      >
+                        <AvatarOnline user={user} />
+                      </Slide>
+                    </ListItemAvatar>
+                    <Tooltip title={user.userName} placement="bottom-start">
+                      <ListItemText
+                        primary={
+                          <>
+                            <Link
+                              className="hyperlink"
+                              to={`/profile/${user._id}`}
+                            >
+                              {user.userName + ' '}
+                            </Link>
+                            &nbsp;
+                            {getProvider(user.providerId)}
+                          </>
+                        }
+                        secondary={
+                          <React.Fragment>
+                            <Typography
+                              component="span"
+                              variant="body2"
+                              color="textPrimary"
+                            >
+                              {getCardSubHeaderProfileSummary(user)}
+                            </Typography>
+                          </React.Fragment>
+                        }
+                      />
+                    </Tooltip>
+                    {!this.ifSameUser(user) ? (
+                      <ListItemSecondaryAction className="r-5">
+                        <Tooltip title="Ask For Opinion" placement="right-end">
+                          <IconButton>
+                            <Zoom in={true} timeout={2000}>
+                              <AskIcon />
+                            </Zoom>
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Follow User" placement="right-end">
+                          <IconButton
+                            onClick={() => this.handleFollow(user, index)}
+                            color={this.renderFollowerColor(user.followers)}
                           >
-                            {user.userName + ' '}
-                          </Link>
-                          &nbsp;
-                          {getProvider(user.providerId)}
-                        </>
-                      }
-                      secondary={
-                        <React.Fragment>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            color="textPrimary"
-                          >
-                            {getCardSubHeaderProfileSummary(user)}
-                          </Typography>
-                        </React.Fragment>
-                      }
-                    />
-                  </Tooltip>
-                  {!this.ifSameUser(user) ? (
-                    <ListItemSecondaryAction className="r-5">
-                      <Tooltip title="Ask For Opinion" placement="right-end">
-                        <IconButton>
-                          <Zoom in={true} timeout={2000}>
-                            <AskIcon />
-                          </Zoom>
-                        </IconButton>
-                      </Tooltip>
-                      <Tooltip title="Follow User" placement="right-end">
-                        <IconButton
-                          onClick={() => this.handleFollow(user, index)}
-                          color={this.renderFollowerColor(user.followers)}
-                        >
-                          <Zoom in={true} timeout={2000}>
-                            <FollowIcon />
-                          </Zoom>
-                        </IconButton>
-                      </Tooltip>
-                    </ListItemSecondaryAction>
-                  ) : null}
-                </ListItem>
-              </Grid>
-            ))}
-          {!usersLoading && !users.length && (
+                            <Zoom in={true} timeout={2000}>
+                              <FollowIcon />
+                            </Zoom>
+                          </IconButton>
+                        </Tooltip>
+                      </ListItemSecondaryAction>
+                    ) : null}
+                  </ListItem>
+                </Grid>
+              ))
+            : null}
+          {!usersLoading && !filteredUsers.length ? (
             <Typography variant="h4" className="m-10 text-center">
               No users found
             </Typography>
-          )}
+          ) : null}
         </List>
 
-        {usersLoading && !users.length && <Loader />}
+        {usersLoading && !filteredUsers.length && <Loader />}
       </div>
     )
   }

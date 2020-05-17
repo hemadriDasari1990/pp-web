@@ -2,6 +2,7 @@ import * as actions from '../actions'
 
 import React, { Component } from 'react'
 
+import Container from '@material-ui/core/Container'
 import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import Fab from '@material-ui/core/Fab'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
@@ -15,9 +16,9 @@ import { Map } from 'immutable'
 import PropTypes from 'prop-types'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
+import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import Container from '@material-ui/core/Container'
 
 class Preferences extends Component {
   constructor(props) {
@@ -251,22 +252,26 @@ class Preferences extends Component {
             <Loader />
           )}
           <div style={{ float: 'right' }}>
-            <Fab
-              variant="extended"
-              color="primary"
-              size="small"
-              onClick={() => this.handleSave()}
-            >
-              {buttonName}
-            </Fab>
-            <Fab
-              variant="extended"
-              color="primary"
-              size="small"
-              onClick={() => this.handleClose()}
-            >
-              Cancel
-            </Fab>
+            <Zoom in={true} timeout={1500}>
+              <Fab
+                variant="extended"
+                color="primary"
+                size="small"
+                onClick={() => this.handleSave()}
+              >
+                {buttonName}
+              </Fab>
+            </Zoom>
+            <Zoom in={true} timeout={1500}>
+              <Fab
+                variant="extended"
+                color="primary"
+                size="small"
+                onClick={() => this.handleClose()}
+              >
+                Cancel
+              </Fab>
+            </Zoom>
           </div>
         </div>
         {/* {savePreferencesError ? <CustomizedSnackbars open={open} message="Cannot save preferences. Please try again" status={status} />: null}

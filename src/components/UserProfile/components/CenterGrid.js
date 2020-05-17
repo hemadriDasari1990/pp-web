@@ -1,19 +1,13 @@
 import * as actions from '../../../actions/index'
 
 import React, { Component } from 'react'
+import { Route, withRouter } from 'react-router-dom'
 
 import Grid from '@material-ui/core/Grid'
 import Incoming from '../../Timeline/components/Incoming'
-import { connect } from 'react-redux'
-import ProfileReactionsView from './ReactionsView'
 import ProfileFollowersView from './FollowersView'
-import {
-  BrowserRouter,
-  Redirect,
-  Route,
-  Switch,
-  withRouter,
-} from 'react-router-dom'
+import ProfileReactionsView from './ReactionsView'
+import { connect } from 'react-redux'
 
 class CenterGrid extends Component {
   constructor(props) {

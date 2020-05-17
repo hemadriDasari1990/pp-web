@@ -1,9 +1,7 @@
 import * as actions from '../actions'
 import * as globalActions from '../../../actions/index'
 
-import { List, Map } from 'immutable'
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -12,18 +10,19 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Divider from '@material-ui/core/Divider'
 import Fab from '@material-ui/core/Fab'
+import FollowIcon from '@material-ui/icons/RssFeedOutlined'
 import IconButton from '@material-ui/core/IconButton'
 import LikeIcon from '@material-ui/icons/ThumbUpAlt'
 import LoveIcon from '@material-ui/icons/Favorite'
-import FollowIcon from '@material-ui/icons/RssFeedOutlined'
+import { Map } from 'immutable'
+import Slide from '@material-ui/core/Slide'
 import Tooltip from '@material-ui/core/Tooltip'
+import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
 import getPastTime from '../../../util/getPastTime'
-import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
-import Slide from '@material-ui/core/Slide'
-import Zoom from '@material-ui/core/Zoom'
 
 const styles = {
   followIcon: {

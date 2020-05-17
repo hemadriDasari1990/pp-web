@@ -10,18 +10,16 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import PropTypes from 'prop-types'
+import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import dashboardIcon from '../../../../assets/dashboard.svg'
 import firebase from '../../../firebase'
-import formateNumber from '../../../util/formateNumber'
 import incomingIcon from '../../../../assets/incoming.svg'
 import logoutIcon from '../../../../assets/logout.svg'
 import outgoingIcon from '../../../../assets/outgoing.svg'
 import preferencesIcon from '../../../../assets/preferences.svg'
 import usersIcon from '../../../../assets/users.svg'
 import { withStyles } from '@material-ui/core/styles'
-import Slide from '@material-ui/core/Slide'
-import Zoom from '@material-ui/core/Zoom'
 
 const color = '#2a7fff'
 const styles = {
@@ -100,6 +98,8 @@ class DrawerComponent extends Component {
         this.setState({
           logout: true,
         })
+        this.props.toggleDrawer()
+        this.props.history.push('/')
       }
     })
     // this.refreshTimeout = setTimeout(() => {

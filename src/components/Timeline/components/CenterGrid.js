@@ -1,29 +1,22 @@
 import * as actions from '../../../actions/index'
 
-import React, { Component } from 'react'
+import React, { Component, Suspense, lazy } from 'react'
+import { Route, withRouter } from 'react-router-dom'
 
-import Followers from '../../UserProfile/components/Followers'
 import Grid from '@material-ui/core/Grid'
-import Incoming from './Incoming'
-import Outgoing from './Outgoing'
-import PopularPosts from './PopularPosts'
-import Post from '../../Post/components/Post'
-import ProfileReactionsView from '../../UserProfile/components/ReactionsView'
-import ProfileFollowersView from '../../UserProfile/components/FollowersView'
-import Reactions from '../../Reactions/components/Reactions'
-import RecentPosts from './RecentPosts'
-import Search from '../../Search/components/Search'
-import Summary from '../../Dashboard/components/Summary'
-import Users from '../../Users/components/Users'
 import { connect } from 'react-redux'
-import firebase from '../../../firebase'
-import {
-  BrowserRouter,
-  Redirect,
-  Route,
-  Switch,
-  withRouter,
-} from 'react-router-dom'
+
+const Incoming = lazy(() => import('./Incoming'))
+const Outgoing = lazy(() => import('./Outgoing'))
+const Post = lazy(() => import('../../Post/components/Post'))
+const ProfileFollowersView = lazy(() =>
+  import('../../UserProfile/components/FollowersView'),
+)
+const ProfileReactionsView = lazy(() =>
+  import('../../UserProfile/components/ReactionsView'),
+)
+const Reactions = lazy(() => import('../../Reactions/components/Reactions'))
+const Users = lazy(() => import('../../Users/components/Users'))
 
 class CenterGrid extends Component {
   constructor(props) {
@@ -42,7 +35,7 @@ class CenterGrid extends Component {
     const { user, path, match } = this.props
     const locationPath = this.props.location.pathname
     return (
-      <>
+      <Suspense>
         <Grid item lg={5} md={6} xs={12} sm={9} className="middle-content">
           {locationPath.includes('/post') && <Reactions />}
           <Route
@@ -96,7 +89,7 @@ class CenterGrid extends Component {
             )}
           />
         </Grid>
-      </>
+      </Suspense>
     )
   }
 }

@@ -1,14 +1,17 @@
 import React, { Component } from 'react'
-import Badge from '@material-ui/core/Badge'
+
 import Avatar from '@material-ui/core/Avatar'
+import Badge from '@material-ui/core/Badge'
 import PropTypes from 'prop-types'
-import withStyles from '@material-ui/core/styles/withStyles'
+import Tooltip from '@material-ui/core/Tooltip'
+import amber from '@material-ui/core/colors/amber'
 import isUserActive from '../../../util/isUserActive'
+import withStyles from '@material-ui/core/styles/withStyles'
 
 const StyledBadge = withStyles(theme => ({
   badge: {
-    backgroundColor: '#42b72a',
-    color: '#42b72a',
+    backgroundColor: props => props.bgColor,
+    color: props => props.color,
     boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
     '&::after': {
       position: 'absolute',
@@ -43,12 +46,12 @@ const styles = {
 
 class AvatarOnline extends Component {
   render() {
-    const { classes, user, dynamicClass } = this.props
+    const { classes, user, externalClass } = this.props
     const isActive = user ? isUserActive(user.lastActiveTime) : false
     // const isOnline = currentUser && loggedInUser && (currentUser._id ===  loggedInUser._id) ? true: false;
     return (
       <React.Fragment>
-        {isActive ? (
+        <Tooltip title={isActive ? 'Online' : 'Away'} aria-label="status">
           <StyledBadge
             overlap="circle"
             anchorOrigin={{
@@ -56,20 +59,16 @@ class AvatarOnline extends Component {
               horizontal: 'right',
             }}
             variant="dot"
+            color={isActive ? '#42b72a' : amber[700]}
+            bgColor={isActive ? '#42b72a' : amber[700]}
           >
             <Avatar
-              className={dynamicClass}
+              className={externalClass}
               alt={user.userName}
               src={user.photoURL}
             />
           </StyledBadge>
-        ) : (
-          <Avatar
-            className={dynamicClass}
-            alt={user.userName}
-            src={user.photoURL}
-          />
-        )}
+        </Tooltip>
       </React.Fragment>
     )
   }

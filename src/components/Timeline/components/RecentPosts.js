@@ -1,8 +1,6 @@
 import * as actions from '../actions'
 
-import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
 import Card from '@material-ui/core/Card'
@@ -16,16 +14,17 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../Loader/components/Loader'
+import { Map } from 'immutable'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import PropTypes from 'prop-types'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
+import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
 import getPastTime from '../../../util/getPastTime'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
-import Slide from '@material-ui/core/Slide'
-import Zoom from '@material-ui/core/Zoom'
 
 const styles = {
   smallAvatar: {

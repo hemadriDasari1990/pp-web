@@ -2,15 +2,14 @@ import * as globalActions from '../../../actions/index'
 
 import React, { Component } from 'react'
 
+import CenterGrid from './CenterGrid'
+import Grid from '@material-ui/core/Grid'
+import LeftGrid from './LeftGrid'
 import Loader from '../../Loader/components/Loader'
 import PropTypes from 'prop-types'
+import RightGrid from './RightGrid'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import Container from '@material-ui/core/Container'
-import LeftGrid from './LeftGrid'
-import CenterGrid from './CenterGrid'
-import RightGrid from './RightGrid'
-import Grid from '@material-ui/core/Grid'
 
 class Dashboard extends Component {
   constructor(props) {

@@ -1,13 +1,13 @@
 import * as actions from '../../../actions/index'
 
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Grid from '@material-ui/core/Grid'
-import { connect } from 'react-redux'
+import PopularPosts from '../../Timeline/components/PopularPosts'
 import RecentPosts from '../../Timeline/components/RecentPosts'
 import Summary from '../../Dashboard/components/Summary'
-import PopularPosts from '../../Timeline/components/PopularPosts'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 class RightGrid extends Component {
   constructor(props) {
