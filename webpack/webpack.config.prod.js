@@ -4,8 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const OfflinePlugin = require('offline-plugin')
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = {
   mode: 'production',
@@ -27,9 +26,9 @@ module.exports = {
     // ],
   },
   output: {
-    filename: '[name].[chunkhash].bundle.js',
+    filename: 'main.[chunkhash].bundle.js',
     path: resolve(__dirname, '../dist'),
-    chunkFilename: '[name].[chunkhash].bundle.js',
+    chunkFilename: 'main.[chunkhash].bundle.js',
     publicPath: '/',
   },
   module: {
@@ -44,19 +43,8 @@ module.exports = {
         loader: 'style-loader!css-loader',
       },
       {
-        test: /\.(png|jpg|jpe?g|gif|woff|woff2)$/,
+        test: /\.(png|jpg|jpeg|gif|woff|woff2|svg)$/,
         loader: 'url-loader?limit=100000',
-      },
-      {
-        test: /\.svg$/,
-        loader: 'svg-url-loader',
-        options: {
-          // Inline files smaller than 10 kB (10240 bytes)
-          limit: 10 * 1024,
-          // Remove the quotes from the url
-          // (they’re unnecessary in most cases)
-          noquotes: true,
-        },
       },
       {
         test: /\.(eot|ttf)$/,
@@ -88,7 +76,6 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin(),
     new HtmlWebpackPlugin({
       filename: 'index.html',
-      chunks: ['home'],
       title: 'writenpost',
       template: 'webpack/template.html',
     }),
@@ -115,7 +102,7 @@ module.exports = {
       safeToUseOptionalCaches: true,
       AppCache: false,
     }),
-    new BundleAnalyzerPlugin(),
+    // new BundleAnalyzerPlugin(),
   ],
   optimization: {
     runtimeChunk: 'single',
@@ -136,7 +123,7 @@ module.exports = {
         commons: {
           test: /[\\/]node_modules[\\/]/,
           chunks: 'initial',
-          name: 'commons',
+          name: 'vendor',
           enforce: true,
           minChunks: 2,
           reuseExistingChunk: true,
