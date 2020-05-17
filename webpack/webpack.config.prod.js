@@ -8,6 +8,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 module.exports = {
   entry: {
     main: resolve(__dirname, '../src'),
+    devtool: 'source-map',
     vendor: [
       'react',
       'react-dom',
@@ -22,6 +23,11 @@ module.exports = {
     filename: '[name].[chunkhash].js',
     path: resolve(__dirname, '../dist'),
     publicPath: '/',
+  },
+  devServer: {
+    contentBase: resolve(__dirname, '../assets'),
+    publicPath: '/',
+    historyApiFallback: true,
   },
   module: {
     rules: [
@@ -77,14 +83,6 @@ module.exports = {
         NODE_ENV: JSON.stringify('production'),
       },
     }),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   sourceMap: false,
-    //   mangle: false
-    // }), //minify everything
-    // new webpack.optimize.AggressiveMergingPlugin(), //Merge chunks
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   names: ['vendor', 'manifest'],
-    // }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       title: 'writenpost',
