@@ -11,12 +11,12 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemText from '@material-ui/core/ListItemText'
 import PropTypes from 'prop-types'
 import PublicIcon from '@material-ui/icons/Public'
+import Slide from '@material-ui/core/Slide'
 import SwapCallsIcon from '@material-ui/icons/SwapCalls'
 import Typography from '@material-ui/core/Typography'
+import Zoom from '@material-ui/core/Zoom'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
-import Slide from '@material-ui/core/Slide'
-import Zoom from '@material-ui/core/Zoom'
 
 const styles = theme => ({
   root: {

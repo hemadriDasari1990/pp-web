@@ -1,4 +1,5 @@
 import * as action from '../../constants/actionTypes'
+
 import config from '../../config'
 
 export const createOrUpdateReactionRequest = () => {
@@ -192,5 +193,12 @@ export const getProfileFollower = (follower, followee) => {
       .then(response => response.json())
       .then(data => dispatch(getProfileFollowerSuccess(data)))
       .catch(errors => dispatch(getProfileFollowerError(errors)))
+  }
+}
+
+export const saveActionState = type => {
+  return {
+    type: action.SAVE_ACTION_STATE,
+    data: type,
   }
 }

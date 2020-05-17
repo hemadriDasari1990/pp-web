@@ -1,29 +1,22 @@
 import * as actions from '../../../actions/index'
 
-import React, { Component } from 'react'
+import React, { Component, Suspense, lazy } from 'react'
+import { Route, withRouter } from 'react-router-dom'
 
-import Followers from '../../UserProfile/components/Followers'
 import Grid from '@material-ui/core/Grid'
-import Incoming from './Incoming'
-import Outgoing from './Outgoing'
-import PopularPosts from './PopularPosts'
-import Post from '../../Post/components/Post'
-import ProfileReactionsView from '../../UserProfile/components/ReactionsView'
-import ProfileFollowersView from '../../UserProfile/components/FollowersView'
-import Reactions from '../../Reactions/components/Reactions'
-import RecentPosts from './RecentPosts'
-import Search from '../../Search/components/Search'
-import Summary from '../../Dashboard/components/Summary'
-import Users from '../../Users/components/Users'
 import { connect } from 'react-redux'
-import firebase from '../../../firebase'
-import {
-  BrowserRouter,
-  Redirect,
-  Route,
-  Switch,
-  withRouter,
-} from 'react-router-dom'
+
+const Incoming = lazy(() => import('./Incoming'))
+const Outgoing = lazy(() => import('./Outgoing'))
+const Post = lazy(() => import('../../Post/components/Post'))
+const ProfileFollowersView = lazy(() =>
+  import('../../UserProfile/components/FollowersView'),
+)
+const ProfileReactionsView = lazy(() =>
+  import('../../UserProfile/components/ReactionsView'),
+)
+const Reactions = lazy(() => import('../../Reactions/components/Reactions'))
+const Users = lazy(() => import('../../Users/components/Users'))
 
 class CenterGrid extends Component {
   constructor(props) {
@@ -39,64 +32,35 @@ class CenterGrid extends Component {
 
   render() {
     const {} = this.state
-    const { user, path, match } = this.props
+    const { user, path, match, actionState } = this.props
     const locationPath = this.props.location.pathname
+
+    console.log('actionState', actionState)
     return (
-      <>
+      <Suspense>
         <Grid item lg={5} md={6} xs={12} sm={9} className="middle-content">
-          {locationPath.includes('/post') && <Reactions />}
-          <Route
-            exact
-            path={'/timeline/users'}
-            exact
-            component={() => (
-              <>
-                <Users user={user} />
-              </>
-            )}
-          />
-          <Route
-            path={'/timeline/incoming'}
-            exact
-            component={() => (
-              <>
-                <Post />
-                <Incoming user={user} />
-              </>
-            )}
-          />
-          <Route
-            path="/timeline/outgoing"
-            exact
-            component={() => (
-              <>
-                <Post />
-                <Outgoing user={user} />
-              </>
-            )}
-          />
-          <Route
-            path="/timeline/:id/reactions"
-            exact
-            component={() => (
-              <ProfileReactionsView
-                fallBackTo={'/timeline/incoming'}
-                view="list"
-              />
-            )}
-          />
-          <Route
-            path="/timeline/:id/followers"
-            exact
-            component={() => (
-              <ProfileFollowersView
-                fallBackTo={'/timeline/incoming'}
-                view="list"
-              />
-            )}
-          />
+          {actionState === 'post-reactions' && <Reactions />}
+          {actionState === 'users' ? <Users user={user} /> : null}
+          {!actionState || actionState === 'incoming' ? (
+            <>
+              <Post />
+              <Incoming user={user} />
+            </>
+          ) : null}
+          {actionState === 'outgoing' ? (
+            <>
+              <Post />
+              <Outgoing user={user} />
+            </>
+          ) : null}
+          {actionState === 'reactions' ? (
+            <ProfileReactionsView view="list" />
+          ) : null}
+          {actionState === 'followers' ? (
+            <ProfileFollowersView view="list" />
+          ) : null}
         </Grid>
-      </>
+      </Suspense>
     )
   }
 }
@@ -105,8 +69,10 @@ CenterGrid.propTypes = {}
 
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'])
+  const actionState = state.getIn(['UserProfile', 'action', 'save'])
   return {
     user,
+    actionState,
   }
 }
 

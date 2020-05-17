@@ -1,11 +1,9 @@
 import * as actions from '../actions'
 import * as dashboardActions from '../../Timeline/actions'
 
-import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+import React, { Component, Suspense, lazy } from 'react'
 
 import Loader from '../../Loader/components/Loader'
-import NotificationsList from './List'
 import PropTypes from 'prop-types'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
@@ -13,7 +11,10 @@ import Typography from '@material-ui/core/Typography'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
 import textingImage from '../../../../assets/notifications/texting.svg'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
+
+const NotificationsList = lazy(() => import('./List'))
 
 const styles = {
   default_tab: {
@@ -53,13 +54,6 @@ TabPanel.propTypes = {
   value: PropTypes.any.isRequired,
 }
 
-//   function a11yProps(index) {
-//     return {
-//       id: `scrollable-prevent-tab-${index}`,
-//       'aria-controls': `scrollable-prevent-tabpanel-${index}`,
-//     };
-//   }
-
 class Notifications extends Component {
   constructor(props) {
     super(props)
@@ -79,31 +73,7 @@ class Notifications extends Component {
           notificationsCount: res.data,
         })
       })
-      // await this.props.getNotifications(
-      //   this.props.user._id,
-      //   this.state.type,
-      //   this.state.limit,
-      // ).then(res => {
-      //   this.setState({
-      //     notifications: res.data
-      //   });
-      // })
     }
-  }
-
-  renderUserOrigin = provider => {
-    let name = ''
-    switch (provider.toLowerCase()) {
-      case 'google.com':
-        name = 'Google User'
-        break
-      case 'facebook.com':
-        name = 'facebook.com'
-        break
-      default:
-        break
-    }
-    return name
   }
 
   getNotificationsCountText = (type, count) => {
@@ -154,7 +124,7 @@ class Notifications extends Component {
     } = this.props
     const { value, type, notifications, notificationsCount } = this.state
     return (
-      <React.Fragment>
+      <Suspense>
         <h2 className="text-center">Notifications</h2>
         {!notificationsCountLoading &&
           notificationsCount &&
@@ -227,7 +197,7 @@ class Notifications extends Component {
             </div>
           )}
         {notificationsCountLoading && <Loader />}
-      </React.Fragment>
+      </Suspense>
     )
   }
 }

@@ -6,9 +6,8 @@ import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import PropTypes from 'prop-types'
 import Typography from '@material-ui/core/Typography'
-import { withStyles } from '@material-ui/core/styles'
-import Slide from '@material-ui/core/Slide'
 import Zoom from '@material-ui/core/Zoom'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({})
 

@@ -1,13 +1,6 @@
 import * as timelineActions from '../../Timeline/actions'
 
 import React, { Component } from 'react'
-import {
-  Redirect,
-  Route,
-  BrowserRouter as Router,
-  Switch,
-  withRouter,
-} from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
 import AvatarGroup from '@material-ui/lab/AvatarGroup'
@@ -29,13 +22,13 @@ import { connect } from 'react-redux'
 import cons from '../../../../assets/cons.svg'
 import formateNumber from '../../../util/formateNumber'
 import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
-import getPastTime from '../../../util/getPastTime'
+import getCardSubHeaderText from '../../../util/getCardSubHeaderText'
+import getProvider from '../../../util/getProvider'
 import getReaction from '../../../util/getReaction'
 import pros from '../../../../assets/pros.svg'
 import renderUserNames from '../../../util/renderUserNames'
+import { withRouter } from 'react-router-dom'
 import withStyles from '@material-ui/core/styles/withStyles'
-import getProvider from '../../../util/getProvider'
-import getCardSubHeaderText from '../../../util/getCardSubHeaderText'
 
 const styles = {
   smallAvatar: {
@@ -125,7 +118,7 @@ class PostDetails extends Component {
       <React.Fragment>
         <div className="row">
           <div className="col-lg-3 col-md-5 col-sm-12 col-xs-12"></div>
-          <div className="col-lg-4 col-md-7 col-sm-12 col-xs-12">
+          <div className="col-lg-5 col-md-7 col-sm-12 col-xs-12">
             {!postDetailsLoading && postDetails ? (
               <Card>
                 <CardHeader

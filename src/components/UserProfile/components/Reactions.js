@@ -1,17 +1,20 @@
+import * as actions from '../actions'
 import * as globalActions from '../../../actions/index'
 
-import { Map, fromJS } from 'immutable'
-import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+import React, { Component, Suspense, lazy } from 'react'
 
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import { Link } from 'react-router-dom'
+import Loader from '../../Loader/components/Loader'
+import { Map } from 'immutable'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
-import ReactionsView from './ReactionsView'
+
+const ReactionsView = lazy(() => import('./ReactionsView'))
 
 const styles = {
   smallAvatar: {
@@ -35,12 +38,19 @@ class Reactions extends Component {
     }
   }
   async componentDidMount() {
-    await this.props.getUser(this.props.match.params.id)
+    if (this.props.match.params.id) {
+      await this.props.getUser(this.props.match.params.id)
+    }
+    if (!this.props.match.params.id && this.props.user) {
+      await this.props.getUser(this.props.user._id)
+    }
   }
 
-  viewAll = path => {
-    this.props.history.push(path)
+  viewAll = type => {
+    this.props.saveActionState(type)
   }
+
+  componentWillUnmount() {}
 
   render() {
     const {
@@ -51,25 +61,19 @@ class Reactions extends Component {
       user,
       path,
     } = this.props
-    const { fallBackTo } = this.state
     const hasReactions =
-      (!profileUserLoading && profileUser && !profileUser.reactions.length) ||
-      (!profileUserLoading && !profileUser) ||
-      !profileUser
-        ? false
-        : true
-    const viewPath = profileUser ? `/${path}/${profileUser._id}/reactions` : '#'
+      profileUser && profileUser.reactions.length > 0 ? true : false
     return (
-      <React.Fragment>
+      <Suspense fallback={<Loader />}>
         <Card>
           <CardHeader
             title="Profile Reactions"
             action={
-              profileUser && profileUser.reactions.length > 0 ? (
+              hasReactions ? (
                 <Link
                   className="hyperlink"
                   to="#"
-                  onClick={() => this.viewAll(viewPath)}
+                  onClick={() => this.viewAll('reactions')}
                 >
                   View All{' '}
                   <b>
@@ -81,11 +85,11 @@ class Reactions extends Component {
               ) : null
             }
           ></CardHeader>
-          <CardContent className={!hasReactions ? '' : 'p-0'}>
-            <ReactionsView view="card" fallBackTo={'/timeline/incoming'} />
+          <CardContent className={hasReactions ? 'p-0' : ''}>
+            <ReactionsView view="card" />
           </CardContent>
         </Card>
-      </React.Fragment>
+      </Suspense>
     )
   }
 }
@@ -107,6 +111,7 @@ const mapStateToProps = state => {
 
 const actionsToProps = {
   getUser: globalActions.getUser,
+  saveActionState: actions.saveActionState,
 }
 
 export default withRouter(

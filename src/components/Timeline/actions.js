@@ -379,3 +379,10 @@ export const createComment = (postId, comment) => {
       .catch(errors => dispatch(createCommentError(errors)))
   }
 }
+
+export const savePostId = postId => {
+  return {
+    type: action.SAVE_POST_ID,
+    id: postId,
+  }
+}

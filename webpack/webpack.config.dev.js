@@ -15,7 +15,7 @@ module.exports = {
     publicPath: '/',
   },
   context: resolve(__dirname, '../src'),
-  devtool: 'inline-source-map',
+  devtool: 'cheap-source-map',
   devServer: {
     hot: true,
     host: '0.0.0.0',
@@ -62,7 +62,16 @@ module.exports = {
     }),
     new Dotenv(),
   ],
-  performance: { hints: false },
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+    },
+  },
+  performance: {
+    maxEntrypointSize: 512000,
+    maxAssetSize: 512000,
+    hints: process.env.NODE_ENV === 'production' ? 'warning' : false,
+  },
   externals: {
     // require("jquery") is external and available
     //  on the global var jQuery

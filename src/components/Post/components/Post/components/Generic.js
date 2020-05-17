@@ -92,7 +92,7 @@ class Generic extends Component {
           Save
         </Fab>
         <Fab
-          variant="extended"
+          variant="outlined"
           color="primary"
           size="small"
           onClick={() => this.handleClose()}

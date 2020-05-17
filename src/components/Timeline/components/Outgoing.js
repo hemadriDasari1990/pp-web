@@ -2,9 +2,7 @@ import * as actions from '../actions'
 import * as postActions from '../../Post/actions'
 import * as profileActions from '../../UserProfile/actions'
 
-import { Map, fromJS } from 'immutable'
-import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+import React, { Component, Suspense, lazy } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
 import AvatarGroup from '@material-ui/lab/AvatarGroup'
@@ -15,9 +13,6 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import CommentIcon from '@material-ui/icons/ChatBubbleOutline'
-import CommentsList from './comments/List'
-import CreateComment from './comments/CreateComment'
-import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import DisLikeIcon from '@material-ui/icons/ThumbDownAlt'
 import Divider from '@material-ui/core/Divider'
@@ -34,18 +29,21 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../Loader/components/Loader'
 import LoveIcon from '@material-ui/icons/Favorite'
+import { Map } from 'immutable'
 import Menu from '@material-ui/core/Menu'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import NoRecords from '../../NoRecords/components/NoRecords'
 import PropTypes from 'prop-types'
+import Slide from '@material-ui/core/Slide'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
+import Zoom from '@material-ui/core/Zoom'
 import advice from '../../../../assets/advice.svg'
 import { connect } from 'react-redux'
 import cons from '../../../../assets/cons.svg'
 import formateNumber from '../../../util/formateNumber'
 import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
 import getCardSubHeaderText from '../../../util/getCardSubHeaderText'
+import getProvider from '../../../util/getProvider'
 import getReaction from '../../../util/getReaction'
 import getReactionsText from '../../../util/getReactionsText'
 import perfect from '../../../../assets/emojis/perfect.svg'
@@ -54,10 +52,15 @@ import renderColor from '../../../util/renderColor'
 import renderUserNames from '../../../util/renderUserNames'
 import thinking from '../../../../assets/emojis/thinking.svg'
 import tounghout from '../../../../assets/emojis/tounghout.svg'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
-import getProvider from '../../../util/getProvider'
-import Slide from '@material-ui/core/Slide'
-import Zoom from '@material-ui/core/Zoom'
+
+const CommentsList = lazy(() => import('./comments/List'))
+const CreateComment = lazy(() => import('./comments/CreateComment'))
+const CustomizedSnackbars = lazy(() =>
+  import('../../Snackbar/components/Snackbar'),
+)
+const NoRecords = lazy(() => import('../../NoRecords/components/NoRecords'))
 
 const styles = {
   smallAvatar: {
@@ -268,6 +271,16 @@ class Outgoing extends Component {
     })
   }
 
+  viewReactions = (type, postId) => {
+    this.props.savePostId(postId)
+    this.props.saveActionState(type)
+  }
+
+  viewProfile = (type, userId) => {
+    this.props.saveActionState(type)
+    this.props.history.push(`/profile/${userId}`)
+  }
+
   render() {
     const {
       outgoingPosts,
@@ -281,7 +294,7 @@ class Outgoing extends Component {
     } = this.props
     const { open, anchorEl, showEmojis, showCommentInput, postId } = this.state
     return (
-      <React.Fragment>
+      <Suspense fallback={<Loader />}>
         {!outgoingPostsLoading && outgoingPosts.length
           ? outgoingPosts.map(post => (
               <Card key={post._id}>
@@ -334,7 +347,10 @@ class Outgoing extends Component {
                     <>
                       <Link
                         className="hyperlink"
-                        to={`/profile/${post.postedTo._id}`}
+                        to="#"
+                        onClick={() =>
+                          this.viewProfile('incoming', post.postedTo._id)
+                        }
                       >
                         {post.isAnonymous
                           ? post.postedTo.userName + ' (A)'
@@ -482,12 +498,17 @@ class Outgoing extends Component {
                                 ))
                               : 'No Reactions'}
                           </AvatarGroup>
-                          <span className="cursor actions-text v-align-middle grey-color ">
+                          <span className="m-l-5 cursor actions-text v-align-middle grey-color ">
                             <Tooltip
                               title={renderUserNames(post.reactions)}
                               placement="bottom"
                             >
-                              <Link to={`/post/${post._id}/reactions`}>
+                              <Link
+                                to="#"
+                                onClick={() =>
+                                  this.viewReactions('post-reactions', post._id)
+                                }
+                              >
                                 {formateNumber(post.reactions.length) + ' - '}
                               </Link>
                             </Tooltip>
@@ -718,6 +739,16 @@ class Outgoing extends Component {
                     />
                   </CardActions>
                 )}
+                {post.reactionsCount === 0 &&
+                post.approved &&
+                post.commentsCount === 0 ? (
+                  <>
+                    <Divider />
+                    <CardActions disableSpacing style={{ paddingTop: 0 }}>
+                      <span>{hint}</span>
+                    </CardActions>
+                  </>
+                ) : null}
                 <CardActions disableSpacing style={{ paddingTop: 0 }}>
                   {postId !== post._id && <CommentsList post={post} />}
                 </CardActions>
@@ -740,7 +771,7 @@ class Outgoing extends Component {
             status={'error'}
           />
         ) : null}
-      </React.Fragment>
+      </Suspense>
     )
   }
 }
@@ -789,6 +820,8 @@ const actionsToProps = {
   createOrUpdateReaction: profileActions.createOrUpdateReaction,
   getRecentPosts: actions.getRecentPosts,
   getCommentsCount: postActions.getCommentsCount,
+  saveActionState: profileActions.saveActionState,
+  savePostId: actions.savePostId,
 }
 
 export default withRouter(

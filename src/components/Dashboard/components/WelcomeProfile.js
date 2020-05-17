@@ -1,19 +1,17 @@
-import * as actions from '../actions'
-import * as globalActions from '../../../actions/index'
+import * as userProfileActions from '../../UserProfile/actions'
 
-import { List, Map } from 'immutable'
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import Fab from '@material-ui/core/Fab'
+import Slide from '@material-ui/core/Slide'
 import Tooltip from '@material-ui/core/Tooltip'
+import Zoom from '@material-ui/core/Zoom'
 import arrowIcon from '../../../../assets/arrow.svg'
 import { connect } from 'react-redux'
-import Slide from '@material-ui/core/Slide'
-import Zoom from '@material-ui/core/Zoom'
+import { withRouter } from 'react-router-dom'
 
 class WelcomeProfile extends Component {
   constructor(props) {
@@ -25,6 +23,7 @@ class WelcomeProfile extends Component {
 
   handleTimeline = event => {
     this.props.history.push('/timeline/incoming')
+    this.props.saveActionState('incoming')
   }
 
   render() {
@@ -90,7 +89,9 @@ const mapStateToProps = state => {
   }
 }
 
-const actionsToProps = {}
+const actionsToProps = {
+  saveActionState: userProfileActions.saveActionState,
+}
 
 export default withRouter(
   connect(mapStateToProps, actionsToProps)(WelcomeProfile),

@@ -1,22 +1,30 @@
-import Offline from 'offline-plugin/runtime'
-import React from 'react'
-import { Provider } from 'react-redux'
-import { render } from 'react-dom'
-import { HashRouter, Router } from 'react-router-dom'
-import { store } from './store'
 import '../assets/css/app.scss'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.min.js'
-import App from './components/App'
+
 import * as serviceWorker from './serviceworker'
+
+import React, { Suspense, lazy } from 'react'
+
+import Loader from './components/Loader/components/Loader'
+import Offline from 'offline-plugin/runtime'
+import { Provider } from 'react-redux'
+import { Router } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
-const history = createBrowserHistory()
+import { render } from 'react-dom'
+import { store } from './store'
+
+const App = lazy(() => import('./components/App'))
 
 if (process.env.NODE_ENV === 'production') Offline.install()
 export const Root = () => (
   <Provider store={store}>
-    <Router history={history}>
-      <App />
+    <Router history={createBrowserHistory()}>
+      <Suspense fallback={<Loader />}>
+        {/* <React.StrictMode> */}
+        <App />
+        {/* </React.StrictMode> */}
+      </Suspense>
     </Router>
   </Provider>
 )

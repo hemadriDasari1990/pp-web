@@ -1,7 +1,7 @@
 import * as actions from '../../../actions/index'
+import * as userProfileActions from '../../UserProfile/actions'
 
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
 import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
@@ -10,18 +10,17 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import PropTypes from 'prop-types'
+import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import dashboardIcon from '../../../../assets/dashboard.svg'
 import firebase from '../../../firebase'
-import formateNumber from '../../../util/formateNumber'
 import incomingIcon from '../../../../assets/incoming.svg'
 import logoutIcon from '../../../../assets/logout.svg'
 import outgoingIcon from '../../../../assets/outgoing.svg'
 import preferencesIcon from '../../../../assets/preferences.svg'
 import usersIcon from '../../../../assets/users.svg'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
-import Slide from '@material-ui/core/Slide'
-import Zoom from '@material-ui/core/Zoom'
 
 const color = '#2a7fff'
 const styles = {
@@ -57,16 +56,19 @@ class DrawerComponent extends Component {
   handleIncoming = () => {
     this.props.toggleDrawer()
     this.props.history.push('/timeline/incoming')
+    this.props.saveActionState('incoming')
   }
 
   handleOutgoing = () => {
     this.props.toggleDrawer()
     this.props.history.push('/timeline/outgoing')
+    this.props.saveActionState('outgoing')
   }
 
   handleUsers = () => {
     this.props.toggleDrawer()
     this.props.history.push('/timeline/users')
+    this.props.saveActionState('users')
   }
 
   handleDashboard = () => {
@@ -77,11 +79,6 @@ class DrawerComponent extends Component {
   handleNotifications = () => {
     this.props.toggleDrawer()
     this.props.history.push('/notifications')
-  }
-
-  handlePreferences = () => {
-    this.props.toggleDrawer()
-    this.props.history.push('/preferences')
   }
 
   handlePreferences = () => {
@@ -100,6 +97,8 @@ class DrawerComponent extends Component {
         this.setState({
           logout: true,
         })
+        this.props.toggleDrawer()
+        this.props.history.push('/')
       }
     })
     // this.refreshTimeout = setTimeout(() => {
@@ -204,6 +203,7 @@ const mapStateToProps = state => {
 const actionsToProps = {
   userLogout: actions.userLogout,
   updateUser: actions.updateUser,
+  saveActionState: userProfileActions.saveActionState,
 }
 
 export default withRouter(

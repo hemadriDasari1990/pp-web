@@ -6,6 +6,8 @@ import Feedbacks from './Feedbacks'
 import { List } from 'immutable'
 import ProfileCard from './card'
 import PropTypes from 'prop-types'
+import Slide from '@material-ui/core/Slide'
+import Zoom from '@material-ui/core/Zoom'
 import advice from '../../../../assets/advice.svg'
 import { connect } from 'react-redux'
 import cons from '../../../../assets/cons.svg'
@@ -13,8 +15,6 @@ import home from '../../../../assets/people.svg'
 import pros from '../../../../assets/pros.svg'
 import { withRouter } from 'react-router-dom'
 import withStyles from '@material-ui/core/styles/withStyles'
-import Slide from '@material-ui/core/Slide'
-import Zoom from '@material-ui/core/Zoom'
 
 const styles = theme => ({
   card: {

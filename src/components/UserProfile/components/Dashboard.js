@@ -1,16 +1,17 @@
+import * as actions from '../actions'
 import * as globalActions from '../../../actions/index'
 
-import React, { Component } from 'react'
+import React, { Component, Suspense, lazy } from 'react'
 
+import Grid from '@material-ui/core/Grid'
 import Loader from '../../Loader/components/Loader'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import Container from '@material-ui/core/Container'
-import LeftGrid from './LeftGrid'
-import CenterGrid from './CenterGrid'
-import RightGrid from './RightGrid'
-import Grid from '@material-ui/core/Grid'
+
+const CenterGrid = lazy(() => import('./CenterGrid'))
+const LeftGrid = lazy(() => import('./LeftGrid'))
+const RightGrid = lazy(() => import('./RightGrid'))
 
 class Dashboard extends Component {
   constructor(props) {
@@ -34,7 +35,7 @@ class Dashboard extends Component {
     const { classes, path } = this.props
     const { profile } = this.state
     return (
-      <>
+      <Suspense fallback={<Loader />}>
         {profile && (
           <Grid container spacing={1} className="of-h">
             <LeftGrid profile={profile} path={path} />
@@ -43,7 +44,7 @@ class Dashboard extends Component {
           </Grid>
         )}
         {!profile && <Loader />}
-      </>
+      </Suspense>
     )
   }
 }
@@ -61,6 +62,7 @@ const mapStateToProps = state => {
 
 const actionsToProps = {
   getUser: globalActions.getUser,
+  saveActionState: actions.saveActionState,
 }
 
 export default withRouter(connect(mapStateToProps, actionsToProps)(Dashboard))

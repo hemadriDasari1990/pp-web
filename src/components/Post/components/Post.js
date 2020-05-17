@@ -8,23 +8,14 @@ import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
-import Checkbox from '@material-ui/core/Checkbox'
-import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import Divider from '@material-ui/core/Divider'
 import Fab from '@material-ui/core/Fab'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormGroup from '@material-ui/core/FormGroup'
 import Generic from './Post/components/Generic'
-import Loader from '../../Loader/components/Loader'
-import { Map } from 'immutable'
 import Opinion from './Post/components/Opinion'
 import PostAddOutlinedIcon from '@material-ui/icons/PostAddOutlined'
-import Search from '../../Search/components/Search'
-import TextField from '@material-ui/core/TextField'
+import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
-import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
-import Zoom from '@material-ui/core/Zoom'
 
 class Post extends Component {
   constructor(props) {
@@ -90,7 +81,7 @@ class Post extends Component {
                 onClick={() => this.handleOpinionAction()}
                 style={{ height: 32 }}
               >
-                <PostAddOutlinedIcon /> &nbsp;Write to others
+                <PostAddOutlinedIcon /> &nbsp;Write Opinion
               </Fab>
             </Zoom>
             <Zoom in={true} timeout={1500}>

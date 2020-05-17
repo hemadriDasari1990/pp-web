@@ -1,30 +1,30 @@
+import * as actions from '../actions'
 import * as globalActions from '../../../actions/index'
 
-import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
+import BackIcon from '@material-ui/icons/ArrowBack'
 import Badge from '@material-ui/core/Badge'
+import IconButton from '@material-ui/core/IconButton'
 import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
+import ListSubheader from '@material-ui/core/ListSubheader'
 import Loader from '../../Loader/components/Loader'
+import { Map } from 'immutable'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
-import { connect } from 'react-redux'
-import getPastTime from '../../../util/getPastTime'
-import getReaction from '../../../util/getReaction'
-import { withStyles } from '@material-ui/core/styles'
-import getProvider from '../../../util/getProvider'
-import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
-import ListSubheader from '@material-ui/core/ListSubheader'
-import BackIcon from '@material-ui/icons/ArrowBack'
-import IconButton from '@material-ui/core/IconButton'
 import Zoom from '@material-ui/core/Zoom'
+import { connect } from 'react-redux'
+import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
+import getPastTime from '../../../util/getPastTime'
+import getProvider from '../../../util/getProvider'
+import getReaction from '../../../util/getReaction'
+import { withRouter } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
   smallAvatar: {
@@ -41,17 +41,46 @@ const styles = {
 
 class ReactionsView extends Component {
   async componentDidMount() {
-    await this.props.getUser(this.props.match.params.id)
+    // if(this.props.match.params.id){
+    //   await this.props.getUser(this.props.match.params.id)
+    // }
+    // if(this.props.user){
+    //   await this.props.getUser(this.props.user._id);
+    // }
   }
 
   goBack = () => {
-    this.props.history.push(this.props.fallBackTo)
+    this.props.saveActionState(this.getPath())
+  }
+
+  viewProfile = (type, userId) => {
+    this.props.saveActionState(type)
+    this.props.history.push(`/profile/${userId}`)
+  }
+
+  getPath = () => {
+    const { pathname } = this.props.location
+    let path
+    switch (pathname) {
+      case '/timeline/incoming':
+        path = 'incoming'
+        break
+      case '/timeline/outgoing':
+        path = 'outgoing'
+        break
+      case '/timeline/users':
+        path = 'users'
+        break
+      default:
+        break
+    }
+    return path
   }
 
   renderSubHeader = () => {
-    const locationPath = this.props.location.pathname
+    // const locationPath = this.props.location.pathname
     const { view } = this.props
-    return locationPath.includes('/reactions') && view === 'list' ? (
+    return view === 'list' ? (
       <div className="row ml-1">
         <IconButton onClick={() => this.goBack()} color="primary">
           <BackIcon />
@@ -72,18 +101,14 @@ class ReactionsView extends Component {
       user,
     } = this.props
     const hasReactions =
-      (!profileUserLoading && profileUser && !profileUser.reactions.length) ||
-      (!profileUserLoading && !profileUser) ||
-      !profileUser
-        ? false
-        : true
+      profileUser && profileUser.reactions.length ? true : false
     return (
       <React.Fragment>
         <Zoom in={true} timeout={2000}>
           <List disablePadding={true} subheader={this.renderSubHeader()}>
             {hasReactions
               ? profileUser.reactions.map(pu => (
-                  <ListItem key={pu._id} alignItems="flex-start">
+                  <ListItem key={pu._id} className="p-1">
                     <ListItemAvatar>
                       <Badge
                         classes={{ badge: classes.customBadge }}
@@ -117,7 +142,10 @@ class ReactionsView extends Component {
                           <>
                             <Link
                               className="hyperlink"
-                              to={`/profile/${pu.likedBy._id}`}
+                              to="#"
+                              onClick={() =>
+                                this.viewProfile('incoming', pu.likedBy._id)
+                              }
                             >
                               {user && user._id === pu.likedBy._id
                                 ? 'You '
@@ -142,20 +170,15 @@ class ReactionsView extends Component {
                         }
                       />
                     </Tooltip>
-                    <ListItemSecondaryAction></ListItemSecondaryAction>
                   </ListItem>
                 ))
               : null}
-            {!profileUserLoading &&
-              profileUser &&
-              !profileUser.reactions.length && (
-                <Typography variant="h4" className="text-center">
-                  No reactions
-                </Typography>
-              )}
-            {profileUserLoading &&
-              profileUser &&
-              !profileUser.reactions.length && <Loader />}
+            {profileUser && !profileUser.reactions.length && (
+              <Typography variant="h4" className="text-center">
+                No reactions
+              </Typography>
+            )}
+            {profileUser && !profileUser.reactions.length && <Loader />}
           </List>
         </Zoom>
       </React.Fragment>
@@ -180,6 +203,7 @@ const mapStateToProps = state => {
 
 const actionsToProps = {
   getUser: globalActions.getUser,
+  saveActionState: actions.saveActionState,
 }
 
 export default withRouter(

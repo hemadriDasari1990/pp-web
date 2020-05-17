@@ -2,12 +2,11 @@ import * as actions from '../actions'
 import * as postActions from '../../Post/actions'
 import * as profileActions from '../../UserProfile/actions'
 
-import { Map, fromJS } from 'immutable'
-import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+import React, { Component, Suspense, lazy } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
 import AvatarGroup from '@material-ui/lab/AvatarGroup'
+import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
 import Button from '@material-ui/core/Button'
 import CancelPresentationIcon from '@material-ui/icons/CancelPresentation'
 import Card from '@material-ui/core/Card'
@@ -15,14 +14,9 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import CommentIcon from '@material-ui/icons/ChatBubbleOutline'
-import CommentsList from './comments/List'
-import CreateComment from './comments/CreateComment'
-import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import DisLikeIcon from '@material-ui/icons/ThumbDownAlt'
 import Divider from '@material-ui/core/Divider'
-import Fab from '@material-ui/core/Fab'
-import Fade from '@material-ui/core/Fade'
 import IconButton from '@material-ui/core/IconButton'
 import LikeIcon from '@material-ui/icons/ThumbUpAlt'
 import LikeOutlinedIcon from '@material-ui/icons/ThumbUpAltOutlined'
@@ -33,19 +27,21 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../Loader/components/Loader'
 import LoveIcon from '@material-ui/icons/Favorite'
+import { Map } from 'immutable'
 import Menu from '@material-ui/core/Menu'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import NoRecords from '../../NoRecords/components/NoRecords'
 import PropTypes from 'prop-types'
 import ScheduleIcon from '@material-ui/icons/Schedule'
+import Slide from '@material-ui/core/Slide'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
+import Zoom from '@material-ui/core/Zoom'
 import advice from '../../../../assets/advice.svg'
 import { connect } from 'react-redux'
 import cons from '../../../../assets/cons.svg'
 import formateNumber from '../../../util/formateNumber'
-import { getCardSubHeaderStatus } from '../../../util/getCardSubHeaderText'
 import getCardSubHeaderText from '../../../util/getCardSubHeaderText'
+import getProvider from '../../../util/getProvider'
 import getReaction from '../../../util/getReaction'
 import getReactionsText from '../../../util/getReactionsText'
 import perfect from '../../../../assets/emojis/perfect.svg'
@@ -54,11 +50,15 @@ import renderColor from '../../../util/renderColor'
 import renderUserNames from '../../../util/renderUserNames'
 import thinking from '../../../../assets/emojis/thinking.svg'
 import tounghout from '../../../../assets/emojis/tounghout.svg'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
-import getProvider from '../../../util/getProvider'
-import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
-import Slide from '@material-ui/core/Slide'
-import Zoom from '@material-ui/core/Zoom'
+
+const CommentsList = lazy(() => import('./comments/List'))
+const CreateComment = lazy(() => import('./comments/CreateComment'))
+const CustomizedSnackbars = lazy(() =>
+  import('../../Snackbar/components/Snackbar'),
+)
+const NoRecords = lazy(() => import('../../NoRecords/components/NoRecords'))
 
 const styles = {
   smallAvatar: {
@@ -102,11 +102,13 @@ class Incoming extends Component {
       showEmojis: false,
       showCommentInput: false,
       postId: null,
+      hint: '',
     }
   }
 
   async componentDidMount() {
     await this.getPosts()
+    this.renderHint()
   }
 
   getPosts = async () => {
@@ -171,7 +173,7 @@ class Incoming extends Component {
         hint: hintArray[index],
       })
       index = (index + 1) % hintArray.length
-    }, 2000)
+    }, 1500)
   }
 
   createOrUpdateReaction = async (userId, postId, reaction) => {
@@ -284,6 +286,16 @@ class Incoming extends Component {
     })
   }
 
+  viewReactions = (type, postId) => {
+    this.props.savePostId(postId)
+    this.props.saveActionState(type)
+  }
+
+  viewProfile = (type, userId) => {
+    this.props.saveActionState(type)
+    this.props.history.push(`/profile/${userId}`)
+  }
+
   render() {
     const {
       incomingPosts,
@@ -297,9 +309,16 @@ class Incoming extends Component {
       type,
       commentsCount,
     } = this.props
-    const { open, anchorEl, showEmojis, showCommentInput, postId } = this.state
+    const {
+      open,
+      anchorEl,
+      showEmojis,
+      showCommentInput,
+      postId,
+      hint,
+    } = this.state
     return (
-      <React.Fragment>
+      <Suspense fallback={<Loader />}>
         {incomingPostsLoading && incomingPosts && !incomingPosts.length ? (
           <Loader />
         ) : null}
@@ -340,7 +359,10 @@ class Incoming extends Component {
                       <>
                         <Link
                           className="hyperlink"
-                          to={`/profile/${post.postedBy._id}`}
+                          to="#"
+                          onClick={() =>
+                            this.viewProfile('incoming', post.postedBy._id)
+                          }
                         >
                           {post.isAnonymous && post.postedBy._id === user._id
                             ? 'You'
@@ -519,12 +541,17 @@ class Incoming extends Component {
                             ))
                           : 'No Reactions'}
                       </AvatarGroup>
-                      <span className="cursor actions-text v-align-middle grey-color ">
+                      <span className="m-l-5 cursor actions-text v-align-middle grey-color ">
                         <Tooltip
                           title={renderUserNames(post.reactions)}
                           placement="bottom"
                         >
-                          <Link to={`/post/${post._id}/reactions`}>
+                          <Link
+                            to="#"
+                            onClick={() =>
+                              this.viewReactions('post-reactions', post._id)
+                            }
+                          >
                             {formateNumber(post.reactions.length) + ' - '}
                           </Link>
                         </Tooltip>
@@ -759,6 +786,14 @@ class Incoming extends Component {
                     />
                   </CardActions>
                 )}
+                {post.reactionsCount === 0 && post.commentsCount === 0 ? (
+                  <>
+                    <Divider />
+                    <CardActions disableSpacing style={{ paddingTop: 0 }}>
+                      <span>{hint}</span>
+                    </CardActions>
+                  </>
+                ) : null}
                 <CardActions disableSpacing style={{ paddingTop: 0 }}>
                   {postId !== post._id && (
                     <CommentsList type="parent" post={post} />
@@ -791,7 +826,7 @@ class Incoming extends Component {
             status={'success'}
           />
         ) : null}
-      </React.Fragment>
+      </Suspense>
     )
   }
 }
@@ -843,6 +878,8 @@ const actionsToProps = {
   getRecentPosts: actions.getRecentPosts,
   getCommentsCount: postActions.getCommentsCount,
   getComments: postActions.getComments,
+  saveActionState: profileActions.saveActionState,
+  savePostId: actions.savePostId,
 }
 
 export default withRouter(

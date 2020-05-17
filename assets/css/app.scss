@@ -44,27 +44,23 @@ body {
 
 
 .container-body {
-width: 100%;
-margin-left: auto;
-margin-right: auto;
-margin-top:30px;
-// min-height: 1000px;
+margin-left: 10px;
+margin-right: 10px;
 }
 
-.content {
-font-size: 1.8rem;
-text-align: center;
-/*margin-top: 25%;*/
-margin-bottom: 5%;
+.body-content {
+  // margin-top:30px;
+  min-height: 1000px;
 }
 
 .loader {
-  margin:auto;
-  left:0;
-  right:0;
-  top:0;
-  bottom:0;
-  position:fixed;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transform: -webkit-translate(-50%, -50%);
+  transform: -moz-translate(-50%, -50%);
+  transform: -ms-translate(-50%, -50%);
 }
 
 .user-info{
@@ -571,7 +567,7 @@ $blue: #2b7eff;
 }
 
 .profile {
-  left: 30% !important;
+  left: 33%;
   display: flex !important;
   margin-top:30px;
   margin-bottom: 20px;

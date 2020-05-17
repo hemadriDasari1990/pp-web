@@ -1,22 +1,15 @@
 import * as actions from '../../../actions/index'
 
-import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+import React, { Component, Suspense, lazy } from 'react'
 
-import Followers from '../../UserProfile/components/Followers'
 import Grid from '@material-ui/core/Grid'
-import Incoming from './Incoming'
-import Outgoing from './Outgoing'
-import PopularPosts from './PopularPosts'
-import Post from '../../Post/components/Post'
-import Profile from '../../UserProfile/components/Profile'
-import Reactions from '../../UserProfile/components/Reactions'
-import RecentPosts from './RecentPosts'
-import Search from '../../Search/components/Search'
-import Summary from '../../Dashboard/components/Summary'
-import Users from '../../Users/components/Users'
+import Loader from '../../Loader/components/Loader'
 import { connect } from 'react-redux'
-import firebase from '../../../firebase'
+import { withRouter } from 'react-router-dom'
+
+const PopularPosts = lazy(() => import('./PopularPosts'))
+const RecentPosts = lazy(() => import('./RecentPosts'))
+const Summary = lazy(() => import('../../Dashboard/components/Summary'))
 
 class RightGrid extends Component {
   constructor(props) {
@@ -34,13 +27,13 @@ class RightGrid extends Component {
     const {} = this.state
     const { user, path } = this.props
     return (
-      <>
+      <Suspense fallback={<Loader />}>
         <Grid item lg={4} md={6} xs={12} sm={9} className="of-h">
           {user && <Summary type={path} title="Summary" />}
           {user && <RecentPosts user={path} />}
           {user && <PopularPosts user={user} type={path} />}
         </Grid>
-      </>
+      </Suspense>
     )
   }
 }

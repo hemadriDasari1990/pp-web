@@ -1,18 +1,12 @@
 import CommentIcon from '@material-ui/icons/ChatBubble'
 import FavoriteIcon from '@material-ui/icons/Favorite'
 import FileCopyIcon from '@material-ui/icons/FileCopyOutlined'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormLabel from '@material-ui/core/FormLabel'
 import PrintIcon from '@material-ui/icons/Print'
-import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
 import React from 'react'
 import SaveIcon from '@material-ui/icons/Save'
 import ShareIcon from '@material-ui/icons/Share'
 import SpeedDial from '@material-ui/lab/SpeedDial'
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction'
-import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon'
-import Switch from '@material-ui/core/Switch'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({

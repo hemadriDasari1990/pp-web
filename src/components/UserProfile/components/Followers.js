@@ -1,17 +1,20 @@
+import * as actions from '../actions'
 import * as globalActions from '../../../actions/index'
 
-import { Map, fromJS } from 'immutable'
-import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+import React, { Component, Suspense, lazy } from 'react'
 
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import { Link } from 'react-router-dom'
+import Loader from '../../Loader/components/Loader'
+import { Map } from 'immutable'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
-import FollowersView from './FollowersView'
+
+const FollowersView = lazy(() => import('./FollowersView'))
 
 const styles = {
   smallAvatar: {
@@ -28,7 +31,16 @@ const styles = {
 
 class Followers extends Component {
   async componentDidMount() {
-    await this.props.getUser(this.props.match.params.id)
+    if (this.props.match.params.id) {
+      await this.props.getUser(this.props.match.params.id)
+    }
+    if (!this.props.match.params.id && this.props.user) {
+      await this.props.getUser(this.props.user._id)
+    }
+  }
+
+  viewAll = type => {
+    this.props.saveActionState(type)
   }
 
   render() {
@@ -41,20 +53,19 @@ class Followers extends Component {
       path,
     } = this.props
     const hasFollowers =
-      (!profileUserLoading && profileUser && !profileUser.followers.length) ||
-      (!profileUserLoading && !profileUser) ||
-      !profileUser
-        ? false
-        : true
-    const viewPath = profileUser ? `/${path}/${profileUser._id}/followers` : '#'
+      profileUser && profileUser.followers.length > 0 ? true : false
     return (
-      <React.Fragment>
+      <Suspense fallback={<Loader />}>
         <Card>
           <CardHeader
             title="Followers"
             action={
-              profileUser && profileUser.followers.length > 0 ? (
-                <Link className="hyperlink" to={viewPath}>
+              hasFollowers ? (
+                <Link
+                  className="hyperlink"
+                  to="#"
+                  onClick={() => this.viewAll('followers')}
+                >
                   View All{' '}
                   <b>
                     {formateNumber(
@@ -65,11 +76,11 @@ class Followers extends Component {
               ) : null
             }
           ></CardHeader>
-          <CardContent className={!hasFollowers ? '' : 'p-0'}>
-            <FollowersView view="card" fallBackTo={'/timeline/incoming'} />
+          <CardContent className={hasFollowers ? 'p-0' : ''}>
+            <FollowersView view="card" />
           </CardContent>
         </Card>
-      </React.Fragment>
+      </Suspense>
     )
   }
 }
@@ -91,6 +102,7 @@ const mapStateToProps = state => {
 
 const actionsToProps = {
   getUser: globalActions.getUser,
+  saveActionState: actions.saveActionState,
 }
 
 export default withRouter(

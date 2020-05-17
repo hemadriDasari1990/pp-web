@@ -1,9 +1,7 @@
 import * as actions from '../actions'
 import * as globalActions from '../../../actions/index'
 
-import { List, Map } from 'immutable'
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -12,18 +10,20 @@ import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
 import Divider from '@material-ui/core/Divider'
 import Fab from '@material-ui/core/Fab'
+import FollowIcon from '@material-ui/icons/RssFeedOutlined'
 import IconButton from '@material-ui/core/IconButton'
 import LikeIcon from '@material-ui/icons/ThumbUpAlt'
 import LoveIcon from '@material-ui/icons/Favorite'
-import FollowIcon from '@material-ui/icons/RssFeedOutlined'
+import { Map } from 'immutable'
+import Slide from '@material-ui/core/Slide'
 import Tooltip from '@material-ui/core/Tooltip'
+import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
 import getPastTime from '../../../util/getPastTime'
-import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
+import isUserActive from '../../../util/isUserActive'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
-import Slide from '@material-ui/core/Slide'
-import Zoom from '@material-ui/core/Zoom'
 
 const styles = {
   followIcon: {
@@ -32,6 +32,11 @@ const styles = {
     color: '#2b7eff',
     borderRadius: 25,
     fontWeight: 'bold',
+  },
+  avatar: {
+    width: 100,
+    height: 100,
+    left: '33% !important',
   },
 }
 
@@ -111,8 +116,11 @@ class Profile extends Component {
       profileFollower &&
       profileFollower.follower &&
       profileFollower.follower._id === user._id
-    const showlastSeen =
-      user && profileUser && user._id === profileUser._id ? false : true
+    const isActive = profileUser
+      ? isUserActive(profileUser.lastActiveTime)
+      : false
+    const isSameUser =
+      user && profileUser && user._id === profileUser._id ? true : false
     return (
       <>
         <Card>
@@ -141,6 +149,8 @@ class Profile extends Component {
                 </Tooltip>
               </div>
             )}
+          </CardContent>
+          <CardContent className="text-center">
             <Zoom in={true} timeout={2000}>
               <Avatar
                 className="profile"
@@ -155,11 +165,11 @@ class Profile extends Component {
               mountOnEnter
               unmountOnExit
             >
-              <h5 className="text-center">{profileUser.userName}</h5>
+              <h5>{isSameUser ? 'You' : profileUser.userName}</h5>
             </Slide>
             <Zoom in={true} timeout={2000}>
-              <div className="text-center">
-                {showlastSeen ? (
+              <div>
+                {!isActive ? (
                   <small>
                     {' Last Active '}
                     <b style={{ color: '#2b7eff' }}>
@@ -173,7 +183,7 @@ class Profile extends Component {
               </div>
             </Zoom>
             {profileUser && user && profileUser._id != user._id && (
-              <div className="mt-25 text-center">
+              <div className="mt-25">
                 <Tooltip title={following ? 'Following' : 'Follow'}>
                   <Button
                     variant="extended"

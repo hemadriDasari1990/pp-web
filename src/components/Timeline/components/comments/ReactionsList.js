@@ -1,17 +1,18 @@
 import * as actions from '../../actions'
 import * as postActions from '../../../Post/actions'
 
-import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
+import { Map } from 'immutable'
 import PropTypes from 'prop-types'
 import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
+
 const styles = {}
 
 class CreateComment extends Component {

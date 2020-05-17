@@ -1,7 +1,6 @@
 import * as timelineActions from '../../Timeline/actions'
 
-import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+import React, { Component, Suspense, lazy } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
 import Card from '@material-ui/core/Card'
@@ -11,11 +10,12 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../Loader/components/Loader'
+import Zoom from '@material-ui/core/Grow'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
 import incomingIcon from '../../../../assets/incoming.svg'
 import outgoingIcon from '../../../../assets/outgoing.svg'
-import Zoom from '@material-ui/core/Grow'
+import { withRouter } from 'react-router-dom'
 
 class Summary extends Component {
   constructor(props) {
@@ -42,7 +42,7 @@ class Summary extends Component {
     const { classes, title, type } = this.props
     const { summary, loading } = this.state
     return (
-      <React.Fragment>
+      <Suspense>
         <Card>
           <Zoom in={true} timeout={2000}>
             <CardHeader
@@ -124,7 +124,7 @@ class Summary extends Component {
             ) : null}
           </CardContent>
         </Card>
-      </React.Fragment>
+      </Suspense>
     )
   }
 }

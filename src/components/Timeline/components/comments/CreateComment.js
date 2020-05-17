@@ -1,19 +1,18 @@
 import * as actions from '../../actions'
 import * as postActions from '../../../Post/actions'
 
-import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 import PropTypes from 'prop-types'
-import TextField from '@material-ui/core/TextField'
-import { connect } from 'react-redux'
-import { withStyles } from '@material-ui/core/styles'
-import Zoom from '@material-ui/core/Zoom'
 import Slide from '@material-ui/core/Slide'
+import TextField from '@material-ui/core/TextField'
+import Zoom from '@material-ui/core/Zoom'
+import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = {}
 

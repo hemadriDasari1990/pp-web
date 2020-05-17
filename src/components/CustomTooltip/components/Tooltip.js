@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
-import Tooltip from '@material-ui/core/Tooltip'
-import PropTypes from 'prop-types'
-import withStyles from '@material-ui/core/styles/withStyles'
+
+import Avatar from '@material-ui/core/Avatar'
+import { Link } from 'react-router-dom'
+import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
-import Avatar from '@material-ui/core/Avatar'
-import List from '@material-ui/core/List'
-import { Link } from 'react-router-dom'
-import Zoom from '@material-ui/core/Zoom'
+import PropTypes from 'prop-types'
+import Tooltip from '@material-ui/core/Tooltip'
+import withStyles from '@material-ui/core/styles/withStyles'
 
 const styles = {}
 

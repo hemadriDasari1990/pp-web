@@ -1,36 +1,28 @@
 import * as actions from '../../../actions/index'
 import * as postActions from '../../Post/actions'
 
-import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
+import React, { Component, Suspense, lazy } from 'react'
 
-import Avatar from '@material-ui/core/Avatar'
-import Fab from '@material-ui/core/Fab'
+import Grid from '@material-ui/core/Grid'
 import LikeIcon from '@material-ui/icons/ThumbUpAlt'
 import Loader from '../../Loader/components/Loader'
 import LoveIcon from '@material-ui/icons/Favorite'
-import Metrics from './Metrics'
 import PreferencesIcon from '../../SvgIcons/components/Preferences'
-import ProfileReactionsCarousel from './ProfileReactionsCarousel'
 import RssFeedOutlinedIcon from '@material-ui/icons/RssFeedOutlined'
-import Summary from './Summary'
-import WelcomeProfile from './WelcomeProfile'
-import arrowIcon from '../../../../assets/arrow.svg'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
-import Grid from '@material-ui/core/Grid'
-import Container from '@material-ui/core/Container'
-import Slide from '@material-ui/core/Slide'
-import Zoom from '@material-ui/core/Zoom'
+
+const WelcomeProfile = lazy(() => import('./WelcomeProfile'))
+const Metrics = lazy(() => import('./Metrics'))
+const Summary = lazy(() => import('./Summary'))
 
 const styles = theme => ({})
 
 class DashBoard extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      user: null,
-    }
+    this.state = {}
   }
 
   async componentDidMount() {
@@ -49,7 +41,7 @@ class DashBoard extends Component {
     const {} = this.state
     const { user, classes, userPreferences } = this.props
     return (
-      <>
+      <Suspense>
         {user && userPreferences ? (
           <>
             <div className="row">
@@ -129,7 +121,7 @@ class DashBoard extends Component {
         ) : (
           <Loader />
         )}
-      </>
+      </Suspense>
     )
   }
 }

@@ -1,4 +1,5 @@
 import * as actions from '../../constants/actionTypes'
+
 import { Map, fromJS } from 'immutable'
 
 export const UserProfile = (state = Map(), action) => {
@@ -80,6 +81,9 @@ export const UserProfile = (state = Map(), action) => {
       return state
         .setIn(['follower', 'get', 'errors'], action.errors)
         .setIn(['follower', 'get', 'loading'], false)
+
+    case actions.SAVE_ACTION_STATE:
+      return state.setIn(['action', 'save'], action.data)
 
     default:
       return state

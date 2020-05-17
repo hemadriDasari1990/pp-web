@@ -6,12 +6,12 @@ import FacebookIcon from '@material-ui/icons/Facebook'
 import InstagramIcon from '@material-ui/icons/Instagram'
 import LinkedInIcon from '@material-ui/icons/LinkedIn'
 import PropTypes from 'prop-types'
+import Slide from '@material-ui/core/Slide'
 import TwitterIcon from '@material-ui/icons/Twitter'
 import YouTubeIcon from '@material-ui/icons/YouTube'
+import Zoom from '@material-ui/core/Zoom'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
-import Slide from '@material-ui/core/Slide'
-import Zoom from '@material-ui/core/Zoom'
 
 const styles = theme => ({
   root: {

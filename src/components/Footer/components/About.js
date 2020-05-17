@@ -4,9 +4,9 @@ import Hemadri from '../../../../assets/hemadri.jpg'
 import Lokesh from '../../../../assets/lokesh.jpg'
 import ProfileCard from '../../Home/components/card'
 import Rajesh from '../../../../assets/rajesh.jpg'
-import { withRouter } from 'react-router-dom'
 import Slide from '@material-ui/core/Slide'
 import Zoom from '@material-ui/core/Zoom'
+import { withRouter } from 'react-router-dom'
 
 class About extends Component {
   constructor(props) {

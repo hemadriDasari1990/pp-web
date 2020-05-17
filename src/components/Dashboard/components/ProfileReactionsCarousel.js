@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
-import Avatar from '@material-ui/core/Avatar'
-import Badge from '@material-ui/core/Badge'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import { connect } from 'react-redux'
@@ -32,28 +30,7 @@ class ProfileReactionsCarousel extends Component {
       <Card>
         <CardContent>
           <div className="row m-2">
-            {user.reactions &&
-              [
-                1,
-                2,
-                3,
-                4,
-                5,
-                6,
-                7,
-                8,
-                9,
-                10,
-                11,
-                12,
-                13,
-                14,
-                15,
-                16,
-                17,
-                18,
-                19,
-              ].map((reaction, index) => (
+            {/* {user.reactions &&
                 <Badge
                   className="m-1"
                   classes={{ badge: classes.customBadge }}
@@ -63,7 +40,7 @@ class ProfileReactionsCarousel extends Component {
                 >
                   <Avatar />
                 </Badge>
-              ))}
+              } */}
           </div>
         </CardContent>
       </Card>

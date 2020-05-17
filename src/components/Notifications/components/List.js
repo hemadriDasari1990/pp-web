@@ -1,38 +1,34 @@
 import * as actions from '../actions'
 import * as dashboardActions from '../../Timeline/actions'
 
+import { Link, withRouter } from 'react-router-dom'
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
 import Badge from '@material-ui/core/Badge'
 import Button from '@material-ui/core/Button'
+import CancelPresentationIcon from '@material-ui/icons/CancelPresentation'
+import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import Divider from '@material-ui/core/Divider'
-import { Link } from 'react-router-dom'
+import Grid from '@material-ui/core/Grid'
+import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../Loader/components/Loader'
-import ReadIcon from '@material-ui/icons/DoneAll'
+import Menu from '@material-ui/core/Menu'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
+import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import getPastTime from '../../../util/getPastTime'
-import getReaction from '../../../util/getReaction'
-import textingImage from '../../../../assets/notifications/texting.svg'
-import { withStyles } from '@material-ui/core/styles'
 import getProvider from '../../../util/getProvider'
-import Zoom from '@material-ui/core/Zoom'
-import IconButton from '@material-ui/core/IconButton'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
-import CancelPresentationIcon from '@material-ui/icons/CancelPresentation'
-import Menu from '@material-ui/core/Menu'
-import Grid from '@material-ui/core/Grid'
-import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
-import { NotificationSdCard } from 'material-ui/svg-icons'
+import getReaction from '../../../util/getReaction'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
   smallAvatar: {
@@ -71,21 +67,6 @@ class NotificationsList extends Component {
           })
         })
     }
-  }
-
-  renderUserOrigin = provider => {
-    let name = ''
-    switch (provider.toLowerCase()) {
-      case 'google.com':
-        name = 'Google User'
-        break
-      case 'facebook.com':
-        name = 'facebook.com'
-        break
-      default:
-        break
-    }
-    return name
   }
 
   showMoreNotifications = async () => {
@@ -530,7 +511,6 @@ class NotificationsList extends Component {
                           </Badge>
                         </ListItemAvatar>
                         <ListItemText
-                          style={{ maxWidth: 500 }}
                           primary={
                             <Typography variant="h6">
                               {this.renderMessage(n.type, n.sender)}
