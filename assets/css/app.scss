@@ -29,7 +29,7 @@ body {
   -ms-user-select: none;
   /* IE 10+ and Edge */
   user-select: none;
-
+  overflow-y: scroll;
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -39,9 +39,9 @@ body {
   font-weight: 400;
   line-height: 1.43;
   letter-spacing: 0.01071em;
-  background-color: #fff;
+  background-color: #f0f2f5;
+  overscroll-behavior-y: none;
 }
-
 
 .container-body {
 margin-left: 10px;
@@ -88,6 +88,11 @@ font-size: 12px !important;
 margin-left: -7px !important;
 font-weight: bold;
 color: '#606770' !important;
+}
+
+.hint-label {
+  font-size: 12px !important;
+  color: #65676b;
 }
 
 .relative {
@@ -936,6 +941,17 @@ small {
 .middle-content {
   overflow: auto;
   height: auto;
+}
+
+.tab-title {
+  margin-top: -4px;
+  font-weight: 600;
+  word-break: break-word;
+  font-family: inherit;
+  font-size: .9375rem;
+  -webkit-font-smoothing: antialiased;
+  word-wrap: break-word;
+  line-height: 1.3333;
 }
 
 

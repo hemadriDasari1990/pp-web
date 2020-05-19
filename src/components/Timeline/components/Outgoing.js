@@ -292,7 +292,14 @@ class Outgoing extends Component {
       user,
       classes,
     } = this.props
-    const { open, anchorEl, showEmojis, showCommentInput, postId } = this.state
+    const {
+      open,
+      anchorEl,
+      showEmojis,
+      showCommentInput,
+      postId,
+      hint,
+    } = this.state
     return (
       <Suspense fallback={<Loader />}>
         {!outgoingPostsLoading && outgoingPosts.length

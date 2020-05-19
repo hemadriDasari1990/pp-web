@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -8,6 +7,7 @@ import Fab from '@material-ui/core/Fab'
 import Grow from '@material-ui/core/Grow'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
+import { withRouter } from 'react-router-dom'
 
 class Metrics extends Component {
   constructor(props) {

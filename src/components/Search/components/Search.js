@@ -79,9 +79,7 @@ class Search extends Component {
         style={{
           flex: 1,
           display: 'flex',
-          borderRadius: 10,
-          // height: 40,
-          // width: 270,
+          borderRadius: 30,
           boxShadow: '0 14px 28px rgba(145, 148, 170, 0.25)',
         }}
       >

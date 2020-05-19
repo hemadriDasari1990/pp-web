@@ -15,6 +15,9 @@ const ProfileFollowersView = lazy(() =>
 const ProfileReactionsView = lazy(() =>
   import('../../UserProfile/components/ReactionsView'),
 )
+const ProfileFolloweesView = lazy(() =>
+  import('../../UserProfile/components/FolloweesView'),
+)
 const Reactions = lazy(() => import('../../Reactions/components/Reactions'))
 const Users = lazy(() => import('../../Users/components/Users'))
 
@@ -58,6 +61,9 @@ class CenterGrid extends Component {
           ) : null}
           {actionState === 'followers' ? (
             <ProfileFollowersView view="list" />
+          ) : null}
+          {actionState === 'followees' ? (
+            <ProfileFolloweesView view="list" />
           ) : null}
         </Grid>
       </Suspense>

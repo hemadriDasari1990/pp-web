@@ -6,15 +6,15 @@ import Avatar from '@material-ui/core/Avatar'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
+import DownIcon from '@material-ui/icons/GetApp'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../Loader/components/Loader'
+import UpIcon from '@material-ui/icons/Publish'
 import Zoom from '@material-ui/core/Grow'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
-import incomingIcon from '../../../../assets/incoming.svg'
-import outgoingIcon from '../../../../assets/outgoing.svg'
 import { withRouter } from 'react-router-dom'
 
 class Summary extends Component {
@@ -49,10 +49,11 @@ class Summary extends Component {
               title={title}
               className="card-title"
               action={
-                <Avatar
-                  className="card-action-avatar b-s"
-                  src={type == 'incoming' ? incomingIcon : outgoingIcon}
-                />
+                type == 'incoming' ? (
+                  <DownIcon color="primary" />
+                ) : (
+                  <UpIcon color="primary" />
+                )
               }
             />
           </Zoom>

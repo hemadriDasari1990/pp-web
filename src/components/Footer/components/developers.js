@@ -1,11 +1,4 @@
 import React, { Component } from 'react'
-import {
-  Redirect,
-  Route,
-  BrowserRouter as Router,
-  Switch,
-  withRouter,
-} from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
 import List from '@material-ui/core/List'
@@ -13,9 +6,11 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemText from '@material-ui/core/ListItemText'
 import Typography from '@material-ui/core/Typography'
+import Zoom from '@material-ui/core/Zoom'
 import hemadri from '../../../../assets/hemadri.jpg'
 import lokesh from '../../../../assets/lokesh.jpg'
 import rajesh from '../../../../assets/rajesh.jpg'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
@@ -41,7 +36,9 @@ class Developers extends Component {
     const { classes } = this.props
     return (
       <React.Fragment>
-        <h2 className="h2-header">We are small team of developers</h2>
+        <Zoom in={true} timeout={1500}>
+          <h2 className="h2-header">We are small team of developers</h2>
+        </Zoom>
         <p>
           We started this project as an experienment as we wanted to build
           something that helps people to communicate and understand what people
@@ -56,7 +53,9 @@ class Developers extends Component {
         <List className={classes.root}>
           <ListItem alignItems="flex-start">
             <ListItemAvatar>
-              <Avatar alt="Rajesh Pemmasani" src={rajesh}></Avatar>
+              <Zoom in={true} timeout={1500}>
+                <Avatar alt="Rajesh Pemmasani" src={rajesh}></Avatar>
+              </Zoom>
             </ListItemAvatar>
             <ListItemText
               primary="Rajesh Pemmasani"
@@ -80,7 +79,9 @@ class Developers extends Component {
           </ListItem>
           <ListItem alignItems="flex-start">
             <ListItemAvatar>
-              <Avatar alt="Lokesh Pemmasani" src={lokesh}></Avatar>
+              <Zoom in={true} timeout={1500}>
+                <Avatar alt="Lokesh Pemmasani" src={lokesh}></Avatar>
+              </Zoom>
             </ListItemAvatar>
             <ListItemText
               primary="Lokesh Pemmasani"
@@ -104,7 +105,9 @@ class Developers extends Component {
           </ListItem>
           <ListItem alignItems="flex-start">
             <ListItemAvatar>
-              <Avatar alt="Hemadri Dasari" src={hemadri}></Avatar>
+              <Zoom in={true} timeout={1500}>
+                <Avatar alt="Hemadri Dasari" src={hemadri}></Avatar>
+              </Zoom>
             </ListItemAvatar>
             <ListItemText
               primary="Hemadri Dasari"

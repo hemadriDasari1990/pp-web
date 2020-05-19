@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid'
 import LikeIcon from '@material-ui/icons/ThumbUpAlt'
 import Loader from '../../Loader/components/Loader'
 import LoveIcon from '@material-ui/icons/Favorite'
-import PreferencesIcon from '../../SvgIcons/components/Preferences'
+import PreferencesIcon from '@material-ui/icons/Tune'
 import RssFeedOutlinedIcon from '@material-ui/icons/RssFeedOutlined'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
@@ -100,12 +100,7 @@ class DashBoard extends Component {
                     count={user.no_of_loves}
                   />
                   <Metrics
-                    icon={
-                      <PreferencesIcon
-                        style={{ width: 40, height: 40 }}
-                        color="#fff"
-                      />
-                    }
+                    icon={<PreferencesIcon color="secondary" />}
                     title="Times Updated"
                     name="Preferences"
                     count={

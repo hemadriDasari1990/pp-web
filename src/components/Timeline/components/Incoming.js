@@ -104,11 +104,16 @@ class Incoming extends Component {
       postId: null,
       hint: '',
     }
+    this.hintTimer = null
   }
 
   async componentDidMount() {
     await this.getPosts()
     this.renderHint()
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.hintTimer)
   }
 
   getPosts = async () => {
@@ -168,7 +173,7 @@ class Incoming extends Component {
       'Be the first to comment on this',
     ]
     let index = 0
-    setInterval(() => {
+    this.hintTimer = setInterval(() => {
       this.setState({
         hint: hintArray[index],
       })
@@ -296,6 +301,59 @@ class Incoming extends Component {
     this.props.history.push(`/profile/${userId}`)
   }
 
+  renderTitle = post => {
+    const { user } = this.props
+    if (post.postedBy._id === post.postedTo._id) {
+      return (
+        <>
+          <Link
+            className="hyperlink"
+            to="#"
+            onClick={() => this.viewProfile('incoming', post.postedBy._id)}
+          >
+            {post.postedBy._id === user._id
+              ? 'You'
+              : `${post.postedBy.userName}`}
+          </Link>
+          &nbsp;
+          {getProvider(post.postedBy.providerId)}&nbsp;
+          <span className="grey-color hint-label">
+            {post.postedBy._id !== user._id ? 'Updated status' : ''}
+          </span>
+          &nbsp;
+        </>
+      )
+    } else {
+      return (
+        <>
+          <Link
+            className="hyperlink"
+            to="#"
+            onClick={() => this.viewProfile('incoming', post.postedBy._id)}
+          >
+            {post.postedBy._id === user._id
+              ? 'You'
+              : `${post.postedBy.userName}`}
+          </Link>
+          &nbsp;
+          {getProvider(post.postedBy.providerId)}&nbsp;
+          <span className="grey-color hint-label">To</span>&nbsp;
+          <Link
+            className="hyperlink"
+            to="#"
+            onClick={() => this.viewProfile('incoming', post.postedTo._id)}
+          >
+            {post.postedTo._id === user._id
+              ? 'You'
+              : `${post.postedTo.userName}`}
+          </Link>
+          &nbsp;
+          {getProvider(post.postedTo.providerId)}
+        </>
+      )
+    }
+  }
+
   render() {
     const {
       incomingPosts,
@@ -319,9 +377,6 @@ class Incoming extends Component {
     } = this.state
     return (
       <Suspense fallback={<Loader />}>
-        {incomingPostsLoading && incomingPosts && !incomingPosts.length ? (
-          <Loader />
-        ) : null}
         {!incomingPostsLoading && incomingPosts.length
           ? incomingPosts.map(post => (
               <Card key={post._id}>
@@ -356,21 +411,7 @@ class Incoming extends Component {
                   title={
                     (post.isAnonymous && post.postedBy._id === user._id) ||
                     !post.isAnonymous ? (
-                      <>
-                        <Link
-                          className="hyperlink"
-                          to="#"
-                          onClick={() =>
-                            this.viewProfile('incoming', post.postedBy._id)
-                          }
-                        >
-                          {post.isAnonymous && post.postedBy._id === user._id
-                            ? 'You'
-                            : post.postedBy.userName}
-                        </Link>
-                        &nbsp;
-                        {getProvider(post.postedBy.providerId)}
-                      </>
+                      this.renderTitle(post)
                     ) : (
                       <b className="hyperlink">Annonymous User</b>
                     )
@@ -380,12 +421,11 @@ class Incoming extends Component {
                       {getCardSubHeaderText(post.createdAt)}&nbsp;&nbsp;
                       {!post.isAnonymous && (
                         <>
-                          <span>
-                            <b>
-                              {formateNumber(post.postedBy.total_followers)}
-                            </b>
-                            &nbsp;Followers&nbsp;
+                          <span className="grey-color hint-label">
+                            {formateNumber(post.postedBy.total_followers)}
+                            &nbsp;Followers
                           </span>
+                          &nbsp;
                         </>
                       )}
                     </>
@@ -790,7 +830,7 @@ class Incoming extends Component {
                   <>
                     <Divider />
                     <CardActions disableSpacing style={{ paddingTop: 0 }}>
-                      <span>{hint}</span>
+                      <span className="hint-label">{hint}</span>
                     </CardActions>
                   </>
                 ) : null}

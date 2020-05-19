@@ -85,8 +85,8 @@ class Profile extends Component {
 
   handleFollow = async () => {
     const data = {
-      follower: this.props.user._id,
-      followee: this.props.profileUser._id,
+      userId: this.props.user._id,
+      followeeId: this.props.profileUser._id,
     }
     await this.props.createOrUpdateProfileFollower(data).then(async res => {
       await this.props.getProfileFollower(

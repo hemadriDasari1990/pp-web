@@ -10,6 +10,7 @@ import { withRouter } from 'react-router-dom'
 const Followers = lazy(() => import('../../UserProfile/components/Followers'))
 const Profile = lazy(() => import('../../UserProfile/components/Profile'))
 const Reactions = lazy(() => import('../../UserProfile/components/Reactions'))
+const Followees = lazy(() => import('../../UserProfile/components/Followees'))
 
 class LeftGrid extends Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class LeftGrid extends Component {
           {user && <Profile profileUser={user} />}
           <Reactions path="timeline" />
           <Followers path="timeline" />
+          <Followees path="timeline" />
         </Grid>
       </Suspense>
     )

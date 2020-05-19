@@ -69,11 +69,17 @@ class RecentPosts extends Component {
             title="Most Recent Posts"
             action={<a>View All</a>}
           ></CardHeader>
-          <CardContent>
+          <CardContent
+            className={recentPosts && recentPosts.length ? 'p-0' : ''}
+          >
             <List>
               {!recentPostsLoading && recentPosts.length
                 ? recentPosts.map(post => (
-                    <ListItem key={post._id} alignItems="flex-start">
+                    <ListItem
+                      key={post._id}
+                      className="p-1"
+                      alignItems="flex-start"
+                    >
                       <ListItemAvatar>
                         {!post.isAnonymous ? (
                           <Avatar

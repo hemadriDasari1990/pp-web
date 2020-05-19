@@ -61,26 +61,21 @@ class Users extends Component {
 
   handleFollow = async (cUser, index) => {
     const data = {
-      follower: this.props.user._id,
-      followee: cUser._id,
+      userId: this.props.user._id,
+      followeeId: cUser._id,
     }
     const users = [...this.state.users]
     const user = users[index]
     await this.props.createOrUpdateProfileFollower(data).then(async res => {
       if (!res.data.data) {
         const followers = user.followers.filter(
-          f => f.follower._id !== this.props.user._id,
+          f => f._id !== this.props.user._id,
         )
         user.followers = followers
         user.no_of_followers = --user.no_of_followers
       } else {
-        await this.props
-          .getProfileFollower(this.props.user._id, user._id)
-          .then(followerRes => {
-            const follower = followerRes.data
-            user.no_of_followers = ++user.no_of_followers
-            user.followers.push(follower)
-          })
+        user.no_of_followers = ++user.no_of_followers
+        user.followers.push(this.props.user)
       }
       users[index] = user
       this.setState(
@@ -96,7 +91,7 @@ class Users extends Component {
     if (!followers) {
       return
     }
-    return followers.filter(f => f.follower._id === this.props.user._id).length
+    return followers.filter(f => f._id === this.props.user._id).length
       ? 'primary'
       : ''
   }
@@ -266,7 +261,6 @@ const actionsToProps = {
   getUsers: mainActions.getUsers,
   createOrUpdateProfileReaction: profileActions.createOrUpdateProfileReaction,
   createOrUpdateProfileFollower: profileActions.createOrUpdateProfileFollower,
-  getProfileFollower: profileActions.getProfileFollower,
   saveActionState: profileActions.saveActionState,
 }
 

@@ -17,7 +17,9 @@ class About extends Component {
   render() {
     return (
       <React.Fragment>
-        <h2 className="h2-header">Who we are</h2>
+        <Zoom in={true} timeout={2000}>
+          <h2 className="h2-header">Who we are</h2>
+        </Zoom>
         <p>
           Writenpost is a social platform build to serve people to share pros,
           cons and advice to people they are interested. This app was founded in

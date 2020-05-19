@@ -148,7 +148,9 @@ class Preferences extends Component {
     return (
       <Container fixed>
         <div className="col-lg-8 col-md-6 col-sm-6 col-xs-6">
-          <h1>Preferences</h1>
+          <Zoom in={true} timeout={1500}>
+            <h1>Preferences</h1>
+          </Zoom>
           <p>
             Save your preferences so that people will think twice before they
             write you.
@@ -176,12 +178,20 @@ class Preferences extends Component {
                       >
                         <FormControlLabel
                           value="yes"
-                          control={<Radio color="primary" />}
+                          control={
+                            <Zoom in={true} timeout={1500}>
+                              <Radio color="primary" />
+                            </Zoom>
+                          }
                           label="Interested"
                         />
                         <FormControlLabel
                           value="no"
-                          control={<Radio color="primary" />}
+                          control={
+                            <Zoom in={true} timeout={1500}>
+                              <Radio color="primary" />
+                            </Zoom>
+                          }
                           label="Not Interested"
                         />
                       </RadioGroup>
@@ -205,12 +215,20 @@ class Preferences extends Component {
                       >
                         <FormControlLabel
                           value="yes"
-                          control={<Radio color="primary" />}
+                          control={
+                            <Zoom in={true} timeout={1500}>
+                              <Radio color="primary" />
+                            </Zoom>
+                          }
                           label="Interested"
                         />
                         <FormControlLabel
                           value="no"
-                          control={<Radio color="primary" />}
+                          control={
+                            <Zoom in={true} timeout={1500}>
+                              <Radio color="primary" />
+                            </Zoom>
+                          }
                           label="Not Interested"
                         />
                       </RadioGroup>
@@ -234,12 +252,20 @@ class Preferences extends Component {
                       >
                         <FormControlLabel
                           value="yes"
-                          control={<Radio color="primary" />}
+                          control={
+                            <Zoom in={true} timeout={1500}>
+                              <Radio color="primary" />
+                            </Zoom>
+                          }
                           label="Interested"
                         />
                         <FormControlLabel
                           value="no"
-                          control={<Radio color="primary" />}
+                          control={
+                            <Zoom in={true} timeout={1500}>
+                              <Radio color="primary" />
+                            </Zoom>
+                          }
                           label="Not Interested"
                         />
                       </RadioGroup>

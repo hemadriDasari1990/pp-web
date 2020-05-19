@@ -40,7 +40,7 @@ const styles = {
   },
 }
 
-class FollowersView extends Component {
+class FolloweesView extends Component {
   async componentDidMount() {}
 
   goBack = () => {
@@ -79,7 +79,7 @@ class FollowersView extends Component {
           <BackIcon />
         </IconButton>
         <ListSubheader component="div" id="nested-list-subheader">
-          Profile Followers
+          Profile Followees
         </ListSubheader>
       </div>
     ) : null
@@ -93,14 +93,14 @@ class FollowersView extends Component {
       profileUserLoading,
       user,
     } = this.props
-    const hasFollowers =
-      profileUser && profileUser.followers.length ? true : false
+    const hasFollowees =
+      profileUser && profileUser.followees.length ? true : false
     return (
       <React.Fragment>
         <Zoom in={true} timeout={2000}>
           <List disablePadding={true} subheader={this.renderSubHeader()}>
-            {hasFollowers
-              ? profileUser.followers.map(f => (
+            {hasFollowees
+              ? profileUser.followees.map(f => (
                   <ListItem key={f._id} className="p-1">
                     <ListItemAvatar>
                       <Badge
@@ -157,12 +157,12 @@ class FollowersView extends Component {
                   </ListItem>
                 ))
               : null}
-            {profileUser && !profileUser.followers.length && (
+            {profileUser && !profileUser.followees.length && (
               <Typography variant="h4" className="text-center">
                 No Followers
               </Typography>
             )}
-            {profileUser && !profileUser.followers.length && <Loader />}
+            {profileUser && !profileUser.followees.length && <Loader />}
           </List>
         </Zoom>
       </React.Fragment>
@@ -170,7 +170,7 @@ class FollowersView extends Component {
   }
 }
 
-FollowersView.propTypes = {}
+FolloweesView.propTypes = {}
 
 const mapStateToProps = state => {
   const profileUser = state.getIn(['user', 'success'])
@@ -191,5 +191,5 @@ const actionsToProps = {
 }
 
 export default withRouter(
-  connect(mapStateToProps, actionsToProps)(withStyles(styles)(FollowersView)),
+  connect(mapStateToProps, actionsToProps)(withStyles(styles)(FolloweesView)),
 )

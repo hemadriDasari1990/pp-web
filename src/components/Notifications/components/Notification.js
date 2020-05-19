@@ -79,7 +79,9 @@ class Notifications extends Component {
   getNotificationsCountText = (type, count) => {
     return (
       <>
-        <span>{type}&nbsp;</span> <b> {formateNumber(count)}</b>
+        <span className="tab-title">
+          {type}&nbsp;<b> {formateNumber(count)}</b>
+        </span>
       </>
     )
   }

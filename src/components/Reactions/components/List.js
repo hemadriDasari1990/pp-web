@@ -58,15 +58,15 @@ class ReactionsList extends Component {
 
   handleFollow = async (user, index) => {
     const data = {
-      follower: this.props.user._id,
-      followee: user._id,
+      userId: this.props.user._id,
+      followeeId: user._id,
     }
     const reactions = [...this.state.reactions]
     const reaction = reactions[index]
     await this.props.createOrUpdateProfileFollower(data).then(async res => {
       if (!res.data.data) {
         const followers = reaction.user.followers.filter(
-          f => f.follower._id !== this.props.user._id,
+          f => f._id !== this.props.user._id,
         )
         reaction.user.followers = followers
         reaction.user.no_of_followers = --reaction.user.no_of_followers
@@ -93,7 +93,7 @@ class ReactionsList extends Component {
     if (!followers) {
       return
     }
-    return followers.filter(f => f.follower._id === this.props.user._id).length
+    return followers.filter(f => f._id === this.props.user._id).length
       ? 'primary'
       : ''
   }

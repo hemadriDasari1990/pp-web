@@ -55,6 +55,7 @@ class Post extends Component {
               <div className="row mt-10">
                 <Avatar
                   size="small"
+                  alt={user ? user.userName : ''}
                   src={user ? user.photoURL : ''}
                   style={{ marginLeft: 15 }}
                 />

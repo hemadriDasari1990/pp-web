@@ -215,12 +215,12 @@ class App extends Component {
                 <Route path="/signin" component={Signin} />
                 {/* <Route path="*" component={PageNotFound} /> */}
               </Switch>
+              {!authenticated && (
+                <section className="body-section">
+                  <Footer authenticated={authenticated} />
+                </section>
+              )}
             </Container>
-            {!authenticated && (
-              <section className="body-section">
-                <Footer authenticated={authenticated} />
-              </section>
-            )}
           </MuiThemeProvider>
         </Suspense>
       </React.Fragment>
