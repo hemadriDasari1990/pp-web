@@ -4,10 +4,10 @@ export default function renderColor(type) {
   let color = '#606770'
   switch (type.toLowerCase()) {
     case 'like':
-      color = '#2a7fff'
+      color = '#5383ff'
       break
     case 'dislike':
-      color = '#2a7fff'
+      color = '#5383ff'
       break
     case 'perfect':
       color = '#f7b125'
@@ -19,7 +19,7 @@ export default function renderColor(type) {
       color = 'red'
       break
     case 'wow':
-      color = '#2a7fff'
+      color = '#5383ff'
       break
     case 'tounghout':
       color = '#f7b125'

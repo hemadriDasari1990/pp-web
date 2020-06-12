@@ -109,7 +109,7 @@ class ReactionsList extends Component {
       <div>
         {!reactionsLoading && reactions.length ? (
           <div className="text-center m-2">
-            <Typography variant="h3">People who Reacted</Typography>
+            <Typography variant="h3">People who reacted</Typography>
           </div>
         ) : null}
         {!reactionsLoading && !reactions.length && (
@@ -126,7 +126,7 @@ class ReactionsList extends Component {
                       <ListItem
                         key={r._id}
                         alignItems="flex-start"
-                        className="shadow b-r-15 cursor mb-10"
+                        className="b-r-15 cursor mb-10"
                       >
                         <ListItemAvatar>
                           <Badge

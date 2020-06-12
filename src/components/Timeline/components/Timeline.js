@@ -27,8 +27,8 @@ class Timeline extends Component {
     const { user } = this.state
     const {} = this.props
     return (
-      <Suspense fallback={<Loader />}>
-        <Grid container spacing={1} className="of-h">
+      <Suspense>
+        <Grid container spacing={1} className="of-h w-us" disableGutters={true}>
           <LeftGrid />
           <CenterGrid />
           <RightGrid />

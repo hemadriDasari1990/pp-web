@@ -40,7 +40,7 @@ const styles = {
   },
 }
 
-class FolloweesView extends Component {
+class FollowingView extends Component {
   async componentDidMount() {}
 
   goBack = () => {
@@ -79,7 +79,7 @@ class FolloweesView extends Component {
           <BackIcon />
         </IconButton>
         <ListSubheader component="div" id="nested-list-subheader">
-          Profile Followees
+          Profile Following
         </ListSubheader>
       </div>
     ) : null
@@ -101,7 +101,7 @@ class FolloweesView extends Component {
           <List disablePadding={true} subheader={this.renderSubHeader()}>
             {hasFollowees
               ? profileUser.followees.map(f => (
-                  <ListItem key={f._id} className="p-1">
+                  <ListItem key={f._id} className="p-1 w-us">
                     <ListItemAvatar>
                       <Badge
                         classes={{ badge: classes.customBadge }}
@@ -159,10 +159,9 @@ class FolloweesView extends Component {
               : null}
             {profileUser && !profileUser.followees.length && (
               <Typography variant="h4" className="text-center">
-                No Followers
+                No Following
               </Typography>
             )}
-            {profileUser && !profileUser.followees.length && <Loader />}
           </List>
         </Zoom>
       </React.Fragment>
@@ -170,7 +169,7 @@ class FolloweesView extends Component {
   }
 }
 
-FolloweesView.propTypes = {}
+FollowingView.propTypes = {}
 
 const mapStateToProps = state => {
   const profileUser = state.getIn(['user', 'success'])
@@ -191,5 +190,5 @@ const actionsToProps = {
 }
 
 export default withRouter(
-  connect(mapStateToProps, actionsToProps)(withStyles(styles)(FolloweesView)),
+  connect(mapStateToProps, actionsToProps)(withStyles(styles)(FollowingView)),
 )

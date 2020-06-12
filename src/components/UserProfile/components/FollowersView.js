@@ -101,7 +101,7 @@ class FollowersView extends Component {
           <List disablePadding={true} subheader={this.renderSubHeader()}>
             {hasFollowers
               ? profileUser.followers.map(f => (
-                  <ListItem key={f._id} className="p-1">
+                  <ListItem key={f._id} className="p-1 w-us">
                     <ListItemAvatar>
                       <Badge
                         classes={{ badge: classes.customBadge }}
@@ -162,7 +162,6 @@ class FollowersView extends Component {
                 No Followers
               </Typography>
             )}
-            {profileUser && !profileUser.followers.length && <Loader />}
           </List>
         </Zoom>
       </React.Fragment>

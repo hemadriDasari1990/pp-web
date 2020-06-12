@@ -8,7 +8,7 @@ import loader from '../../../../assets/loader/loader.svg'
 
 const styles = theme => ({
   progress: {
-    color: '#2a7fff',
+    color: '#5383ff',
     position: 'absolute',
     left: '50%',
     top: '50%',
@@ -30,7 +30,7 @@ const useStylesFacebook = makeStyles({
     color: '#eef3fd',
   },
   bottom: {
-    color: '#2a7fff',
+    color: '#5383ff',
     animationDuration: '550ms',
     position: 'absolute',
     left: 0,

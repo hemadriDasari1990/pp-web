@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 
+import Container from '@material-ui/core/Container'
 import Facebook from '../../Social/components/Facebook'
 import Google from '../../Social/components/Google'
+import Grid from '@material-ui/core/Grid'
 import PropTypes from 'prop-types'
 import Slide from '@material-ui/core/Slide'
 import Social from '../../../../assets/social.svg'
@@ -28,55 +30,57 @@ class Signin extends Component {
     const { classes } = this.props
     return (
       <React.Fragment>
-        <div className="row clearfix">
-          <Slide
-            direction="right"
-            in={true}
-            timeout={1500}
-            mountOnEnter
-            unmountOnExit
-          >
-            <div className="image-column col-lg-7 col-md-12 col-sm-12">
-              <div className="p-h-20 fl-justify-around fl-items-center nner-column">
-                <div className="image">
-                  <img src={Social} />
-                </div>
-              </div>
-            </div>
-          </Slide>
-          <Slide
-            direction="left"
-            in={true}
-            timeout={1500}
-            mountOnEnter
-            unmountOnExit
-          >
-            <div className="content-column col-lg-5 col-md-12 col-sm-12">
-              <div className="m-l-18 p-h-20 fl-justify-around fl-items-center inner-column">
-                <h1>Social Logins</h1>
-                <p>Make a login using social network accounts</p>
-                <span>
-                  You knew what? Different social logins but one account. You
-                  heard it right.
-                </span>
-                <br />
-                <br />
-                <span>
-                  For eg: You logged in with Facebook and you got some posts or
-                  reactions on profile etc from others. So later on you decided
-                  to login with google account instead of using Facebook login
-                  so when you login with Google you will see the same data wha
-                  you had in Facebook
-                </span>
-                <br />
-                <br />
-                <Facebook />
-                <Google />
-                <Twitter />
-              </div>
-            </div>
-          </Slide>
-        </div>
+        <Container fixed className="pb-5">
+          <Grid container spacing={1}>
+            <Grid item xs container>
+              <Slide
+                direction="right"
+                in={true}
+                timeout={1500}
+                mountOnEnter
+                unmountOnExit
+              >
+                <Grid
+                  item
+                  xs={12}
+                  lg={12}
+                  md={12}
+                  xs={12}
+                  xl={12}
+                  className="p-1"
+                >
+                  <div className="pb-5 pl-0">
+                    <h1 className="mb-3">Social Logins</h1>
+                    <p className="font-size-lg">
+                      Make a login using social network accounts
+                    </p>
+                    <p className="font-size-lg text-black-50">
+                      {' '}
+                      You knew what? Different social logins but one account.
+                      You heard it right.
+                    </p>
+                    <p className="text-black">
+                      For eg: You logged in with Facebook and you got some posts
+                      or reactions on profile etc from others. So later on you
+                      decided to login with google account instead of using
+                      Facebook login so when you login with Google you will see
+                      the same data wha you had in Facebook
+                    </p>
+                    <div className="mt-5">
+                      <Facebook />
+                      <Google />
+                      <Twitter />
+                    </div>
+                    <small className="d-block pt-3">
+                      Clean, intuitive, responsive and beautiful React dashboard
+                      powered by Google's Material Design.
+                    </small>
+                  </div>
+                </Grid>
+              </Slide>
+            </Grid>
+          </Grid>
+        </Container>
       </React.Fragment>
     )
   }

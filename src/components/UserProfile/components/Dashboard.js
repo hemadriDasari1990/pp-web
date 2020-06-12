@@ -37,7 +37,7 @@ class Dashboard extends Component {
     return (
       <Suspense fallback={<Loader />}>
         {profile && (
-          <Grid container spacing={1} className="of-h">
+          <Grid container spacing={1} className="of-h w-us">
             <LeftGrid profile={profile} path={path} />
             <CenterGrid profile={profile} path={path} />
             <RightGrid profile={profile} path={path} />

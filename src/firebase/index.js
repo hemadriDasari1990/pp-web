@@ -1,3 +1,5 @@
+import 'firebase/storage'
+
 import firebase from 'firebase'
 
 const config = {

@@ -2,17 +2,22 @@ import * as footerActions from '../../Footer/actions'
 
 import React, { Component } from 'react'
 
+import ArrowIcon from '@material-ui/icons/ArrowForward'
+import Button from '@material-ui/core/Button'
+import Container from '@material-ui/core/Container'
+import Divider from '@material-ui/core/Divider'
+import Features from './Features'
 import Feedbacks from './Feedbacks'
+import Grid from '@material-ui/core/Grid'
+import HelpIcon from '@material-ui/icons/HelpOutlineOutlined'
 import { List } from 'immutable'
 import ProfileCard from './card'
 import PropTypes from 'prop-types'
 import Slide from '@material-ui/core/Slide'
+import Tooltip from '@material-ui/core/Tooltip'
 import Zoom from '@material-ui/core/Zoom'
-import advice from '../../../../assets/advice.svg'
 import { connect } from 'react-redux'
-import cons from '../../../../assets/cons.svg'
 import home from '../../../../assets/people.svg'
-import pros from '../../../../assets/pros.svg'
 import { withRouter } from 'react-router-dom'
 import withStyles from '@material-ui/core/styles/withStyles'
 
@@ -34,7 +39,7 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    if (this.props.user && this.props.user.size) {
+    if (this.props.user) {
       this.props.history.push(`/dashboard`)
     }
     this.props.getFeedbacks()
@@ -44,122 +49,242 @@ class Home extends Component {
     const { classes, authenticate } = this.props
     return (
       <React.Fragment>
-        <section className="body-section">
-          <div className="row">
-            <Slide
-              direction="right"
-              in={true}
-              timeout={1500}
-              mountOnEnter
-              unmountOnExit
-            >
-              <div className="content-column col-lg-5 col-md-12 col-sm-12">
-                <div className="inner-column">
-                  <h2 className="h2-header">
-                    Writenpost - The Social Platform
-                  </h2>
-                  <p>Welcome to your social community.</p>
-                  <p>
-                    Join your friends, colleagues, classmates, family members
-                    etc on Writenpost.
-                  </p>
-                  <p>
-                    Writenpost began in co-founder{' '}
-                    <code>Hemadri Dasari & Rajesh Pemmasani</code> in 2018 and
-                    was officially launched on Jan 5, 2020.
-                  </p>
-                </div>
-              </div>
-            </Slide>
-            <Slide
-              direction="left"
-              in={true}
-              timeout={1500}
-              mountOnEnter
-              unmountOnExit
-            >
-              <div className="image-column col-lg-7 col-md-12 col-sm-12">
-                <div className="inner-column">
-                  <div className="image">
-                    <img src={home} />
+        <Container fixed className="pb-5">
+          <Grid container spacing={1}>
+            <Grid item xs container>
+              <Slide
+                direction="right"
+                in={true}
+                timeout={1500}
+                mountOnEnter
+                unmountOnExit
+              >
+                <Grid item xs={12} lg={12} xs={12} className="p-1">
+                  <div className="pb-5 pl-0">
+                    <h1 className="mb-3">Writenpost - The Social Platform</h1>
+                    <p className="font-size-lg">
+                      Welcome to your social community.
+                    </p>
+                    <p className="font-size-lg text-black-50">
+                      With this premium admin dashboard template you can create
+                      intuitive products following Google's Material Design
+                      specifications. Fully responsive and powered by React and
+                      Material-UI components framework.
+                    </p>
+                    <p className="text-black">
+                      Check out the live demo previews to see all the features
+                      and components in action.
+                    </p>
+                    <Grid container>
+                      <Grid item xs={12} lg={3} className="pt-3">
+                        <Tooltip title="Get Started">
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="small"
+                            onClick={() => this.handleAskForOpinion()}
+                          >
+                            Get Started &nbsp;
+                            <ArrowIcon color="secondary" />
+                          </Button>
+                        </Tooltip>
+                      </Grid>
+                      <Grid item xs={12} lg={3} className="pt-3">
+                        <Tooltip title="">
+                          <Button
+                            variant="outlined"
+                            color="primary"
+                            size="small"
+                            onClick={() => this.handleAskForOpinion()}
+                          >
+                            Documentation <ArrowIcon color="primary" />
+                          </Button>
+                        </Tooltip>
+                      </Grid>
+                      {/* <Grid item xs={1} lg={3} xs={4}>
+                    <Tooltip title="Find out more about this website">
+                      <HelpIcon className="ml-2"/>
+                    </Tooltip>
+                    </Grid> */}
+                    </Grid>
+                    <small className="d-block pt-3">
+                      Clean, intuitive, responsive and beautiful React dashboard
+                      powered by Google's Material Design.
+                    </small>
                   </div>
+                </Grid>
+              </Slide>
+            </Grid>
+          </Grid>
+          <div className="pt-5">
+            <dic className="pt-5 pb-5">
+              <div className="mt-3">
+                <Slide
+                  direction="right"
+                  in={true}
+                  timeout={1500}
+                  mountOnEnter
+                  unmountOnExit
+                >
+                  <h3 className="py-3 px-2">Our Core Features</h3>
+                </Slide>
+                <Slide
+                  direction="left"
+                  in={true}
+                  timeout={1500}
+                  mountOnEnter
+                  unmountOnExit
+                >
+                  <p className="text-black-50 font-size-lg mb-5">
+                    We built this system to help people in sharing feedback
+                    about each other if they are interested. The core features
+                    are knowing
+                    <code> pros, cons and advice</code> from your colleagues,
+                    classmates, friends, familie members, etc
+                  </p>
+                </Slide>
+              </div>
+            </dic>
+          </div>
+          <Grid container spacing={4}>
+            <Zoom in={true} timeout={2000}>
+              <Grid item lg={4} xs={12}>
+                <Features
+                  path="pros"
+                  title="Pros"
+                  message="But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and account of the system."
+                />
+              </Grid>
+            </Zoom>
+            <Zoom in={true} timeout={2000}>
+              <Grid item lg={4} xs={12}>
+                <Features
+                  path="cons"
+                  title="Cons"
+                  message="But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and account of the system."
+                />
+              </Grid>
+            </Zoom>
+            <Zoom in={true} timeout={2000}>
+              <Grid item lg={4} xs={12}>
+                <Features
+                  path="advice"
+                  title="Advice"
+                  message="But I must explain to you how all this mistaken idea of denouncing pleasure and praising pain was born and account of the system."
+                />
+              </Grid>
+            </Zoom>
+          </Grid>
+        </Container>
+        <div className="primary-bg-color">
+          <Container fixed>
+            <div className="pt-5">
+              <div className="pt-5 pb-5">
+                <div className="mt-3">
+                  <Slide
+                    direction="right"
+                    in={true}
+                    timeout={1500}
+                    mountOnEnter
+                    unmountOnExit
+                  >
+                    <h3 className="py-3 px-2 w-color">Customer Stories</h3>
+                  </Slide>
+                  <Slide
+                    direction="left"
+                    in={true}
+                    timeout={1500}
+                    mountOnEnter
+                    unmountOnExit
+                  >
+                    <p className="font-size-lg mb-5 w-color">
+                      We built this system to help people in sharing feedback
+                      about each other if they are interested. The core features
+                      are knowing
+                      <code> pros, cons and advice</code> from your colleagues,
+                      classmates, friends, familie members, etc
+                    </p>
+                  </Slide>
                 </div>
               </div>
-            </Slide>
+            </div>
+          </Container>
+        </div>
+        <div>
+          <Container fixed>
+            <div className="pt-5">
+              <div className="pt-5 pb-5">
+                <div className="mt-3">
+                  <Slide
+                    direction="right"
+                    in={true}
+                    timeout={1500}
+                    mountOnEnter
+                    unmountOnExit
+                  >
+                    <h3 className="py-3 px-2">Additional Features</h3>
+                  </Slide>
+                  <Slide
+                    direction="left"
+                    in={true}
+                    timeout={1500}
+                    mountOnEnter
+                    unmountOnExit
+                  >
+                    <p className="text-black-50 font-size-lg mb-5">
+                      We built this system to help people in sharing feedback
+                      about each other if they are interested. The core features
+                      are knowing
+                      <code> pros, cons and advice</code> from your colleagues,
+                      classmates, friends, familie members, etc
+                    </p>
+                  </Slide>
+                </div>
+              </div>
+            </div>
+          </Container>
+          <div className="primary-bg-color">
+            <Container fixed>
+              <div className="w-full m-auto relative p-v-80 p-h-20 fl-justify-around fl-items-center fl-wrap">
+                <div className="row">
+                  <Slide
+                    direction="right"
+                    in={true}
+                    timeout={1500}
+                    mountOnEnter
+                    unmountOnExit
+                  >
+                    <div className="col-lg-8 col-md-2 col-sm-2 col-xs-4">
+                      <h2 className="w-color">Ready to get started?</h2>
+                      <h4 className="w-color">
+                        Login with your social account and start sharing
+                        opinions.
+                      </h4>
+                    </div>
+                  </Slide>
+                  <Slide
+                    direction="up"
+                    in={true}
+                    timeout={1500}
+                    mountOnEnter
+                    unmountOnExit
+                  >
+                    <div className="mt-25 col-lg-4 col-md-2 col-sm-2 col-xs-4">
+                      <Button
+                        onClick={() => this.handleSignin()}
+                        size="small"
+                        variant="outlinedSecondary"
+                        className="p-2"
+                      >
+                        Click Here <ArrowIcon color="secondary" />
+                      </Button>
+                    </div>
+                  </Slide>
+                </div>
+              </div>
+            </Container>
           </div>
-        </section>
-        <section className="body-section">
-          <Slide
-            direction="right"
-            in={true}
-            timeout={1500}
-            mountOnEnter
-            unmountOnExit
-          >
-            <h2 className="h2-header">Our Core Features</h2>
-          </Slide>
-          <Slide
-            direction="left"
-            in={true}
-            timeout={1500}
-            mountOnEnter
-            unmountOnExit
-          >
-            <p>
-              We built this system to help people in sharing feedback about each
-              other if they are interested. The core features are knowing
-              <code> pros, cons and advice</code> from your colleagues,
-              classmates, friends, familie members, etc
-            </p>
-          </Slide>
-          <div className="row fl-justify-content">
-            <Zoom in={true} timeout={2000}>
-              <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                <ProfileCard
-                  path={pros}
-                  title="Pros"
-                  subTitle="Pros about people"
-                  content="Think and write pros about people you are interested"
-                  button={true}
-                  buttonName="Pros"
-                  type="home"
-                  routePath="/pros"
-                />
-              </div>
-            </Zoom>
-            <Zoom in={true} timeout={2000}>
-              <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                <ProfileCard
-                  path={cons}
-                  title="Cons"
-                  subTitle="Cons about people"
-                  content="Think and write cons about people you are interested"
-                  button={true}
-                  buttonName="Cons"
-                  type="home"
-                  routePath="/cons"
-                />
-              </div>
-            </Zoom>
-            <Zoom in={true} timeout={2000}>
-              <div className="col-lg-3 col-md-6 col-sm-12 col-xs-12">
-                <ProfileCard
-                  path={advice}
-                  title="Advice"
-                  subTitle="Advices to people"
-                  content="Think and write advice about people you are interested"
-                  button={true}
-                  buttonName="Advice"
-                  type="home"
-                  routePath="/advice"
-                />
-              </div>
-            </Zoom>
-          </div>
-        </section>
-        <section className="body-section">
-          <Feedbacks />
-        </section>
+        </div>
       </React.Fragment>
     )
   }
@@ -170,7 +295,7 @@ Home.propTypes = {
 }
 
 const mapStateToProps = state => {
-  const user = state.getIn(['user', 'data'], List())
+  const user = state.getIn(['user', 'data'])
   const authenticate = state.getIn(['user', 'auth'], false)
 
   return {

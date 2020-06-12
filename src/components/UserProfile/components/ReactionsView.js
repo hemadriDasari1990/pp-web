@@ -108,7 +108,7 @@ class ReactionsView extends Component {
           <List disablePadding={true} subheader={this.renderSubHeader()}>
             {hasReactions
               ? profileUser.reactions.map(pu => (
-                  <ListItem key={pu._id} className="p-1">
+                  <ListItem key={pu._id} className="p-1 w-us">
                     <ListItemAvatar>
                       <Badge
                         classes={{ badge: classes.customBadge }}
@@ -178,7 +178,6 @@ class ReactionsView extends Component {
                 No reactions
               </Typography>
             )}
-            {profileUser && !profileUser.reactions.length && <Loader />}
           </List>
         </Zoom>
       </React.Fragment>

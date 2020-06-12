@@ -9,6 +9,7 @@ import CardHeader from '@material-ui/core/CardHeader'
 import { Link } from 'react-router-dom'
 import Loader from '../../Loader/components/Loader'
 import { Map } from 'immutable'
+import SkeletonListCard from '../../Skeletons/components/ListCard'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
 import { withRouter } from 'react-router-dom'
@@ -64,31 +65,34 @@ class Reactions extends Component {
     const hasReactions =
       profileUser && profileUser.reactions.length > 0 ? true : false
     return (
-      <Suspense fallback={<Loader />}>
-        <Card>
-          <CardHeader
-            title="Profile Reactions"
-            action={
-              hasReactions ? (
-                <Link
-                  className="hyperlink"
-                  to="#"
-                  onClick={() => this.viewAll('reactions')}
-                >
-                  View All{' '}
-                  <b>
-                    {formateNumber(
-                      profileUser ? profileUser.reactions.length : 0,
-                    )}
-                  </b>
-                </Link>
-              ) : null
-            }
-          ></CardHeader>
-          <CardContent className={hasReactions ? 'p-0' : ''}>
-            <ReactionsView view="card" />
-          </CardContent>
-        </Card>
+      <Suspense>
+        {profileUserLoading ? (
+          <SkeletonListCard />
+        ) : (
+          <Card>
+            <CardHeader
+              title="Profile Reactions"
+              action={
+                hasReactions ? (
+                  <span
+                    className="hyperlink cursor"
+                    onClick={() => this.viewAll('reactions')}
+                  >
+                    View All{' '}
+                    <b>
+                      {formateNumber(
+                        profileUser ? profileUser.reactions.length : 0,
+                      )}
+                    </b>
+                  </span>
+                ) : null
+              }
+            ></CardHeader>
+            <CardContent className={hasReactions ? 'p-0' : 'p-3'}>
+              <ReactionsView view="card" />
+            </CardContent>
+          </Card>
+        )}
       </Suspense>
     )
   }

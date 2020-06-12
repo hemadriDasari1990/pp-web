@@ -9,12 +9,13 @@ import CardHeader from '@material-ui/core/CardHeader'
 import { Link } from 'react-router-dom'
 import Loader from '../../Loader/components/Loader'
 import { Map } from 'immutable'
+import SkeletonListCard from '../../Skeletons/components/ListCard'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
-const FolloweesView = lazy(() => import('./FolloweesView'))
+const FollowingView = lazy(() => import('./FollowingView'))
 
 const styles = {
   smallAvatar: {
@@ -29,7 +30,7 @@ const styles = {
   },
 }
 
-class Followees extends Component {
+class Following extends Component {
   async componentDidMount() {
     if (this.props.match.params.id) {
       await this.props.getUser(this.props.match.params.id)
@@ -55,37 +56,40 @@ class Followees extends Component {
     const hasFollowees =
       profileUser && profileUser.followees.length > 0 ? true : false
     return (
-      <Suspense fallback={<Loader />}>
-        <Card>
-          <CardHeader
-            title="Followees"
-            action={
-              hasFollowees ? (
-                <Link
-                  className="hyperlink"
-                  to="#"
-                  onClick={() => this.viewAll('followees')}
-                >
-                  View All{' '}
-                  <b>
-                    {formateNumber(
-                      profileUser ? profileUser.followees.length : 0,
-                    )}
-                  </b>
-                </Link>
-              ) : null
-            }
-          ></CardHeader>
-          <CardContent className={hasFollowees ? 'p-0' : ''}>
-            <FolloweesView view="card" />
-          </CardContent>
-        </Card>
+      <Suspense>
+        {profileUserLoading ? (
+          <SkeletonListCard />
+        ) : (
+          <Card>
+            <CardHeader
+              title="Following"
+              action={
+                hasFollowees ? (
+                  <span
+                    className="hyperlink cursor"
+                    onClick={() => this.viewAll('followees')}
+                  >
+                    View All{' '}
+                    <b>
+                      {formateNumber(
+                        profileUser ? profileUser.followees.length : 0,
+                      )}
+                    </b>
+                  </span>
+                ) : null
+              }
+            ></CardHeader>
+            <CardContent className={hasFollowees ? 'p-0' : 'p-3'}>
+              <FollowingView view="card" />
+            </CardContent>
+          </Card>
+        )}
       </Suspense>
     )
   }
 }
 
-Followees.propTypes = {}
+Following.propTypes = {}
 
 const mapStateToProps = state => {
   const profileUser = state.getIn(['user', 'success'])
@@ -106,5 +110,5 @@ const actionsToProps = {
 }
 
 export default withRouter(
-  connect(mapStateToProps, actionsToProps)(withStyles(styles)(Followees)),
+  connect(mapStateToProps, actionsToProps)(withStyles(styles)(Following)),
 )

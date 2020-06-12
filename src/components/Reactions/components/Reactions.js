@@ -75,9 +75,9 @@ class Reactions extends Component {
     const { classes } = this.props
     return isActive
       ? {
-          color: '#fff',
+          color: '#red',
           background:
-            'linear-gradient(45deg, #2a7fff 1%, #00ff43 80%, #2a7fff 96%, #37ff2a 100%) 0% 0% / 150% 150%',
+            'linear-gradient(45deg, #5383ff 1%, #00ff43 80%, #5383ff 96%, #37ff2a 100%) 0% 0% / 150% 150%',
         }
       : {}
   }
@@ -142,7 +142,7 @@ class Reactions extends Component {
                     <LoveIcon color="secondary" style={{ fontSize: 10 }} />
                   </Avatar>
                 }
-                aria-label="loove"
+                aria-label="love"
                 classes={{ root: classes.tab }}
               />
               <Tab

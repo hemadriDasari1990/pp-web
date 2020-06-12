@@ -85,6 +85,36 @@ export const UserProfile = (state = Map(), action) => {
     case actions.SAVE_ACTION_STATE:
       return state.setIn(['action', 'save'], action.data)
 
+    case actions.GET_WHO_TO_FOLLOW_REQUEST:
+      return state
+        .setIn(['whotofollow', 'get', 'loading'], true)
+        .deleteIn(['whotofollow', 'get', 'errors'])
+        .deleteIn(['whotofollow', 'get', 'success'])
+
+    case actions.GET_WHO_TO_FOLLOW_SUCCESS:
+      return state
+        .setIn(['whotofollow', 'get', 'success'], action.data)
+        .setIn(['whotofollow', 'get', 'loading'], false)
+
+    case actions.GET_WHO_TO_FOLLOW_ERROR:
+      return state
+        .setIn(['whotofollow', 'get', 'errors'], action.errors)
+        .setIn(['whotofollow', 'get', 'loading'], false)
+    case actions.CREATE_OR_UPDATE_OPINION_REQUEST_REQUEST:
+      return state
+        .setIn(['opinion', 'create', 'loading'], true)
+        .deleteIn(['opinion', 'create', 'errors'])
+        .deleteIn(['opinion', 'create', 'success'])
+
+    case actions.CREATE_OR_UPDATE_OPINION_REQUEST_SUCCESS:
+      return state
+        .setIn(['opinion', 'create', 'success'], action.data)
+        .setIn(['opinion', 'create', 'loading'], false)
+
+    case actions.CREATE_OR_UPDATE_OPINION_REQUEST_ERROR:
+      return state
+        .setIn(['opinion', 'create', 'errors'], action.errors)
+        .setIn(['opinion', 'create', 'loading'], false)
     default:
       return state
   }

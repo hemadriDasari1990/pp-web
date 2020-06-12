@@ -2,7 +2,6 @@ import * as timelineActions from '../../Timeline/actions'
 
 import React, { Component, Suspense, lazy } from 'react'
 
-import Avatar from '@material-ui/core/Avatar'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
@@ -11,6 +10,7 @@ import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../Loader/components/Loader'
+import SkeletonSummary from '../../Skeletons/components/Summary'
 import UpIcon from '@material-ui/icons/Publish'
 import Zoom from '@material-ui/core/Grow'
 import { connect } from 'react-redux'
@@ -24,55 +24,59 @@ class Summary extends Component {
       summary: null,
       loading: true,
     }
+    this.timer = null
   }
-  async componentDidMount() {
+  componentDidMount() {
     this.props.user
-      ? await this.props
+      ? this.props
           .getPostsSummary(this.props.user._id, this.props.type)
           .then(summary => {
-            this.setState({
-              summary: summary.data,
-              loading: false,
-            })
+            this.timer = setTimeout(() => {
+              this.setState({
+                summary: summary.data,
+                loading: false,
+              })
+            }, 500)
           })
       : null
   }
 
+  componentWillUnmount() {
+    this.timer ? clearTimeout(this.timer) : null
+  }
+
   render() {
-    const { classes, title, type } = this.props
+    const { classes, title, type, customClass } = this.props
     const { summary, loading } = this.state
     return (
-      <Suspense>
-        <Card>
-          <Zoom in={true} timeout={2000}>
-            <CardHeader
-              title={title}
-              className="card-title"
-              action={
-                type == 'incoming' ? (
-                  <DownIcon color="primary" />
-                ) : (
-                  <UpIcon color="primary" />
-                )
-              }
-            />
-          </Zoom>
-          <CardContent className="p-0">
-            {loading ? (
-              <List className="list-row h-120 ml-40">
-                <Loader />
-              </List>
-            ) : null}
-            {!loading ? (
+      <React.Fragment>
+        {loading ? (
+          <SkeletonSummary />
+        ) : (
+          <Card className={customClass}>
+            <Zoom in={true} timeout={2000}>
+              <CardHeader
+                title={title}
+                className="card-title"
+                action={
+                  type == 'incoming' ? (
+                    <DownIcon color="primary" />
+                  ) : (
+                    <UpIcon color="primary" />
+                  )
+                }
+              />
+            </Zoom>
+            <CardContent className="p-0">
               <>
                 <List className="list-row p-0">
                   <ListItem alignItems="flex-start" className="p-0">
                     <ListItemText
                       className="text-center"
-                      primary="Accepted"
+                      primary={<span className="title-color">Accepted</span>}
                       secondary={
                         <Zoom in={true} timeout={2000}>
-                          <h3 className="f-w-600">
+                          <h3 className="title-value-color f-w-600">
                             {summary ? formateNumber(summary.approved) : 0}
                           </h3>
                         </Zoom>
@@ -82,10 +86,10 @@ class Summary extends Component {
                   <ListItem alignItems="center" className="p-0">
                     <ListItemText
                       className="text-center"
-                      primary="Rejected"
+                      primary={<span className="title-color">Rejected</span>}
                       secondary={
                         <Zoom in={true} timeout={2000}>
-                          <h3 className="f-w-600">
+                          <h3 className="title-value-color f-w-600">
                             {summary ? formateNumber(summary.rejected) : 0}
                           </h3>
                         </Zoom>
@@ -97,10 +101,10 @@ class Summary extends Component {
                   <ListItem alignItems="flex-start" className="p-0">
                     <ListItemText
                       className="text-center"
-                      primary="Pending"
+                      primary={<span className="title-color">Pending</span>}
                       secondary={
                         <Zoom in={true} timeout={2000}>
-                          <h3 className="f-w-600">
+                          <h3 className="title-value-color f-w-600">
                             {summary ? formateNumber(summary.pending) : 0}
                           </h3>
                         </Zoom>
@@ -110,10 +114,10 @@ class Summary extends Component {
                   <ListItem className="p-0" alignItems="flex-end">
                     <ListItemText
                       className="text-center"
-                      primary="Total posts"
+                      primary={<span className="title-color">Total Posts</span>}
                       secondary={
                         <Zoom in={true} timeout={2000}>
-                          <h3 className="f-w-600">
+                          <h3 className="title-value-color f-w-600">
                             {summary ? formateNumber(summary.total) : 0}
                           </h3>
                         </Zoom>
@@ -122,10 +126,10 @@ class Summary extends Component {
                   </ListItem>
                 </List>
               </>
-            ) : null}
-          </CardContent>
-        </Card>
-      </Suspense>
+            </CardContent>
+          </Card>
+        )}
+      </React.Fragment>
     )
   }
 }

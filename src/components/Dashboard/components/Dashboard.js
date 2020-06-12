@@ -3,6 +3,7 @@ import * as postActions from '../../Post/actions'
 
 import React, { Component, Suspense, lazy } from 'react'
 
+import AskIcon from '@material-ui/icons/HowToReg'
 import Grid from '@material-ui/core/Grid'
 import LikeIcon from '@material-ui/icons/ThumbUpAlt'
 import Loader from '../../Loader/components/Loader'
@@ -34,7 +35,7 @@ class DashBoard extends Component {
   }
 
   handleTimeline = event => {
-    this.props.history.push('/timeline/incoming')
+    this.props.history.push('/timeline/feed')
   }
 
   render() {
@@ -42,80 +43,125 @@ class DashBoard extends Component {
     const { user, classes, userPreferences } = this.props
     return (
       <Suspense>
-        {user && userPreferences ? (
-          <>
-            <div className="row">
-              <Grid container spacing={1} className="of-h">
-                <Grid
-                  item
-                  lg={3}
-                  md={3}
-                  xs={12}
-                  sm={9}
-                  className="middle-content"
-                >
-                  <WelcomeProfile />
-                  {/* <ProfileReactionsCarousel /> */}
-                </Grid>
-                <Grid
-                  item
-                  lg={3}
-                  md={6}
-                  xs={12}
-                  sm={9}
-                  className="middle-content"
-                >
-                  <Summary type="incoming" title="Incoming Summary" />
-                  <Metrics
-                    icon={<LikeIcon />}
-                    title="Likes"
-                    name="Like"
-                    count={user.no_of_likes}
-                  />
-                  <Metrics
-                    icon={
-                      <RssFeedOutlinedIcon
-                        className="icon-display"
-                        color="#fff"
+        <Grid container spacing={1}>
+          <Grid item xs container>
+            <Grid item xs={12} lg={3} className="p-1">
+              <WelcomeProfile />
+            </Grid>
+            <Grid item xs={12} lg={8}>
+              <Grid item xs container>
+                <Grid item xs={12} lg={12}>
+                  <Grid item xs container direction="row" spacing={2}>
+                    <Grid item lg={5} xs={12} className="p-1">
+                      <Summary
+                        type="incoming"
+                        title="Incoming Summary"
+                        customClass="mb-0"
                       />
-                    }
-                    title="Followers"
-                    name="Followers"
-                    count={user.no_of_followers}
-                  />
+                    </Grid>
+                    <Grid item lg={5} xs={12} className="p-1">
+                      <Summary
+                        type="outgoing"
+                        title="Outgoing Summary"
+                        customClass="mb-0"
+                      />
+                    </Grid>
+                  </Grid>
                 </Grid>
-                <Grid
-                  item
-                  lg={3}
-                  md={6}
-                  xs={12}
-                  sm={9}
-                  className="middle-content"
-                >
-                  <Summary type="outgoing" title="Outgoing Summary" />
-                  <Metrics
-                    icon={<LoveIcon />}
-                    title="Love"
-                    name="Love"
-                    count={user.no_of_loves}
-                  />
-                  <Metrics
-                    icon={<PreferencesIcon color="secondary" />}
-                    title="Times Updated"
-                    name="Preferences"
-                    count={
-                      userPreferences && userPreferences.pref
-                        ? userPreferences.pref.count
-                        : 0
-                    }
-                  />
+                <Grid item xs={12} lg={12}>
+                  <Grid item xs container direction="row" spacing={2}>
+                    <Grid item lg={5} xs={12} className="p-1">
+                      <Metrics
+                        icon={<LikeIcon />}
+                        title="Likes"
+                        name="Like"
+                        count={user.no_of_likes}
+                      />
+                    </Grid>
+                    <Grid item lg={5} xs={12} className="p-1">
+                      <Metrics
+                        icon={<LoveIcon />}
+                        title="Love"
+                        name="Love"
+                        count={user.no_of_loves}
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12} lg={12}>
+                  <Grid item xs container direction="row" spacing={2}>
+                    <Grid item lg={5} xs={12} className="p-1">
+                      <Metrics
+                        icon={
+                          <RssFeedOutlinedIcon
+                            className="icon-display"
+                            color="#fff"
+                          />
+                        }
+                        title="Followers"
+                        name="Followers"
+                        count={user.no_of_followers}
+                      />
+                    </Grid>
+                    <Grid item lg={5} xs={12} className="p-1">
+                      <Metrics
+                        icon={
+                          <RssFeedOutlinedIcon
+                            className="icon-display"
+                            color="#fff"
+                          />
+                        }
+                        title="Following"
+                        name="Following"
+                        count={user.no_of_followees}
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12} lg={12}>
+                  <Grid item xs container direction="row" spacing={2}>
+                    <Grid item lg={5} xs={12} className="p-1">
+                      <Metrics
+                        icon={
+                          <AskIcon className="icon-display" color="secondary" />
+                        }
+                        title="Sent"
+                        name="Sent"
+                        count={user.no_of_opinion_request_sent}
+                      />
+                    </Grid>
+                    <Grid item lg={5} xs={12} className="p-1">
+                      <Metrics
+                        icon={
+                          <AskIcon className="icon-display" color="secondary" />
+                        }
+                        title="Received"
+                        name="Received"
+                        count={user.no_of_opinion_request_received}
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
+                <Grid item xs={12} lg={12}>
+                  <Grid item xs container direction="row" spacing={2}>
+                    <Grid item lg={5} xs={12} className="p-1">
+                      <Metrics
+                        icon={<PreferencesIcon color="secondary" />}
+                        title="Times Updated"
+                        name="Preferences"
+                        count={
+                          userPreferences && userPreferences.pref
+                            ? userPreferences.pref.count
+                            : 0
+                        }
+                      />
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
-            </div>
-          </>
-        ) : (
-          <Loader />
-        )}
+            </Grid>
+          </Grid>
+        </Grid>
       </Suspense>
     )
   }

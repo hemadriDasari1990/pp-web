@@ -8,9 +8,11 @@ import Avatar from '@material-ui/core/Avatar'
 import Badge from '@material-ui/core/Badge'
 import Button from '@material-ui/core/Button'
 import CancelPresentationIcon from '@material-ui/icons/CancelPresentation'
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import Divider from '@material-ui/core/Divider'
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
 import List from '@material-ui/core/List'
@@ -21,8 +23,10 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../Loader/components/Loader'
 import Menu from '@material-ui/core/Menu'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+import NotifyIcon from '@material-ui/icons/AddAlertOutlined'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
+import ViewIcon from '@material-ui/icons/VisibilitySharp'
 import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import getPastTime from '../../../util/getPastTime'
@@ -40,6 +44,10 @@ const styles = {
     width: 35,
     height: 35,
     backgroundColor: 'unset !important',
+  },
+  statusIndicator: {
+    width: 11,
+    height: 11,
   },
 }
 
@@ -238,6 +246,16 @@ class NotificationsList extends Component {
           </span>
         )
         break
+      case 'opinion':
+        message = (
+          <span>
+            <Link className="hyperlink" to={`/profile/${sender._id}`}>
+              {sender.userName}
+            </Link>{' '}
+            {getProvider(sender.providerId)} Asked for your opinion
+          </span>
+        )
+        break
       default:
         break
     }
@@ -260,45 +278,41 @@ class NotificationsList extends Component {
     }
     switch (notification.type.toLowerCase()) {
       case 'like':
-        this.viewPostDetails(notification.resourceId)
+        this.props.viewPostDetails(notification)
         break
       case 'dislike':
-        this.viewPostDetails(notification.resourceId)
+        this.props.viewPostDetails(notification)
         break
       case 'thinking':
-        this.viewPostDetails(notification.resourceId)
+        this.props.viewPostDetails(notification)
         break
       case 'perfect':
-        this.viewPostDetails(notification.resourceId)
+        this.props.viewPostDetails(notification)
         break
       case 'love':
-        this.viewPostDetails(notification.resourceId)
+        this.props.viewPostDetails(notification)
         break
       case 'wow':
-        this.viewPostDetails(notification.resourceId)
+        this.props.viewPostDetails(notification)
         break
       case 'tounghout':
-        this.viewPostDetails(notification.resourceId)
+        this.props.viewPostDetails(notification)
         break
       case 'post-created':
-        this.viewPostDetails(notification.resourceId)
+        this.props.viewPostDetails(notification)
         break
       case 'post-comment':
-        this.viewPostDetails(notification.resourceId)
+        this.props.viewPostDetails(notification)
         break
       case 'post-accept':
-        this.viewPostDetails(notification.resourceId)
+        this.props.viewPostDetails(notification)
         break
       case 'post-reject':
-        this.viewPostDetails(notification.resourceId)
+        this.props.viewPostDetails(notification)
         break
       default:
         break
     }
-  }
-
-  viewPostDetails = postId => {
-    this.props.history.push(`/post/${postId}/details`)
   }
 
   isShowMore = () => {
@@ -334,9 +348,7 @@ class NotificationsList extends Component {
   }
 
   renderListItemClass = notification => {
-    return notification.read
-      ? 'cursor mb-10 p-0 notification-item lb-bg-color'
-      : 'cursor mb-10 p-0 notification-item'
+    return 'cursor mb-10 p-0 w-us notification-item'
   }
 
   handleClose = () => {
@@ -395,7 +407,7 @@ class NotificationsList extends Component {
         key={notification._id}
       >
         <ListItem
-          className="cursor pt-0 pb-0 pl-2 pr-2 menu-item"
+          className="cursor w-us pt-0 pb-0 pl-2 pr-2 menu-item"
           onClick={() => this.handleMenuItem('delete', notification)}
           key={1}
         >
@@ -403,39 +415,45 @@ class NotificationsList extends Component {
             <DeleteOutlineIcon />
           </ListItemAvatar>
           <ListItemText
-            primary="Delete Notification"
-            secondary={
-              <React.Fragment>
-                <Typography
-                  component="p"
-                  variant="body2"
-                  color="textPrimary"
-                  className="menu-item-text"
-                >
-                  Delete this notification
-                </Typography>
-              </React.Fragment>
-            }
+            primary={<b>Delete Notification</b>}
+            secondary="Delete this notification"
           />
         </ListItem>
-        <ListItem key={2} className="cursor pt-0 pb-0 pl-2 pr-2 menu-item">
+        <ListItem key={2} className="cursor w-us pt-0 pb-0 pl-2 pr-2 menu-item">
           <ListItemAvatar style={{ minWidth: 35 }}>
             <CancelPresentationIcon />
           </ListItemAvatar>
           <ListItemText
-            primary="Turn Off"
-            secondary={
-              <React.Fragment>
-                <Typography
-                  component="p"
-                  variant="body2"
-                  color="textPrimary"
-                  className="menu-item-text"
-                >
-                  Stop seeing notification like this
-                </Typography>
-              </React.Fragment>
-            }
+            primary={<b>Turn Off</b>}
+            secondary="Stop seeing notification like this"
+          />
+        </ListItem>
+        {notification.type === 'opinion' && (
+          <ListItem
+            key={3}
+            className="cursor w-us pt-0 pb-0 pl-2 pr-2 menu-item"
+            onClick={() => this.props.notifyRequestor(notification)}
+          >
+            <ListItemAvatar style={{ minWidth: 35 }}>
+              <NotifyIcon />
+            </ListItemAvatar>
+            <ListItemText
+              primary={<b>Notify Requestor</b>}
+              secondary="Send your acknowledgement"
+            />
+          </ListItem>
+        )}
+        <ListItem
+          key={4}
+          className="cursor w-us pt-0 pb-0 pl-2 pr-2 menu-item"
+          onClick={() => this.viewNotifications(index)}
+        >
+          <ListItemAvatar style={{ minWidth: 35 }}>
+            <ViewIcon />
+          </ListItemAvatar>
+          <ListItemText
+            primary={<b>View Post</b>}
+            secondary="See what you have received"
           />
         </ListItem>
       </Menu>
@@ -460,90 +478,102 @@ class NotificationsList extends Component {
     } = this.props
     const { limit, notifications, open, anchorEl, showSnackbar } = this.state
     return (
-      <>
+      <React.Fragment>
+        {/* <ClickAwayListener onClickAway={this.props.handleDrawerClose}> */}
         <List className="mt-25">
-          <Grid container spacing={1} className="of-h">
-            {!notificationsLoading && notifications && notifications.length
-              ? notifications.map((n, index) => (
-                  <Grid
-                    key={n._id}
-                    item
-                    lg={4}
-                    md={6}
-                    xs={12}
-                    sm={12}
-                    className="middle-content"
-                  >
-                    <Tooltip title="Mark Read" placement="bottom">
-                      <ListItem
-                        alignItems="flex-start"
-                        className={this.renderListItemClass(n)}
-                        onClick={() => this.viewNotifications(index)}
-                      >
-                        <ListItemAvatar>
-                          <Badge
-                            classes={{ badge: classes.customBadge }}
-                            overlap="circle"
-                            badgeContent={
-                              <Zoom in={true} timeout={2000}>
-                                <Avatar
-                                  className={classes.smallAvatar}
-                                  alt={n.sender ? n.sender.userName : ''}
-                                  style={{
-                                    backgroundColor:
-                                      n.type.toLowerCase() === 'love' ||
-                                      n.type.toLowerCase() === 'profile-love'
-                                        ? '#ff0016c7'
-                                        : '',
-                                  }}
-                                >
-                                  {getReaction(n ? n.type : '')}
-                                </Avatar>
-                              </Zoom>
-                            }
-                          >
+          <Grid container className="of-h">
+            {!notificationsLoading && notifications && notifications.length ? (
+              notifications.map((n, index) => (
+                <Grid
+                  key={n._id}
+                  item
+                  lg={12}
+                  md={12}
+                  xs={12}
+                  sm={12}
+                  className="middle-content"
+                >
+                  <Tooltip title="Mark Read" placement="bottom">
+                    <ListItem
+                      alignItems="flex-start"
+                      className={this.renderListItemClass(n)}
+                      onClick={() => this.viewNotifications(index)}
+                    >
+                      <ListItemAvatar>
+                        <Badge
+                          classes={{ badge: classes.customBadge }}
+                          overlap="circle"
+                          badgeContent={
                             <Zoom in={true} timeout={2000}>
                               <Avatar
-                                alt={n.sender.userName.substring(0, 1)}
-                                src={n.sender.photoURL}
-                              />
+                                className={classes.smallAvatar}
+                                alt={n.sender ? n.sender.userName : ''}
+                                style={{
+                                  backgroundColor:
+                                    n.type.toLowerCase() === 'love' ||
+                                    n.type.toLowerCase() === 'profile-love'
+                                      ? '#ff0016c7'
+                                      : '',
+                                }}
+                              >
+                                {getReaction(n ? n.type : '')}
+                              </Avatar>
                             </Zoom>
-                          </Badge>
-                        </ListItemAvatar>
-                        <ListItemText
-                          primary={
-                            <Typography variant="h6">
-                              {this.renderMessage(n.type, n.sender)}
-                            </Typography>
                           }
-                          secondary={getPastTime(n.createdAt)}
-                        />
-                        <ListItemSecondaryAction>
-                          <Tooltip title="Actions">
-                            <IconButton
-                              aria-label="settings"
-                              onClick={this.handleMenu}
-                              color="primary"
-                              className="mt-minus-18"
-                            >
-                              <MoreHorizIcon />
-                            </IconButton>
-                          </Tooltip>
-                          {this.renderMenu(n, index)}
-                          {/* <Tooltip title={n.read ? 'Read' : 'Un Read'}>
-                            <Zoom in={true} timeout={2000}>
-                              <ReadIcon
-                                style={{ fill: n.read ? '#2a7fff' : '#3333' }}
-                              />
-                            </Zoom>
-                          </Tooltip> */}
-                        </ListItemSecondaryAction>
-                      </ListItem>
-                    </Tooltip>
-                    <Divider />
-                  </Grid>
-                ))
-              : null}
+                        >
+                          <Zoom in={true} timeout={2000}>
+                            <Avatar
+                              alt={n.sender.userName.substring(0, 1)}
+                              src={n.sender.photoURL}
+                            />
+                          </Zoom>
+                        </Badge>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={
+                          <span>{this.renderMessage(n.type, n.sender)}</span>
+                        }
+                        secondary={
+                          <>
+                            {getPastTime(n.createdAt)}{' '}
+                            <Tooltip title={n.read ? 'Read' : 'Un Read'}>
+                              <Zoom in={true} timeout={2000}>
+                                <IconButton
+                                  aria-label="settings"
+                                  onClick={this.handleMenu}
+                                  style={{ color: n.read ? '#61c516' : '' }}
+                                  size="small"
+                                >
+                                  <FiberManualRecordIcon
+                                    className={classes.statusIndicator}
+                                  />
+                                </IconButton>
+                              </Zoom>
+                            </Tooltip>
+                          </>
+                        }
+                      />
+                      <ListItemSecondaryAction className="r-0">
+                        <Tooltip title="Actions">
+                          <IconButton
+                            aria-label="settings"
+                            onClick={this.handleMenu}
+                            color="primary"
+                            className="mt-minus-18"
+                          >
+                            <MoreHorizIcon />
+                          </IconButton>
+                        </Tooltip>
+                        {this.renderMenu(n, index)}
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  </Tooltip>
+                  <Divider />
+                </Grid>
+              ))
+            ) : (
+              <h5 className="text-center">No Notifications Found</h5>
+            )}
             {notificationsLoading && <Loader />}
           </Grid>
         </List>
@@ -572,7 +602,8 @@ class NotificationsList extends Component {
             status="success"
           />
         )}
-      </>
+        {/* </ClickAwayListener> */}
+      </React.Fragment>
     )
   }
 }

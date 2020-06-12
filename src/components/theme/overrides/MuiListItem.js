@@ -4,12 +4,14 @@ export default {
       backgroundColor: '#fff',
     },
     '&$focusVisible': {
-      backgroundColor: 'red',
+      backgroundColor: '#3333',
     },
     fontFamily: 'inherit',
     '&:hover': {
-      // backgroundColor: 'red',
+      backgroundColor: '#f0f2f5',
+      borderRadius: 7,
     },
+    margin: 5,
   },
   button: {
     margin: '5px 5px 20px 5px',

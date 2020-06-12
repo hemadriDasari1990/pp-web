@@ -24,17 +24,13 @@ class NoRecords extends Component {
           <CardHeader
             avatar={
               <Zoom in={true} timeout={2000}>
-                <Avatar
-                  style={{ color: '#ffffff', backgroundColor: '#2a7fff' }}
-                >
-                  NR
-                </Avatar>
+                <Avatar>NR</Avatar>
               </Zoom>
             }
             title={title}
             subheader="0m"
           />
-          <CardContent style={{ minHeight: '300px !important' }}>
+          <CardContent className="p-3">
             <Zoom in={true} timeout={2000}>
               <Typography variant="h4" className="text-center">
                 {message}

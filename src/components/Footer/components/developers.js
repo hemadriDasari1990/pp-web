@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
+import Container from '@material-ui/core/Container'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
@@ -21,6 +22,7 @@ const styles = {
   },
   root: {
     marginTop: 0,
+    marginBottom: 80,
     width: '100%',
     textAlign: 'center',
   },
@@ -35,18 +37,18 @@ class Developers extends Component {
   render() {
     const { classes } = this.props
     return (
-      <React.Fragment>
+      <Container fixed>
         <Zoom in={true} timeout={1500}>
-          <h2 className="h2-header">We are small team of developers</h2>
+          <h1 className="mb-3">We are small team of developers</h1>
         </Zoom>
-        <p>
+        <p className="font-size-lg text-black-50">
           We started this project as an experienment as we wanted to build
           something that helps people to communicate and understand what people
           are thinking about you. This idea has born between Hemadri Dasari and
           Rajesh Pemmasani in the year 2018.
         </p>
-        <p>
-          Hemadri Dasari is a only developer worked on end to end from UI design
+        <p className="font-size-lg text-black-50">
+          Hemadri Dasari is only developer worked on end to end from UI design
           to DB design. He has coded close to 2 years developing this beautiful
           platform in his offline time.
         </p>
@@ -62,17 +64,21 @@ class Developers extends Component {
               secondary={
                 <React.Fragment>
                   <Typography
-                    component="span"
+                    component="p"
                     variant="body2"
                     className={classes.inline}
-                    color="textPrimary"
                   >
                     Assistant Vice President at JP Morgan & Co, Singapore
                   </Typography>
                   <br />
-                  {
-                    'Rajesh Pemmasani is a CO-Founter of Writenpost Inc. He is currently working as Assistant Vice President at JP Morgan Chase & Co, Singapore, heading two internal group production systems. He’s also worked as Manager at Australia & Newzealand company(A&Z). Rajesh Pemmasani has completed his MCA from Osmania, Hyderabad, India.'
-                  }
+                  <p className="text-black-50">
+                    Rajesh Pemmasani is a CO-Founter of Writenpost Inc. He is
+                    currently working as Assistant Vice President at JP Morgan
+                    Chase & Co, Singapore, heading two internal group production
+                    systems. He’s also worked as Manager at Australia &
+                    Newzealand company(A&Z). Rajesh Pemmasani has completed his
+                    MCA from Osmania, Hyderabad, India.
+                  </p>
                 </React.Fragment>
               }
             />
@@ -88,17 +94,21 @@ class Developers extends Component {
               secondary={
                 <React.Fragment>
                   <Typography
-                    component="span"
+                    component="p"
                     variant="body2"
                     className={classes.inline}
-                    color="textPrimary"
                   >
                     Solution Architect II at Ericsson, USA
                   </Typography>
                   <br />
-                  {
-                    'Lokesh Pemmasani is a CO-Founder of Writenpost Inc. He is currently working as Solution Architect at Ericsson, USA, heading two internal group systems. He’s also worked as Solution Architect at Verizon Communications, Hyderabad. Lokesh Pemmasani has completed his B.E, Elections Communications Engineering, India.'
-                  }
+                  <p className="text-black-50">
+                    Lokesh Pemmasani is a CO-Founder of Writenpost Inc. He is
+                    currently working as Solution Architect at Ericsson, USA,
+                    heading two internal group systems. He’s also worked as
+                    Solution Architect at Verizon Communications, Hyderabad.
+                    Lokesh Pemmasani has completed his B.E, Elections
+                    Communications Engineering, India.
+                  </p>
                 </React.Fragment>
               }
             />
@@ -114,23 +124,28 @@ class Developers extends Component {
               secondary={
                 <React.Fragment>
                   <Typography
-                    component="span"
+                    component="p"
                     variant="body2"
                     className={classes.inline}
-                    color="textPrimary"
                   >
                     Full Stack Developer at Emirates NBD, Dubai
                   </Typography>
                   <br />
-                  {
-                    'Hemadri Dasari is a Founder of Writenpost Inc. He is currently working as Full Stack Developer at Emirates NBD, Dubai, developed private cloud applications for Emirates NBD. He’s also worked as Full Stack Developer at Verizon Communications. Hemadri Dasari has completed his B.E, Computer Science Engineering from Anna University, Chennai, India.'
-                  }
+                  <p className="text-black-50">
+                    Hemadri Dasari is a Founder of Writenpost Inc. He is
+                    currently working as Full Stack Developer at Emirates NBD,
+                    Dubai, developed private cloud applications for Emirates
+                    NBD. He’s also worked as Full Stack Developer at Verizon
+                    Communications. Hemadri Dasari has completed his B.E,
+                    Computer Science Engineering from Anna University, Chennai,
+                    India.
+                  </p>
                 </React.Fragment>
               }
             />
           </ListItem>
         </List>
-      </React.Fragment>
+      </Container>
     )
   }
 }

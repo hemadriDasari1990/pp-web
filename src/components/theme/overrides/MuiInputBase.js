@@ -4,7 +4,7 @@ export default {
     height: 37,
   },
   input: {
-    color: '#2a7fff',
+    color: '#5383ff',
     fontSize: 12,
     fontFamily: 'inherit',
     marginTop: 3,

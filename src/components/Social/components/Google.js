@@ -3,7 +3,8 @@ import * as actions from '../../../actions/index'
 import { List, Map } from 'immutable'
 import React, { Component } from 'react'
 
-import Fab from '@material-ui/core/Fab'
+import ArrowIcon from '@material-ui/icons/ArrowForward'
+import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
 import Tooltip from '@material-ui/core/Tooltip'
 import { connect } from 'react-redux'
@@ -20,41 +21,35 @@ const styles = theme => ({
   },
   fab: {
     width: '300px !important',
-    color: '#ffffff !important',
     margin: '15px 0 30px 20px',
   },
 })
 
 class Google extends Component {
-  auth = async e => {
+  auth = e => {
     e.preventDefault()
     const provider = new firebase.auth.GoogleAuthProvider()
     provider.addScope('email')
-    await new firebase.auth()
-      .signInWithPopup(provider)
-      .then(async (user, error) => {
-        if (!error) {
-          const data = user.user.providerData[0]
-          await this.props
-            .createOrUpdateUser({
-              email: data.email,
-              userName: data.displayName,
-              photoURL: data.photoURL,
-              uid: data.uid,
-              phoneNumber: data.phoneNumber,
-              providerId: data.providerId,
-              lastActiveTime: Date.now(),
-            })
-            .then(user => {
-              if (user && user.data.user) {
-                this.props.storeUser(user.data.user)
-                this.props.history.push('/dashboard')
-              }
-            })
-        } else {
-          this.props.history.push('/')
-        }
-      })
+    new firebase.auth().signInWithPopup(provider).then((user, error) => {
+      if (!error) {
+        const data = user.user.providerData[0]
+        this.props.createOrUpdateUser({
+          email: data.email,
+          userName: data.displayName,
+          photoURL: data.photoURL,
+          uid: data.uid,
+          phoneNumber: data.phoneNumber,
+          providerId: data.providerId,
+          lastActiveTime: Date.now(),
+        })
+        // .then(user => {
+        //   if (user && user.data.user) {
+        //     // this.props.storeUser(user.data.user)
+        //     // this.props.history.push('/dashboard')
+        //   }
+        // })
+      }
+    })
   }
 
   render() {
@@ -62,17 +57,17 @@ class Google extends Component {
     return (
       <>
         <Tooltip title="Login With Google" aria-label="Add">
-          <Fab
+          <Button
             className={classes.fab}
             onClick={e => this.auth(e)}
             size="medium"
             color="primary"
             aria-label="add"
-            variant="extended"
+            variant="contained"
           >
             <img src={google} className={classes.small} />
-            &nbsp; Sign In with Google
-          </Fab>
+            Sign In with Google <ArrowIcon color="secondary" />
+          </Button>
         </Tooltip>
       </>
     )

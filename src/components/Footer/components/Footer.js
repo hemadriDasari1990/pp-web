@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 
+import ArrowIcon from '@material-ui/icons/ArrowForward'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 import FacebookIcon from '@material-ui/icons/Facebook'
@@ -22,7 +23,7 @@ const styles = theme => ({
     flexGrow: 1,
   },
   label: {
-    color: '#2a7fff',
+    color: '#5383ff',
   },
 })
 
@@ -85,47 +86,6 @@ class Footer extends Component {
     const { value } = this.state
     return (
       <React.Fragment>
-        {!authenticated && (
-          <section className="primary-bg-color w-full relative">
-            <div className="w-max-1200 w-full m-auto relative p-v-80 p-h-20 fl-justify-around fl-items-center fl-wrap">
-              <div className="row">
-                <Slide
-                  direction="right"
-                  in={true}
-                  timeout={1500}
-                  mountOnEnter
-                  unmountOnExit
-                >
-                  <div className="col-lg-8 col-md-2 col-sm-2 col-xs-4">
-                    <h2 className="w-color">Ready to get started?</h2>
-                    <h4 className="w-color">
-                      Login with your social account and start sharing opinions.
-                    </h4>
-                  </div>
-                </Slide>
-                <Slide
-                  direction="up"
-                  in={true}
-                  timeout={1500}
-                  mountOnEnter
-                  unmountOnExit
-                >
-                  <div className="mt-25 col-lg-4 col-md-2 col-sm-2 col-xs-4">
-                    <Button
-                      onClick={() => this.handleSignin()}
-                      size="small"
-                      variant="outlined"
-                      color="secondary"
-                      className="btn-outlined p-2"
-                    >
-                      login With Social Account
-                    </Button>
-                  </div>
-                </Slide>
-              </div>
-            </div>
-          </section>
-        )}
         <section>
           <footer className="p-v-30 w-full">
             <div className="w-max-1200 w-full m-auto">
@@ -142,10 +102,10 @@ class Footer extends Component {
                     </li>
                     <li className="m-v-10">
                       <a
-                        className="cursor"
+                        className="cursor link-span"
                         onClick={() => this.handleCareers()}
                       >
-                        Careers
+                        Careers <span>We're Hiring</span>
                       </a>
                     </li>
                     <li className="m-v-10">

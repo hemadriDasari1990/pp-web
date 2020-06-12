@@ -22,7 +22,6 @@ const Advice = lazy(() => import('./Home/components/Advice'))
 const Careers = lazy(() => import('./Footer/components/careers'))
 const Cons = lazy(() => import('./Home/components/Cons'))
 const Developers = lazy(() => import('./Footer/components/developers'))
-const Feedback = lazy(() => import('./Footer/components/Feedback'))
 const Home = lazy(() => import('./Home/components/Home'))
 const Location = lazy(() => import('./Footer/components/Location'))
 const PageNotFound = lazy(() => import('./PageNotFound/components/index'))
@@ -43,53 +42,66 @@ class App extends Component {
     }
   }
 
-  async componentDidMount() {
-    try {
-      // this.getGeoLocation()
-      await this.whenUserLevesThePage()
-      await this.handleConnectionChange()
-      await window.addEventListener('online', this.handleConnectionChange)
-      await window.addEventListener('offline', this.handleConnectionChange)
-      await new firebase.auth().onAuthStateChanged(async (user, err) => {
-        if (user) {
-          await this.props
-            .getUser(user.providerData[0].uid)
-            .then(async u => {
-              if (u && u.data && u.data.user) {
-                await this.props.updateUser(u.data.user._id, {
-                  lastActiveTime: Date.now(),
-                })
-                this.props.storeUser(u.data.user)
-                await this.props.getUsers(u.data.user._id, '')
-                this.setState({
-                  showSnackbar: !this.state.showSnackbar,
-                  error: false,
-                  loading: false,
-                })
-                this.timer = setTimeout(() => {
-                  this.props.history.push('/dashboard')
-                }, 1000)
-              } else {
-                this.props.storeUser(null)
-                this.props.history.push('/')
-              }
-            })
-            .catch(err => {
+  checkFirebase() {
+    new firebase.auth().onAuthStateChanged((user, err) => {
+      if (user) {
+        this.props
+          .getUser(user.providerData[0].uid)
+          .then(u => {
+            if (u && u.data && u.data.user) {
+              this.props.updateUser(u.data.user._id, {
+                lastActiveTime: Date.now(),
+              })
+              this.props.storeUser(u.data.user)
+              // this.props.getUsers(u.data.user._id, '')
               this.setState({
-                loading: false,
-                error: !this.state.error,
                 showSnackbar: !this.state.showSnackbar,
               })
-            })
-        }
-        if (err) {
-          this.setState({
-            loading: false,
-            error: !this.state.error,
-            showSnackbar: !this.state.showSnackbar,
+              this.timer = setTimeout(() => {
+                this.props.history.push('/dashboard')
+              }, 1000)
+            } else {
+              this.props.storeUser(null)
+              this.props.history.push('/')
+            }
           })
-        }
-      })
+          .catch(err => {
+            this.setState({
+              loading: false,
+              error: !this.state.error,
+              showSnackbar: !this.state.showSnackbar,
+            })
+          })
+      }
+      if (err) {
+        this.setState({
+          loading: false,
+          error: !this.state.error,
+          showSnackbar: !this.state.showSnackbar,
+        })
+      }
+    })
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    // if(this.props.user && this.props.user.uid != prevProps.user && prevProps.user.uid){
+    //   console.log("user...", this.props.user)
+    //   // this.checkFirebase();
+    // }
+  }
+
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   return nextProps.user ? true: false;
+  // }
+
+  componentDidMount() {
+    try {
+      // this.getGeoLocation()
+      this.whenUserLevesThePage()
+      this.handleConnectionChange()
+      window.addEventListener('online', this.handleConnectionChange)
+      window.addEventListener('offline', this.handleConnectionChange)
+      this.checkFirebase()
       this.setState({
         loading: false,
       })
@@ -156,56 +168,54 @@ class App extends Component {
       createOrUpdateUserErrors,
     } = this.props
     const authenticated = user ? true : false
-    console.log('App Called')
     return (
       <React.Fragment>
         <Suspense fallback={<Loader />}>
           <MuiThemeProvider theme={theme}>
             <CssBaseline />
-            <Container fixed className="pl-0 pr-0 body-content">
-              {isDisconnected && (
-                <CustomizedSnackbars
-                  open={true}
-                  message="You are not connected to the internet"
-                  status="warning"
-                />
-              )}
-              {!error &&
-                createOrUpdateUserSuccess &&
-                createOrUpdateUserSuccess.size > 0 &&
-                createOrUpdateUserSuccess.get('message') && (
-                  <CustomizedSnackbars
-                    open={showSnackbar}
-                    message={createOrUpdateUserSuccess.get('message')}
-                    status={'success'}
-                  />
-                )}
-              {!error &&
-                createOrUpdateUserErrors &&
-                createOrUpdateUserErrors.size > 0 &&
-                createOrUpdateUserErrors.get('message') && (
-                  <CustomizedSnackbars
-                    open={showSnackbar}
-                    message={createOrUpdateUserErrors.get('message')}
-                    status={'error'}
-                  />
-                )}
-              {error && (
+            {isDisconnected && (
+              <CustomizedSnackbars
+                open={true}
+                message="You are not connected to the internet"
+                status="warning"
+              />
+            )}
+            {!error &&
+              createOrUpdateUserSuccess &&
+              createOrUpdateUserSuccess.size > 0 &&
+              createOrUpdateUserSuccess.get('message') && (
                 <CustomizedSnackbars
                   open={showSnackbar}
-                  message="A network error (such as timeout, interrupted connection or unreachable host) has occurred. Please try again"
+                  message={createOrUpdateUserSuccess.get('message')}
+                  status={'success'}
+                />
+              )}
+            {!error &&
+              createOrUpdateUserErrors &&
+              createOrUpdateUserErrors.size > 0 &&
+              createOrUpdateUserErrors.get('message') && (
+                <CustomizedSnackbars
+                  open={showSnackbar}
+                  message={createOrUpdateUserErrors.get('message')}
                   status={'error'}
                 />
               )}
-              <ResponsiveDrawer
-                loading={loading}
-                authenticated={authenticated}
-                theme={{ direction: 'rtl' }}
+            {error && (
+              <CustomizedSnackbars
+                open={showSnackbar}
+                message="A network error (such as timeout, interrupted connection or unreachable host) has occurred. Please try again"
+                status={'error'}
               />
+            )}
+            <ResponsiveDrawer
+              loading={loading}
+              authenticated={authenticated}
+              theme={{ direction: 'rtl' }}
+            />
+            <Route path="/" exact component={Home} />
+            {!loading && !authenticated && (
               <Switch>
-                <Route path="/" exact component={Home} />
                 <Route path="/about" component={About} />
-                <Route path="/feedback" component={Feedback} />
                 <Route path="/location" component={Location} />
                 <Route path="/developers" component={Developers} />
                 <Route path="/careers" component={Careers} />
@@ -215,12 +225,8 @@ class App extends Component {
                 <Route path="/signin" component={Signin} />
                 {/* <Route path="*" component={PageNotFound} /> */}
               </Switch>
-              {!authenticated && (
-                <section className="body-section">
-                  <Footer authenticated={authenticated} />
-                </section>
-              )}
-            </Container>
+            )}
+            {!authenticated && <Footer authenticated={authenticated} />}
           </MuiThemeProvider>
         </Suspense>
       </React.Fragment>

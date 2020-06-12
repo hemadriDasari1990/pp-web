@@ -26,7 +26,7 @@ const styles = theme => ({
     display: 'inline',
   },
   avatar: {
-    backgroundColor: '#2a7fff !important',
+    backgroundColor: '#5383ff !important',
   },
 })
 

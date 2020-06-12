@@ -1,9 +1,9 @@
-import React from 'react'
-import getPastTime from './getPastTime'
 import PublicIcon from '@material-ui/icons/Public'
-import formateNumber from './formateNumber'
-import getReaction from './getReaction'
+import React from 'react'
 import Zoom from '@material-ui/core/Zoom'
+import formateNumber from './formateNumber'
+import getPastTime from './getPastTime'
+import getReaction from './getReaction'
 
 export default function getCardSubHeaderText(timestamp) {
   return (
@@ -17,7 +17,7 @@ export default function getCardSubHeaderText(timestamp) {
 export function getCardSubHeaderProfileSummary(user) {
   return (
     <>
-      <div className="grey-color ">
+      <div className="title-color">
         <b>{formateNumber(user.no_of_likes) || 0}</b> Likes&nbsp;{' '}
         <b>{formateNumber(user.no_of_loves) || 0}</b> Love &nbsp;{' '}
         <b>{formateNumber(user.no_of_followers) || 0}</b> Followers
@@ -101,9 +101,9 @@ export function getCardSubHeaderReactionsSummary(post) {
 export function getCardSubHeaderStatus(post) {
   return (
     <>
-      {post.approved ? <small>Accepted</small> : null}
-      {post.rejected ? <small>Rejected</small> : null}
-      {!post.approved && !post.rejected ? <small>Pending</small> : null}
+      {post.approved ? <span>Accepted</span> : null}
+      {post.rejected ? <span>Rejected</span> : null}
+      {!post.approved && !post.rejected ? <span>Pending</span> : null}
     </>
   )
 }

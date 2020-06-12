@@ -14,7 +14,11 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
-const styles = {}
+const styles = {
+  button: {
+    borderRadius: 20,
+  },
+}
 
 class CreateComment extends Component {
   constructor(props) {
@@ -30,16 +34,27 @@ class CreateComment extends Component {
     // this.props.getIncomingPosts(this.props.user._id)
   }
 
-  createComment = async postId => {
+  createComment = async (e, post, postId) => {
+    // Prevent the default behaviour of form submit
+    e.preventDefault()
     const data = {
       postId: postId,
       commentedBy: this.props.user._id,
       message: this.state.comment,
     }
-    await this.props.createComment(postId, data).then(async data => {
+    await this.props.createComment(postId, data).then(async res => {
       this.props.hideComment(postId)
       await this.props.getCommentsCount(postId)
-      await this.props.getComments(postId)
+      if (res.data && res.data.comment) {
+        res.data.comment.commentedBy = this.props.user
+        res.data.comment.likes = 0
+        res.data.comment.likesCount = 0
+        res.data.comment.reactionsCount = 0
+        res.data.comment.reactions = []
+        res.data.comment.reactedBy = null
+      }
+      this.props.getNewComment(res.data.comment)
+      // await this.props.getComments(postId)
     })
   }
 
@@ -95,10 +110,11 @@ class CreateComment extends Component {
               <Grid lg={1} md={1} item>
                 <Zoom in={comment ? true : false} timeout={2000}>
                   <Button
-                    onClick={() => this.createComment(post._id)}
+                    onClick={e => this.createComment(e, post, post._id)}
                     variant="outlined"
                     size="medium"
                     color="primary"
+                    className={classes.button}
                   >
                     Save
                   </Button>

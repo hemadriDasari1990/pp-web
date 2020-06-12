@@ -10,7 +10,7 @@ import { withRouter } from 'react-router-dom'
 const Followers = lazy(() => import('./Followers'))
 const Profile = lazy(() => import('./Profile'))
 const Reactions = lazy(() => import('./Reactions'))
-const Followees = lazy(() => import('./Followees'))
+const Following = lazy(() => import('./Following'))
 
 class LeftGrid extends Component {
   constructor(props) {
@@ -24,12 +24,12 @@ class LeftGrid extends Component {
     const {} = this.state
     const { profile } = this.props
     return (
-      <Suspense fallback={<Loader />}>
-        <Grid item lg={3} md={3} xs={12} sm={9} className="middle-content">
+      <Suspense>
+        <Grid item lg={3} md={3} xs={12} sm={9} disableGutters={true}>
           <Profile profileUser={profile} />
           <Reactions path="profile" />
           <Followers path="profile" />
-          <Followees path="profile" />
+          <Following path="profile" />
         </Grid>
       </Suspense>
     )

@@ -25,8 +25,8 @@ class RightGrid extends Component {
     const {} = this.state
     const { profile, path } = this.props
     return (
-      <Suspense fallback={<Loader />}>
-        <Grid item lg={4} md={6} xs={12} sm={9} className="of-h">
+      <Suspense>
+        <Grid item lg={4} md={6} xs={12} sm={12} className="of-h">
           <Summary type={path} title="Incoming Summary" />
           <Summary type={path} title="Outgoing Summary" />
           <RecentPosts user={profile} />
