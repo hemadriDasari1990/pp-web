@@ -4,13 +4,17 @@ const white = '#FFFFFF'
 const black = '#606770'
 
 export default {
-  black,
-  white,
+  common: {
+    contrastText: white,
+    dark: '#e4e6eb',
+    main: '#e4e6eb',
+    light: '#e4e6eb',
+  },
   primary: {
     contrastText: white,
-    dark: '#2a7fff',
-    main: '#2a7fff',
-    light: '#2a7fff',
+    dark: '#5383ff',
+    main: '#5383ff',
+    light: '#5383ff',
   },
   secondary: {
     contrastText: white,

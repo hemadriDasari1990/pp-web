@@ -1,6 +1,5 @@
 import * as actions from '../actions'
 
-import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
 
 import Checkbox from '@material-ui/core/Checkbox'
@@ -9,6 +8,8 @@ import Fab from '@material-ui/core/Fab'
 import FeedbackList from './FeedbackList'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Loader from '../../Loader/components/Loader'
+import { Map } from 'immutable'
+import Slide from '@material-ui/core/Slide'
 import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
@@ -27,12 +28,17 @@ class Feedback extends Component {
       no: false,
       average: false,
       annonymous: false,
+      feedbacks: [],
     }
   }
 
   componentDidMount() {
     if (this.props.user) {
-      this.props.getFeedbacks()
+      this.props.getFeedbacks().then(res => {
+        this.setState({
+          feedbacks: res.data,
+        })
+      })
     }
   }
 
@@ -120,17 +126,7 @@ class Feedback extends Component {
   }
 
   handleSubmit = async () => {
-    const {
-      about,
-      comment,
-      good,
-      vgood,
-      bad,
-      vbad,
-      yes,
-      no,
-      errorMessage,
-    } = this.state
+    const { about, comment } = this.state
     const { user } = this.props
     if (!about && !comment) {
       this.setState({
@@ -142,7 +138,9 @@ class Feedback extends Component {
       data.photoURL = user.photoURL
       data.userName = user.userName
       await this.props.saveFeedback(data).then(async res => {
-        await this.props.getFeedbacks()
+        this.setState(prevState => ({
+          feedbacks: [res.data, ...prevState.feedbacks],
+        }))
         this.handleReset()
       })
     }
@@ -182,8 +180,14 @@ class Feedback extends Component {
       average,
       errorMessage,
       annonymous,
+      feedbacks,
     } = this.state
-    const { user, saveFeedbackSuccess, saveFeedbackLoading } = this.props
+    const {
+      user,
+      saveFeedbackSuccess,
+      saveFeedbackLoading,
+      feedbacksLoading,
+    } = this.props
     return (
       <React.Fragment>
         <h1>Feedback</h1>
@@ -369,10 +373,34 @@ class Feedback extends Component {
             ) : null}
           </>
         )}
-
+        {!feedbacksLoading && feedbacks && feedbacks.length ? (
+          <div className="col-lg-12">
+            <Slide
+              direction="right"
+              in={true}
+              timeout={1500}
+              mountOnEnter
+              unmountOnExit
+            >
+              <h2>Feedbacks from our people</h2>
+            </Slide>
+            <Slide
+              direction="left"
+              in={true}
+              timeout={1500}
+              mountOnEnter
+              unmountOnExit
+            >
+              <p className="margin-bottom">
+                We are really thankful to them who are helping us to improve the
+                system.
+              </p>
+            </Slide>
+          </div>
+        ) : null}
         {!user && <h4>*Please login to share your feedback </h4>}
         {saveFeedbackLoading && <Loader />}
-        <FeedbackList />
+        {!saveFeedbackLoading ? <FeedbackList feedbacks={feedbacks} /> : null}
       </React.Fragment>
     )
   }

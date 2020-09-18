@@ -1,6 +1,7 @@
 import * as postActions from '../../Post/actions'
 import * as userProfileActions from '../../UserProfile/actions'
 
+import { Link, withRouter } from 'react-router-dom'
 import React, { Component } from 'react'
 
 import AskIcon from '@material-ui/icons/PlaylistAddRounded'
@@ -8,7 +9,6 @@ import Avatar from '@material-ui/core/Avatar'
 import Badge from '@material-ui/core/Badge'
 import FollowIcon from '@material-ui/icons/RssFeedOutlined'
 import IconButton from '@material-ui/core/IconButton'
-import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
@@ -24,7 +24,6 @@ import { connect } from 'react-redux'
 import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
 import getProvider from '../../../util/getProvider'
 import getReaction from '../../../util/getReaction'
-import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
@@ -58,15 +57,15 @@ class ReactionsList extends Component {
 
   handleFollow = async (user, index) => {
     const data = {
-      follower: this.props.user._id,
-      followee: user._id,
+      userId: this.props.user._id,
+      followeeId: user._id,
     }
     const reactions = [...this.state.reactions]
     const reaction = reactions[index]
     await this.props.createOrUpdateProfileFollower(data).then(async res => {
       if (!res.data.data) {
         const followers = reaction.user.followers.filter(
-          f => f.follower._id !== this.props.user._id,
+          f => f._id !== this.props.user._id,
         )
         reaction.user.followers = followers
         reaction.user.no_of_followers = --reaction.user.no_of_followers
@@ -93,7 +92,7 @@ class ReactionsList extends Component {
     if (!followers) {
       return
     }
-    return followers.filter(f => f.follower._id === this.props.user._id).length
+    return followers.filter(f => f._id === this.props.user._id).length
       ? 'primary'
       : ''
   }
@@ -109,7 +108,7 @@ class ReactionsList extends Component {
       <div>
         {!reactionsLoading && reactions.length ? (
           <div className="text-center m-2">
-            <Typography variant="h3">People who Reacted</Typography>
+            <Typography variant="h3">People who reacted</Typography>
           </div>
         ) : null}
         {!reactionsLoading && !reactions.length && (
@@ -126,7 +125,7 @@ class ReactionsList extends Component {
                       <ListItem
                         key={r._id}
                         alignItems="flex-start"
-                        className="shadow b-r-15 cursor mb-10"
+                        className="b-r-15 cursor mb-10"
                       >
                         <ListItemAvatar>
                           <Badge

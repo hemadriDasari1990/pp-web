@@ -1,3 +1,4 @@
+import AskIcon from '@material-ui/icons/HowToReg'
 import CancelIcon from '@material-ui/icons/Cancel'
 import CheckCircleIcon from '@material-ui/icons/CheckCircle'
 import CommentIcon from '@material-ui/icons/ChatBubble'
@@ -51,6 +52,9 @@ export default function getReaction(type) {
       break
     case 'comment-like':
       icon = <LikeIcon style={{ fontSize: 12 }} color="secondary" />
+      break
+    case 'opinion':
+      icon = <AskIcon style={{ fontSize: 12 }} color="secondary" />
       break
     default:
       break

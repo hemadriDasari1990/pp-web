@@ -11,6 +11,7 @@ import Offline from 'offline-plugin/runtime'
 import { Provider } from 'react-redux'
 import { Router } from 'react-router-dom'
 import { createBrowserHistory } from 'history'
+import emojis from 'emojis-list'
 import { render } from 'react-dom'
 import { store } from './store'
 

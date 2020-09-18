@@ -1,12 +1,13 @@
-import { combineReducers } from 'redux-immutable'
-import { user } from './user'
-import { fromJS } from 'immutable'
-import { LOCATION_CHANGE } from 'react-router-redux'
-import { Post } from '../components/Post/reducer'
-import { UserProfile } from '../components/UserProfile/reducer'
-import { Timeline } from '../components/Timeline/reducer'
 import { Footer } from '../components/Footer/reducer'
+import { LOCATION_CHANGE } from 'react-router-redux'
 import { Notifications } from '../components/Notifications/reducer'
+import { Post } from '../components/Post/reducer'
+import { Region } from '../components/Countries/reducer'
+import { Timeline } from '../components/Timeline/reducer'
+import { UserProfile } from '../components/UserProfile/reducer'
+import { combineReducers } from 'redux-immutable'
+import { fromJS } from 'immutable'
+import { user } from './user'
 
 const initialState = fromJS({
   locationBeforeTransitions: null,
@@ -27,6 +28,7 @@ const appReducer = combineReducers({
   Timeline,
   Footer,
   Notifications,
+  Region,
 })
 
 const rootReducer = (state, action) => {

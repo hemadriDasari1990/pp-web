@@ -7,11 +7,8 @@ import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
-import Loader from '../../Loader/components/Loader'
 import PropTypes from 'prop-types'
-import Slide from '@material-ui/core/Slide'
 import Typography from '@material-ui/core/Typography'
-import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
@@ -27,38 +24,12 @@ const styles = theme => ({
 
 class FeedbackList extends Component {
   render() {
-    const { classes, feedbacks, feedbacksLoading } = this.props
+    const { classes, feedbacks } = this.props
     return (
       <>
-        {!feedbacksLoading && feedbacks && (
-          <div className="col-lg-12">
-            <Slide
-              direction="right"
-              in={true}
-              timeout={1500}
-              mountOnEnter
-              unmountOnExit
-            >
-              <h2>Feedbacks from our people</h2>
-            </Slide>
-            <Slide
-              direction="left"
-              in={true}
-              timeout={1500}
-              mountOnEnter
-              unmountOnExit
-            >
-              <p className="margin-bottom">
-                We are really thankful to them who are helping us to improve the
-                system.
-              </p>
-            </Slide>
-          </div>
-        )}
         <List className={classes.root}>
           <div className="row">
-            {!feedbacksLoading &&
-              feedbacks &&
+            {feedbacks &&
               feedbacks.map(feedback => (
                 <div
                   key={feedback._id}
@@ -66,7 +37,7 @@ class FeedbackList extends Component {
                 >
                   <ListItem
                     alignItems="flex-start"
-                    className="shadow b-r-15 cursor mb-10"
+                    className="b-r-15 cursor mb-10"
                   >
                     <ListItemAvatar>
                       {!feedback.annonymous ? (
@@ -78,7 +49,7 @@ class FeedbackList extends Component {
                         <Avatar
                           style={{
                             color: '#ffffff',
-                            backgroundColor: '#2a7fff',
+                            backgroundColor: '#5383ff',
                           }}
                         >
                           A
@@ -108,14 +79,13 @@ class FeedbackList extends Component {
                     <ListItemSecondaryAction>
                       {feedback.good || feedback.vGood ? (
                         <Tooltip title={feedback.isInteresting}>
-                          <LikeIcon color="#2a7fff" />
+                          <LikeIcon color="#5383ff" />
                         </Tooltip>
                       ) : null}
                     </ListItemSecondaryAction>
                   </ListItem>
                 </div>
               ))}
-            {feedbacksLoading && <Loader />}
           </div>
         </List>
       </>
@@ -128,15 +98,7 @@ FeedbackList.propTypes = {
 }
 
 const mapStateToProps = state => {
-  const feedbacks = state.getIn(['Footer', 'feedbacks', 'get', 'success'])
-  const feedbacksLoading = state.getIn(
-    ['Footer', 'feedbacks', 'get', 'loading'],
-    false,
-  )
-  return {
-    feedbacks,
-    feedbacksLoading,
-  }
+  return {}
 }
 
 const actionsToProps = {}

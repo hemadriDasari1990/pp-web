@@ -2,14 +2,15 @@ import * as actions from '../../../actions/index'
 
 import React, { Component, Suspense, lazy } from 'react'
 
+import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
-import Loader from '../../Loader/components/Loader'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 const Followers = lazy(() => import('../../UserProfile/components/Followers'))
 const Profile = lazy(() => import('../../UserProfile/components/Profile'))
 const Reactions = lazy(() => import('../../UserProfile/components/Reactions'))
+const Following = lazy(() => import('../../UserProfile/components/Following'))
 
 class LeftGrid extends Component {
   constructor(props) {
@@ -27,12 +28,15 @@ class LeftGrid extends Component {
     const {} = this.state
     const { user } = this.props
     return (
-      <Suspense fallback={<Loader />}>
-        <Grid item lg={3} md={3} xs={12} sm={9} className="middle-content">
-          {user && <Profile profileUser={user} />}
-          <Reactions path="timeline" />
-          <Followers path="timeline" />
-        </Grid>
+      <Suspense>
+        <Box clone order={{ xs: 3, lg: 1 }}>
+          <Grid item lg={3} md={3} xs={12} sm={3}>
+            {user && <Profile profileUser={user} />}
+            <Reactions path="timeline" />
+            <Followers path="timeline" />
+            <Following path="timeline" />
+          </Grid>
+        </Box>
       </Suspense>
     )
   }

@@ -1,4 +1,5 @@
 import * as actions from '../../constants/actionTypes'
+
 import { Map, fromJS } from 'immutable'
 
 export const Post = (state = Map(), action) => {
@@ -146,6 +147,36 @@ export const Post = (state = Map(), action) => {
       return state
         .setIn(['comment', 'reaction', 'create', 'errors'], action.errors)
         .setIn(['comment', 'reaction', 'create', 'loading'], false)
+    case actions.UPDATE_COMMENT_REQUEST:
+      return state
+        .setIn(['comment', 'update', 'loading'], true)
+        .deleteIn(['comment', 'update', 'errors'])
+        .deleteIn(['comment', 'update', 'success'])
+
+    case actions.UPDATE_COMMENT_SUCCESS:
+      return state
+        .setIn(['comment', 'update', 'success'], action.data)
+        .setIn(['comment', 'update', 'loading'], false)
+
+    case actions.UPDATE_COMMENT_ERROR:
+      return state
+        .setIn(['comment', 'update', 'errors'], action.errors)
+        .setIn(['comment', 'update', 'loading'], false)
+    case actions.DELETE_COMMENT_REQUEST:
+      return state
+        .setIn(['comment', 'delete', 'loading'], true)
+        .deleteIn(['comment', 'delete', 'errors'])
+        .deleteIn(['comment', 'delete', 'success'])
+
+    case actions.DELETE_COMMENT_SUCCESS:
+      return state
+        .setIn(['comment', 'delete', 'success'], action.data)
+        .setIn(['comment', 'delete', 'loading'], false)
+
+    case actions.DELETE_COMMENT_ERROR:
+      return state
+        .setIn(['comment', 'delete', 'errors'], action.errors)
+        .setIn(['comment', 'delete', 'loading'], false)
 
     default:
       return state

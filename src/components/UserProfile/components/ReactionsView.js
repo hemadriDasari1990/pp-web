@@ -1,19 +1,18 @@
 import * as actions from '../actions'
 import * as globalActions from '../../../actions/index'
 
+import { Link, withRouter } from 'react-router-dom'
 import React, { Component } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
 import BackIcon from '@material-ui/icons/ArrowBack'
 import Badge from '@material-ui/core/Badge'
 import IconButton from '@material-ui/core/IconButton'
-import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListSubheader from '@material-ui/core/ListSubheader'
-import Loader from '../../Loader/components/Loader'
 import { Map } from 'immutable'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
@@ -23,7 +22,6 @@ import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderTe
 import getPastTime from '../../../util/getPastTime'
 import getProvider from '../../../util/getProvider'
 import getReaction from '../../../util/getReaction'
-import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
@@ -108,7 +106,7 @@ class ReactionsView extends Component {
           <List disablePadding={true} subheader={this.renderSubHeader()}>
             {hasReactions
               ? profileUser.reactions.map(pu => (
-                  <ListItem key={pu._id} className="p-1">
+                  <ListItem key={pu._id} className="p-1 w-us">
                     <ListItemAvatar>
                       <Badge
                         classes={{ badge: classes.customBadge }}
@@ -178,7 +176,6 @@ class ReactionsView extends Component {
                 No reactions
               </Typography>
             )}
-            {profileUser && !profileUser.reactions.length && <Loader />}
           </List>
         </Zoom>
       </React.Fragment>

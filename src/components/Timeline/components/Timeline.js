@@ -3,7 +3,6 @@ import * as actions from '../../../actions/index'
 import React, { Component, Suspense, lazy } from 'react'
 
 import Grid from '@material-ui/core/Grid'
-import Loader from '../../Loader/components/Loader'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
@@ -27,8 +26,8 @@ class Timeline extends Component {
     const { user } = this.state
     const {} = this.props
     return (
-      <Suspense fallback={<Loader />}>
-        <Grid container spacing={1} className="of-h">
+      <Suspense>
+        <Grid container spacing={1} className="of-h w-us" disableGutters={true}>
           <LeftGrid />
           <CenterGrid />
           <RightGrid />

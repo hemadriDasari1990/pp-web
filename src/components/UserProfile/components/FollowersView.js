@@ -1,20 +1,19 @@
 import * as actions from '../actions'
 import * as globalActions from '../../../actions/index'
 
+import { Link, withRouter } from 'react-router-dom'
 import React, { Component } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
 import BackIcon from '@material-ui/icons/ArrowBack'
 import Badge from '@material-ui/core/Badge'
 import IconButton from '@material-ui/core/IconButton'
-import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
 import ListSubheader from '@material-ui/core/ListSubheader'
-import Loader from '../../Loader/components/Loader'
 import { Map } from 'immutable'
 import Tooltip from '@material-ui/core/Tooltip'
 import Typography from '@material-ui/core/Typography'
@@ -24,7 +23,6 @@ import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderTe
 import getPastTime from '../../../util/getPastTime'
 import getProvider from '../../../util/getProvider'
 import getReaction from '../../../util/getReaction'
-import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
@@ -41,8 +39,6 @@ const styles = {
 }
 
 class FollowersView extends Component {
-  async componentDidMount() {}
-
   goBack = () => {
     this.props.saveActionState(this.getPath())
   }
@@ -101,7 +97,7 @@ class FollowersView extends Component {
           <List disablePadding={true} subheader={this.renderSubHeader()}>
             {hasFollowers
               ? profileUser.followers.map(f => (
-                  <ListItem key={f._id} className="p-1">
+                  <ListItem key={f._id} className="p-1 w-us">
                     <ListItemAvatar>
                       <Badge
                         classes={{ badge: classes.customBadge }}
@@ -110,19 +106,16 @@ class FollowersView extends Component {
                           <Avatar
                             className={classes.smallAvatar}
                             key={f._id}
-                            alt={f.follower ? f.follower.userName : ''}
+                            alt={f ? f.userName : ''}
                           >
                             {getReaction('follow')}
                           </Avatar>
                         }
                       >
-                        <Avatar
-                          alt={f.follower.userName}
-                          src={f.follower.photoURL}
-                        />
+                        <Avatar alt={f.userName} src={f.photoURL} />
                       </Badge>
                     </ListItemAvatar>
-                    <Tooltip title={f.follower.userName} placement="right-end">
+                    <Tooltip title={f.userName} placement="right-end">
                       <ListItemText
                         primary={
                           <>
@@ -130,16 +123,16 @@ class FollowersView extends Component {
                               className="hyperlink"
                               to="#"
                               onClick={() =>
-                                this.viewProfile('incoming', f.follower._id)
+                                this.viewProfile('incoming', f._id)
                               }
                             >
-                              {user && user._id === f.follower._id
+                              {user && user._id === f._id
                                 ? 'You '
-                                : f.follower.userName
-                                ? f.follower.userName.substring(0, 15) + '... '
+                                : f.userName
+                                ? f.userName.substring(0, 15) + '... '
                                 : ''}
                             </Link>
-                            {getProvider(f.follower.providerId)}&nbsp;
+                            {getProvider(f.providerId)}&nbsp;
                             <small className="grey-color">
                               {getPastTime(f.createdAt)}
                             </small>
@@ -151,7 +144,7 @@ class FollowersView extends Component {
                             variant="body2"
                             color="textPrimary"
                           >
-                            {getCardSubHeaderProfileSummary(f.follower)}
+                            {getCardSubHeaderProfileSummary(f)}
                           </Typography>
                         }
                       />
@@ -165,7 +158,6 @@ class FollowersView extends Component {
                 No Followers
               </Typography>
             )}
-            {profileUser && !profileUser.followers.length && <Loader />}
           </List>
         </Zoom>
       </React.Fragment>

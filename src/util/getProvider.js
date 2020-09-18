@@ -1,8 +1,8 @@
-import React from 'react'
 import FacebookIcon from '@material-ui/icons/Facebook'
+import React from 'react'
 import TwitterIcon from '@material-ui/icons/Twitter'
-import googleIcon from '../../assets/social/google.png'
 import Zoom from '@material-ui/core/Zoom'
+import googleIcon from '../../assets/social/google.png'
 
 export default function getProvider(provider) {
   if (!provider) {
@@ -26,8 +26,7 @@ export default function getProvider(provider) {
       icon = (
         <Zoom in={true} timeout={2000}>
           <TwitterIcon
-            style={{ fontSize: 15, marginTop: -3 }}
-            color="primary"
+            style={{ fontSize: 15, marginTop: -3, color: '#1da1f2' }}
           />
         </Zoom>
       )
@@ -36,8 +35,7 @@ export default function getProvider(provider) {
       icon = (
         <Zoom in={true} timeout={2000}>
           <FacebookIcon
-            style={{ fontSize: 15, marginTop: -3 }}
-            color="primary"
+            style={{ fontSize: 15, marginTop: -3, color: '#1876f2' }}
           />
         </Zoom>
       )

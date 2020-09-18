@@ -168,3 +168,44 @@ export const updateUser = (userId, data) => {
       })
   }
 }
+
+export const getWhoToFollowRequest = () => {
+  return {
+    type: action.GET_WHO_TO_FOLLOW_REQUEST,
+    loading: true,
+  }
+}
+
+export const getWhoToFollowSuccess = user => {
+  return {
+    type: action.GET_WHO_TO_FOLLOW_SUCCESS,
+    loading: false,
+    data: user.users,
+  }
+}
+
+export const getWhoToFollowError = errors => {
+  return {
+    type: action.GET_WHO_TO_FOLLOW_ERROR,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const getWhoToFollow = (userId, limit, offset) => {
+  const options = {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  return dispatch => {
+    dispatch(getWhoToFollowRequest())
+    return fetch(
+      config.URL_PREFIX +
+        `/user/${userId}/whoToFollow?limit=${limit}&offset=${offset}`,
+      options,
+    )
+      .then(response => response.json())
+      .then(data => dispatch(getWhoToFollowSuccess(data)))
+      .catch(errors => dispatch(getWhoToFollowError(errors)))
+  }
+}

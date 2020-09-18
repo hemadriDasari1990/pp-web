@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton'
 import LikeIcon from '@material-ui/icons/ThumbUpAlt'
 import LoveIcon from '@material-ui/icons/Favorite'
 import { Map } from 'immutable'
+import SkeletonProfile from '../../Skeletons/components/Profile'
 import Slide from '@material-ui/core/Slide'
 import Tooltip from '@material-ui/core/Tooltip'
 import Zoom from '@material-ui/core/Zoom'
@@ -45,7 +46,9 @@ class Profile extends Component {
     super(props)
     this.state = {
       profileUser: this.props.profileUser,
+      loading: true,
     }
+    this.timer = null
   }
 
   componentDidMount() {
@@ -62,6 +65,11 @@ class Profile extends Component {
           this.props.profileUser._id,
         )
       : null
+    this.timer = setTimeout(() => {
+      this.setState({
+        loading: false,
+      })
+    }, 500)
   }
 
   handleReaction = async type => {
@@ -85,8 +93,8 @@ class Profile extends Component {
 
   handleFollow = async () => {
     const data = {
-      follower: this.props.user._id,
-      followee: this.props.profileUser._id,
+      userId: this.props.user._id,
+      followeeId: this.props.profileUser._id,
     }
     await this.props.createOrUpdateProfileFollower(data).then(async res => {
       await this.props.getProfileFollower(
@@ -101,9 +109,13 @@ class Profile extends Component {
     })
   }
 
+  componentWillUnmount() {
+    this.timer ? clearTimeout(this.timer) : null
+  }
+
   render() {
     const { classes, user, profileReaction, profileFollower } = this.props
-    const { open, anchorEl, profileUser } = this.state
+    const { open, anchorEl, profileUser, loading } = this.state
     const loved =
       profileReaction &&
       profileReaction.type === 'love' &&
@@ -123,142 +135,154 @@ class Profile extends Component {
       user && profileUser && user._id === profileUser._id ? true : false
     return (
       <>
-        <Card>
-          <CardContent>
-            {profileUser && user && profileUser._id != user._id && (
-              <div className="row f-r">
-                <Tooltip title="Love">
-                  <IconButton
-                    className="f-r"
-                    aria-label="settings"
-                    style={{ color: loved ? '#ff0016c7' : '#0c0b0b5e' }}
-                    onClick={() => this.handleReaction('love', profileUser._id)}
+        {loading ? (
+          <SkeletonProfile />
+        ) : (
+          <Card>
+            <CardContent>
+              {profileUser && user && profileUser._id != user._id && (
+                <div className="row f-r">
+                  <Tooltip title="Love">
+                    <IconButton
+                      className="f-r"
+                      aria-label="settings"
+                      style={{ color: loved ? '#ff0016c7' : '#0c0b0b5e' }}
+                      onClick={() =>
+                        this.handleReaction('love', profileUser._id)
+                      }
+                    >
+                      <LoveIcon className="icon-display" />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="Like">
+                    <IconButton
+                      aria-label="settings"
+                      className="f-r"
+                      style={{ color: liked ? '#5383ff' : '#0c0b0b5e' }}
+                      onClick={() =>
+                        this.handleReaction('like', profileUser._id)
+                      }
+                    >
+                      <LikeIcon className="icon-display" />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              )}
+            </CardContent>
+            <CardContent className="text-center">
+              <Zoom in={true} timeout={2000}>
+                <Avatar
+                  className="l-35 profile"
+                  alt={profileUser.userName}
+                  src={profileUser.photoURL}
+                />
+              </Zoom>
+              <Slide
+                direction="left"
+                in={true}
+                timeout={1500}
+                mountOnEnter
+                unmountOnExit
+              >
+                <h5>{isSameUser ? 'You' : profileUser.userName}</h5>
+              </Slide>
+              <Zoom in={true} timeout={2000}>
+                <div>
+                  {!isActive ? (
+                    <small>
+                      {' Last Active '}
+                      <b style={{ color: '#2b7eff' }}>
+                        {getPastTime(profileUser.lastActiveTime)}
+                      </b>{' '}
+                      {' ago'}
+                    </small>
+                  ) : (
+                    <b style={{ color: '#1ad01a' }}>Active Now</b>
+                  )}
+                </div>
+              </Zoom>
+              {profileUser && user && profileUser._id != user._id && (
+                <div className="mt-25">
+                  <Tooltip title={following ? 'Following' : 'Follow'}>
+                    <Button
+                      variant="extended"
+                      className={classes.followIcon}
+                      startIcon={<FollowIcon color="primary" />}
+                      onClick={() => this.handleFollow()}
+                    >
+                      {following ? 'Following' : 'Follow'}
+                    </Button>
+                  </Tooltip>
+                </div>
+              )}
+            </CardContent>
+            <Divider />
+            <CardActions className="mt-10 p-0 fl-justify-content">
+              <div className="row">
+                <div className="col align-self-start text-center">
+                  <Tooltip title="No of People Liked">
+                    <Fab
+                      color="inherit"
+                      size="small"
+                      aria-label="preferences"
+                      color="primary"
+                    >
+                      <LikeIcon />
+                    </Fab>
+                  </Tooltip>
+                  <Slide
+                    direction="right"
+                    in={true}
+                    timeout={1500}
+                    mountOnEnter
+                    unmountOnExit
                   >
-                    <LoveIcon className="icon-display" />
-                  </IconButton>
-                </Tooltip>
-                <Tooltip title="Like">
-                  <IconButton
-                    aria-label="settings"
-                    className="f-r"
-                    style={{ color: liked ? '#2a7fff' : '#0c0b0b5e' }}
-                    onClick={() => this.handleReaction('like', profileUser._id)}
+                    <p className="title">
+                      {formateNumber(profileUser.no_of_likes)}
+                    </p>
+                  </Slide>
+                  <div className="followers">Likes</div>
+                </div>
+                <div className="col align-self-center text-center">
+                  <Tooltip title="No of People Loves">
+                    <Fab
+                      size="small"
+                      aria-label="love"
+                      style={{ backgroundColor: '#ff0016c7' }}
+                    >
+                      <LoveIcon />
+                    </Fab>
+                  </Tooltip>
+                  <Zoom in={true} timeout={2000}>
+                    <p className="title">
+                      {formateNumber(profileUser.no_of_loves)}
+                    </p>
+                  </Zoom>
+                  <div className="followers">Loved</div>
+                </div>
+                <div className="col align-self-end text-center">
+                  <Tooltip title="Followers">
+                    <Fab size="small" aria-label="followers" color="primary">
+                      <FollowIcon color="#fff" />
+                    </Fab>
+                  </Tooltip>
+                  <Slide
+                    direction="left"
+                    in={true}
+                    timeout={1500}
+                    mountOnEnter
+                    unmountOnExit
                   >
-                    <LikeIcon className="icon-display" />
-                  </IconButton>
-                </Tooltip>
+                    <p className="title">
+                      {formateNumber(profileUser.no_of_followers)}
+                    </p>
+                  </Slide>
+                  <div className="followers">Followers</div>
+                </div>
               </div>
-            )}
-          </CardContent>
-          <CardContent className="text-center">
-            <Zoom in={true} timeout={2000}>
-              <Avatar
-                className="profile"
-                alt={profileUser.userName}
-                src={profileUser.photoURL}
-              />
-            </Zoom>
-            <Slide
-              direction="left"
-              in={true}
-              timeout={1500}
-              mountOnEnter
-              unmountOnExit
-            >
-              <h5>{isSameUser ? 'You' : profileUser.userName}</h5>
-            </Slide>
-            <Zoom in={true} timeout={2000}>
-              <div>
-                {!isActive ? (
-                  <small>
-                    {' Last Active '}
-                    <b style={{ color: '#2b7eff' }}>
-                      {getPastTime(profileUser.lastActiveTime)}
-                    </b>{' '}
-                    {' ago'}
-                  </small>
-                ) : (
-                  <b style={{ color: '#1ad01a' }}>Active Now</b>
-                )}
-              </div>
-            </Zoom>
-            {profileUser && user && profileUser._id != user._id && (
-              <div className="mt-25">
-                <Tooltip title={following ? 'Following' : 'Follow'}>
-                  <Button
-                    variant="extended"
-                    className={classes.followIcon}
-                    startIcon={<FollowIcon color="primary" />}
-                    onClick={() => this.handleFollow()}
-                  >
-                    {following ? 'Following' : 'Follow'}
-                  </Button>
-                </Tooltip>
-              </div>
-            )}
-          </CardContent>
-          <Divider />
-          <CardActions className="mt-10 p-0 fl-justify-content">
-            <div className="row">
-              <div className="col align-self-start text-center">
-                <Tooltip title="No of People Liked">
-                  <Fab
-                    color="inherit"
-                    size="small"
-                    aria-label="preferences"
-                    color="primary"
-                  >
-                    <LikeIcon />
-                  </Fab>
-                </Tooltip>
-                <Slide
-                  direction="right"
-                  in={true}
-                  timeout={1500}
-                  mountOnEnter
-                  unmountOnExit
-                >
-                  <p className="title">
-                    {formateNumber(profileUser.no_of_likes)}
-                  </p>
-                </Slide>
-                <div className="followers">Likes</div>
-              </div>
-              <div className="col align-self-center text-center">
-                <Tooltip title="No of People Loves">
-                  <Fab size="small" aria-label="love" color="primary">
-                    <LoveIcon />
-                  </Fab>
-                </Tooltip>
-                <Zoom in={true} timeout={2000}>
-                  <p className="title">
-                    {formateNumber(profileUser.no_of_loves)}
-                  </p>
-                </Zoom>
-                <div className="followers">Loved</div>
-              </div>
-              <div className="col align-self-end text-center">
-                <Tooltip title="Followers">
-                  <Fab size="small" aria-label="followers" color="primary">
-                    <FollowIcon color="#fff" />
-                  </Fab>
-                </Tooltip>
-                <Slide
-                  direction="left"
-                  in={true}
-                  timeout={1500}
-                  mountOnEnter
-                  unmountOnExit
-                >
-                  <p className="title">
-                    {formateNumber(profileUser.no_of_followers)}
-                  </p>
-                </Slide>
-                <div className="followers">Followers</div>
-              </div>
-            </div>
-          </CardActions>
-        </Card>
+            </CardActions>
+          </Card>
+        )}
       </>
     )
   }

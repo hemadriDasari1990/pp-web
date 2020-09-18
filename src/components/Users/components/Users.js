@@ -1,14 +1,14 @@
 import * as mainActions from '../../../actions/index'
 import * as profileActions from '../../UserProfile/actions'
 
+import { Link, withRouter } from 'react-router-dom'
 import React, { Component } from 'react'
 
-import AskIcon from '@material-ui/icons/PlaylistAddRounded'
+import AskIcon from '@material-ui/icons/HowToReg'
 import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
 import FollowIcon from '@material-ui/icons/RssFeedOutlined'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
-import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
@@ -24,16 +24,35 @@ import Typography from '@material-ui/core/Typography'
 import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
+import getCreatedDate from '../../../util/getCreatedDate'
 import getProvider from '../../../util/getProvider'
-import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({
   input: {
+    flex: 1,
     '&::placeholder': {
       textOverflow: 'ellipsis !important',
-      // color: '#2a7fff'
+      color: '#050505',
+      fontSize: 15,
     },
+  },
+  searchIcon: {
+    marginLeft: 5,
+    marginRight: 5,
+    fontSize: 20,
+  },
+  root: {
+    marginTop: 8,
+    padding: '2px 4px',
+    display: 'flex',
+    alignItems: 'center',
+    backgroundColor: '#f0f2f5',
+    color: '#606770',
+    borderBottomLeftRadius: 50,
+    borderBottomRightRadius: 50,
+    borderTopRightRadius: 50,
+    borderTopLeftRadius: 50,
   },
 })
 
@@ -43,6 +62,8 @@ class Users extends Component {
     this.state = {
       users: [],
       filteredUsers: [],
+      inputValue: '',
+      loading: false,
     }
   }
 
@@ -51,36 +72,36 @@ class Users extends Component {
   }
 
   fetchUsers = async () => {
-    await this.props.getUsers(this.props.user._id, '').then(res => {
-      this.setState({
-        users: res.data,
-        filteredUsers: res.data,
-      })
-    })
+    this.props.user
+      ? await this.props
+          .getUsers(this.props.user._id, this.state.inputValue)
+          .then(res => {
+            this.setState({
+              users: res.data,
+              filteredUsers: res.data,
+              loading: false,
+            })
+          })
+      : null
   }
 
   handleFollow = async (cUser, index) => {
     const data = {
-      follower: this.props.user._id,
-      followee: cUser._id,
+      userId: this.props.user._id,
+      followeeId: cUser._id,
     }
     const users = [...this.state.users]
     const user = users[index]
     await this.props.createOrUpdateProfileFollower(data).then(async res => {
       if (!res.data.data) {
         const followers = user.followers.filter(
-          f => f.follower._id !== this.props.user._id,
+          f => f._id !== this.props.user._id,
         )
         user.followers = followers
         user.no_of_followers = --user.no_of_followers
       } else {
-        await this.props
-          .getProfileFollower(this.props.user._id, user._id)
-          .then(followerRes => {
-            const follower = followerRes.data
-            user.no_of_followers = ++user.no_of_followers
-            user.followers.push(follower)
-          })
+        user.no_of_followers = ++user.no_of_followers
+        user.followers.push(this.props.user)
       }
       users[index] = user
       this.setState(
@@ -92,13 +113,47 @@ class Users extends Component {
     })
   }
 
+  handleOpinionRequest = async (requestedTo, index) => {
+    const { user } = this.props
+    const data = {
+      requestedBy: user._id,
+      requestedTo: requestedTo._id,
+    }
+    await this.props.createOrUpdateOpinionRequest(data).then(async res => {
+      const users = [...this.state.users]
+      const opinionRequestIndex = users[
+        index
+      ].opinionRequestsReceived.findIndex(or => or._id === user._id)
+      users[index].opinionRequestsReceived.splice(opinionRequestIndex, 1)
+      // user.opinionRequestsSent = user.opinionRequestsSent.unshift(users[index]);
+      if (res.data.data) {
+        users[index].opinionRequestsReceived.unshift(user)
+        users[index].no_of_opinion_request_received += 1
+      } else {
+        users[index].no_of_opinion_request_received -= 1
+      }
+      this.setState(
+        {
+          users,
+        },
+        () => {},
+      )
+    })
+  }
+
+  isAsked = profile => {
+    const { classes, user } = this.props
+    const opinionRequests = profile.opinionRequestsReceived
+    const opinionRequest = opinionRequests.find(orr => orr._id === user._id)
+    return opinionRequest ? true : false
+  }
+
   renderFollowerColor = followers => {
+    const { classes, user } = this.props
     if (!followers) {
       return
     }
-    return followers.filter(f => f.follower._id === this.props.user._id).length
-      ? 'primary'
-      : ''
+    return followers.find(f => f._id === user._id) ? 'primary' : ''
   }
 
   ifSameUser = user => {
@@ -107,7 +162,7 @@ class Users extends Component {
 
   handleMenu = () => {}
 
-  handleInput = e => {
+  handleInput = event => {
     const query = event.target.value
     query !== ''
       ? this.setState(prevState => {
@@ -117,9 +172,35 @@ class Users extends Component {
 
           return {
             filteredUsers,
+            inputValue: event.target.value,
           }
         })
       : null
+  }
+
+  handleInput = event => {
+    event.preventDefault()
+    this.setState(
+      {
+        inputValue: event.target.value,
+        loading: true,
+      },
+      () => {
+        if (this.state.inputValue && this.state.inputValue.length > 1) {
+          this.usersTimer = setTimeout(async () => {
+            await this.fetchUsers()
+          }, 500)
+        } else {
+          this.setState(
+            {
+              filteredUsers: this.props.users,
+              loading: false,
+            },
+            () => {},
+          )
+        }
+      },
+    )
   }
 
   viewProfile = (type, userId) => {
@@ -129,46 +210,39 @@ class Users extends Component {
 
   render() {
     const { classes, usersLoading } = this.props
-    const { open, anchorEl, filteredUsers, users } = this.state
+    const {
+      open,
+      anchorEl,
+      filteredUsers,
+      users,
+      inputValue,
+      loading,
+    } = this.state
     return (
       <div>
-        <Grid item lg={12} md={12} xs={12} sm={12}>
-          <div
-            style={{
-              flex: 1,
-              display: 'flex',
-              borderRadius: 10,
-              // height: 40,
-              // width: 270,
-              boxShadow: '0 14px 28px rgba(145, 148, 170, 0.25)',
-            }}
-          >
-            <IconButton
-              style={{ padding: '2px 2px 0px 2px', marginLeft: 7 }}
-              type="submit"
-              aria-label="Search people by name"
-            >
-              <SearchIcon />
-            </IconButton>
+        <Grid item lg={4} md={4} xs={12} sm={12}>
+          <label className={classes.root}>
+            <SearchIcon className={classes.searchIcon} />
             <TextField
               onChange={e => this.handleInput(e)}
               fullWidth
+              value={inputValue}
               InputProps={{
                 disableUnderline: true,
                 classes: { input: this.props.classes['input'] },
               }}
               placeholder="Search people by name"
             />
-          </div>
+          </label>
         </Grid>
         <List>
-          {!usersLoading && filteredUsers.length
+          {!loading
             ? filteredUsers.map((user, index) => (
-                <Grid item lg={12} md={12} xs={12} sm={12}>
+                <Grid key={user._id} item lg={4} md={4} xs={12} sm={12}>
                   <ListItem
                     key={user._id}
                     alignItems="flex-start"
-                    className="shadow b-r-15 mt-10"
+                    className="b-r-15 mt-10 w-us"
                   >
                     <ListItemAvatar>
                       <Slide
@@ -195,7 +269,11 @@ class Users extends Component {
                               {user.userName + ' '}
                             </Link>
                             &nbsp;
-                            {getProvider(user.providerId)}
+                            {getProvider(user.providerId)}&nbsp;
+                            <span className="grey-color hint-label">
+                              {getCreatedDate(user.createdAt)}
+                            </span>
+                            &nbsp;
                           </>
                         }
                         secondary={
@@ -214,14 +292,23 @@ class Users extends Component {
                     {!this.ifSameUser(user) ? (
                       <ListItemSecondaryAction className="r-5">
                         <Tooltip title="Ask For Opinion" placement="right-end">
-                          <IconButton>
-                            <Zoom in={true} timeout={2000}>
-                              <AskIcon />
-                            </Zoom>
+                          <IconButton
+                            aria-label="opinion"
+                            onClick={() =>
+                              this.handleOpinionRequest(user, index)
+                            }
+                            style={{
+                              color: this.isAsked(user)
+                                ? '#5383ff'
+                                : '#0c0b0b5e',
+                            }}
+                          >
+                            <AskIcon className="icon-display" />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Follow User" placement="right-end">
                           <IconButton
+                            size="small"
                             onClick={() => this.handleFollow(user, index)}
                             color={this.renderFollowerColor(user.followers)}
                           >
@@ -236,14 +323,14 @@ class Users extends Component {
                 </Grid>
               ))
             : null}
-          {!usersLoading && !filteredUsers.length ? (
+          {!loading && (!filteredUsers || !filteredUsers.length) ? (
             <Typography variant="h4" className="m-10 text-center">
               No users found
             </Typography>
           ) : null}
         </List>
 
-        {usersLoading && !filteredUsers.length && <Loader />}
+        {loading && <Loader />}
       </div>
     )
   }
@@ -266,8 +353,8 @@ const actionsToProps = {
   getUsers: mainActions.getUsers,
   createOrUpdateProfileReaction: profileActions.createOrUpdateProfileReaction,
   createOrUpdateProfileFollower: profileActions.createOrUpdateProfileFollower,
-  getProfileFollower: profileActions.getProfileFollower,
   saveActionState: profileActions.saveActionState,
+  createOrUpdateOpinionRequest: profileActions.createOrUpdateOpinionRequest,
 }
 
 export default withRouter(

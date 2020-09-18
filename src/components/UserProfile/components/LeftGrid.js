@@ -3,13 +3,13 @@ import * as actions from '../../../actions/index'
 import React, { Component, Suspense, lazy } from 'react'
 
 import Grid from '@material-ui/core/Grid'
-import Loader from '../../Loader/components/Loader'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
 const Followers = lazy(() => import('./Followers'))
 const Profile = lazy(() => import('./Profile'))
 const Reactions = lazy(() => import('./Reactions'))
+const Following = lazy(() => import('./Following'))
 
 class LeftGrid extends Component {
   constructor(props) {
@@ -23,12 +23,15 @@ class LeftGrid extends Component {
     const {} = this.state
     const { profile } = this.props
     return (
-      <Suspense fallback={<Loader />}>
-        <Grid item lg={3} md={3} xs={12} sm={9} className="middle-content">
-          <Profile profileUser={profile} />
-          <Reactions path="profile" />
+      <Suspense>
+        {profile && (
+          <Grid item lg={3} md={3} xs={12} sm={9} disableGutters={true}>
+            <Profile profileUser={profile} />
+            {/* <Reactions path="profile" />
           <Followers path="profile" />
-        </Grid>
+          <Following path="profile" /> */}
+          </Grid>
+        )}
       </Suspense>
     )
   }
@@ -37,9 +40,11 @@ class LeftGrid extends Component {
 LeftGrid.propTypes = {}
 
 const mapStateToProps = state => {
+  const profile = state.getIn(['user', 'success'])
   const user = state.getIn(['user', 'data'])
   return {
     user,
+    profile: profile ? profile.user : undefined,
   }
 }
 

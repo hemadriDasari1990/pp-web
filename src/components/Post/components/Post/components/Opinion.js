@@ -4,11 +4,12 @@ import React, { Component } from 'react'
 
 import Checkbox from '@material-ui/core/Checkbox'
 import CustomizedSnackbars from '../../../../Snackbar/components/Snackbar'
-import Fab from '@material-ui/core/Fab'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import FormGroup from '@material-ui/core/FormGroup'
+import Grid from '@material-ui/core/Grid'
 import Loader from '../../../../Loader/components/Loader'
 import { Map } from 'immutable'
+import ResponsiveDialog from '../../../../Dialog/components/ResposiveDialog'
 import Search from '../../../../Search/components/Search'
 import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux'
@@ -111,14 +112,24 @@ class Opinion extends Component {
       isAnonymous,
     } = this.state
     return (
-      <div className="mt-25">
+      <ResponsiveDialog
+        title="Create Post"
+        createButtonName="Post"
+        cancellButtonName="Cancel"
+        open={true}
+        handleSave={this.handleSave}
+        handleClose={this.handleClose}
+      >
         {!createPostLoading && (
           <>
             <h5>Write something that matters to people.</h5>
-            <div className="col-lg-12">
-              <Search type="post" getSelectedUser={this.getSelectedUser} />
-            </div>
-            <br />
+            <Grid lg={12}>
+              <Search
+                type="post"
+                id="profile-drop-down"
+                getSelectedUser={this.getSelectedUser}
+              />
+            </Grid>
             {selectedUser && preferences && (
               <>
                 <h4>{selectedUser.userName} preferences</h4>
@@ -163,7 +174,6 @@ class Opinion extends Component {
             )}
             <TextField
               required={preferences && preferences.pros == 'yes' ? true : false}
-              id="standard-required"
               name="pros"
               label="Pros"
               placeholder="Write something pros"
@@ -175,11 +185,10 @@ class Opinion extends Component {
               fullWidth
               multiline
               rows={2}
-              rowsMax={4}
+              rowsMax={10}
             />
             <br />
             <TextField
-              id="standard-required"
               name="cons"
               label="Cons"
               placeholder="Write something Cons"
@@ -190,11 +199,10 @@ class Opinion extends Component {
               fullWidth
               multiline
               rows={2}
-              rowsMax={4}
+              rowsMax={10}
             />
             <br />
             <TextField
-              id="standard-required"
               name="advice"
               label="Advice"
               defaultValue=""
@@ -205,7 +213,7 @@ class Opinion extends Component {
               fullWidth
               multiline
               rows={2}
-              rowsMax={4}
+              rowsMax={10}
             />
             <FormGroup>
               <FormControlLabel
@@ -223,7 +231,7 @@ class Opinion extends Component {
           </>
         )}
         {createPostLoading ? <Loader /> : null}
-        <Fab
+        {/* <Fab
           variant="extended"
           color="primary"
           size="small"
@@ -238,7 +246,7 @@ class Opinion extends Component {
           onClick={() => this.handleClose()}
         >
           Cancel
-        </Fab>
+        </Fab> */}
         {createPostSuccess && createPostSuccess.size > 0 ? (
           <CustomizedSnackbars
             open={true}
@@ -253,7 +261,7 @@ class Opinion extends Component {
             status="error"
           />
         ) : null}
-      </div>
+      </ResponsiveDialog>
     )
   }
 }

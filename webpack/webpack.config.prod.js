@@ -4,30 +4,32 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const OfflinePlugin = require('offline-plugin')
 const PreloadWebpackPlugin = require('preload-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = {
+  mode: 'production',
+  devtool: false,
+  stats: 'normal',
   entry: {
     main: resolve(__dirname, '../src'),
-    devtool: 'source-map',
-    vendor: [
-      'react',
-      'react-dom',
-      'react-redux',
-      'react-router-dom',
-      'redux',
-      'redux-thunk',
-      'emotion',
-    ],
+    // vendor: [
+    //   'react',
+    //   'react-dom',
+    //   'react-redux',
+    //   'react-router-dom',
+    //   'redux',
+    //   'redux-thunk',
+    //   'emotion',
+    //   'moment',
+    //   'bootstrap',
+    //   'material-ui'
+    // ],
   },
   output: {
-    filename: '[name].[chunkhash].js',
+    filename: 'main.[chunkhash].bundle.js',
     path: resolve(__dirname, '../dist'),
+    chunkFilename: 'main.[chunkhash].bundle.js',
     publicPath: '/',
-  },
-  devServer: {
-    contentBase: resolve(__dirname, '../assets'),
-    publicPath: '/',
-    historyApiFallback: true,
   },
   module: {
     rules: [
@@ -59,7 +61,80 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new webpack.optimize.ModuleConcatenationPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify('production'),
+      },
+    }),
+    new webpack.HashedModuleIdsPlugin({
+      hashFunction: 'sha256',
+      hashDigest: 'hex',
+      hashDigestLength: 4,
+    }),
+    new webpack.NoEmitOnErrorsPlugin(),
+    new HtmlWebpackPlugin({
+      filename: 'index.html',
+      title: 'writenpost',
+      template: 'webpack/template.html',
+    }),
+    new PreloadWebpackPlugin({
+      rel: 'preload',
+      as: 'script',
+      include: ['main', 'vendor'],
+    }),
+    // You can remove this if you don't use Moment.js:
+    new webpack.IgnorePlugin({
+      resourceRegExp: /^\.\/locale$/,
+      contextRegExp: /moment$/,
+    }),
+    new OfflinePlugin({
+      relativePaths: false,
+      publicPath: '/',
+      excludes: ['.htaccess'],
+      caches: {
+        main: [':rest:'],
+      },
+      ServiceWorker: {
+        minify: false,
+      },
+      safeToUseOptionalCaches: true,
+      AppCache: false,
+    }),
+    // new BundleAnalyzerPlugin(),
+  ],
   optimization: {
+    runtimeChunk: 'single',
+    namedModules: false,
+    namedChunks: false,
+    nodeEnv: 'production',
+    flagIncludedChunks: true,
+    occurrenceOrder: true,
+    sideEffects: true,
+    usedExports: true,
+    concatenateModules: true,
+    splitChunks: {
+      chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      cacheGroups: {
+        default: false,
+        commons: {
+          test: /[\\/]node_modules[\\/]/,
+          chunks: 'initial',
+          name: 'vendor',
+          enforce: true,
+          minChunks: 2,
+          reuseExistingChunk: true,
+        },
+      },
+      minSize: 30000,
+      maxAsyncRequests: 5,
+      maxAsyncRequests: 3,
+    },
+    noEmitOnErrors: true,
+    minimize: true,
     minimizer: [
       // we specify a custom UglifyJsPlugin here to get source maps in production
       new UglifyJsPlugin({
@@ -75,38 +150,10 @@ module.exports = {
         sourceMap: false,
       }),
     ],
+    removeAvailableModules: true,
+    removeEmptyChunks: true,
+    mergeDuplicateChunks: true,
   },
-  plugins: [
-    new webpack.optimize.ModuleConcatenationPlugin(),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production'),
-      },
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'index.html',
-      title: 'writenpost',
-      template: 'webpack/template.html',
-    }),
-    new PreloadWebpackPlugin({
-      rel: 'preload',
-      as: 'script',
-      include: ['main', 'vendor'],
-    }),
-    new OfflinePlugin({
-      relativePaths: false,
-      publicPath: '/',
-      excludes: ['.htaccess'],
-      caches: {
-        main: [':rest:'],
-      },
-      ServiceWorker: {
-        minify: false,
-        navigateFallbackURL: '/',
-      },
-      AppCache: false,
-    }),
-  ],
   externals: {
     // require("jquery") is external and available
     //  on the global var jQuery

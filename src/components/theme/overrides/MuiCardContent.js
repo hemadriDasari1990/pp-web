@@ -8,6 +8,9 @@ export default {
     fontSize: 14,
     fontWeight: 'normal',
     lineHeight: '1.38',
-    padding: '8px 8px 20px 8px',
+    padding: '8px 8px 8px 8px',
+    '&:last-child': {
+      paddingBottom: 0,
+    },
   },
 }

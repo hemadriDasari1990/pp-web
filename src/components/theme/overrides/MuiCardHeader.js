@@ -2,7 +2,7 @@ import palette from '../palette'
 
 export default {
   root: {
-    color: palette.icon,
+    // color: palette.icon,
     '&:hover': {},
     padding: 8,
     backgroundColor: '#f4f4f7ad',
@@ -10,7 +10,7 @@ export default {
   title: {
     fontFamily: 'inherit',
     fontSize: 15,
-    color: '#2a7fff',
+    color: '#5383ff',
     fontWeight: 500,
   },
   subheader: {

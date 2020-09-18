@@ -6,9 +6,8 @@ import React, { Component, Suspense, lazy } from 'react'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
-import { Link } from 'react-router-dom'
-import Loader from '../../Loader/components/Loader'
 import { Map } from 'immutable'
+import SkeletonListCard from '../../Skeletons/components/ListCard'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
 import { withRouter } from 'react-router-dom'
@@ -30,17 +29,17 @@ const styles = {
 }
 
 class Followers extends Component {
-  async componentDidMount() {
-    if (this.props.match.params.id) {
-      await this.props.getUser(this.props.match.params.id)
-    }
-    if (!this.props.match.params.id && this.props.user) {
-      await this.props.getUser(this.props.user._id)
-    }
+  componentDidMount() {
+    // if (this.props.match.params.id) {
+    //   await this.props.getUser(this.props.match.params.id)
+    // }
+    // if (!this.props.match.params.id && this.props.user) {
+    //   await this.props.getUser(this.props.user._id)
+    // }
   }
 
   viewAll = type => {
-    this.props.saveActionState(type)
+    this.props.history.push(type)
   }
 
   render() {
@@ -55,31 +54,34 @@ class Followers extends Component {
     const hasFollowers =
       profileUser && profileUser.followers.length > 0 ? true : false
     return (
-      <Suspense fallback={<Loader />}>
-        <Card>
-          <CardHeader
-            title="Followers"
-            action={
-              hasFollowers ? (
-                <Link
-                  className="hyperlink"
-                  to="#"
-                  onClick={() => this.viewAll('followers')}
-                >
-                  View All{' '}
-                  <b>
-                    {formateNumber(
-                      profileUser ? profileUser.followers.length : 0,
-                    )}
-                  </b>
-                </Link>
-              ) : null
-            }
-          ></CardHeader>
-          <CardContent className={hasFollowers ? 'p-0' : ''}>
-            <FollowersView view="card" />
-          </CardContent>
-        </Card>
+      <Suspense>
+        {profileUserLoading ? (
+          <SkeletonListCard />
+        ) : (
+          <Card>
+            <CardHeader
+              title="Followers"
+              action={
+                hasFollowers ? (
+                  <span
+                    className="hyperlink cursor"
+                    onClick={() => this.viewAll('/followers')}
+                  >
+                    View All{' '}
+                    <b>
+                      {formateNumber(
+                        profileUser ? profileUser.followers.length : 0,
+                      )}
+                    </b>
+                  </span>
+                ) : null
+              }
+            ></CardHeader>
+            <CardContent className={hasFollowers ? 'p-0' : 'p-3'}>
+              <FollowersView view="card" />
+            </CardContent>
+          </Card>
+        )}
       </Suspense>
     )
   }

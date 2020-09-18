@@ -2,7 +2,8 @@ import * as actions from '../../../actions/index'
 
 import React, { Component } from 'react'
 
-import Fab from '@material-ui/core/Fab'
+import ArrowIcon from '@material-ui/icons/ArrowForward'
+import Button from '@material-ui/core/Button'
 import { Map } from 'immutable'
 import PropTypes from 'prop-types'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -27,31 +28,28 @@ const styles = theme => ({
 })
 
 class Twitter extends Component {
-  auth = async e => {
+  auth = e => {
     e.preventDefault()
-    await new firebase.auth()
+    new firebase.auth()
       .signInWithPopup(new firebase.auth.TwitterAuthProvider())
-      .then(async (user, error) => {
+      .then((user, error) => {
         if (!error) {
           const data = user.user.providerData[0]
-          await this.props
-            .createOrUpdateUser({
-              email: user.additionalUserInfo.profile.email,
-              userName: data.displayName,
-              photoURL: data.photoURL,
-              uid: data.uid,
-              phoneNumber: data.phoneNumber,
-              providerId: data.providerId,
-              lastActiveTime: Date.now(),
-            })
-            .then(user => {
-              if (user && user.data.user) {
-                this.props.storeUser(user.data.user)
-                this.props.history.push('/dashboard')
-              }
-            })
-        } else {
-          this.props.history.push('/')
+          this.props.createOrUpdateUser({
+            email: user.additionalUserInfo.profile.email,
+            userName: data.displayName,
+            photoURL: data.photoURL,
+            uid: data.uid,
+            phoneNumber: data.phoneNumber,
+            providerId: data.providerId,
+            lastActiveTime: Date.now(),
+          })
+          // .then(user => {
+          //   if (user && user.data.user) {
+          //     this.props.storeUser(user.data.user)
+          //     this.props.history.push('/dashboard')
+          //   }
+          // })
         }
       })
   }
@@ -61,17 +59,16 @@ class Twitter extends Component {
     return (
       <React.Fragment>
         <Tooltip title="Login With Twitter" aria-label="Add">
-          <Fab
+          <Button
             className={classes.fab}
             onClick={e => this.auth(e)}
             size="medium"
-            color="primary"
             aria-label="add"
-            variant="extended"
+            variant="contained"
           >
             <TwitterIcon color="secondary" />
-            &nbsp; Sign In with Twitter
-          </Fab>
+            &nbsp; Sign In with Twitter <ArrowIcon color="secondary" />
+          </Button>
         </Tooltip>
       </React.Fragment>
     )

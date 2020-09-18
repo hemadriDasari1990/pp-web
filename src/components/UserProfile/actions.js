@@ -202,3 +202,41 @@ export const saveActionState = type => {
     data: type,
   }
 }
+
+export const createOrUpdateOpinionRequestRequest = () => {
+  return {
+    type: action.CREATE_OR_UPDATE_OPINION_REQUEST_REQUEST,
+    loading: true,
+  }
+}
+
+export const createOrUpdateOpinionRequestSuccess = res => {
+  return {
+    type: action.CREATE_OR_UPDATE_OPINION_REQUEST_SUCCESS,
+    loading: false,
+    data: res,
+  }
+}
+
+export const createOrUpdateOpinionRequestError = errors => {
+  return {
+    type: action.CREATE_OR_UPDATE_OPINION_REQUEST_ERROR,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const createOrUpdateOpinionRequest = data => {
+  const options = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
+  }
+  return dispatch => {
+    dispatch(createOrUpdateOpinionRequestRequest())
+    return fetch(config.URL_PREFIX + `/opinion/user`, options)
+      .then(response => response.json())
+      .then(data => dispatch(createOrUpdateOpinionRequestSuccess(data)))
+      .catch(errors => dispatch(createOrUpdateOpinionRequestError(errors)))
+  }
+}

@@ -2,9 +2,10 @@ import * as actions from '../actions'
 
 import React, { Component } from 'react'
 
+import Button from '@material-ui/core/Button'
+import ClearIcon from '@material-ui/icons/Clear'
 import Container from '@material-ui/core/Container'
 import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
-import Fab from '@material-ui/core/Fab'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Grid from '@material-ui/core/Grid'
 import List from '@material-ui/core/List'
@@ -16,6 +17,7 @@ import { Map } from 'immutable'
 import PropTypes from 'prop-types'
 import Radio from '@material-ui/core/Radio'
 import RadioGroup from '@material-ui/core/RadioGroup'
+import SaveIcon from '@material-ui/icons/Save'
 import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
@@ -115,7 +117,7 @@ class Preferences extends Component {
 
   redirectToDashboard = () => {
     this.timeout = setTimeout(() => {
-      this.props.history.push('/dashboard')
+      this.props.history.push('/')
     }, 2000)
   }
 
@@ -148,7 +150,9 @@ class Preferences extends Component {
     return (
       <Container fixed>
         <div className="col-lg-8 col-md-6 col-sm-6 col-xs-6">
-          <h1>Preferences</h1>
+          <Zoom in={true} timeout={1500}>
+            <h1>Preferences</h1>
+          </Zoom>
           <p>
             Save your preferences so that people will think twice before they
             write you.
@@ -176,12 +180,20 @@ class Preferences extends Component {
                       >
                         <FormControlLabel
                           value="yes"
-                          control={<Radio color="primary" />}
+                          control={
+                            <Zoom in={true} timeout={1500}>
+                              <Radio color="primary" />
+                            </Zoom>
+                          }
                           label="Interested"
                         />
                         <FormControlLabel
                           value="no"
-                          control={<Radio color="primary" />}
+                          control={
+                            <Zoom in={true} timeout={1500}>
+                              <Radio color="primary" />
+                            </Zoom>
+                          }
                           label="Not Interested"
                         />
                       </RadioGroup>
@@ -205,12 +217,20 @@ class Preferences extends Component {
                       >
                         <FormControlLabel
                           value="yes"
-                          control={<Radio color="primary" />}
+                          control={
+                            <Zoom in={true} timeout={1500}>
+                              <Radio color="primary" />
+                            </Zoom>
+                          }
                           label="Interested"
                         />
                         <FormControlLabel
                           value="no"
-                          control={<Radio color="primary" />}
+                          control={
+                            <Zoom in={true} timeout={1500}>
+                              <Radio color="primary" />
+                            </Zoom>
+                          }
                           label="Not Interested"
                         />
                       </RadioGroup>
@@ -234,12 +254,20 @@ class Preferences extends Component {
                       >
                         <FormControlLabel
                           value="yes"
-                          control={<Radio color="primary" />}
+                          control={
+                            <Zoom in={true} timeout={1500}>
+                              <Radio color="primary" />
+                            </Zoom>
+                          }
                           label="Interested"
                         />
                         <FormControlLabel
                           value="no"
-                          control={<Radio color="primary" />}
+                          control={
+                            <Zoom in={true} timeout={1500}>
+                              <Radio color="primary" />
+                            </Zoom>
+                          }
                           label="Not Interested"
                         />
                       </RadioGroup>
@@ -253,24 +281,25 @@ class Preferences extends Component {
           )}
           <div style={{ float: 'right' }}>
             <Zoom in={true} timeout={1500}>
-              <Fab
-                variant="extended"
+              <Button
+                className="mr-3"
+                variant="outlined"
                 color="primary"
                 size="small"
                 onClick={() => this.handleSave()}
               >
-                {buttonName}
-              </Fab>
+                {buttonName} <SaveIcon color="primary" />
+              </Button>
             </Zoom>
             <Zoom in={true} timeout={1500}>
-              <Fab
-                variant="extended"
+              <Button
+                variant="outlined"
                 color="primary"
                 size="small"
                 onClick={() => this.handleClose()}
               >
-                Cancel
-              </Fab>
+                Cancel <ClearIcon color="primary" />
+              </Button>
             </Zoom>
           </div>
         </div>

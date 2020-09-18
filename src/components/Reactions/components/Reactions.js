@@ -1,7 +1,6 @@
 import * as postActions from '../../Post/actions'
 
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
 import DisLikeIcon from '@material-ui/icons/ThumbDownAlt'
@@ -17,6 +16,7 @@ import formateNumber from '../../../util/formateNumber'
 import perfect from '../../../../assets/emojis/perfect.svg'
 import thinking from '../../../../assets/emojis/thinking.svg'
 import tounghout from '../../../../assets/emojis/tounghout.svg'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
@@ -75,9 +75,9 @@ class Reactions extends Component {
     const { classes } = this.props
     return isActive
       ? {
-          color: '#fff',
+          color: '#red',
           background:
-            'linear-gradient(45deg, #2a7fff 1%, #00ff43 80%, #2a7fff 96%, #37ff2a 100%) 0% 0% / 150% 150%',
+            'linear-gradient(45deg, #5383ff 1%, #00ff43 80%, #5383ff 96%, #37ff2a 100%) 0% 0% / 150% 150%',
         }
       : {}
   }
@@ -142,7 +142,7 @@ class Reactions extends Component {
                     <LoveIcon color="secondary" style={{ fontSize: 10 }} />
                   </Avatar>
                 }
-                aria-label="loove"
+                aria-label="love"
                 classes={{ root: classes.tab }}
               />
               <Tab

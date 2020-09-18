@@ -1,5 +1,7 @@
-import { Map, fromJS } from 'immutable'
 import * as action from '../../constants/actionTypes'
+
+import { Map, fromJS } from 'immutable'
+
 import config from '../../config'
 
 export const savePreferencesRequest = () => {
@@ -259,14 +261,18 @@ export const getCommentsError = errors => {
   }
 }
 
-export const getComments = postId => {
+export const getComments = (postId, limit, offset) => {
   const options = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   }
   return dispatch => {
     dispatch(getCommentsRequest())
-    return fetch(config.URL_PREFIX + `/post/comments/${postId}`, options)
+    return fetch(
+      config.URL_PREFIX +
+        `/post/comments/${postId}?limit=${limit}&offset=${offset}`,
+      options,
+    )
       .then(response => response.json())
       .then(data => dispatch(getCommentsSuccess(data)))
       .catch(errors => dispatch(getCommentsError(errors)))
@@ -352,5 +358,85 @@ export const createOrUpdateCommentReaction = (userId, commentId, reaction) => {
       .then(response => response.json())
       .then(data => dispatch(createOrUpdateCommentReactionSuccess(data)))
       .catch(errors => dispatch(createOrUpdateCommentReactionError(errors)))
+  }
+}
+
+export const updateCommentRequest = () => {
+  return {
+    type: action.UPDATE_COMMENT_REQUEST,
+    loading: true,
+  }
+}
+
+export const updateCommentSuccess = res => {
+  return {
+    type: action.UPDATE_COMMENT_SUCCESS,
+    loading: false,
+    data: res,
+  }
+}
+
+export const updateCommentError = errors => {
+  return {
+    type: action.UPDATE_COMMENT_ERROR,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const updateComment = (commentId, comment) => {
+  const options = {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      message: comment,
+    }),
+  }
+  return dispatch => {
+    dispatch(updateCommentRequest())
+    return fetch(config.URL_PREFIX + `/post/comment/${commentId}`, options)
+      .then(response => response.json())
+      .then(data => dispatch(updateCommentSuccess(data)))
+      .catch(errors => dispatch(updateCommentError(errors)))
+  }
+}
+
+export const deleteCommentRequest = () => {
+  return {
+    type: action.DELETE_COMMENT_REQUEST,
+    loading: true,
+  }
+}
+
+export const deleteCommentSuccess = res => {
+  return {
+    type: action.DELETE_COMMENT_SUCCESS,
+    loading: false,
+    data: res,
+  }
+}
+
+export const deleteCommentError = errors => {
+  return {
+    type: action.DELETE_COMMENT_ERROR,
+    loading: false,
+    errors: errors,
+  }
+}
+
+export const deleteComment = (postId, commentId) => {
+  const options = {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+  }
+  return dispatch => {
+    dispatch(deleteCommentRequest())
+    return fetch(
+      config.URL_PREFIX + `/post/${postId}/comment/${commentId}`,
+      options,
+    )
+      .then(response => response.json())
+      .then(data => dispatch(deleteCommentSuccess(data)))
+      .catch(errors => dispatch(deleteCommentError(errors)))
   }
 }

@@ -12,8 +12,16 @@ export default {
   extended: {
     '&$sizeSmall': {
       height: 40,
-      borderRadius: 34 / 2,
+      borderRadius: 50 / 2,
       minWidth: 140,
     },
+  },
+  outlined: {
+    '&:hover': {
+      // fontWeight: 'bold',
+      // backgroundColor: '#fff !important',
+    },
+    border: '1px solid #fff',
+    color: '#fff !important',
   },
 }
