@@ -1,7 +1,7 @@
 export default {
   root: {
     '&$selected, &$selected:hover': {
-      backgroundColor: '#fff',
+      backgroundColor: '#e7f3ff',
     },
     '&$focusVisible': {
       backgroundColor: '#3333',

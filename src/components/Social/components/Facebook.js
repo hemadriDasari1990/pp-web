@@ -62,7 +62,6 @@ class Facebook extends Component {
             className={classes.fab}
             onClick={e => this.auth(e)}
             size="medium"
-            color="primary"
             aria-label="add"
             variant="contained"
           >

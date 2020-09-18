@@ -23,6 +23,8 @@ import MuiListItemSecondaryAction from './MuiListItemSecondaryAction'
 import MuiListItemText from './MuiListItemText'
 import MuiMenu from './MuiMenu'
 import MuiPaper from './MuiPaper'
+import MuiStepLabel from './MuiStepLabel'
+import MuiStepper from './MuiStepper'
 import MuiSvgIcon from './MuiSvgIcon'
 import MuiTab from './MuiTab'
 import MuiTableCell from './MuiTableCell'
@@ -66,4 +68,6 @@ export default {
   MuiListItemSecondaryAction,
   MuiMenu,
   MuiDialog,
+  MuiStepper,
+  MuiStepLabel,
 }

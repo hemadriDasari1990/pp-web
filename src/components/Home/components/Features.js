@@ -3,16 +3,10 @@ import React, { Component } from 'react'
 import AdviceIcon from '@material-ui/icons/CheckCircle'
 import ArrowIcon from '@material-ui/icons/ArrowForward'
 import Button from '@material-ui/core/Button'
-import CardActionArea from '@material-ui/core/CardActionArea'
-import CardActions from '@material-ui/core/CardActions'
-import CardContent from '@material-ui/core/CardContent'
-import CardMedia from '@material-ui/core/CardMedia'
 import ConsIcon from '@material-ui/icons/RemoveCircleOutlined'
-import Fab from '@material-ui/core/Fab'
 import IconButton from '@material-ui/core/IconButton'
 import PropTypes from 'prop-types'
 import ProsIcon from '@material-ui/icons/AddCircleOutlined'
-import Typography from '@material-ui/core/Typography'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
@@ -68,7 +62,7 @@ class Features extends Component {
         <IconButton>{this.renderIcon()}</IconButton>
         <h3 className="font-size-lg font-weight-bold mt-4">{title}</h3>
         <p classname="mt-2 text-black-50">{message}</p>
-        <Button variant="contained" color="primary" className="mt-1">
+        <Button variant="contained" className="mt-1">
           Continue Reading <ArrowIcon color="secondary" />
         </Button>
       </React.Fragment>

@@ -1,13 +1,10 @@
 import React, { Component } from 'react'
 
-import ArrowIcon from '@material-ui/icons/ArrowForward'
-import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 import FacebookIcon from '@material-ui/icons/Facebook'
 import InstagramIcon from '@material-ui/icons/Instagram'
 import LinkedInIcon from '@material-ui/icons/LinkedIn'
 import PropTypes from 'prop-types'
-import Slide from '@material-ui/core/Slide'
 import TwitterIcon from '@material-ui/icons/Twitter'
 import YouTubeIcon from '@material-ui/icons/YouTube'
 import Zoom from '@material-ui/core/Zoom'

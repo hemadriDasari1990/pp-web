@@ -1,6 +1,7 @@
 import * as actions from '../../../actions/index'
 import * as dashboardActions from '../../Timeline/actions'
 
+import { Link, withRouter } from 'react-router-dom'
 import React, { Component, Suspense, lazy } from 'react'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 
@@ -11,14 +12,11 @@ import Badge from '@material-ui/core/Badge'
 import Button from '@material-ui/core/Button'
 import ContactSupportIcon from '@material-ui/icons/ContactSupport'
 import Container from '@material-ui/core/Container'
-import CssBaseline from '@material-ui/core/CssBaseline'
 import Divider from '@material-ui/core/Divider'
 import Drawer from '@material-ui/core/Drawer'
-import DropDownIcon from '@material-ui/icons/ArrowDropDown'
 import Fab from '@material-ui/core/Fab'
 import FeedbackIcon from '@material-ui/icons/Feedback'
 import Grid from '@material-ui/core/Grid'
-import HelpIcon from '@material-ui/icons/Help'
 import Hidden from '@material-ui/core/Hidden'
 import IconButton from '@material-ui/core/IconButton'
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp'
@@ -36,13 +34,11 @@ import PreferencesIcon from '@material-ui/icons/Tune'
 import PropTypes from 'prop-types'
 import Toolbar from '@material-ui/core/Toolbar'
 import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
 import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import firebase from '../../../firebase'
 import formateNumber from '../../../util/formateNumber'
 import useScrollTrigger from '@material-ui/core/useScrollTrigger'
-import { withRouter } from 'react-router-dom'
 
 const CustomizedSnackbars = lazy(() =>
   import('../../Snackbar/components/Snackbar'),
@@ -359,12 +355,9 @@ class ResponsiveDrawer extends Component {
             />
           </Zoom>
           <h6 className="mt-3 mb-2">{user.userName}</h6>
-          <span
-            onClick={() => this.viewProfile()}
-            className="cursor text-black-50"
-          >
+          <Link onClick={() => this.viewProfile()} className="cursor" to="#">
             See your profile
-          </span>
+          </Link>
         </div>
         <Divider />
         <ListItem

@@ -6,9 +6,12 @@ import React, { Component } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
+import IconButton from '@material-ui/core/IconButton'
+import PostAddOutlinedIcon from '@material-ui/icons/PostAddOutlined'
 import PropTypes from 'prop-types'
 import Slide from '@material-ui/core/Slide'
 import TextField from '@material-ui/core/TextField'
+import Tooltip from '@material-ui/core/Tooltip'
 import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
@@ -86,10 +89,10 @@ class CreateComment extends Component {
                 />
               </Slide>
             </Grid>
-            <Grid lg={comment ? 9 : 10} md={comment ? 9 : 10} item>
+            <Grid lg={10} md={10} item>
               <Zoom in={true} timeout={2000}>
                 <TextField
-                  className="m-0"
+                  className="m-1"
                   key="comment"
                   margin="normal"
                   type="string"
@@ -107,19 +110,20 @@ class CreateComment extends Component {
               </Zoom>
             </Grid>
             {comment ? (
-              <Grid lg={1} md={1} item>
-                <Zoom in={comment ? true : false} timeout={2000}>
-                  <Button
+              <div className="comment-actions comment-actions1">
+                <Tooltip title="Update">
+                  <small
+                    style={{
+                      fontWeight: 'bold',
+                      color: '#5383ff',
+                      marginLeft: 78,
+                    }}
                     onClick={e => this.createComment(e, post, post._id)}
-                    variant="outlined"
-                    size="medium"
-                    color="primary"
-                    className={classes.button}
                   >
                     Save
-                  </Button>
-                </Zoom>
-              </Grid>
+                  </small>
+                </Tooltip>
+              </div>
             ) : null}
           </Grid>
         )}

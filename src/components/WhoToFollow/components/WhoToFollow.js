@@ -1,43 +1,26 @@
 import * as mainActions from '../../../actions/index'
 import * as profileActions from '../../UserProfile/actions'
 
-import React, { Component } from 'react'
+import { Link, withRouter } from 'react-router-dom'
+import React, { Component, Suspense } from 'react'
 
-import ArrowIcon from '@material-ui/icons/ArrowForward'
 import AskIcon from '@material-ui/icons/HowToReg'
-import Avatar from '@material-ui/core/Avatar'
 import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
 import Button from '@material-ui/core/Button'
-import Card from '@material-ui/core/Card'
-import CardActions from '@material-ui/core/CardActions'
-import CardContent from '@material-ui/core/CardContent'
-import CardHeader from '@material-ui/core/CardHeader'
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow'
-import FollowIcon from '@material-ui/icons/RssFeedOutlined'
 import Grid from '@material-ui/core/Grid'
-import GridList from '@material-ui/core/GridList'
-import GridListTile from '@material-ui/core/GridListTile'
-import GridListTileBar from '@material-ui/core/GridListTileBar'
 import IconButton from '@material-ui/core/IconButton'
 import LikeIcon from '@material-ui/icons/ThumbUpAlt'
-import { Link } from 'react-router-dom'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
-import ListItemText from '@material-ui/core/ListItemText'
+import Loader from '../../Loader/components/Loader'
 import LoveIcon from '@material-ui/icons/Favorite'
 import { Map } from 'immutable'
 import Paper from '@material-ui/core/Paper'
-import SearchIcon from '@material-ui/icons/Search'
 import Tooltip from '@material-ui/core/Tooltip'
-import Typography from '@material-ui/core/Typography'
 import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
-import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
 import getCreatedDate from '../../../util/getCreatedDate'
 import getProvider from '../../../util/getProvider'
-import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
 const colors = [
@@ -100,6 +83,7 @@ class WhoToFollow extends Component {
       limit: 10,
       offset: 0,
       users: [],
+      loader: true,
     }
   }
 
@@ -165,7 +149,6 @@ class WhoToFollow extends Component {
             follow => follow._id === user._id,
           )
           users[index].followers.splice(followIndex, 1)
-          console.log('check', response)
           if (follow) {
             users[index].followers.unshift(user)
             users[index].no_of_followers = ++users[index].no_of_followers
@@ -223,6 +206,7 @@ class WhoToFollow extends Component {
         this.setState({
           users: res.data,
           limit: newLimit,
+          loader: false,
         })
       }
     })
@@ -276,11 +260,11 @@ class WhoToFollow extends Component {
   }
   render() {
     const { classes, profileReaction, profileFollower, user } = this.props
-    const { users } = this.state
+    const { users, loader } = this.state
     return (
-      <React.Fragment>
+      <Suspense fallback={<Loader />}>
         <h5 className="mt-3 mb-3">People you may know</h5>
-        {users.length ? (
+        {!loader && users.length ? (
           <Grid
             container
             spacing={1}
@@ -288,7 +272,7 @@ class WhoToFollow extends Component {
             disableGutters={true}
           >
             {users.map((u, index) => (
-              <Grid item lg={4} md={4} sm={3} xs={12}>
+              <Grid item lg={3} md={4} sm={3} xs={12}>
                 <Paper key={u._id} className={classes.paper} variant="outlined">
                   <div
                     className={classes.paperHeader}
@@ -478,10 +462,12 @@ class WhoToFollow extends Component {
                     )): null}
                         </List> */}
           </Grid>
-        ) : (
+        ) : null}
+        {loader ? <Loader /> : null}
+        {!loader && (!users || !users.length) && (
           <h4 className="text-center">No users found</h4>
         )}
-      </React.Fragment>
+      </Suspense>
     )
   }
 }

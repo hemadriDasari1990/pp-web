@@ -16,6 +16,7 @@ class Countries extends Component {
     this.state = {
       user: null,
       regions: [],
+      loading: true,
     }
   }
 
@@ -23,18 +24,20 @@ class Countries extends Component {
     this.props.getRegions().then(res => {
       this.setState({
         regions: res.data ? res.data.regions : [],
+        loading: false,
       })
     })
   }
 
   render() {
-    const { regions } = this.state
+    const { regions, loading } = this.state
     const { user } = this.props
     return (
       <Suspense fallback={<Loader />}>
         <Container fixed className="mt-3">
           <h1 className="text-center">Countries by region</h1>
-          {regions &&
+          {!loading &&
+            regions &&
             regions.map(region => (
               <Grid
                 container
@@ -49,6 +52,7 @@ class Countries extends Component {
                 <CountryList countries={region.countries} />
               </Grid>
             ))}
+          {loading ? <Loader /> : null}
         </Container>
       </Suspense>
     )

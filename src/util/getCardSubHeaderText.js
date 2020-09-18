@@ -8,7 +8,9 @@ import getReaction from './getReaction'
 export default function getCardSubHeaderText(timestamp) {
   return (
     <>
-      {getPastTime(timestamp) + ' - '}
+      <span className="grey-color hint-label">
+        {getPastTime(timestamp) + ' - '}
+      </span>
       <PublicIcon className="subheader-icon grey-color " />
     </>
   )

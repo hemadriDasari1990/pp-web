@@ -87,7 +87,6 @@ class ProfileCard extends Component {
                 target="_blank"
                 href={fbPath}
                 variant="contained"
-                color="primary"
                 size="small"
               >
                 {buttonName} <ArrowIcon color="secondary" />
@@ -98,7 +97,6 @@ class ProfileCard extends Component {
                 target="_blank"
                 href={linkedinPath}
                 variant="contained"
-                color="primary"
                 size="small"
               >
                 {buttonOneName} <ArrowIcon color="secondary" />
@@ -110,7 +108,6 @@ class ProfileCard extends Component {
                 className={classes.fab}
                 onClick={() => this.handleButton(routePath)}
                 variant="contained"
-                color="primary"
                 size="small"
               >
                 {buttonName} <ArrowIcon color="secondary" />

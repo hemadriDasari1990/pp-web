@@ -3,11 +3,7 @@ import * as timelineActions from '../../../../../../Timeline/actions'
 
 import React, { Component } from 'react'
 
-import CustomizedSnackbars from '../../../../../../Snackbar/components/Snackbar'
-import Fab from '@material-ui/core/Fab'
-import Loader from '../../../../../../Loader/components/Loader'
 import { Map } from 'immutable'
-import ResponsiveDialog from '../../../../../../Dialog/components/ResposiveDialog'
 import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'

@@ -1,7 +1,6 @@
 import * as postActions from '../../Post/actions'
 
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import Avatar from '@material-ui/core/Avatar'
 import DisLikeIcon from '@material-ui/icons/ThumbDownAlt'
@@ -17,6 +16,7 @@ import formateNumber from '../../../util/formateNumber'
 import perfect from '../../../../assets/emojis/perfect.svg'
 import thinking from '../../../../assets/emojis/thinking.svg'
 import tounghout from '../../../../assets/emojis/tounghout.svg'
+import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
 const styles = {

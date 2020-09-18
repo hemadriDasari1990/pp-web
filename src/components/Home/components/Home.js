@@ -5,19 +5,13 @@ import React, { Component } from 'react'
 import ArrowIcon from '@material-ui/icons/ArrowForward'
 import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
-import Divider from '@material-ui/core/Divider'
 import Features from './Features'
-import Feedbacks from './Feedbacks'
 import Grid from '@material-ui/core/Grid'
-import HelpIcon from '@material-ui/icons/HelpOutlineOutlined'
-import { List } from 'immutable'
-import ProfileCard from './card'
 import PropTypes from 'prop-types'
 import Slide from '@material-ui/core/Slide'
 import Tooltip from '@material-ui/core/Tooltip'
 import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
-import home from '../../../../assets/people.svg'
 import { withRouter } from 'react-router-dom'
 import withStyles from '@material-ui/core/styles/withStyles'
 
@@ -43,6 +37,10 @@ class Home extends Component {
       this.props.history.push(`/dashboard`)
     }
     this.props.getFeedbacks()
+  }
+
+  handleSignin = () => {
+    this.props.history.push('/signin')
   }
 
   render() {
@@ -80,9 +78,8 @@ class Home extends Component {
                         <Tooltip title="Get Started">
                           <Button
                             variant="contained"
-                            color="primary"
                             size="small"
-                            onClick={() => this.handleAskForOpinion()}
+                            onClick={() => this.handleSignin()}
                           >
                             Get Started &nbsp;
                             <ArrowIcon color="secondary" />
@@ -95,7 +92,7 @@ class Home extends Component {
                             variant="outlined"
                             color="primary"
                             size="small"
-                            onClick={() => this.handleAskForOpinion()}
+                            onClick={() => this.handleSignin()}
                           >
                             Documentation <ArrowIcon color="primary" />
                           </Button>

@@ -3,7 +3,6 @@ import * as actions from '../../../actions/index'
 import React, { Component, Suspense, lazy } from 'react'
 
 import Grid from '@material-ui/core/Grid'
-import Loader from '../../Loader/components/Loader'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
@@ -25,12 +24,14 @@ class LeftGrid extends Component {
     const { profile } = this.props
     return (
       <Suspense>
-        <Grid item lg={3} md={3} xs={12} sm={9} disableGutters={true}>
-          <Profile profileUser={profile} />
-          <Reactions path="profile" />
+        {profile && (
+          <Grid item lg={3} md={3} xs={12} sm={9} disableGutters={true}>
+            <Profile profileUser={profile} />
+            {/* <Reactions path="profile" />
           <Followers path="profile" />
-          <Following path="profile" />
-        </Grid>
+          <Following path="profile" /> */}
+          </Grid>
+        )}
       </Suspense>
     )
   }
@@ -39,9 +40,11 @@ class LeftGrid extends Component {
 LeftGrid.propTypes = {}
 
 const mapStateToProps = state => {
+  const profile = state.getIn(['user', 'success'])
   const user = state.getIn(['user', 'data'])
   return {
     user,
+    profile: profile ? profile.user : undefined,
   }
 }
 

@@ -1,11 +1,11 @@
 import * as actions from '../../../actions/index'
 
 import React, { Component } from 'react'
-import { BrowserRouter as Router, withRouter } from 'react-router-dom'
 
 import CustomizedSnackbars from '../../Snackbar/components/Snackbar'
 import { connect } from 'react-redux'
 import firebase from '../../../firebase'
+import { withRouter } from 'react-router-dom'
 
 class Logout extends Component {
   constructor() {

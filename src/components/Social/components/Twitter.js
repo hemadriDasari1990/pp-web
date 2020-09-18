@@ -4,7 +4,6 @@ import React, { Component } from 'react'
 
 import ArrowIcon from '@material-ui/icons/ArrowForward'
 import Button from '@material-ui/core/Button'
-import Fab from '@material-ui/core/Fab'
 import { Map } from 'immutable'
 import PropTypes from 'prop-types'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -64,7 +63,6 @@ class Twitter extends Component {
             className={classes.fab}
             onClick={e => this.auth(e)}
             size="medium"
-            color="primary"
             aria-label="add"
             variant="contained"
           >

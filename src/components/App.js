@@ -1,17 +1,15 @@
 import * as actions from '../actions/index'
 
+import { MuiThemeProvider, withStyles } from '@material-ui/core/styles'
 import React, { Component, Suspense, lazy } from 'react'
 import { Route, Switch, withRouter } from 'react-router-dom'
 
-import Container from '@material-ui/core/Container'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import Loader from './Loader/components/Loader'
 import { Map } from 'immutable'
-import { MuiThemeProvider } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import firebase from '../firebase/index'
 import theme from './theme'
-import { withStyles } from '@material-ui/core/styles'
 
 const CustomizedSnackbars = lazy(() => import('./Snackbar/components/Snackbar'))
 const ResponsiveDrawer = lazy(() =>

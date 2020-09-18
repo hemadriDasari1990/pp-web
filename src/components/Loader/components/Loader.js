@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import { lighten, makeStyles, withStyles } from '@material-ui/core/styles'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 // import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types'
-import loader from '../../../../assets/loader/loader.svg'
 
 const styles = theme => ({
   progress: {

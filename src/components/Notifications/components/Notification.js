@@ -160,7 +160,6 @@ class Notifications extends Component {
       page,
       notification,
     } = this.state
-    console.log('postDetails', page)
     return (
       <Suspense fallback={<div />}>
         {page === 2 && (

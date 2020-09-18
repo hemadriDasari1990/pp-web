@@ -1,16 +1,14 @@
 import * as mainActions from '../../../actions/index'
 import * as profileActions from '../../UserProfile/actions'
 
+import { Link, withRouter } from 'react-router-dom'
 import React, { Component } from 'react'
 
 import AskIcon from '@material-ui/icons/HowToReg'
-import AssistantIcon from '@material-ui/icons/Assistant'
 import AvatarOnline from '../../AvatarOnline/components/AvatarOnline'
-import Fab from '@material-ui/core/Fab'
 import FollowIcon from '@material-ui/icons/RssFeedOutlined'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
-import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
@@ -28,7 +26,6 @@ import { connect } from 'react-redux'
 import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
 import getCreatedDate from '../../../util/getCreatedDate'
 import getProvider from '../../../util/getProvider'
-import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
 const styles = theme => ({
@@ -223,7 +220,7 @@ class Users extends Component {
     } = this.state
     return (
       <div>
-        <Grid item lg={12} md={12} xs={12} sm={12}>
+        <Grid item lg={4} md={4} xs={12} sm={12}>
           <label className={classes.root}>
             <SearchIcon className={classes.searchIcon} />
             <TextField
@@ -241,7 +238,7 @@ class Users extends Component {
         <List>
           {!loading
             ? filteredUsers.map((user, index) => (
-                <Grid key={user._id} item lg={12} md={12} xs={12} sm={12}>
+                <Grid key={user._id} item lg={4} md={4} xs={12} sm={12}>
                   <ListItem
                     key={user._id}
                     alignItems="flex-start"

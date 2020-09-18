@@ -1,6 +1,5 @@
 import * as actions from '../actions'
 
-import { Map, fromJS } from 'immutable'
 import React, { Component } from 'react'
 
 import Checkbox from '@material-ui/core/Checkbox'
@@ -9,6 +8,7 @@ import Fab from '@material-ui/core/Fab'
 import FeedbackList from './FeedbackList'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Loader from '../../Loader/components/Loader'
+import { Map } from 'immutable'
 import Slide from '@material-ui/core/Slide'
 import TextField from '@material-ui/core/TextField'
 import { connect } from 'react-redux'

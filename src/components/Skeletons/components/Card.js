@@ -4,11 +4,9 @@ import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
 import Divider from '@material-ui/core/Divider'
 import Grid from '@material-ui/core/Grid'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
 import PropTypes from 'prop-types'
 import React from 'react'
 import Skeleton from '@material-ui/lab/Skeleton'
-import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles(theme => ({

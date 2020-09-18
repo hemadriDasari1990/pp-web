@@ -283,12 +283,12 @@ class Preferences extends Component {
             <Zoom in={true} timeout={1500}>
               <Button
                 className="mr-3"
-                variant="contained"
+                variant="outlined"
                 color="primary"
                 size="small"
                 onClick={() => this.handleSave()}
               >
-                {buttonName} <SaveIcon color="secondary" />
+                {buttonName} <SaveIcon color="primary" />
               </Button>
             </Zoom>
             <Zoom in={true} timeout={1500}>

@@ -1,6 +1,6 @@
 export default {
   root: {
     // backgroundColor: 'none',
-    // border: 'none'
+    border: 'none',
   },
 }

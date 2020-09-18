@@ -130,7 +130,6 @@ class Opinion extends Component {
                 getSelectedUser={this.getSelectedUser}
               />
             </Grid>
-            <br />
             {selectedUser && preferences && (
               <>
                 <h4>{selectedUser.userName} preferences</h4>

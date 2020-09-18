@@ -1,40 +1,34 @@
-import * as actions from '../actions'
-import * as globalActions from '../../../actions/index'
-
-import React, { Component, Suspense, lazy } from 'react'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+import { Link, withRouter } from 'react-router-dom'
+import React, { Component, Suspense } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import CardHeader from '@material-ui/core/CardHeader'
-import Divider from '@material-ui/core/Divider'
+import Badge from '@material-ui/core/Badge'
 import LikeIcon from '@material-ui/icons/ThumbUpAlt'
-import { Link } from 'react-router-dom'
-import Loader from '../../Loader/components/Loader'
 import LoveIcon from '@material-ui/icons/Favorite'
-import { Map } from 'immutable'
 import PropTypes from 'prop-types'
-import SkeletonListCard from '../../Skeletons/components/ListCard'
 import Step from '@material-ui/core/Step'
-import StepButton from '@material-ui/core/StepButton'
 import StepConnector from '@material-ui/core/StepConnector'
 import StepContent from '@material-ui/core/StepContent'
 import StepLabel from '@material-ui/core/StepLabel'
 import Stepper from '@material-ui/core/Stepper'
 import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
-import formateNumber from '../../../util/formateNumber'
 import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
 import getCreatedDate from '../../../util/getCreatedDate'
 import getPastTime from '../../../util/getPastTime'
 import getProvider from '../../../util/getProvider'
-import { withRouter } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
   smallAvatar: {
     width: 23,
     height: 23,
+  },
+  customBadge: {
+    top: '90%',
+    width: 35,
+    height: 35,
+    backgroundColor: 'unset !important',
   },
 }
 
@@ -51,13 +45,12 @@ class ProfileReactionsActivity extends Component {
 
   renderReaction = type => {
     let element = null
-    console.log('user...'.element)
     switch (type.toLowerCase()) {
       case 'like':
-        element = <LikeIcon style={{ fontSize: 12 }} color="secondary" />
+        element = <LikeIcon style={{ fontSize: 15 }} color="secondary" />
         break
       case 'love':
-        element = <LoveIcon style={{ fontSize: 12 }} color="secondary" />
+        element = <LoveIcon style={{ fontSize: 15 }} color="secondary" />
         break
       default:
         break
@@ -104,18 +97,33 @@ class ProfileReactionsActivity extends Component {
                   </>
                 }
                 icon={
-                  <Avatar
-                    className={classes.smallAvatar}
-                    alt={reaction.likedBy.userName}
-                    style={{
-                      backgroundColor:
-                        reaction.type.toLowerCase() === 'love'
-                          ? '#ff0016c7'
-                          : '',
-                    }}
+                  <Badge
+                    classes={{ badge: classes.customBadge }}
+                    overlap="circle"
+                    badgeContent={
+                      <Zoom in={true} timeout={2000}>
+                        <Avatar
+                          className={classes.smallAvatar}
+                          alt={reaction.likedBy.userName}
+                          style={{
+                            backgroundColor:
+                              reaction.type.toLowerCase() === 'love'
+                                ? '#ff0016c7'
+                                : '',
+                          }}
+                        >
+                          {this.renderReaction(reaction.type)}
+                        </Avatar>
+                      </Zoom>
+                    }
                   >
-                    {this.renderReaction(reaction.type)}
-                  </Avatar>
+                    <Zoom in={true} timeout={2000}>
+                      <Avatar
+                        src={reaction.likedBy.photoURL}
+                        alt={reaction.likedBy.userName}
+                      />
+                    </Zoom>
+                  </Badge>
                 }
               >
                 {this.renderUsername(reaction.likedBy)}

@@ -3,15 +3,12 @@ import * as globalActions from '../../../actions/index'
 
 import React, { Component, Suspense, lazy } from 'react'
 
-import Grid from '@material-ui/core/Grid'
 import Loader from '../../Loader/components/Loader'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
-const CenterGrid = lazy(() => import('./CenterGrid'))
-const LeftGrid = lazy(() => import('./LeftGrid'))
-const RightGrid = lazy(() => import('./RightGrid'))
+const MainGrid = lazy(() => import('./MainGrid'))
 
 class Dashboard extends Component {
   constructor(props) {
@@ -22,13 +19,13 @@ class Dashboard extends Component {
   }
 
   async componentDidMount() {
-    this.props.match.params.id
-      ? await this.props.getUser(this.props.match.params.id).then(res => {
-          this.setState({
-            profile: res.data ? res.data.user : {},
-          })
-        })
-      : null
+    // this.props.match.params.id
+    //   ? await this.props.getUser(this.props.match.params.id).then(res => {
+    //       this.setState({
+    //         profile: res.data ? res.data.user : {},
+    //       })
+    //     })
+    //   : null
   }
 
   render() {
@@ -36,14 +33,7 @@ class Dashboard extends Component {
     const { profile } = this.state
     return (
       <Suspense fallback={<Loader />}>
-        {profile && (
-          <Grid container spacing={1} className="of-h w-us">
-            <LeftGrid profile={profile} path={path} />
-            <CenterGrid profile={profile} path={path} />
-            <RightGrid profile={profile} path={path} />
-          </Grid>
-        )}
-        {!profile && <Loader />}
+        <MainGrid />
       </Suspense>
     )
   }

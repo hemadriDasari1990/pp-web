@@ -2,6 +2,10 @@ export default {
   contained: {
     backgroundColor: '#5383ff',
     color: '#fff !important',
+    '&:hover': {
+      backgroundColor: '#5383ff',
+      color: '#fff !important',
+    },
   },
   outlined: {
     // padding: '6px 9px',
@@ -11,7 +15,11 @@ export default {
       // backgroundColor: '#fff !important',
     },
   },
-  containedPrimary: {},
+  containedPrimary: {
+    width: '100%',
+    height: '30px !important',
+    borderRadius: 5,
+  },
   outlinedSecondary: {
     '&:hover': {
       // fontWeight: 'bold',

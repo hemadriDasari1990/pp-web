@@ -6,8 +6,6 @@ import React, { Component, Suspense, lazy } from 'react'
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
 import CardHeader from '@material-ui/core/CardHeader'
-import { Link } from 'react-router-dom'
-import Loader from '../../Loader/components/Loader'
 import { Map } from 'immutable'
 import SkeletonListCard from '../../Skeletons/components/ListCard'
 import { connect } from 'react-redux'
@@ -38,17 +36,18 @@ class Reactions extends Component {
       fallBackTo: this.props.location.pathname,
     }
   }
-  async componentDidMount() {
-    if (this.props.match.params.id) {
-      await this.props.getUser(this.props.match.params.id)
-    }
-    if (!this.props.match.params.id && this.props.user) {
-      await this.props.getUser(this.props.user._id)
-    }
+  componentDidMount() {
+    // if (this.props.match.params.id) {
+    //   await this.props.getUser(this.props.match.params.id)
+    // }
+    // if (!this.props.match.params.id && this.props.user) {
+    //   await this.props.getUser(this.props.user._id)
+    // }
   }
 
   viewAll = type => {
-    this.props.saveActionState(type)
+    // this.props.saveActionState(type)
+    this.props.history.push(type)
   }
 
   componentWillUnmount() {}
@@ -76,7 +75,7 @@ class Reactions extends Component {
                 hasReactions ? (
                   <span
                     className="hyperlink cursor"
-                    onClick={() => this.viewAll('reactions')}
+                    onClick={() => this.viewAll('/reactions')}
                   >
                     View All{' '}
                     <b>

@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 
 import ArrowIcon from '@material-ui/icons/ArrowForward'
 import Button from '@material-ui/core/Button'
-import CloseIcon from '@material-ui/icons/Close'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
@@ -11,7 +10,6 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import Draggable from 'react-draggable'
 import Paper from '@material-ui/core/Paper'
 import PropTypes from 'prop-types'
-import Typography from '@material-ui/core/Typography'
 import withMobileDialog from '@material-ui/core/withMobileDialog'
 import { withStyles } from '@material-ui/core/styles'
 
@@ -118,16 +116,15 @@ class ResponsiveDialog extends Component {
           <DialogActions>
             <Button
               onClick={() => this.handleCreate()}
-              variant="contained"
+              variant="outlined"
               color="primary"
             >
-              {createButtonName} <ArrowIcon color="secondary" />
+              {createButtonName} <ArrowIcon color="primary" />
             </Button>
             <Button
               onClick={() => this.handleCancel()}
               variant="outlined"
               color="primary"
-              autoFocus
             >
               {cancellButtonName} <ArrowIcon color="primary" />
             </Button>

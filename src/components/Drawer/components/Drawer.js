@@ -10,7 +10,6 @@ import DownIcon from '@material-ui/icons/GetApp'
 import DynamicFeedIcon from '@material-ui/icons/DynamicFeed'
 import IconButton from '@material-ui/core/IconButton'
 import InsertEmoticonIcon from '@material-ui/icons/InsertEmoticon'
-import LibraryMusicIcon from '@material-ui/icons/LibraryMusic'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -22,9 +21,7 @@ import MyNetworkIcon from '@material-ui/icons/SupervisedUserCircleOutlined'
 import PersonIcon from '@material-ui/icons/Person'
 import PreferencesIcon from '@material-ui/icons/Tune'
 import PropTypes from 'prop-types'
-import Tooltip from '@material-ui/core/Tooltip'
 import UpIcon from '@material-ui/icons/Publish'
-import UsersIcon from '@material-ui/icons/PermIdentity'
 import WorldIcon from '@material-ui/icons/Public'
 import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
@@ -77,8 +74,7 @@ class DrawerComponent extends Component {
 
   handleUsers = () => {
     this.props.toggleDrawer()
-    this.props.history.push('/timeline/users')
-    this.props.saveActionState('users')
+    this.props.history.push('/users')
   }
 
   handleDashboard = () => {

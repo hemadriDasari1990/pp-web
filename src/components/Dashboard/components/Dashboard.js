@@ -6,7 +6,6 @@ import React, { Component, Suspense, lazy } from 'react'
 import AskIcon from '@material-ui/icons/HowToReg'
 import Grid from '@material-ui/core/Grid'
 import LikeIcon from '@material-ui/icons/ThumbUpAlt'
-import Loader from '../../Loader/components/Loader'
 import LoveIcon from '@material-ui/icons/Favorite'
 import PreferencesIcon from '@material-ui/icons/Tune'
 import RssFeedOutlinedIcon from '@material-ui/icons/RssFeedOutlined'
@@ -126,7 +125,7 @@ class DashBoard extends Component {
                           <AskIcon className="icon-display" color="secondary" />
                         }
                         title="Sent"
-                        name="Sent"
+                        name="Opinion Request"
                         count={user.no_of_opinion_request_sent}
                       />
                     </Grid>
@@ -136,7 +135,7 @@ class DashBoard extends Component {
                           <AskIcon className="icon-display" color="secondary" />
                         }
                         title="Received"
-                        name="Received"
+                        name="Opinion Request"
                         count={user.no_of_opinion_request_received}
                       />
                     </Grid>

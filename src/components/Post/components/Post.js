@@ -1,11 +1,6 @@
-import * as actions from '../actions'
-
 import React, { Component } from 'react'
 
-import ArrowIcon from '@material-ui/icons/ArrowForward'
-import AssistantIcon from '@material-ui/icons/Assistant'
 import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
@@ -13,6 +8,7 @@ import CardHeader from '@material-ui/core/CardHeader'
 import Divider from '@material-ui/core/Divider'
 import Generic from './Post/components/Generic'
 import Grid from '@material-ui/core/Grid'
+import IconButton from '@material-ui/core/IconButton'
 import Opinion from './Post/components/Opinion'
 import PostAddOutlinedIcon from '@material-ui/icons/PostAddOutlined'
 import SkeletonCreatePost from '../../Skeletons/components/CreatePost'
@@ -122,10 +118,14 @@ class Post extends Component {
             </CardContent>
             <Divider />
             <CardActions>
-              <Zoom in={true} timeout={1500}>
+              {/* <Zoom in={true} timeout={1500}>
+                <IconButton onClick={() => this.handleOpinionAction()}>
+                  <PostAddOutlinedIcon />
+                </IconButton>
+                
+                
                 <Button
                   variant="contained"
-                  color="primary"
                   size="small"
                   onClick={() => this.handleOpinionAction()}
                   style={{ height: 32 }}
@@ -133,6 +133,11 @@ class Post extends Component {
                   <PostAddOutlinedIcon /> Write Opinion{' '}
                   <ArrowIcon color="secondary" />
                 </Button>
+              </Zoom> */}
+              <Zoom in={true} timeout={1500}>
+                <IconButton onClick={() => this.handleOpinionAction()}>
+                  <PostAddOutlinedIcon color="primary" />
+                </IconButton>
               </Zoom>
             </CardActions>
           </Card>

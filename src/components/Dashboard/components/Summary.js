@@ -1,6 +1,6 @@
 import * as timelineActions from '../../Timeline/actions'
 
-import React, { Component, Suspense, lazy } from 'react'
+import React, { Component } from 'react'
 
 import Card from '@material-ui/core/Card'
 import CardContent from '@material-ui/core/CardContent'
@@ -9,7 +9,6 @@ import DownIcon from '@material-ui/icons/GetApp'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import Loader from '../../Loader/components/Loader'
 import SkeletonSummary from '../../Skeletons/components/Summary'
 import UpIcon from '@material-ui/icons/Publish'
 import Zoom from '@material-ui/core/Grow'

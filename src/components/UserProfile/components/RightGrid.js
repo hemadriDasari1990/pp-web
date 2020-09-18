@@ -3,7 +3,6 @@ import * as actions from '../../../actions/index'
 import React, { Component, Suspense, lazy } from 'react'
 
 import Grid from '@material-ui/core/Grid'
-import Loader from '../../Loader/components/Loader'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 
@@ -26,12 +25,14 @@ class RightGrid extends Component {
     const { profile, path } = this.props
     return (
       <Suspense>
-        <Grid item lg={4} md={6} xs={12} sm={12} className="of-h">
-          <Summary type={path} title="Incoming Summary" />
-          <Summary type={path} title="Outgoing Summary" />
-          <RecentPosts user={profile} />
-          <PopularPosts user={profile} type={path} />
-        </Grid>
+        {profile && (
+          <Grid item lg={4} md={6} xs={12} sm={12} className="of-h">
+            {/* <Summary type={path} title="Incoming Summary" />
+          <Summary type={path} title="Outgoing Summary" /> */}
+            {/* <RecentPosts  /> */}
+            {/* <PopularPosts user={profile} type={path} /> */}
+          </Grid>
+        )}
       </Suspense>
     )
   }
@@ -40,9 +41,11 @@ class RightGrid extends Component {
 RightGrid.propTypes = {}
 
 const mapStateToProps = state => {
+  const profile = state.getIn(['user', 'success'])
   const user = state.getIn(['user', 'data'])
   return {
     user,
+    profile: profile ? profile.user : undefined,
   }
 }
 

@@ -1,47 +1,23 @@
-import * as globalActions from '../../../actions/index'
+import * as actions from '../actions'
 
-import React, { Component, Suspense, lazy } from 'react'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+// import Link from '@material-ui/core/Link';
+import { Link, withRouter } from 'react-router-dom'
+import React, { Component, Suspense } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
-import Badge from '@material-ui/core/Badge'
-import CardContent from '@material-ui/core/CardContent'
-import CardHeader from '@material-ui/core/CardHeader'
-import Divider from '@material-ui/core/Divider'
-import FiberNewIcon from '@material-ui/icons/FiberNew'
-import FollowIcon from '@material-ui/icons/RssFeedOutlined'
 import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
-import LibraryAddIcon from '@material-ui/icons/LibraryAdd'
 import LikeIcon from '@material-ui/icons/ThumbUpAlt'
-import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
-import ListSubheader from '@material-ui/core/ListSubheader'
-import LiveHelpIcon from '@material-ui/icons/LiveHelp'
-import Loader from '../../Loader/components/Loader'
-import LoveIcon from '@material-ui/icons/Favorite'
-import { Map } from 'immutable'
 import PropTypes from 'prop-types'
-import SkeletonListCard from '../../Skeletons/components/ListCard'
-import Slide from '@material-ui/core/Slide'
-import StepButton from '@material-ui/core/StepButton'
-import StepConnector from '@material-ui/core/StepConnector'
-import StepContent from '@material-ui/core/StepContent'
-import StepLabel from '@material-ui/core/StepLabel'
-import Stepper from '@material-ui/core/Stepper'
 import Tooltip from '@material-ui/core/Tooltip'
 import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
-import formateNumber from '../../../util/formateNumber'
-import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
-import getCreatedDate from '../../../util/getCreatedDate'
-import getPastTime from '../../../util/getPastTime'
-import getProvider from '../../../util/getProvider'
-import { withRouter } from 'react-router-dom'
+import { withStyles } from '@material-ui/core/styles'
 
 const styles = {
   smallAvatar: {
@@ -55,16 +31,64 @@ const styles = {
 }
 
 class CountriesList extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      countries: props.countries,
+    }
+  }
+
   componentDidMount() {}
 
+  handleReaction = async (countryId, index) => {
+    const { user } = this.props
+    const data = {
+      reactedBy: user._id,
+      country: countryId,
+      type: 'like',
+    }
+    await this.props.createOrUpdateCountryReaction(data).then(async res => {
+      const countries = [...this.state.countries]
+      const countryReactionIndex = countries[index].reactions.findIndex(
+        r => r._id === user._id,
+      )
+      countries[index].reactions.splice(countryReactionIndex, 1)
+      // user.opinionRequestsSent = user.opinionRequestsSent.unshift(users[index]);
+      if (res.data.reaction) {
+        countries[index].reactions.unshift(user)
+        countries[index].like_reactions.unshift(user)
+        countries[index].likes += 1
+        countries[index].reactionsCount += 1
+        countries[index].reactedBy = user
+      } else if (countries[index].likes) {
+        countries[index].likes -= 1
+        countries[index].reactionsCount -= 1
+      }
+      this.setState(
+        {
+          countries,
+        },
+        () => {},
+      )
+    })
+  }
+
+  isLiked = country => {
+    const { classes, user } = this.props
+    const reactions = country.reactions
+    const reaction = reactions.find(lr => lr._id === user._id)
+    return reaction ? true : false
+  }
+
   render() {
-    const { classes, user, countries } = this.props
+    const { classes, user } = this.props
+    const { countries } = this.state
     return (
       <Suspense>
         <List>
           <Grid container spacing={1}>
             {countries &&
-              countries.map(country => (
+              countries.map((country, index) => (
                 <Grid
                   key={user._id}
                   item
@@ -91,13 +115,22 @@ class CountriesList extends Component {
                     <Tooltip title={country.name} placement="bottom-start">
                       <ListItemText
                         primary={
-                          country.name.length > 25
-                            ? country.name.substring(0, 25) + '...'
+                          country.name && country.name.length > 20
+                            ? country.name.substring(0, 20) + '...'
                             : country.name
                         }
                         secondary={
                           <>
-                            <span>1,23,500 Likes</span>
+                            <span>{country.likes + ' Likes'}</span>
+                            <br />
+                            <Link
+                              to="#"
+                              onClick={() => {
+                                console.info("I'm a button.")
+                              }}
+                            >
+                              See who Liked
+                            </Link>
                           </>
                         }
                       />
@@ -113,7 +146,16 @@ class CountriesList extends Component {
                                 </Tooltip> */}
                       <Tooltip title={'Like'} placement="right-end">
                         <Zoom in={true} timeout={2000}>
-                          <IconButton>
+                          <IconButton
+                            onClick={() =>
+                              this.handleReaction(country._id, index)
+                            }
+                            style={{
+                              color: this.isLiked(country)
+                                ? '#5383ff'
+                                : '#0c0b0b5e',
+                            }}
+                          >
                             <LikeIcon />
                           </IconButton>
                         </Zoom>
@@ -140,7 +182,9 @@ const mapStateToProps = state => {
   }
 }
 
-const actionsToProps = {}
+const actionsToProps = {
+  createOrUpdateCountryReaction: actions.createOrUpdateCountryReaction,
+}
 
 export default withRouter(
   connect(mapStateToProps, actionsToProps)(withStyles(styles)(CountriesList)),

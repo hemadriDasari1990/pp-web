@@ -168,16 +168,20 @@ h2 {
 }
 
 h1, h2, h3, h4, h5, h6 {
-letter-spacing: 2px;
-font-family: inherit;
-display: block;
-margin-block-start: 0.67em;
-margin-block-end: 0.67em;
-margin-inline-start: 0px;
-margin-inline-end: 0px;
-font-weight: 500;
-font-size: 48px;
-line-height: 56px;
+  letter-spacing: 2px;
+  font-family: inherit;
+  display: block;
+  margin-block-start: 0.67em;
+  margin-block-end: 0.67em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-weight: 500;
+  font-size: 48px;
+  line-height: 56px;
+}
+
+h6 {
+  color: #5383ff;
 }
 
 .link-span span {
@@ -190,13 +194,9 @@ h1, h2, h3, h4, h5, h6, p {
   margin: 0;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: Roboto, "Franklin Gothic Medium", Tahoma, sans-serif;
-}
-
-h6 {
-  color: #283593;
-}
+// h6 {
+//   color: #283593;
+// }
 
 h1.headline {
 font-size: 40px;

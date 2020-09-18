@@ -1,12 +1,10 @@
-import * as actions from '../../../actions/index'
-
-import React, { Component, Suspense, lazy } from 'react'
-import { Route, withRouter } from 'react-router-dom'
+import React, { Component, Suspense } from 'react'
 
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import WhoToFollow from '../../WhoToFollow/components/WhoToFollow'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 class CenterGrid extends Component {
   constructor(props) {
@@ -24,7 +22,15 @@ class CenterGrid extends Component {
     return (
       <Suspense>
         <Box clone order={{ xs: 2, lg: 2 }}>
-          <Grid item lg={8} md={8} xs={12} sm={8} className="middle-content">
+          <Grid
+            item
+            lg={12}
+            md={12}
+            xs={12}
+            sm={12}
+            xl={12}
+            className="middle-content"
+          >
             <WhoToFollow />
           </Grid>
         </Box>

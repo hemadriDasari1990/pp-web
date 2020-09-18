@@ -82,7 +82,6 @@ class WelcomeProfile extends Component {
                       aria-label="add"
                       variant="contained"
                       className="align-items-center mb-10"
-                      color="primary"
                     >
                       View Timeline&nbsp;
                       <ArrowIcon color="secondary" />

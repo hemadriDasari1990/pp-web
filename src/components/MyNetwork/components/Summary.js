@@ -1,5 +1,3 @@
-import * as globalActions from '../../../actions/index'
-
 import React, { Component } from 'react'
 
 import AskIcon from '@material-ui/icons/HowToReg'
@@ -8,30 +6,20 @@ import Badge from '@material-ui/core/Badge'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
 import CardContent from '@material-ui/core/CardContent'
-import Divider from '@material-ui/core/Divider'
-import Fab from '@material-ui/core/Fab'
-import FiberNewIcon from '@material-ui/icons/FiberNew'
 import FollowIcon from '@material-ui/icons/RssFeedOutlined'
-import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
-import LibraryAddIcon from '@material-ui/icons/LibraryAdd'
 import LikeIcon from '@material-ui/icons/ThumbUpAlt'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
 import ListItemText from '@material-ui/core/ListItemText'
-import LiveHelpIcon from '@material-ui/icons/LiveHelp'
 import LoveIcon from '@material-ui/icons/Favorite'
-import { Map } from 'immutable'
-import SkeletonProfile from '../../Skeletons/components/Profile'
 import Slide from '@material-ui/core/Slide'
 import Tooltip from '@material-ui/core/Tooltip'
 import Zoom from '@material-ui/core/Zoom'
 import { connect } from 'react-redux'
 import formateNumber from '../../../util/formateNumber'
-import getPastTime from '../../../util/getPastTime'
-import isUserActive from '../../../util/isUserActive'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
@@ -50,7 +38,7 @@ const styles = {
   },
 }
 
-class Summary extends Component {
+class MyNetworkSummary extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -336,7 +324,7 @@ class Summary extends Component {
   }
 }
 
-Summary.propTypes = {}
+MyNetworkSummary.propTypes = {}
 
 const mapStateToProps = state => {
   const user = state.getIn(['user', 'data'])
@@ -348,5 +336,8 @@ const mapStateToProps = state => {
 const actionsToProps = {}
 
 export default withRouter(
-  connect(mapStateToProps, actionsToProps)(withStyles(styles)(Summary)),
+  connect(
+    mapStateToProps,
+    actionsToProps,
+  )(withStyles(styles)(MyNetworkSummary)),
 )

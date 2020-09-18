@@ -1,6 +1,7 @@
 import * as postActions from '../../Post/actions'
 import * as userProfileActions from '../../UserProfile/actions'
 
+import { Link, withRouter } from 'react-router-dom'
 import React, { Component } from 'react'
 
 import AskIcon from '@material-ui/icons/PlaylistAddRounded'
@@ -8,7 +9,6 @@ import Avatar from '@material-ui/core/Avatar'
 import Badge from '@material-ui/core/Badge'
 import FollowIcon from '@material-ui/icons/RssFeedOutlined'
 import IconButton from '@material-ui/core/IconButton'
-import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemAvatar from '@material-ui/core/ListItemAvatar'
@@ -24,7 +24,6 @@ import { connect } from 'react-redux'
 import { getCardSubHeaderProfileSummary } from '../../../util/getCardSubHeaderText'
 import getProvider from '../../../util/getProvider'
 import getReaction from '../../../util/getReaction'
-import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'
 
 const styles = {

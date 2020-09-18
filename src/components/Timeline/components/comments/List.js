@@ -7,6 +7,7 @@ import Avatar from '@material-ui/core/Avatar'
 import Badge from '@material-ui/core/Badge'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
+import IconButton from '@material-ui/core/IconButton'
 import LikeIcon from '@material-ui/icons/ThumbUpAlt'
 import { Link } from 'react-router-dom'
 import List from '@material-ui/core/List'
@@ -16,6 +17,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Loader from '../../../Loader/components/Loader'
 import { Map } from 'immutable'
 import MaterialLink from '@material-ui/core/Link'
+import PostAddOutlinedIcon from '@material-ui/icons/PostAddOutlined'
 import TextField from '@material-ui/core/TextField'
 import Tooltip from '@material-ui/core/Tooltip'
 import Zoom from '@material-ui/core/Zoom'
@@ -157,7 +159,6 @@ class CommentsList extends Component {
   // }
 
   deleteComment = commentId => {
-    console.log('before comments', this.state.comments)
     this.props.deleteComment(this.props.postId, commentId).then(res => {
       let comments = [...this.state.comments]
       const index = comments.findIndex(c => c._id === commentId)
@@ -167,7 +168,6 @@ class CommentsList extends Component {
         comments,
         totalComments,
       })
-      console.log('after comments', comments)
     })
   }
 
@@ -220,31 +220,28 @@ class CommentsList extends Component {
                                     required
                                   />
                                 </Zoom>
-                                {comment && commentId === c._id ? (
-                                  <Zoom
-                                    in={comment ? true : false}
-                                    timeout={2000}
-                                  >
-                                    <Button
-                                      onClick={e =>
-                                        this.updateComment(e, c._id, index)
-                                      }
-                                      variant="outlined"
-                                      size="small"
-                                      color="primary"
-                                      className={classes.button}
-                                    >
-                                      Update
-                                    </Button>
-                                  </Zoom>
-                                ) : null}
                               </>
                             }
                             secondary={
                               <React.Fragment>
                                 <div className="comment-actions comment-actions1">
-                                  <Tooltip title="Edit">
+                                  {comment && commentId === c._id ? (
+                                    <Tooltip title="Update">
+                                      <small
+                                        style={{ fontWeight: 'bold' }}
+                                        className="m-r-5 m-l-5"
+                                        onClick={e =>
+                                          this.updateComment(e, c._id, index)
+                                        }
+                                      >
+                                        Update
+                                      </small>
+                                    </Tooltip>
+                                  ) : null}
+                                  <small> -</small>
+                                  <Tooltip title="Cancel">
                                     <small
+                                      style={{ fontWeight: 'bold' }}
                                       className="m-r-5 m-l-5"
                                       onClick={() => this.handleCancel(c._id)}
                                     >

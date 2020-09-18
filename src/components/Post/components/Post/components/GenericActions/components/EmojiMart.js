@@ -1,21 +1,10 @@
 import 'emoji-mart/css/emoji-mart.css'
 
-import * as actions from '../../../../../actions'
-import * as timelineActions from '../../../../../../Timeline/actions'
-
 import React, { Component } from 'react'
 
-import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
-import IconButton from '@material-ui/core/IconButton'
-import { Map } from 'immutable'
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
-import PhotoIcon from '@material-ui/icons/InsertPhoto'
 import { Picker } from 'emoji-mart'
 import Popover from '@material-ui/core/Popover'
-import SmileIcon from '@material-ui/icons/InsertEmoticon'
-import Tooltip from '@material-ui/core/Tooltip'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles'

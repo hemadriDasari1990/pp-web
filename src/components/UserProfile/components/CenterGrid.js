@@ -2,11 +2,11 @@ import * as actions from '../actions'
 import * as globalActions from '../../../actions/index'
 
 import React, { Component, Suspense, lazy } from 'react'
-import { Route, withRouter } from 'react-router-dom'
 
 import Grid from '@material-ui/core/Grid'
 import Loader from '../../Loader/components/Loader'
 import { connect } from 'react-redux'
+import { withRouter } from 'react-router-dom'
 
 const Reactions = lazy(() => import('../../Reactions/components/Reactions'))
 const Incoming = lazy(() => import('../../Timeline/components/Incoming'))
@@ -27,12 +27,13 @@ class CenterGrid extends Component {
     const { profile, path, actionState } = this.props
     return (
       <Suspense fallback={<Loader />}>
-        <Grid item lg={5} md={6} xs={12} sm={9} className="middle-content">
-          {actionState === 'post-reactions' && <Reactions />}
-          {!actionState || actionState === 'incoming' ? (
-            <Incoming user={profile} type="profile" />
-          ) : null}
-          {actionState === 'reactions' ? (
+        {profile && (
+          <Grid item lg={5} md={6} xs={12} sm={9} className="middle-content">
+            {actionState === 'post-reactions' && <Reactions />}
+            {!actionState || actionState === 'incoming' ? (
+              <Incoming user={profile} type="profile" />
+            ) : null}
+            {/* {actionState === 'reactions' ? (
             <ProfileReactionsView view="list" />
           ) : null}
           {actionState === 'followers' ? (
@@ -40,8 +41,9 @@ class CenterGrid extends Component {
           ) : null}
           {actionState === 'followees' ? (
             <ProfileFolloweesView view="list" />
-          ) : null}
-        </Grid>
+          ) : null} */}
+          </Grid>
+        )}
       </Suspense>
     )
   }
@@ -50,11 +52,13 @@ class CenterGrid extends Component {
 CenterGrid.propTypes = {}
 
 const mapStateToProps = state => {
+  const profile = state.getIn(['user', 'success'])
   const user = state.getIn(['user', 'data'])
   const actionState = state.getIn(['UserProfile', 'action', 'save'])
   return {
     user,
     actionState,
+    profile: profile ? profile.user : undefined,
   }
 }
 
